@@ -1,6 +1,4 @@
-﻿#include "Server.h"
-
-#include <iostream>
+﻿#include <iostream>
 
 int main()
 {
