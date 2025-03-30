@@ -4,6 +4,8 @@
 #include <winsock2.h>
 #include <ws2tcpip.h>
 
+#pragma comment(lib, "ws2_32.lib")
+
 constexpr unsigned int PORT = 6942;
 const std::string CMD_EXIT = "EXIT";
 const std::string CMD_HELLO = "Hello";
