@@ -73,6 +73,9 @@ public:
 	
 		// Notify all threads that the server is closing
 		this->_running = false;
+
+		// Release the client cleaner thread
+		this->_disconectedClientConditionalVariable.notify_all();
 	
 		// Wait for 'em to close
 		this->m_clients_mutex.lock();
@@ -251,29 +254,38 @@ private:
 	void _clientThreadFunc(const T socket)
 	{
 		sendMsg(socket, CMD_HELLO.c_str(), CMD_HELLO.length());
+
 		while (this->_running)
 		{
-			char buffer[6];
-
 			try
 			{
-				if (!recieveMsg(socket, buffer, sizeof(buffer)))
+				char buffer[6];
+	
+				try
 				{
-					// If we timed out (see RECV_REFRESH_TIMEOUT),
-					// simply wait for the next recv cycle (if applicable).
-					continue;
+					if (!recieveMsg(socket, buffer, sizeof(buffer)))
+					{
+						// If we timed out (see RECV_REFRESH_TIMEOUT),
+						// simply wait for the next recv cycle (if applicable).
+						continue;
+					}
+				}
+				catch (const ForcedDisconnectionException& e)
+				{
+					break;
+				}
+	
+				buffer[5] = 0;
+	
+				if (buffer == CMD_HELLO)
+				{
+					sendMsg(socket, CMD_HELLO.c_str(), CMD_HELLO.length());
 				}
 			}
-			catch (const ForcedDisconnectionException& e)
+			catch (const std::exception& e)
 			{
+				std::cerr << "Unknown exception occured (" << e.what() << "); Assuming client disconnection" << std::endl;
 				break;
-			}
-
-			buffer[5] = 0;
-
-			if (buffer == CMD_HELLO)
-			{
-				sendMsg(socket, CMD_HELLO.c_str(), CMD_HELLO.length());
 			}
 		}
 	
