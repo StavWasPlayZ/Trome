@@ -18,13 +18,12 @@ public:
 	Server();
 	~Server();
 
-	/// <summary>
-	/// Runs the server.
-	/// </summary>
-	/// <returns>
-	/// The future handling the client sockets.
-	/// Completes when server closes.
-	/// </returns>
+	/**
+	* Runs the server.
+	* 
+	* Returns: The future handling the client sockets.
+	* Completes when server closes.
+	*/
 	std::future<void>& run();
 	void close();
 
@@ -33,6 +32,12 @@ public:
 private:
 	static constexpr unsigned int PORT = 6942;
 	static const std::string CMD_HELLO;
+
+	/**
+	* The timeout for the recv method.
+	* Set in place to allow refreshing the value of _running.
+	*/
+	static constexpr unsigned int RECV_REFRESH_TIMEOUT = 3000;
 
 	SOCKET _serverSocket;
 	struct sockaddr_in _address;

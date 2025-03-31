@@ -58,11 +58,16 @@ std::future<void>& Server::run()
     }
 
     // Create socket file descriptor
-    if ((this->_serverSocket = socket(AF_INET, SOCK_STREAM, 0)) == INVALID_SOCKET)
+    this->_serverSocket = socket(AF_INET, SOCK_STREAM, 0);
+    if (this->_serverSocket == INVALID_SOCKET)
     {
         close();
         throw WSAException("Socket creation failed");
     }
+
+    // The timeout for the recv method.
+    // Set in place to allow refreshing the value of _running.
+    setsockopt(this->_serverSocket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&RECV_REFRESH_TIMEOUT, sizeof(RECV_REFRESH_TIMEOUT));
 
     // Bind the socket to the port
     _address.sin_family = AF_INET;
@@ -126,7 +131,10 @@ void Server::_handleClient(const SOCKET socket) const
 {
     while (this->_running)
     {
-        //stuff
+        char buffer[5];
+        int bytesReceived = recv(socket, buffer, sizeof(buffer), 0);
+
+        std::cout << "dfasjhgb" << std::endl;
     }
 
     closesocket(socket);
