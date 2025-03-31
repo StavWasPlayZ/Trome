@@ -1,6 +1,6 @@
 #include "WindowsCommunicator.h"
 
-#include "exception/WSAException.h"
+#include "windows/exception/WSAException.h"
 
 #include "handler/LoginRequestHandler.h"
 
