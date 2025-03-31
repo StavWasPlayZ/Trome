@@ -18,5 +18,7 @@ protected:
 	virtual void platformClose() override;
 	virtual void closeClientSocket(const int socket) override;
 
-	virtual void acceptClients();
+	virtual void acceptClients() override;
+
+	virtual void throwPlatformError(const std::string& msg) const override;
 };

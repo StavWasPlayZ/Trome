@@ -54,6 +54,11 @@ void LinuxCommunicator::acceptClients()
     registerClient(newSocket);
 }
 
+void LinuxCommunicator::throwPlatformError(const std::string &msg) const
+{
+    throw std::runtime_error(msg + ": " + std::to_string(errno));
+}
+
 void LinuxCommunicator::setRecvTimeout(const unsigned int timeoutMs) const
 {
     struct timeval timeoutVal;
