@@ -43,6 +43,6 @@ if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET Server PROPERTY CXX_STANDARD 20)
 endif()
 
-# Support inclues starting from relative paths
+# Support includes starting from relative paths
 target_include_directories(Server PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_include_directories(Server PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/common)
