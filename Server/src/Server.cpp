@@ -4,8 +4,6 @@
 
 #include <iostream>
 
-#pragma comment(lib, "ws2_32.lib")
-
 const std::string Server::CMD_EXIT = "EXIT";
 const std::string Server::CMD_HELLO = "Hello";
 
