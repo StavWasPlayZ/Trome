@@ -47,6 +47,12 @@ void LinuxCommunicator::acceptClients()
 
     if (newSocket < 0)
     {
+        // Ignore timeouts
+        if (errno == EAGAIN || errno == EWOULDBLOCK)
+        {
+            return;
+        }
+
         throwPlatformError("Accept failed");
         return;
     }

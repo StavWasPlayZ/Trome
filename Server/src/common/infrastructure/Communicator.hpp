@@ -223,6 +223,7 @@ private:
 		while (this->_running)
 		{
 			acceptClients();
+			//TODO: Move to different thread with event mutex thing
 			_freeDisconnectedClients();
 		}
 	
