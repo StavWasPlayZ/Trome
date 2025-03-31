@@ -10,6 +10,8 @@
 #include <mutex>
 // Much (much) better than threads in modern C++, and this usecase in particular.
 #include <future>
+// But this is also necessary for client cleaning thread.
+#include <thread>
 // It was suggested online to use this when sharing a resource.
 #include <atomic>
 
@@ -59,7 +61,7 @@ public:
 	virtual std::future<void>& bindAndListen()
 	{
 		commonSetup();
-		return startServerThread();
+		return startServerThreads();
 	}
 
 	void close()
@@ -172,7 +174,7 @@ protected:
 	* Returns: The future handling the client sockets.
 	* Completes when server closes.
 	*/
-	std::future<void>& startServerThread()
+	std::future<void>& startServerThreads()
 	{
 		this->_serverThread = std::async(
 			std::launch::async,
@@ -181,6 +183,14 @@ protected:
 				_serverThreadFunc();
 			}
 		);
+
+		// Also start client cleaner thread
+		std::thread(
+			[this]()
+			{
+				_clientCleanerThreadFunc();
+			}
+		).detach();
 
 		std::cout << "Listening on port " << PORT << "..." << std::endl;
 
@@ -218,31 +228,16 @@ private:
 	*/
 	std::list<T> _disconnectingClients;
 
+	//SECTION Thread Functions
+
 	void _serverThreadFunc()
 	{
 		while (this->_running)
 		{
 			acceptClients();
-			//TODO: Move to different thread with event mutex thing
-			_freeDisconnectedClients();
 		}
 	
 		close();
-	}
-
-	void _freeDisconnectedClients()
-	{
-		this->_disconnectingClients_mutex.lock();
-		this->m_clients_mutex.lock();
-	
-		for (const auto& clientSock : this->_disconnectingClients)
-		{
-			delete this->m_clients.at(clientSock);
-			m_clients.erase(clientSock);
-		}
-	
-		this->m_clients_mutex.unlock();
-		this->_disconnectingClients_mutex.unlock();
 	}
 
 	//ANCHOR This is where we actually process the client sockets.
@@ -271,10 +266,37 @@ private:
 		_enqueueDisconnectClient(socket);
 	}
 
+	void _clientCleanerThreadFunc()
+	{
+		while (this->_running)
+		{
+			//TODO: Add that mutex where you tell it to be unlocked in some other thread and then
+			// this thread is like "woah i need to wake up" kind of mutex
+			_freeDisconnectedClients();
+		}
+	}
+
+	//!SECTION
+
 	void _enqueueDisconnectClient(const T socket)
 	{	
 		this->_disconnectingClients_mutex.lock();
 		this->_disconnectingClients.push_back(socket);
+		this->_disconnectingClients_mutex.unlock();
+	}
+
+	void _freeDisconnectedClients()
+	{
+		this->_disconnectingClients_mutex.lock();
+		this->m_clients_mutex.lock();
+	
+		for (const auto& clientSock : this->_disconnectingClients)
+		{
+			delete this->m_clients.at(clientSock);
+			m_clients.erase(clientSock);
+		}
+	
+		this->m_clients_mutex.unlock();
 		this->_disconnectingClients_mutex.unlock();
 	}
 };
