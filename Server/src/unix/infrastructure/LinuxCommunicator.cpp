@@ -11,7 +11,7 @@
 #include <errno.h>
 
 LinuxCommunicator::LinuxCommunicator() :
-    Communicator(0)
+    CommonCommunicator(0)
 {}
 
 bool LinuxCommunicator::isValidSocket(const int result) const

@@ -1,13 +1,13 @@
 #pragma once
 
-#include "infrastructure/Communicator.hpp"
+#include "infrastructure/CommonCommunicator.hpp"
 
 #pragma comment(lib, "ws2_32.lib")
 
 #include <winsock2.h>
 #include <ws2tcpip.h>
 
-class WindowsCommunicator : public Communicator<SOCKET>
+class WindowsCommunicator : public CommonCommunicator<SOCKET>
 {
 public:
 	WindowsCommunicator();

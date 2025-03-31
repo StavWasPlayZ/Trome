@@ -30,16 +30,16 @@
  * T - The platform socket type
  */
 template <typename T>
-class Communicator
+class CommonCommunicator
 {
 public:
-	Communicator(const T defaultSocket) :
+	CommonCommunicator(const T defaultSocket) :
 		m_serverSocket(defaultSocket),
 		_serverSockAddr({ 0 }),
 		_running(false)
 	{}
 
-	virtual ~Communicator()
+	virtual ~CommonCommunicator()
 	{
 		close();
 	}

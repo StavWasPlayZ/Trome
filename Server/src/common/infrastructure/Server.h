@@ -1,6 +1,6 @@
 #pragma once
 
-#include "PlatformCommunicator.h"
+#include "Communicator.h"
 
 class Server
 {
@@ -18,5 +18,5 @@ public:
 	bool isRunning() const;
 
 private:
-	PlatformCommunicator m_communicator;
+	Communicator m_communicator;
 };

@@ -19,9 +19,9 @@ add_executable (Server
   "src/common/infrastructure/Server.cpp"
   "src/common/handler/IRequestHandler.h"
   "src/common/handler/LoginRequestHandler.h"
-  "src/common/infrastructure/Communicator.hpp"
+  "src/common/infrastructure/CommonCommunicator.hpp"
   "src/common/infrastructure/Client.hpp"
-  "src/common/infrastructure/PlatformCommunicator.h"
+  "src/common/infrastructure/Communicator.h"
 )
 
 # Platform-specific sources

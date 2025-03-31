@@ -1,8 +1,8 @@
 #pragma once
 
-#include "infrastructure/Communicator.hpp"
+#include "infrastructure/CommonCommunicator.hpp"
 
-class LinuxCommunicator : public Communicator<int>
+class LinuxCommunicator : public CommonCommunicator<int>
 {
 public:
 	LinuxCommunicator();

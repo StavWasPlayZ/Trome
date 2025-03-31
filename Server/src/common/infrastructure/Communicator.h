@@ -10,7 +10,7 @@
      * 
      * Currently set as Windows.
      */
-    using PlatformCommunicator = WindowsCommunicator;
+    using Communicator = WindowsCommunicator;
 #else
     #include "unix/infrastructure/LinuxCommunicator.h"
 
@@ -19,5 +19,5 @@
      * 
      * Currently set as Linux.
      */
-    using PlatformCommunicator = LinuxCommunicator;
+    using Communicator = LinuxCommunicator;
 #endif

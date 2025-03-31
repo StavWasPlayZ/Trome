@@ -7,7 +7,7 @@
 #include <iostream>
 
 WindowsCommunicator::WindowsCommunicator() :
-    Communicator(INVALID_SOCKET)
+    CommonCommunicator(INVALID_SOCKET)
 {}
 
 std::future<void> &WindowsCommunicator::bindAndListen()
@@ -19,7 +19,7 @@ std::future<void> &WindowsCommunicator::bindAndListen()
         return;
     }
 
-    return Communicator::bindAndListen();
+    return CommonCommunicator::bindAndListen();
 }
 
 bool WindowsCommunicator::isValidSocket(const SOCKET result) const
