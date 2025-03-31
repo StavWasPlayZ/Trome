@@ -3,6 +3,8 @@
 #include <iostream>
 #include <stdexcept>
 
+#include "exception/ForcedDisconnectionException.h"
+
 #include <string>
 #include <map>
 #include <list>
@@ -198,10 +200,12 @@ protected:
 	}
 
 
+	//TODO: Make return type not only tell timeout, but also disconnection.
 	/**
 	* Returns true whether the message did not time out.
 	*/
 	virtual bool recieveMsg(const T socket, char* buffer, const int length) const = 0;
+
 	void sendMsg(const T socket, const char* buffer, const int length) const
 	{
 		if (send(socket, buffer, length, 0) == -1)
@@ -246,28 +250,32 @@ private:
 	//ANCHOR This is where we actually process the client sockets.
 	void _clientThreadFunc(const T socket)
 	{
+		sendMsg(socket, CMD_HELLO.c_str(), CMD_HELLO.length());
+		while (this->_running)
+		{
+			char buffer[6];
 
-		try {
-			sendMsg(socket, CMD_HELLO.c_str(), CMD_HELLO.length());
-			while (this->_running)
+			try
 			{
-				char buffer[6];
 				if (!recieveMsg(socket, buffer, sizeof(buffer)))
 				{
 					// If we timed out (see RECV_REFRESH_TIMEOUT),
 					// simply wait for the next recv cycle (if applicable).
 					continue;
 				}
+			}
+			catch (const ForcedDisconnectionException& e)
+			{
+				break;
+			}
 
-				buffer[5] = 0;
+			buffer[5] = 0;
 
-				if (buffer == CMD_HELLO)
-				{
-					sendMsg(socket, CMD_HELLO.c_str(), CMD_HELLO.length());
-				}
+			if (buffer == CMD_HELLO)
+			{
+				sendMsg(socket, CMD_HELLO.c_str(), CMD_HELLO.length());
 			}
 		}
-		catch (...) { std::cout << "Port: " << std::to_string(socket) << " disconected" << std::endl; }
 	
 		_enqueueDisconnectClient(socket);
 	}
@@ -277,7 +285,9 @@ private:
 		std::unique_lock<std::mutex> lock(this->_disconectedClient_mutex);
 		while (this->_running)
 		{
-			this->_disconectedClientConditionalVariable.wait(lock); // waits for _enqueueDisconnectClient to be called
+			// waits for _enqueueDisconnectClient to be called
+			this->_disconectedClientConditionalVariable.wait(lock);
+
 			_freeDisconnectedClients();
 		}
 	}
@@ -286,9 +296,12 @@ private:
 
 	void _enqueueDisconnectClient(const T socket)
 	{	
+		std::cout << "Port " << std::to_string(socket) << " disconected" << std::endl;
+
 		this->_disconnectingClients_mutex.lock();
 		this->_disconnectingClients.push_back(socket);
 		this->_disconnectingClients_mutex.unlock();
+		
 		this->_disconectedClientConditionalVariable.notify_one();
 	}
 

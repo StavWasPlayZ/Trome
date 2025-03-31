@@ -22,6 +22,8 @@ add_executable (Server
   "src/common/infrastructure/CommonCommunicator.hpp"
   "src/common/infrastructure/Client.hpp"
   "src/common/infrastructure/Communicator.h"
+  "src/common/exception/ForcedDisconnectionException.h"
+  "src/common/exception/ForcedDisconnectionException.cpp"
 )
 
 # Platform-specific sources
