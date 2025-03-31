@@ -8,7 +8,12 @@ def main():
         sock.connect(SERVER_INFO)
 
         while True:
-            server_msg = sock.recv(1024).decode()
+            try:
+                server_msg = sock.recv(1024).decode()
+            except:
+                # Socket was probably just closed.
+                break
+            
             print("Recieved:", server_msg)
 
             if server_msg == CMD_HELLO:
