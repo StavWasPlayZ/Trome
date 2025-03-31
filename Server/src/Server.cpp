@@ -4,7 +4,6 @@
 
 #include <iostream>
 
-const std::string Server::CMD_EXIT = "EXIT";
 const std::string Server::CMD_HELLO = "Hello";
 
 Server::Server() :

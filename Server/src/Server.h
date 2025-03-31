@@ -7,7 +7,7 @@
 
 #include <string>
 
-// Much (much) better than threads in modern C++.
+// Much (much) better than threads in modern C++, and this usecase in particular.
 #include <future>
 // It was suggested online to use this when sharing a resource.
 #include <atomic>
@@ -32,7 +32,6 @@ public:
 
 private:
 	static constexpr unsigned int PORT = 6942;
-	static const std::string CMD_EXIT;
 	static const std::string CMD_HELLO;
 
 	SOCKET _serverSocket;
