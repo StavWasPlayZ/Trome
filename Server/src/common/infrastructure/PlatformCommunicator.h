@@ -17,7 +17,7 @@
     /**
      * The Communicator that should be used on this platform.
      * 
-     * Currently set as Windows.
+     * Currently set as Linux.
      */
     using PlatformCommunicator = LinuxCommunicator;
 #endif
