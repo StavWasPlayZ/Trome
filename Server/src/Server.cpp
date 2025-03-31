@@ -131,10 +131,31 @@ void Server::_handleClient(const SOCKET socket) const
 {
     while (this->_running)
     {
-        char buffer[5];
-        int bytesReceived = recv(socket, buffer, sizeof(buffer), 0);
+        char buffer[6];
+        int result = recv(socket, buffer, sizeof(buffer), 0);
 
-        std::cout << "dfasjhgb" << std::endl;
+        if (result == SOCKET_ERROR)
+        {
+            if (WSAGetLastError() == WSAETIMEDOUT)
+            {
+                // If we timed out (see RECV_REFRESH_TIMEOUT),
+                // simply wait for the next recv cycle (if applicable).
+                continue;
+            }
+
+            throw WSAException("Error occured while handling client socket " + std::to_string(socket));
+        }
+
+        buffer[5] = 0;
+
+        if (buffer == CMD_HELLO)
+        {
+            int sent = send(socket, CMD_HELLO.c_str(), CMD_HELLO.length(), 0);
+            if (sent == -1)
+            {
+                throw WSAException("Failed to send message to client socket " + std::to_string(socket));
+            }
+        }
     }
 
     closesocket(socket);
