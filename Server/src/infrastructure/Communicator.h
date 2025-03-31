@@ -15,7 +15,7 @@
 // It was suggested online to use this when sharing a resource.
 #include <atomic>
 
-#include "Client.h"
+#include "infrastructure/Client.h"
 
 class Communicator
 {

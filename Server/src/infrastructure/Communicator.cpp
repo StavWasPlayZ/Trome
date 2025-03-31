@@ -1,8 +1,8 @@
 #include "Communicator.h"
 
-#include "../exception/WSAException.h"
+#include "exception/WSAException.h"
 
-#include "../handler/LoginRequestHandler.h"
+#include "handler/LoginRequestHandler.h"
 
 #include <iostream>
 
