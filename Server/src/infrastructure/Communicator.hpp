@@ -61,6 +61,8 @@ public:
 		this->m_clients_mutex.unlock();
 
 		platformClose();
+
+		this->_serverThread = std::future<void>();
 	}
 
 protected:

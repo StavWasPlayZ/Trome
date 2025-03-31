@@ -65,8 +65,6 @@ void WindowsCommunicator::platformClose()
 
     this->m_serverSocket = INVALID_SOCKET;
     this->_address = { 0 };
-
-    this->_serverThread = std::future<void>();
 }
 
 void WindowsCommunicator::acceptClients()
