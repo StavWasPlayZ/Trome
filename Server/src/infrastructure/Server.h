@@ -1,7 +1,6 @@
 #pragma once
 
-// #include "infrastructure/CommonCommunicator.hpp"
-#include "platform/windows/infrastructure/WindowsCommunicator.h"
+#include "PlatformCommunicator.h"
 
 class Server
 {
@@ -19,5 +18,5 @@ public:
 	bool isRunning() const;
 
 private:
-	WindowsCommunicator m_communicator;
+	PlatformCommunicator m_communicator;
 };
