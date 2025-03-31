@@ -56,7 +56,7 @@ public:
 		this->m_clients_mutex.lock();
 		for (const auto& client : this->m_clients)
 		{
-			client.second->getThread().wait();
+			client.second->thread.wait();
 		}
 		this->m_clients_mutex.unlock();
 

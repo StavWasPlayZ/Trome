@@ -16,10 +16,9 @@ class Client
 public:
 	Client(const T socket, IRequestHandler* const requestHandler, const std::function<void()> clientThreadFunc) :
 		socket(socket),
-		requestHandler(requestHandler)
-	{
-		thread = std::async(std::launch::async, clientThreadFunc);
-	}
+		requestHandler(requestHandler),
+		thread(std::async(std::launch::async, clientThreadFunc))
+	{}
 
 	~Client()
 	{
@@ -28,12 +27,5 @@ public:
 
 	const T socket;
 	IRequestHandler* requestHandler;
-
-	std::future<void>& getThread()
-	{
-		return this->thread;
-	}
-
-private:
-	std::future<void> thread;
+	const std::future<void> thread;
 };
