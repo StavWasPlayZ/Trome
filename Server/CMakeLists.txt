@@ -13,14 +13,13 @@ project ("Server")
 
 
 # Add source to this project's executable.
-add_executable (Server "src/Main.cpp" "src/infrastructure/Server.h" "src/infrastructure/Server.cpp" "src/exception/WSAException.cpp" "src/handler/IRequestHandler.h" "src/handler/LoginRequestHandler.h" "src/infrastructure/Communicator.hpp" "src/infrastructure/Client.hpp" "src/infrastructure/PlatformCommunicator.h")
+add_executable (Server "src/Main.cpp" "src/infrastructure/Server.h" "src/infrastructure/Server.cpp" "src/handler/IRequestHandler.h" "src/handler/LoginRequestHandler.h" "src/infrastructure/Communicator.hpp" "src/infrastructure/Client.hpp" "src/infrastructure/PlatformCommunicator.h")
 
 # Platform-specific sources
 if (WIN32)
-  target_sources(Server PRIVATE "src/platform/windows/infrastructure/WindowsCommunicator.h" "src/platform/windows/infrastructure/WindowsCommunicator.cpp")
+  target_sources(Server PRIVATE "src/platform/windows/infrastructure/WindowsCommunicator.h" "src/platform/windows/infrastructure/WindowsCommunicator.cpp" "src/exception/WSAException.cpp")
 else()
-  #TODO: Linux
-  # add_executable(Server )
+  target_sources(Server PRIVATE "src/platform/unix/infrastructure/LinuxCommunicator.h" "src/platform/unix/infrastructure/LinuxCommunicator.cpp")
 endif()
 
 

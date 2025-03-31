@@ -12,5 +12,12 @@
      */
     using PlatformCommunicator = WindowsCommunicator;
 #else
-    //TODO: Add Linux
+    #include "platform/unix/infrastructure/LinuxCommunicator.h"
+
+    /**
+     * The Communicator that should be used on this platform.
+     * 
+     * Currently set as Windows.
+     */
+    using PlatformCommunicator = LinuxCommunicator;
 #endif

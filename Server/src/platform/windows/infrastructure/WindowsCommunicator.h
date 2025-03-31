@@ -7,16 +7,6 @@
 #include <winsock2.h>
 #include <ws2tcpip.h>
 
-#include <string>
-#include <map>
-#include <list>
-
-#include <mutex>
-// Much (much) better than threads in modern C++, and this usecase in particular.
-#include <future>
-// It was suggested online to use this when sharing a resource.
-#include <atomic>
-
 class WindowsCommunicator : public Communicator<SOCKET>
 {
 public:
