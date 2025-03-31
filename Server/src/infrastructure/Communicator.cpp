@@ -2,16 +2,17 @@
 
 #include "../exception/WSAException.h"
 
+#include "../handler/LoginRequestHandler.h"
+
 #include <iostream>
 
 const std::string Communicator::CMD_HELLO = "Hello";
 
 Communicator::Communicator() :
-    _serverSocket(INVALID_SOCKET),
+    m_serverSocket(INVALID_SOCKET),
     _address({ 0 }),
     _running(false)
-{
-}
+{}
 
 Communicator::~Communicator()
 {
@@ -27,19 +28,23 @@ void Communicator::close()
     this->_running = false;
 
     // Wait for 'em to close
-    for (std::future<void>& future : this->_clientThreads)
+    this->m_clients_mutex.lock();
+    for (const auto& client : this->m_clients)
     {
-        future.wait();
+        client.second->getThread().wait();
     }
+    this->m_clients_mutex.unlock();
 
-    if (this->_serverSocket != INVALID_SOCKET)
+
+    if (this->m_serverSocket != INVALID_SOCKET)
     {
-        closesocket(this->_serverSocket);
+        closesocket(this->m_serverSocket);
     }
 
     WSACleanup();
 
-    this->_serverSocket = INVALID_SOCKET;
+
+    this->m_serverSocket = INVALID_SOCKET;
     this->_address = { 0 };
 
     this->_serverThread = std::future<void>();
@@ -59,23 +64,23 @@ std::future<void>& Communicator::bindAndListen()
     }
 
     // Create socket file descriptor
-    this->_serverSocket = socket(AF_INET, SOCK_STREAM, 0);
-    if (this->_serverSocket == INVALID_SOCKET)
+    this->m_serverSocket = socket(AF_INET, SOCK_STREAM, 0);
+    if (this->m_serverSocket == INVALID_SOCKET)
     {
         close();
         throw WSAException("Socket creation failed");
     }
 
-    // The timeout for the recv method.
+    // The timeout for the recv method
     // Set in place to allow refreshing the value of _running.
-    setsockopt(this->_serverSocket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&RECV_REFRESH_TIMEOUT, sizeof(RECV_REFRESH_TIMEOUT));
+    setsockopt(this->m_serverSocket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&RECV_REFRESH_TIMEOUT, sizeof(RECV_REFRESH_TIMEOUT));
 
     // Bind the socket to the port
     _address.sin_family = AF_INET;
     _address.sin_addr.s_addr = INADDR_ANY;
     _address.sin_port = htons(PORT);
 
-    if (bind(this->_serverSocket, (struct sockaddr*)&_address, sizeof(_address)) == SOCKET_ERROR)
+    if (bind(this->m_serverSocket, (struct sockaddr*)&_address, sizeof(_address)) == SOCKET_ERROR)
     {
         close();
         throw WSAException("Bind failed");
@@ -84,7 +89,7 @@ std::future<void>& Communicator::bindAndListen()
     this->_running = true;
 
     // Start listening for connections
-    if (listen(this->_serverSocket, 3) == SOCKET_ERROR)
+    if (listen(this->m_serverSocket, 3) == SOCKET_ERROR)
     {
         close();
         throw WSAException("Listen failed");
@@ -92,43 +97,65 @@ std::future<void>& Communicator::bindAndListen()
 
     std::cout << "Listening on port " << PORT << "..." << std::endl;
 
+    // Start the server thread
     return this->_serverThread = std::async(
         std::launch::async,
         [this]()
         {
-            _acceptClients();
+            _serverThreadFunc();
         }
     );
 }
 
-void Communicator::_acceptClients()
+void Communicator::_serverThreadFunc()
 {
-    int addrLen = sizeof(this->_address);
-
     while (this->_running)
     {
-        const SOCKET newSocket = accept(this->_serverSocket, (struct sockaddr*)&_address, &addrLen);
-
-        if (newSocket == INVALID_SOCKET)
-        {
-            throw WSAException("Accept failed");
-        }
-
-        std::cout << "Connection accepted" << std::endl;
-
-        this->_clientThreads.push_back(std::async(
-            std::launch::async,
-            [this, newSocket]()
-            {
-                _handleClient(newSocket);
-            }
-        ));
+        _acceptClients();
+        _freeDisconnectedClients();
     }
 
     close();
 }
 
-void Communicator::_handleClient(const SOCKET socket) const
+void Communicator::_freeDisconnectedClients()
+{
+    this->_disconnectingClients_mutex.lock();
+    this->m_clients_mutex.lock();
+
+    for (const auto& clientSock : this->_disconnectingClients)
+    {
+        delete this->m_clients.at(clientSock);
+        m_clients.erase(clientSock);
+    }
+
+    this->m_clients_mutex.unlock();
+    this->_disconnectingClients_mutex.unlock();
+}
+
+void Communicator::_acceptClients()
+{
+    int addrLen = sizeof(this->_address);
+    const SOCKET newSocket = accept(this->m_serverSocket, (struct sockaddr*)&_address, &addrLen);
+
+    if (newSocket == INVALID_SOCKET)
+    {
+        throw WSAException("Accept failed");
+    }
+
+    std::cout << "Connection accepted" << std::endl;
+
+    this->m_clients[newSocket] = new Client(
+        newSocket,
+        new LoginRequestHandler(),
+        [this, newSocket]()
+        {
+            _clientThreadFunc(newSocket);
+        }
+    );
+}
+
+void Communicator::_clientThreadFunc(const SOCKET socket)
 {
     sendMsg(socket, CMD_HELLO.c_str(), CMD_HELLO.length(), 0);
 
@@ -150,7 +177,16 @@ void Communicator::_handleClient(const SOCKET socket) const
         }
     }
 
+    _disconnectClient(socket);
+}
+
+void Communicator::_disconnectClient(const SOCKET socket)
+{
     closesocket(socket);
+
+    this->_disconnectingClients_mutex.lock();
+    this->_disconnectingClients.push_back(socket);
+    this->_disconnectingClients_mutex.unlock();
 }
 
 bool Communicator::recieveMsg(const SOCKET socket, char* buffer, const int length, const int flags) const

@@ -6,11 +6,16 @@
 #include <ws2tcpip.h>
 
 #include <string>
+#include <map>
+#include <list>
 
+#include <mutex>
 // Much (much) better than threads in modern C++, and this usecase in particular.
 #include <future>
 // It was suggested online to use this when sharing a resource.
 #include <atomic>
+
+#include "Client.h"
 
 class Communicator
 {
@@ -39,16 +44,29 @@ private:
 	*/
 	static constexpr unsigned int RECV_REFRESH_TIMEOUT = 3000;
 
-	SOCKET _serverSocket;
+	SOCKET m_serverSocket;
 	struct sockaddr_in _address;
 
 	std::atomic<bool> _running;
 	std::future<void> _serverThread;
-	std::vector<std::future<void>> _clientThreads;
 
+	std::mutex m_clients_mutex;
+	// Holding Client pointers because futures are immovable.
+	std::map<SOCKET, Client*> m_clients;
+
+	std::mutex _disconnectingClients_mutex;
+	/**
+	* A list containing all clients that need to be disconnected
+	*/
+	std::list<SOCKET> _disconnectingClients;
+
+
+	void _serverThreadFunc();
+	void _freeDisconnectedClients();
 
 	void _acceptClients();
-	void _handleClient(const SOCKET socket) const;
+	void _clientThreadFunc(const SOCKET socket);
+	void _disconnectClient(const SOCKET socket);
 
 	/**
 	* Returns true whether the message did not time out.
