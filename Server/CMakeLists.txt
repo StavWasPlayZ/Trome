@@ -33,8 +33,8 @@ if (WIN32)
   )
 else()
   target_sources(Server PRIVATE
-    "src/unix/infrastructure/LinuxCommunicator.h"
-    "src/unix/infrastructure/LinuxCommunicator.cpp"
+    "src/unix/infrastructure/UnixCommunicator.h"
+    "src/unix/infrastructure/UnixCommunicator.cpp"
   )
 endif()
 

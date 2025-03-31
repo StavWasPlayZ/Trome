@@ -2,10 +2,10 @@
 
 #include "infrastructure/CommonCommunicator.hpp"
 
-class LinuxCommunicator : public CommonCommunicator<int>
+class UnixCommunicator : public CommonCommunicator<int>
 {
 public:
-	LinuxCommunicator();
+	UnixCommunicator();
 
 protected:
 	virtual bool isValidSocket(const int result) const override;

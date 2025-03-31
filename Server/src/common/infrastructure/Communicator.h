@@ -12,12 +12,12 @@
      */
     using Communicator = WindowsCommunicator;
 #else
-    #include "unix/infrastructure/LinuxCommunicator.h"
+    #include "unix/infrastructure/UnixCommunicator.h"
 
     /**
      * The Communicator that should be used on this platform.
      * 
      * Currently set as Linux.
      */
-    using Communicator = LinuxCommunicator;
+    using Communicator = UnixCommunicator;
 #endif

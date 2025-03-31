@@ -1,4 +1,4 @@
-#include "LinuxCommunicator.h"
+#include "UnixCommunicator.h"
 
 #include "handler/LoginRequestHandler.h"
 
@@ -10,37 +10,37 @@
 #include <cstring>
 #include <errno.h>
 
-LinuxCommunicator::LinuxCommunicator() :
+UnixCommunicator::UnixCommunicator() :
     CommonCommunicator(0)
 {}
 
-bool LinuxCommunicator::isValidSocket(const int result) const
+bool UnixCommunicator::isValidSocket(const int result) const
 {
     return result != 0;
 }
 
-bool LinuxCommunicator::isValidBind(const int result) const
+bool UnixCommunicator::isValidBind(const int result) const
 {
     return result >= 0;
 }
 
-bool LinuxCommunicator::isValidListen(const int result) const
+bool UnixCommunicator::isValidListen(const int result) const
 {
     return result >= 0;
 }
 
-void LinuxCommunicator::platformClose()
+void UnixCommunicator::platformClose()
 {
     ::close(this->m_serverSocket);
     this->m_serverSocket = 0;
 }
 
-void LinuxCommunicator::closeClientSocket(const int socket)
+void UnixCommunicator::closeClientSocket(const int socket)
 {
     ::close(socket);
 }
 
-void LinuxCommunicator::acceptClients()
+void UnixCommunicator::acceptClients()
 {
     socklen_t addrLen = sizeof(this->_serverSockAddr);
     const int newSocket = accept(this->m_serverSocket, (struct sockaddr*)&_serverSockAddr, &addrLen);
@@ -60,12 +60,12 @@ void LinuxCommunicator::acceptClients()
     registerClient(newSocket);
 }
 
-void LinuxCommunicator::throwPlatformError(const std::string &msg) const
+void UnixCommunicator::throwPlatformError(const std::string &msg) const
 {
     throw std::runtime_error(msg + ": " + std::to_string(errno));
 }
 
-void LinuxCommunicator::setRecvTimeout(const unsigned int timeoutMs) const
+void UnixCommunicator::setRecvTimeout(const unsigned int timeoutMs) const
 {
     struct timeval timeoutVal;
     timeoutVal.tv_sec = timeoutMs / 1000;
@@ -82,7 +82,7 @@ void LinuxCommunicator::setRecvTimeout(const unsigned int timeoutMs) const
     return;
 }
 
-bool LinuxCommunicator::recieveMsg(const int socket, char *buffer, const int length) const
+bool UnixCommunicator::recieveMsg(const int socket, char *buffer, const int length) const
 {
     ssize_t result = recv(socket, buffer, length, 0);
 
