@@ -3,7 +3,7 @@
 // This header will define PlatformCommunicator, based on the current active platform.
 
 #ifdef _WIN32
-    #include "platform/windows/infrastructure/WindowsCommunicator.h"
+    #include "windows/infrastructure/WindowsCommunicator.h"
 
     /**
      * The Communicator that should be used on this platform.
@@ -12,7 +12,7 @@
      */
     using PlatformCommunicator = WindowsCommunicator;
 #else
-    #include "platform/unix/infrastructure/LinuxCommunicator.h"
+    #include "unix/infrastructure/LinuxCommunicator.h"
 
     /**
      * The Communicator that should be used on this platform.

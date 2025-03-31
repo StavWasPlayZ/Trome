@@ -12,14 +12,30 @@ endif()
 project ("Server")
 
 
-# Add source to this project's executable.
-add_executable (Server "src/Main.cpp" "src/infrastructure/Server.h" "src/infrastructure/Server.cpp" "src/handler/IRequestHandler.h" "src/handler/LoginRequestHandler.h" "src/infrastructure/Communicator.hpp" "src/infrastructure/Client.hpp" "src/infrastructure/PlatformCommunicator.h")
+# Common sources
+add_executable (Server
+  "src/common/Main.cpp"
+  "src/common/infrastructure/Server.h"
+  "src/common/infrastructure/Server.cpp"
+  "src/common/handler/IRequestHandler.h"
+  "src/common/handler/LoginRequestHandler.h"
+  "src/common/infrastructure/Communicator.hpp"
+  "src/common/infrastructure/Client.hpp"
+  "src/common/infrastructure/PlatformCommunicator.h"
+)
 
 # Platform-specific sources
 if (WIN32)
-  target_sources(Server PRIVATE "src/platform/windows/infrastructure/WindowsCommunicator.h" "src/platform/windows/infrastructure/WindowsCommunicator.cpp" "src/exception/WSAException.cpp")
+  target_sources(Server PRIVATE
+    "src/windows/infrastructure/WindowsCommunicator.h"
+    "src/windows/infrastructure/WindowsCommunicator.cpp"
+    "src/windows/exception/WSAException.cpp"
+  )
 else()
-  target_sources(Server PRIVATE "src/platform/unix/infrastructure/LinuxCommunicator.h" "src/platform/unix/infrastructure/LinuxCommunicator.cpp")
+  target_sources(Server PRIVATE
+    "src/unix/infrastructure/LinuxCommunicator.h"
+    "src/unix/infrastructure/LinuxCommunicator.cpp"
+  )
 endif()
 
 
@@ -29,3 +45,4 @@ endif()
 
 # Support inclues starting from relative paths
 target_include_directories(Server PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
+target_include_directories(Server PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/common)
