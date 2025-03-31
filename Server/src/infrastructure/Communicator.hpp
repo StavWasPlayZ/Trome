@@ -182,10 +182,10 @@ private:
 			}
 		}
 	
-		_disconnectClient(socket);
+		_enqueueDisconnectClient(socket);
 	}
 
-	void _disconnectClient(const T socket)
+	void _enqueueDisconnectClient(const T socket)
 	{	
 		this->_disconnectingClients_mutex.lock();
 		this->_disconnectingClients.push_back(socket);
