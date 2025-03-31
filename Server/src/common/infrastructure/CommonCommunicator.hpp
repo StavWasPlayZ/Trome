@@ -308,7 +308,7 @@ private:
 
 	void _enqueueDisconnectClient(const T socket)
 	{	
-		std::cout << "Port " << std::to_string(socket) << " disconected" << std::endl;
+		std::cout << "Socket " << std::to_string(socket) << " disconected" << std::endl;
 
 		this->_disconnectingClients_mutex.lock();
 		this->_disconnectingClients.push_back(socket);
