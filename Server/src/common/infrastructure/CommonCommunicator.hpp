@@ -247,24 +247,27 @@ private:
 	void _clientThreadFunc(const T socket)
 	{
 		sendMsg(socket, CMD_HELLO.c_str(), CMD_HELLO.length());
-	
-		while (this->_running)
-		{
-			char buffer[6];
-			if (!recieveMsg(socket, buffer, sizeof(buffer)))
+		
+		try {
+			while (this->_running)
 			{
-				// If we timed out (see RECV_REFRESH_TIMEOUT),
-				// simply wait for the next recv cycle (if applicable).
-				continue;
-			}
-	
-			buffer[5] = 0;
-	
-			if (buffer == CMD_HELLO)
-			{
-				sendMsg(socket, CMD_HELLO.c_str(), CMD_HELLO.length());
+				char buffer[6];
+				if (!recieveMsg(socket, buffer, sizeof(buffer)))
+				{
+					// If we timed out (see RECV_REFRESH_TIMEOUT),
+					// simply wait for the next recv cycle (if applicable).
+					continue;
+				}
+
+				buffer[5] = 0;
+
+				if (buffer == CMD_HELLO)
+				{
+					sendMsg(socket, CMD_HELLO.c_str(), CMD_HELLO.length());
+				}
 			}
 		}
+		catch (...) { std::cout << "Port: " << std::to_string(socket) << " disconected" << std::endl; }
 	
 		_enqueueDisconnectClient(socket);
 	}
