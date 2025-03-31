@@ -68,7 +68,6 @@ void Server::run()
     // Accept incoming connections
     _acceptClients();
 
-    std::cout << "Connection accepted" << std::endl;
     close();
 }
 
@@ -76,13 +75,17 @@ void Server::_acceptClients() const
 {
     int addrLen = sizeof(this->_address);
 
-    //while (true)
+    while (true)
     {
-        SOCKET new_socket;
+        SOCKET newSocket;
 
-        if ((new_socket = accept(this->_serverSocket, (struct sockaddr*)&_address, &addrLen)) == INVALID_SOCKET)
+        if ((newSocket = accept(this->_serverSocket, (struct sockaddr*)&_address, &addrLen)) == INVALID_SOCKET)
         {
             throw WSAException("Accept failed");
         }
+
+        std::cout << "Connection accepted" << std::endl;
+
+        closesocket(newSocket);
     }
 }
