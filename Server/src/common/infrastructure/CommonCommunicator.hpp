@@ -246,9 +246,9 @@ private:
 	//ANCHOR This is where we actually process the client sockets.
 	void _clientThreadFunc(const T socket)
 	{
-		sendMsg(socket, CMD_HELLO.c_str(), CMD_HELLO.length());
-		
+
 		try {
+			sendMsg(socket, CMD_HELLO.c_str(), CMD_HELLO.length());
 			while (this->_running)
 			{
 				char buffer[6];
