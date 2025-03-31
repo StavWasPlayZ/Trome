@@ -4,36 +4,70 @@
 
 #include <iostream>
 
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <unistd.h>
+#include <cstring>
+#include <errno.h>
+
 LinuxCommunicator::LinuxCommunicator() :
-    m_serverSocket(0)
+    Communicator(0)
 {}
 
-std::future<void> &LinuxCommunicator::bindAndListen()
+bool LinuxCommunicator::isValidSocket(const int result) const
 {
-    return startServerThread();
+    return result != 0;
+}
+
+bool LinuxCommunicator::isValidBind(const int result) const
+{
+    return result >= 0;
+}
+
+bool LinuxCommunicator::isValidListen(const int result) const
+{
+    return result >= 0;
 }
 
 void LinuxCommunicator::platformClose()
 {
-    
-}
-
-void LinuxCommunicator::acceptClients()
-{
-    
+    ::close(this->m_serverSocket);
+    this->m_serverSocket = 0;
 }
 
 void LinuxCommunicator::closeClientSocket(const int socket)
 {
-    
+    ::close(socket);
+}
+
+void LinuxCommunicator::acceptClients()
+{
+    socklen_t addrLen = sizeof(this->_serverSockAddr);
+    const int newSocket = accept(this->m_serverSocket, (struct sockaddr*)&_serverSockAddr, &addrLen);
+
+    if (newSocket < 0)
+    {
+        throwPlatformError("Accept failed");
+        return;
+    }
+
+    registerClient(newSocket);
 }
 
 bool LinuxCommunicator::recieveMsg(const int socket, char* buffer, const int length) const
 {
-    return true;
-}
+    ssize_t result = recv(socket, buffer, length, 0);
 
-void LinuxCommunicator::sendMsg(const int socket, const char* buffer, const int length) const
-{
-    
+    if (result == -1)
+    {
+        // Supposedly, this is timeout.
+        if (errno == EAGAIN || errno == EWOULDBLOCK)
+        {
+            return false;
+        }
+
+        throw std::runtime_error("Error occured while handling client socket " + std::to_string(socket));
+    }
+
+    return true;
 }

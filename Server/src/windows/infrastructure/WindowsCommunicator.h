@@ -21,15 +21,14 @@ public:
 	virtual std::future<void>& bindAndListen() override;
 
 protected:
+	virtual bool isValidSocket(const SOCKET result) const override;
+	virtual bool isValidBind(const SOCKET result) const override;
+	virtual bool isValidListen(const SOCKET result) const override;
+
 	virtual void acceptClients() override;
 
-	virtual bool recieveMsg(const SOCKET socket, char* buffer, const int length) const;
-	virtual void sendMsg(const SOCKET socket, const char* buffer, const int length) const;
+	virtual bool recieveMsg(const SOCKET socket, char* buffer, const int length) const override;
 
 	virtual void platformClose() override;
 	virtual void closeClientSocket(const SOCKET socket) override;
-
-private:
-	SOCKET m_serverSocket;
-	struct sockaddr_in _address;
 };

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <stdexcept>
 
 #include <string>
 #include <map>
@@ -16,6 +17,15 @@
 
 #include "handler/LoginRequestHandler.h"
 
+// For commonSetup and alike
+#ifdef _WIN32
+	#include <winsock2.h>
+#else
+	#include <sys/socket.h>
+	#include <netinet/in.h>
+#endif
+
+
 /**
  * T - The platform socket type
  */
@@ -23,13 +33,17 @@ template <typename T>
 class Communicator
 {
 public:
-	Communicator() :
+	Communicator(const T defaultSocket) :
+		m_serverSocket(defaultSocket),
+		_serverSockAddr({ 0 }),
 		_running(false)
 	{}
+
 	virtual ~Communicator()
 	{
 		close();
 	}
+
 
 	bool isRunning() const
 	{
@@ -42,7 +56,11 @@ public:
 	* Returns: The future handling the client sockets.
 	* Completes when server closes.
 	*/
-	virtual std::future<void>& bindAndListen() = 0;
+	virtual std::future<void>& bindAndListen()
+	{
+		commonSetup();
+		return startServerThread();
+	}
 
 	void close()
 	{
@@ -60,8 +78,10 @@ public:
 		}
 		this->m_clients_mutex.unlock();
 
+		
 		platformClose();
 
+		this->_serverSockAddr = { 0 };
 		this->_serverThread = std::future<void>();
 	}
 
@@ -78,9 +98,72 @@ protected:
 	std::atomic<bool> _running;
 	std::future<void> _serverThread;
 
+	struct sockaddr_in _serverSockAddr;
+
+
 	std::mutex m_clients_mutex;
 	// Holding Client pointers because futures are immovable.
 	std::map<T, Client<T>*> m_clients;
+
+
+	void commonSetup()
+	{
+		this->m_serverSocket = socket(AF_INET, SOCK_STREAM, 0);
+		if (!isValidSocket(this->m_serverSocket))
+		{
+			close();
+			throwPlatformError("Socket creation failed");
+			return;
+		}
+	
+		// The timeout for the recv method
+		// Set in place to allow refreshing the value of _running.
+		setsockopt(this->m_serverSocket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&RECV_REFRESH_TIMEOUT, sizeof(RECV_REFRESH_TIMEOUT));
+	
+		// Set server address information
+		this->_serverSockAddr.sin_family = AF_INET;
+		this->_serverSockAddr.sin_addr.s_addr = INADDR_ANY;
+		this->_serverSockAddr.sin_port = htons(PORT);
+	
+		if (!isValidBind(
+			bind(this->m_serverSocket, (struct sockaddr*)&this->_serverSockAddr, sizeof(this->_serverSockAddr))
+		)) {
+			close();
+			throwPlatformError("Binding failed");
+			return;
+		}
+	
+		this->_running = true;
+	
+		// Start listening for connections
+		if (!isValidListen(listen(this->m_serverSocket, 3)))
+		{
+			close();
+			throwPlatformError("Listen failed");
+			return;
+		}
+	}
+
+	virtual bool isValidSocket(const T result) const = 0;
+	virtual bool isValidBind(const T result) const = 0;
+	virtual bool isValidListen(const T result) const = 0;
+
+
+	virtual void acceptClients() = 0;
+
+	void registerClient(const T socket)
+	{
+		this->m_clients[socket] = new Client<T>(
+			socket,
+			new LoginRequestHandler(),
+			[this, socket]()
+			{
+				_clientThreadFunc(socket);
+			}
+		);
+
+		std::cout << "Connection accepted from " + std::to_string(socket) << std::endl;
+	}
 
 
 	/**
@@ -102,31 +185,29 @@ protected:
 		return this->_serverThread;
 	}
 
-	void registerClient(const T socket)
-	{
-		this->m_clients[socket] = new Client<T>(
-			socket,
-			new LoginRequestHandler(),
-			[this, socket]()
-			{
-				_clientThreadFunc(socket);
-			}
-		);
-
-		std::cout << "Connection accepted from " + std::to_string(socket) << std::endl;
-	}
-
-
-	virtual void acceptClients() = 0;
 
 	/**
 	* Returns true whether the message did not time out.
 	*/
 	virtual bool recieveMsg(const T socket, char* buffer, const int length) const = 0;
-	virtual void sendMsg(const T socket, const char* buffer, const int length) const = 0;
+	void sendMsg(const T socket, const char* buffer, const int length) const
+	{
+		if (send(socket, buffer, length, 0) == -1)
+		{
+			throwPlatformError("Failed to send message to client socket " + std::to_string(socket));
+		}
+	}
+	
 
 	virtual void platformClose() = 0;
 	virtual void closeClientSocket(const T socket) = 0;
+
+	virtual void throwPlatformError(const std::string& msg) const
+	{
+		throw std::runtime_error(msg);
+	}
+
+	T m_serverSocket;
 
 private:
 	std::mutex _disconnectingClients_mutex;
