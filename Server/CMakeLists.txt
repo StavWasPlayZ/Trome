@@ -11,8 +11,18 @@ endif()
 
 project ("Server")
 
+
 # Add source to this project's executable.
-add_executable (Server "src/Main.cpp" "src/infrastructure/Server.h" "src/infrastructure/Server.cpp" "src/exception/WSAException.cpp" "src/handler/IRequestHandler.h" "src/handler/LoginRequestHandler.h" "src/infrastructure/Communicator.hpp" "src/infrastructure/Client.hpp" "src/platform/windows/infrastructure/WindowsCommunicator.h" "src/platform/windows/infrastructure/WindowsCommunicator.cpp")
+add_executable (Server "src/Main.cpp" "src/infrastructure/Server.h" "src/infrastructure/Server.cpp" "src/exception/WSAException.cpp" "src/handler/IRequestHandler.h" "src/handler/LoginRequestHandler.h" "src/infrastructure/Communicator.hpp" "src/infrastructure/Client.hpp")
+
+# Platform-specific sources
+if (WIN32)
+  target_sources(Server PRIVATE "src/platform/windows/infrastructure/WindowsCommunicator.h" "src/platform/windows/infrastructure/WindowsCommunicator.cpp")
+else()
+  #TODO: Linux
+  # add_executable(Server )
+endif()
+
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET Server PROPERTY CXX_STANDARD 20)
