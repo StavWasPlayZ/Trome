@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include <thread>
-#include "Server.h"
+#include "infrastructure/Server.h"
 
 const std::string CMD_EXIT = "EXIT";
 

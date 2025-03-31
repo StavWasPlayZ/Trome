@@ -1,6 +1,6 @@
 ﻿#include "Server.h"
 
-#include "exception/WSAException.h"
+#include "../exception/WSAException.h"
 
 #include <iostream>
 
