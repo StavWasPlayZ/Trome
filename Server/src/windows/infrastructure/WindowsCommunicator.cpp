@@ -16,7 +16,7 @@ std::future<void> &WindowsCommunicator::bindAndListen()
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
     {
         throwPlatformError("WSAStartup failed");
-        return;
+        throw std::exception();
     }
 
     return CommonCommunicator::bindAndListen();
@@ -40,12 +40,14 @@ bool WindowsCommunicator::isValidListen(const SOCKET result) const
 void WindowsCommunicator::acceptClients()
 {
     int addrLen = sizeof(this->_serverSockAddr);
+    //NOTE: When closing with closesocket in Windows, this immediately terminates the accept operation.
+    // It is not the same under Unix.
     const SOCKET newSocket = accept(this->m_serverSocket, (struct sockaddr*)&_serverSockAddr, &addrLen);
 
     if (newSocket == INVALID_SOCKET)
     {
         throwPlatformError("Accept failed");
-        return;
+        throw std::exception();
     }
 
     registerClient(newSocket);

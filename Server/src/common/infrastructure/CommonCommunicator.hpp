@@ -113,7 +113,7 @@ protected:
 		{
 			close();
 			throwPlatformError("Socket creation failed");
-			return;
+			throw std::exception();
 		}
 	
 		// The timeout for the recv method
@@ -130,7 +130,7 @@ protected:
 		)) {
 			close();
 			throwPlatformError("Binding failed");
-			return;
+			throw std::exception();
 		}
 	
 		this->_running = true;
@@ -140,7 +140,7 @@ protected:
 		{
 			close();
 			throwPlatformError("Listen failed");
-			return;
+			throw std::exception();
 		}
 	}
 

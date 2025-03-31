@@ -31,30 +31,42 @@ bool UnixCommunicator::isValidListen(const int result) const
 
 void UnixCommunicator::platformClose()
 {
-    ::close(this->m_serverSocket);
+    if (this->m_serverSocket != 0)
+    {
+        ::close(this->m_serverSocket);
+    }
+
     this->m_serverSocket = 0;
 }
 
 void UnixCommunicator::closeClientSocket(const int socket)
 {
+    if (socket == 0)
+    {
+        return;
+    }
+
     ::close(socket);
 }
 
 void UnixCommunicator::acceptClients()
 {
     socklen_t addrLen = sizeof(this->_serverSockAddr);
+    //NOTE: When closing with closesocket in Windows, this immediately terminates the accept operation.
+    // It is not the same under Unix.
     const int newSocket = accept(this->m_serverSocket, (struct sockaddr*)&_serverSockAddr, &addrLen);
 
     if (newSocket < 0)
     {
-        // Ignore timeouts
+        // Additionally, the timeouts applied to the recv method also apply to the accept above.
+        // Thus, we'll simply ignore all timeout failures.
         if (errno == EAGAIN || errno == EWOULDBLOCK)
         {
             return;
         }
 
         throwPlatformError("Accept failed");
-        return;
+        throw std::exception();
     }
 
     registerClient(newSocket);

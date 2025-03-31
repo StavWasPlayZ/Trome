@@ -32,4 +32,6 @@ protected:
 
 	virtual void platformClose() override;
 	virtual void closeClientSocket(const SOCKET socket) override;
+
+	void throwPlatformError(const std::string &msg) const override;
 };
