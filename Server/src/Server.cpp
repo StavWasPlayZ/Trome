@@ -1,7 +1,8 @@
 ﻿#include "Server.h"
 
+#include "exception/WSAException.h"
+
 #include <iostream>
-#include <exception>
 
 #pragma comment(lib, "ws2_32.lib")
 
@@ -36,14 +37,14 @@ void Server::run()
     WSADATA wsaData;
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
     {
-        throw std::exception("WSAStartup failed");
+        throw WSAException("WSAStartup failed");
     }
 
     // Create socket file descriptor
     if ((this->_serverSocket = socket(AF_INET, SOCK_STREAM, 0)) == INVALID_SOCKET)
     {
         close();
-        throw std::exception("Socket creation failed");
+        throw WSAException("Socket creation failed");
     }
 
     // Bind the socket to the port
@@ -54,14 +55,14 @@ void Server::run()
     if (bind(this->_serverSocket, (struct sockaddr*)&_address, sizeof(_address)) == SOCKET_ERROR)
 {
         close();
-        throw std::exception("Bind failed");
+        throw WSAException("Bind failed");
     }
 
     // Start listening for connections
     if (listen(this->_serverSocket, 3) == SOCKET_ERROR)
 {
         close();
-        throw std::exception("Listen failed");
+        throw WSAException("Listen failed");
     }
 
     std::cout << "Listening on port " << PORT << "..." << std::endl;
@@ -83,9 +84,7 @@ void Server::_acceptClients() const
 
         if ((new_socket = accept(this->_serverSocket, (struct sockaddr*)&_address, &addrLen)) == INVALID_SOCKET)
         {
-            throw std::exception("Accept failed");
-            closesocket(this->_serverSocket);
-            WSACleanup();
+            throw WSAException("Accept failed");
         }
     }
 }
