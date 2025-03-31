@@ -228,6 +228,9 @@ private:
 	*/
 	std::list<T> _disconnectingClients;
 
+	std::condition_variable _disconectedClientConditionalVariable;
+	std::mutex _disconectedClient_mutex;
+
 	//SECTION Thread Functions
 
 	void _serverThreadFunc()
@@ -268,10 +271,10 @@ private:
 
 	void _clientCleanerThreadFunc()
 	{
+		std::unique_lock<std::mutex> lock(this->_disconectedClient_mutex);
 		while (this->_running)
 		{
-			//TODO: Add that mutex where you tell it to be unlocked in some other thread and then
-			// this thread is like "woah i need to wake up" kind of mutex
+			this->_disconectedClientConditionalVariable.wait(lock); // waits for _enqueueDisconnectClient to be called
 			_freeDisconnectedClients();
 		}
 	}
@@ -283,6 +286,7 @@ private:
 		this->_disconnectingClients_mutex.lock();
 		this->_disconnectingClients.push_back(socket);
 		this->_disconnectingClients_mutex.unlock();
+		this->_disconectedClientConditionalVariable.notify_one();
 	}
 
 	void _freeDisconnectedClients()
