@@ -129,34 +129,52 @@ void Server::_acceptClients()
 
 void Server::_handleClient(const SOCKET socket) const
 {
+    sendMsg(socket, CMD_HELLO.c_str(), CMD_HELLO.length(), 0);
+
     while (this->_running)
     {
         char buffer[6];
-        int result = recv(socket, buffer, sizeof(buffer), 0);
-
-        if (result == SOCKET_ERROR)
+        if (!recieveMsg(socket, buffer, sizeof(buffer), 0))
         {
-            if (WSAGetLastError() == WSAETIMEDOUT)
-            {
-                // If we timed out (see RECV_REFRESH_TIMEOUT),
-                // simply wait for the next recv cycle (if applicable).
-                continue;
-            }
-
-            throw WSAException("Error occured while handling client socket " + std::to_string(socket));
+            // If we timed out (see RECV_REFRESH_TIMEOUT),
+            // simply wait for the next recv cycle (if applicable).
+            continue;
         }
 
         buffer[5] = 0;
 
         if (buffer == CMD_HELLO)
         {
-            int sent = send(socket, CMD_HELLO.c_str(), CMD_HELLO.length(), 0);
-            if (sent == -1)
-            {
-                throw WSAException("Failed to send message to client socket " + std::to_string(socket));
-            }
+            sendMsg(socket, CMD_HELLO.c_str(), CMD_HELLO.length(), 0);
         }
     }
 
     closesocket(socket);
+}
+
+bool Server::recieveMsg(const SOCKET socket, char* buffer, const int length, const int flags) const
+{
+    int result = recv(socket, buffer, length, flags);
+
+    if (result == SOCKET_ERROR)
+    {
+        if (WSAGetLastError() == WSAETIMEDOUT)
+        {
+            return false;
+        }
+
+        throw WSAException("Error occured while handling client socket " + std::to_string(socket));
+    }
+
+    return true;
+}
+
+void Server::sendMsg(const SOCKET socket, const char* buffer, const int length, const int flags) const
+{
+    int sent = send(socket, buffer, length, flags);
+
+    if (sent == -1)
+    {
+        throw WSAException("Failed to send message to client socket " + std::to_string(socket));
+    }
 }

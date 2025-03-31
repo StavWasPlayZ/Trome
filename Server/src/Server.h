@@ -49,4 +49,10 @@ private:
 
 	void _acceptClients();
 	void _handleClient(const SOCKET socket) const;
+
+	/**
+	* Returns true whether the message did not time out.
+	*/
+	bool recieveMsg(const SOCKET socket, char* buffer, const int length, const int flags) const;
+	void sendMsg(const SOCKET socket, const char* buffer, const int length, const int flags) const;
 };
