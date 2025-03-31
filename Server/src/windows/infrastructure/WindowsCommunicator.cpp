@@ -73,7 +73,18 @@ void WindowsCommunicator::throwPlatformError(const std::string &msg) const
     throw WSAException(msg);
 }
 
-bool WindowsCommunicator::recieveMsg(const SOCKET socket, char* buffer, const int length) const
+void WindowsCommunicator::setRecvTimeout(const unsigned int timeoutMs) const
+{
+    setsockopt(
+        this->m_serverSocket,
+        SOL_SOCKET,
+        SO_RCVTIMEO,
+        (const char*)&RECV_REFRESH_TIMEOUT_MS,
+        sizeof(RECV_REFRESH_TIMEOUT_MS)
+    );
+}
+
+bool WindowsCommunicator::recieveMsg(const SOCKET socket, char *buffer, const int length) const
 {
     int result = recv(socket, buffer, length, 0);
 

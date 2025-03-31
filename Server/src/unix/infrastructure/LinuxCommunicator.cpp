@@ -54,7 +54,24 @@ void LinuxCommunicator::acceptClients()
     registerClient(newSocket);
 }
 
-bool LinuxCommunicator::recieveMsg(const int socket, char* buffer, const int length) const
+void LinuxCommunicator::setRecvTimeout(const unsigned int timeoutMs) const
+{
+    struct timeval timeoutVal;
+    timeoutVal.tv_sec = timeoutMs / 1000;
+    timeoutVal.tv_usec = (timeoutMs % 1000) * 1000;
+
+    setsockopt(
+        this->m_serverSocket,
+        SOL_SOCKET,
+        SO_RCVTIMEO,
+        &timeoutVal,
+        sizeof(timeoutVal)
+    );
+
+    return;
+}
+
+bool LinuxCommunicator::recieveMsg(const int socket, char *buffer, const int length) const
 {
     ssize_t result = recv(socket, buffer, length, 0);
 

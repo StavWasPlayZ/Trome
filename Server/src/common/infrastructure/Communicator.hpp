@@ -93,7 +93,7 @@ protected:
 	* The timeout for the recv method.
 	* Set in place to allow refreshing the value of _running.
 	*/
-	static constexpr unsigned int RECV_REFRESH_TIMEOUT = 3000;
+	static constexpr unsigned int RECV_REFRESH_TIMEOUT_MS = 3000;
 
 	std::atomic<bool> _running;
 	std::future<void> _serverThread;
@@ -118,7 +118,7 @@ protected:
 	
 		// The timeout for the recv method
 		// Set in place to allow refreshing the value of _running.
-		setsockopt(this->m_serverSocket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&RECV_REFRESH_TIMEOUT, sizeof(RECV_REFRESH_TIMEOUT));
+		setRecvTimeout(RECV_REFRESH_TIMEOUT_MS);
 	
 		// Set server address information
 		this->_serverSockAddr.sin_family = AF_INET;
@@ -147,6 +147,8 @@ protected:
 	virtual bool isValidSocket(const T result) const = 0;
 	virtual bool isValidBind(const T result) const = 0;
 	virtual bool isValidListen(const T result) const = 0;
+
+	virtual void setRecvTimeout(const unsigned int timeoutMs) const = 0;
 
 
 	virtual void acceptClients() = 0;

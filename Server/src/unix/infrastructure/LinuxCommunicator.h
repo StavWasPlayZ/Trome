@@ -12,6 +12,7 @@ protected:
 	virtual bool isValidBind(const int result) const override;
 	virtual bool isValidListen(const int result) const override;
 
+	virtual void setRecvTimeout(const unsigned int timeoutMs) const override;
 	virtual bool recieveMsg(const int socket, char* buffer, const int length) const override;
 
 	virtual void platformClose() override;

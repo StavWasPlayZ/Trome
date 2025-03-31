@@ -27,6 +27,7 @@ protected:
 
 	virtual void acceptClients() override;
 
+	virtual void setRecvTimeout(const unsigned int timeoutMs) const override;
 	virtual bool recieveMsg(const SOCKET socket, char* buffer, const int length) const override;
 
 	virtual void platformClose() override;
