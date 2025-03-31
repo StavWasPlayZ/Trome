@@ -4,5 +4,5 @@
 
 int main()
 {
-	Server().run();
+	Server().run().wait();
 }
