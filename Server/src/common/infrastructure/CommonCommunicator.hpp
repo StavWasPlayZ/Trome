@@ -31,7 +31,7 @@
 
 
 /**
- * T - The platform socket type
+ * T - The platform socket address type
  */
 template <typename T>
 class CommonCommunicator
@@ -110,9 +110,16 @@ protected:
 
 	std::mutex m_clients_mutex;
 	// Holding Client pointers because futures are immovable.
+	/**
+	* Contains all active clients.
+	* 
+	* Maps their socket address to their Client instantiation.
+	*/
 	std::map<T, Client<T>*> m_clients;
 
-
+	/**
+	 * The binding & listening process code common to all OSs
+	 */
 	void commonSetup()
 	{
 		this->m_serverSocket = socket(AF_INET, SOCK_STREAM, 0);
@@ -160,6 +167,11 @@ protected:
 
 	virtual void acceptClients() = 0;
 
+	/**
+	 * Registers the provided socket as a client to the internal m_clients map.
+	 * 
+	 * The client is initiated with the LoginRequestHandler state.
+	 */
 	void registerClient(const T socket)
 	{
 		this->m_clients[socket] = new Client<T>(
@@ -214,13 +226,20 @@ protected:
 		if (send(socket, buffer, length, 0) == -1)
 		{
 			throwPlatformError("Failed to send message to client socket " + std::to_string(socket));
+			throw std::exception();
 		}
 	}
 	
 
+	/**
+	 * Platform-specific method for closing the server communication.
+	 */
 	virtual void platformClose() = 0;
 	virtual void closeClientSocket(const T socket) = 0;
 
+	/**
+	 * Throws an exception with respect to the platform's preferred error type.
+	 */
 	virtual void throwPlatformError(const std::string& msg) const
 	{
 		throw std::runtime_error(msg);
@@ -295,6 +314,7 @@ private:
 	void _clientCleanerThreadFunc()
 	{
 		std::unique_lock<std::mutex> lock(this->_disconectedClient_mutex);
+		
 		while (this->_running)
 		{
 			// waits for _enqueueDisconnectClient to be called
