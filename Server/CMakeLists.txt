@@ -45,6 +45,19 @@ if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET Server PROPERTY CXX_STANDARD 20)
 endif()
 
+
+# Libraries
+
+# find_package(nlohmann_json CONFIG REQUIRED)
+# target_link_libraries(main PRIVATE nlohmann_json::nlohmann_json)
+include(FetchContent)
+
+FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz)
+FetchContent_MakeAvailable(json)
+
+target_link_libraries(Server PRIVATE nlohmann_json::nlohmann_json)
+
+
 # Support includes starting from relative paths
 target_include_directories(Server PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_include_directories(Server PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/common)
