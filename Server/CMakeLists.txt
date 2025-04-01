@@ -24,7 +24,7 @@ add_executable (Server
   "src/common/infrastructure/Communicator.h"
   "src/common/exception/ForcedDisconnectionException.h"
   "src/common/exception/ForcedDisconnectionException.cpp"
-)
+ "src/common/infrastructure/Responses.h")
 
 # Platform-specific sources
 if (WIN32)
