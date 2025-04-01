@@ -2,17 +2,17 @@
 
 #include <iostream>
 
-typedef struct LoginRespone
+typedef struct LoginResponse
 {
 	unsigned int status;
-} LoginRespone;
+} LoginResponse;
 
-typedef struct SignupRespone
+typedef struct SignupResponse
 {
 	unsigned int status;
-} SignupRespone;
+} SignupResponse;
 
 typedef struct ErrorRespone
 {
 	std::string message;
-} ErrorRespone;
+} ErrorResponse;
