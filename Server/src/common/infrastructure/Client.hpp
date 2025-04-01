@@ -4,8 +4,6 @@
 #include <future>
 #include <functional>
 
-#include <nlohmann/json.hpp>
-
 /**
  * A client in the Trivia server.
  * Holds technical information about the connection between this server and the client.
