@@ -14,7 +14,7 @@ public:
 		Note: this function makes a new unsigned char*
 		after using the buffer delete it
 	*/
-	static unsigned char* serializeLoginResponse(const LoginResponse& response)
+	static unsigned char* serializeResponse(const LoginResponse& response)
 	{
 		json j = { {STATUS_KEY, response.status} };
 		std::string str = j.dump();
@@ -34,7 +34,7 @@ public:
 		Note: this function makes a new unsigned char*
 		after using the buffer delete it
 	*/
-	static unsigned char* serializeSignupResponse(const SignupResponse& response)
+	static unsigned char* serializeResponse(const SignupResponse& response)
 	{
 		json j = { {STATUS_KEY, response.status} };
 		std::string str = j.dump();
@@ -54,7 +54,7 @@ public:
 		Note: this function makes a new unsigned char*
 		after using the buffer delete it
 	*/
-	static unsigned char* serializeErrorResponse(const ErrorResponse& response)
+	static unsigned char* serializeResponse(const ErrorResponse & response)
 	{
 		json j = { {MESSAGE_KEY, response.message} };
 		std::string str = j.dump();
