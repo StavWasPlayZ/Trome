@@ -47,11 +47,9 @@ endif()
 
 
 # Libraries
-
-# find_package(nlohmann_json CONFIG REQUIRED)
-# target_link_libraries(main PRIVATE nlohmann_json::nlohmann_json)
 include(FetchContent)
 
+#nlohmann_json
 FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz)
 FetchContent_MakeAvailable(json)
 
