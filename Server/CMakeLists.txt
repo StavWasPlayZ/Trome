@@ -24,6 +24,12 @@ add_executable (Server
   "src/common/infrastructure/Communicator.h"
   "src/common/exception/ForcedDisconnectionException.h"
   "src/common/exception/ForcedDisconnectionException.cpp"
+  "src/common/Constants.h"
+  "src/common/Constants.cpp"
+
+  "src/common/infrastructure/codec/Response.h"
+  "src/common/infrastructure/codec/JsonResponsePacketSerializer.h"
+  "src/common/infrastructure/codec/JsonResponsePacketSerializer.cpp"
 )
 
 # Platform-specific sources
