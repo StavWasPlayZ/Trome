@@ -2,15 +2,19 @@
 
 #include <iostream>
 
-// protocol codes
-const unsigned int LOGIN_CODE = 1;
-const unsigned int SIGNUP_CODE = 2;
-const unsigned int ERROR_CODE = 400;
+enum class ProtocolCode : unsigned int
+{
+    LOGIN = 1,
+    SIGNUP = 2,
+    ERROR = 400,
+};
 
-// json keys
-const std::string STATUS_KEY = "status";
-const std::string MESSAGE_KEY = "message";
+struct ProtocolJsonKeys
+{
+    static const std::string STATUS;
+    static const std::string MESSAGE;
+};
 
 // sizes
-const unsigned int CODE_SIZE = sizeof(unsigned char);
-const unsigned int JSON_LEN_SIZE = 4 * sizeof(unsigned char);
+constexpr unsigned int SIZE_CODE = sizeof(unsigned char);
+constexpr unsigned int SIZE_JSON_LEN = 4 * sizeof(unsigned char);
