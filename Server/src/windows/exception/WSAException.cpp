@@ -12,6 +12,3 @@ const char* WSAException::what() const noexcept
 {
 	return this->_message.c_str();
 }
-
-
-
