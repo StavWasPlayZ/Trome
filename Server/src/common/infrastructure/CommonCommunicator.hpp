@@ -3,6 +3,8 @@
 #include <iostream>
 #include <stdexcept>
 
+#include "exception/ForcedDisconnectionException.h"
+
 #include <string>
 #include <map>
 #include <list>
@@ -10,6 +12,8 @@
 #include <mutex>
 // Much (much) better than threads in modern C++, and this usecase in particular.
 #include <future>
+// But this is also necessary for client cleaning thread.
+#include <thread>
 // It was suggested online to use this when sharing a resource.
 #include <atomic>
 
@@ -27,7 +31,7 @@
 
 
 /**
- * T - The platform socket type
+ * T - The platform socket address type
  */
 template <typename T>
 class CommonCommunicator
@@ -59,7 +63,7 @@ public:
 	virtual std::future<void>& bindAndListen()
 	{
 		commonSetup();
-		return startServerThread();
+		return startServerThreads();
 	}
 
 	void close()
@@ -69,6 +73,9 @@ public:
 	
 		// Notify all threads that the server is closing
 		this->_running = false;
+
+		// Release the client cleaner thread
+		this->_disconectedClientConditionalVariable.notify_all();
 	
 		// Wait for 'em to close
 		this->m_clients_mutex.lock();
@@ -103,9 +110,16 @@ protected:
 
 	std::mutex m_clients_mutex;
 	// Holding Client pointers because futures are immovable.
+	/**
+	* Contains all active clients.
+	* 
+	* Maps their socket address to their Client instantiation.
+	*/
 	std::map<T, Client<T>*> m_clients;
 
-
+	/**
+	 * The binding & listening process code common to all OSs
+	 */
 	void commonSetup()
 	{
 		this->m_serverSocket = socket(AF_INET, SOCK_STREAM, 0);
@@ -153,6 +167,11 @@ protected:
 
 	virtual void acceptClients() = 0;
 
+	/**
+	 * Registers the provided socket as a client to the internal m_clients map.
+	 * 
+	 * The client is initiated with the LoginRequestHandler state.
+	 */
 	void registerClient(const T socket)
 	{
 		this->m_clients[socket] = new Client<T>(
@@ -172,7 +191,7 @@ protected:
 	* Returns: The future handling the client sockets.
 	* Completes when server closes.
 	*/
-	std::future<void>& startServerThread()
+	std::future<void>& startServerThreads()
 	{
 		this->_serverThread = std::async(
 			std::launch::async,
@@ -182,28 +201,45 @@ protected:
 			}
 		);
 
+		// Also start client cleaner thread
+		std::thread(
+			[this]()
+			{
+				_clientCleanerThreadFunc();
+			}
+		).detach();
+
 		std::cout << "Listening on port " << PORT << "..." << std::endl;
 
 		return this->_serverThread;
 	}
 
 
+	//TODO: Make return type not only tell timeout, but also disconnection.
 	/**
 	* Returns true whether the message did not time out.
 	*/
 	virtual bool recieveMsg(const T socket, char* buffer, const int length) const = 0;
+
 	void sendMsg(const T socket, const char* buffer, const int length) const
 	{
 		if (send(socket, buffer, length, 0) == -1)
 		{
 			throwPlatformError("Failed to send message to client socket " + std::to_string(socket));
+			throw std::exception();
 		}
 	}
 	
 
+	/**
+	 * Platform-specific method for closing the server communication.
+	 */
 	virtual void platformClose() = 0;
 	virtual void closeClientSocket(const T socket) = 0;
 
+	/**
+	 * Throws an exception with respect to the platform's preferred error type.
+	 */
 	virtual void throwPlatformError(const std::string& msg) const
 	{
 		throw std::runtime_error(msg);
@@ -218,16 +254,87 @@ private:
 	*/
 	std::list<T> _disconnectingClients;
 
+	std::condition_variable _disconectedClientConditionalVariable;
+	std::mutex _disconectedClient_mutex;
+
+	//SECTION Thread Functions
+
 	void _serverThreadFunc()
 	{
 		while (this->_running)
 		{
 			acceptClients();
-			//TODO: Move to different thread with event mutex thing
-			_freeDisconnectedClients();
 		}
 	
 		close();
+	}
+
+	//ANCHOR This is where we actually process the client sockets.
+	void _clientThreadFunc(const T socket)
+	{
+		sendMsg(socket, CMD_HELLO.c_str(), CMD_HELLO.length());
+
+		while (this->_running)
+		{
+			try
+			{
+				char buffer[6];
+	
+				try
+				{
+					if (!recieveMsg(socket, buffer, sizeof(buffer)))
+					{
+						// If we timed out (see RECV_REFRESH_TIMEOUT),
+						// simply wait for the next recv cycle (if applicable).
+						continue;
+					}
+				}
+				catch (const ForcedDisconnectionException& e)
+				{
+					break;
+				}
+	
+				buffer[5] = 0;
+	
+				if (buffer == CMD_HELLO)
+				{
+					sendMsg(socket, CMD_HELLO.c_str(), CMD_HELLO.length());
+				}
+			}
+			catch (const std::exception& e)
+			{
+				std::cerr << "Unknown exception occured (" << e.what() << "); Assuming client disconnection" << std::endl;
+				break;
+			}
+		}
+	
+		_enqueueDisconnectClient(socket);
+	}
+
+	void _clientCleanerThreadFunc()
+	{
+		std::unique_lock<std::mutex> lock(this->_disconectedClient_mutex);
+		
+		while (this->_running)
+		{
+			// waits for _enqueueDisconnectClient to be called
+			this->_disconectedClientConditionalVariable.wait(lock);
+
+			_freeDisconnectedClients();
+		}
+	}
+
+	//!SECTION
+
+	void _enqueueDisconnectClient(const T socket)
+	{	
+		std::cout << "Socket " << std::to_string(socket) << " disconected" << std::endl;
+
+		this->_disconnectingClients_mutex.lock();
+		this->_disconnectingClients.push_back(socket);
+		this->_disconnectingClients_mutex.unlock();
+		
+		this->_disconectedClientConditionalVariable.notify_one();
 	}
 
 	void _freeDisconnectedClients()
@@ -242,39 +349,6 @@ private:
 		}
 	
 		this->m_clients_mutex.unlock();
-		this->_disconnectingClients_mutex.unlock();
-	}
-
-	//ANCHOR This is where we actually process the client sockets.
-	void _clientThreadFunc(const T socket)
-	{
-		sendMsg(socket, CMD_HELLO.c_str(), CMD_HELLO.length());
-	
-		while (this->_running)
-		{
-			char buffer[6];
-			if (!recieveMsg(socket, buffer, sizeof(buffer)))
-			{
-				// If we timed out (see RECV_REFRESH_TIMEOUT),
-				// simply wait for the next recv cycle (if applicable).
-				continue;
-			}
-	
-			buffer[5] = 0;
-	
-			if (buffer == CMD_HELLO)
-			{
-				sendMsg(socket, CMD_HELLO.c_str(), CMD_HELLO.length());
-			}
-		}
-	
-		_enqueueDisconnectClient(socket);
-	}
-
-	void _enqueueDisconnectClient(const T socket)
-	{	
-		this->_disconnectingClients_mutex.lock();
-		this->_disconnectingClients.push_back(socket);
 		this->_disconnectingClients_mutex.unlock();
 	}
 };

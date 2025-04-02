@@ -4,6 +4,8 @@
 
 #include <iostream>
 
+#include "exception/ForcedDisconnectionException.h"
+
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <unistd.h>
@@ -106,7 +108,13 @@ bool UnixCommunicator::recieveMsg(const int socket, char *buffer, const int leng
             return false;
         }
 
-        throw std::runtime_error("Error occured while handling client socket " + std::to_string(socket));
+        if (errno == ECONNRESET)
+        {
+            throw ForcedDisconnectionException();
+        }
+
+        throwPlatformError("Error occured while handling client socket " + std::to_string(socket));
+        throw std::exception();
     }
 
     return true;
