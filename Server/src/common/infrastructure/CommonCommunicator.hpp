@@ -219,7 +219,7 @@ protected:
 	/**
 	* Returns true whether the message did not time out.
 	*/
-	virtual void recieveMsg(const T socket, char* buffer, const int length) const = 0;
+	virtual void recieveMsg(const T socket, void* buffer, const int length) const = 0;
 
 	void sendMsg(const T socket, const char* buffer, const int length) const
 	{
@@ -234,8 +234,11 @@ protected:
 			didError = true;
 		}
 
-		throwPlatformError("Failed to send message to client socket " + std::to_string(socket));
-		throw std::exception();
+		if (didError)
+		{
+			throwPlatformError("Failed to send message to client socket " + std::to_string(socket));
+			throw std::exception();
+		}
 	}
 	
 
@@ -280,13 +283,13 @@ private:
 	//ANCHOR This is where we actually process the client sockets.
 	void _clientThreadFunc(const T socket)
 	{
-		sendMsg(socket, CMD_HELLO.c_str(), CMD_HELLO.length());
-
-		while (this->_running)
+		try
 		{
-			try
+			sendMsg(socket, CMD_HELLO.c_str(), CMD_HELLO.length());
+			
+			while (this->_running)
 			{
-				char buffer[6];
+				unsigned char buffer[6];
 	
 				try
 				{
@@ -305,16 +308,15 @@ private:
 	
 				buffer[5] = 0;
 	
-				if (buffer == CMD_HELLO)
+				if ((char*)buffer == CMD_HELLO)
 				{
 					sendMsg(socket, CMD_HELLO.c_str(), CMD_HELLO.length());
 				}
 			}
-			catch (const std::exception& e)
-			{
-				std::cerr << "Unknown exception occured (" << e.what() << "); Assuming client disconnection" << std::endl;
-				break;
-			}
+		}
+		catch (const std::exception& e)
+		{
+			std::cerr << "Unknown exception occured (" << e.what() << "); Assuming client disconnection" << std::endl;
 		}
 	
 		_enqueueDisconnectClient(socket);

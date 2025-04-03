@@ -13,7 +13,7 @@ protected:
 	virtual bool isValidListen(const int result) const override;
 
 	virtual void setRecvTimeout(const unsigned int timeoutMs) const override;
-	virtual void recieveMsg(const int socket, char* buffer, const int length) const override;
+	virtual void recieveMsg(const int socket, void* buffer, const int length) const override;
 
 	virtual void platformClose() override;
 	virtual void closeClientSocket(const int socket) override;
