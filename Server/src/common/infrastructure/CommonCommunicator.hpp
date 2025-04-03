@@ -332,7 +332,7 @@ private:
 		unsigned char* const data = new unsigned char[jsonLen + 1]; // +1 for null termination (better be safe than sorry).
 		recieveMsg(socket, data, jsonLen + 1);
 
-		RequestInfo info(
+		const RequestInfo info(
 			(ProtocolCode)reqCode,
 			std::chrono::system_clock::to_time_t(
 				std::chrono::system_clock::now()
