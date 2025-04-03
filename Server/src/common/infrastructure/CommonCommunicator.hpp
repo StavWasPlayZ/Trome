@@ -284,29 +284,27 @@ private:
 
 	void _clientThreadFunc(const T socket)
 	{
-		try
+		while (this->_running)
 		{
-			while (this->_running)
+			try
 			{
-				try
-				{
-					_handleClientMessage(socket);
-				}
-				catch (const SocketTimeoutException& e)
-				{
-					// If we timed out (see RECV_REFRESH_TIMEOUT),
-					// simply wait for the next recv cycle (if applicable).
-					continue;
-				}
-				catch (const ForcedDisconnectionException& e)
-				{
-					break;
-				}
+				_handleClientMessage(socket);
 			}
-		}
-		catch (const std::exception& e)
-		{
-			std::cerr << "Unknown exception occured (" << e.what() << "); Assuming client disconnection" << std::endl;
+			catch (const SocketTimeoutException& e)
+			{
+				// If we timed out (see RECV_REFRESH_TIMEOUT),
+				// simply wait for the next recv cycle (if applicable).
+				continue;
+			}
+			catch (const ForcedDisconnectionException& e)
+			{
+				break;
+			}
+			catch (const std::exception& e)
+			{
+				std::cerr << "Unknown exception occured (" << e.what() << "); Assuming client disconnection" << std::endl;
+				break;
+			}
 		}
 	
 		_enqueueDisconnectClient(socket);
