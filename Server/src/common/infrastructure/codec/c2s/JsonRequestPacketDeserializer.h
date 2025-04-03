@@ -12,14 +12,16 @@ public:
 	/**
 	* Returns: The deserialized object.
 	*/
-	static LoginRequest deserializeLoginRequest(const unsigned char* const Request);
+	static LoginRequest deserializeLoginRequest(const unsigned char* data);
 
-	/*/**
+	/**
 	* Returns: The deserialized object.
 	*/
-	static SignupRequest deserializeSignupRequest(const unsigned char* const Request);
+	static SignupRequest deserializeSignupRequest(const unsigned char* data);
 
 private:
-	static json readJson(const unsigned char* data);
+	static json deserializeProtocolMessage(const unsigned char* data);
+
+	static json readJson(const unsigned char* data, const int jsonLen);
 	static int readInt(const unsigned char* buffer);
 };
