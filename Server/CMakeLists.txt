@@ -31,6 +31,9 @@ add_executable (Server
   "src/common/infrastructure/codec/s2c/Response.cpp"
   "src/common/infrastructure/codec/s2c/JsonResponsePacketSerializer.h"
   "src/common/infrastructure/codec/s2c/JsonResponsePacketSerializer.cpp"
+
+  "src/common/infrastructure/codec/c2s/Request.h"
+  "src/common/infrastructure/codec/c2s/Request.cpp"
 )
 
 # Platform-specific sources
