@@ -22,6 +22,8 @@ add_executable (Server
   "src/common/handler/LoginRequestHandler.cpp"
   "src/common/infrastructure/CommonCommunicator.hpp"
   "src/common/infrastructure/Client.hpp"
+  "src/common/infrastructure/OBuffer.h"
+  "src/common/infrastructure/OBuffer.cpp"
   "src/common/infrastructure/Communicator.h"
   "src/common/exception/ForcedDisconnectionException.h"
   "src/common/exception/ForcedDisconnectionException.cpp"
@@ -43,6 +45,7 @@ add_executable (Server
   "src/common/infrastructure/request/RequestInfo.h"
   "src/common/infrastructure/request/RequestInfo.cpp"
   "src/common/infrastructure/request/RequestResult.h"
+  "src/common/infrastructure/request/RequestResult.cpp"
 )
 
 # Platform-specific sources

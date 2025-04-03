@@ -3,7 +3,7 @@
 // For platform-correct network include
 #include "infrastructure/Communicator.h"
 
-unsigned char *JsonResponsePacketSerializer::serializeResponse(const LoginResponse &response)
+OBuffer JsonResponsePacketSerializer::serializeResponse(const LoginResponse &response)
 {
 	nlohmann::json data = {
 		{ProtocolJsonKeys::STATUS, response.status}
@@ -12,7 +12,7 @@ unsigned char *JsonResponsePacketSerializer::serializeResponse(const LoginRespon
 	return serializeJsonToProtocol(ProtocolCode::LOGIN, data);
 }
 
-unsigned char *JsonResponsePacketSerializer::serializeResponse(const SignupResponse &response)
+OBuffer JsonResponsePacketSerializer::serializeResponse(const SignupResponse &response)
 {
 	nlohmann::json data = {
 		{ProtocolJsonKeys::STATUS, response.status}
@@ -21,7 +21,7 @@ unsigned char *JsonResponsePacketSerializer::serializeResponse(const SignupRespo
 	return serializeJsonToProtocol(ProtocolCode::SIGNUP, data);
 }
 
-unsigned char *JsonResponsePacketSerializer::serializeResponse(const ErrorResponse &response)
+OBuffer JsonResponsePacketSerializer::serializeResponse(const ErrorResponse &response)
 {
 	nlohmann::json data = {
 		{ProtocolJsonKeys::MESSAGE, response.message}
@@ -30,7 +30,7 @@ unsigned char *JsonResponsePacketSerializer::serializeResponse(const ErrorRespon
 	return serializeJsonToProtocol(ProtocolCode::ERROR, data);
 }
 
-unsigned char *JsonResponsePacketSerializer::serializeJsonToProtocol(const ProtocolCode msgCode, const nlohmann::json data)
+OBuffer JsonResponsePacketSerializer::serializeJsonToProtocol(const ProtocolCode msgCode, const nlohmann::json data)
 {
 	const std::string str = data.dump();
 
@@ -49,7 +49,7 @@ unsigned char *JsonResponsePacketSerializer::serializeJsonToProtocol(const Proto
 	// Actual JSON
 	std::memcpy(writeBuffer + SIZE_CODE, str.c_str(), len);
 
-	return buffer;
+	return OBuffer(buffer, len);
 }
 
 void JsonResponsePacketSerializer::writeInt(int num, unsigned char *const buffer)

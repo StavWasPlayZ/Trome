@@ -24,7 +24,10 @@
 
 #include "infrastructure/Client.hpp"
 
+#include "codec/s2c/Response.h"
+
 #include "codec/c2s/JsonRequestPacketDeserializer.h"
+#include "codec/s2c/JsonResponsePacketSerializer.h"
 #include "request/RequestInfo.h"
 
 #include "handler/LoginRequestHandler.h"
@@ -228,7 +231,7 @@ protected:
 	*/
 	virtual void recieveMsg(const T socket, void* buffer, const int length) const = 0;
 
-	void sendMsg(const T socket, const char* buffer, const int length) const
+	void sendMsg(const T socket, const unsigned char* buffer, const int length) const
 	{
 		bool didError;
 
@@ -318,11 +321,41 @@ private:
 	//ANCHOR This is where we actually process the client sockets.
 	void _handleClient(const T socket)
 	{
+		const RequestInfo info = _waitForClientRequest(socket);
+
+		Client<T>* client = this->m_clients.at(socket);
+		IRequestHandler* const handler = client->requestHandler;
+
+		OBuffer responseBuffer;
+
+		if (!handler->isRequestRelevant(info))
+		{
+			responseBuffer = JsonResponsePacketSerializer::serializeResponse(
+				ErrorResponse("Illegal request")
+			);
+		}
+		else
+		{
+			const RequestResult result = handler->handleRequest(info);
+
+			responseBuffer = result.response;
+
+			delete client->requestHandler;
+			client->requestHandler = result.newHandler;
+		}
+
+		sendMsg(socket, responseBuffer.contents, responseBuffer.length);
+		responseBuffer.freeContents();
+	}
+
+	RequestInfo _waitForClientRequest(const T socket)
+	{
 		unsigned char reqCode;
 		recieveMsg(socket, &reqCode, SIZE_CODE);
 
 		int jsonLen;
 		recieveMsg(socket, &jsonLen, SIZE_JSON_LEN);
+		jsonLen *= sizeof(char);
 
 		if (jsonLen <= 0)
 		{
@@ -341,6 +374,8 @@ private:
 		);
 
 		delete[] data;
+
+		return info;
 	}
 
 	void _clientCleanerThreadFunc()

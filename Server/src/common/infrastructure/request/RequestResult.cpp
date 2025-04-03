@@ -1,6 +1,6 @@
 #include "RequestResult.h"
 
-RequestResult::RequestResult(const unsigned char *const response, const IRequestHandler *const newHandler) :
+RequestResult::RequestResult(const OBuffer &response, IRequestHandler *const newHandler) :
     response(response),
     newHandler(newHandler)
 {}
