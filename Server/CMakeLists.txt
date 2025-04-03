@@ -27,9 +27,10 @@ add_executable (Server
   "src/common/Constants.h"
   "src/common/Constants.cpp"
 
-  "src/common/infrastructure/codec/Response.h"
-  "src/common/infrastructure/codec/JsonResponsePacketSerializer.h"
-  "src/common/infrastructure/codec/JsonResponsePacketSerializer.cpp"
+  "src/common/infrastructure/codec/s2c/Response.h"
+  "src/common/infrastructure/codec/s2c/Response.cpp"
+  "src/common/infrastructure/codec/s2c/JsonResponsePacketSerializer.h"
+  "src/common/infrastructure/codec/s2c/JsonResponsePacketSerializer.cpp"
 )
 
 # Platform-specific sources
