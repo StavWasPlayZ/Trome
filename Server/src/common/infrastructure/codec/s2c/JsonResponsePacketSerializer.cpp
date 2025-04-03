@@ -46,6 +46,7 @@ OBuffer JsonResponsePacketSerializer::serializeJsonToProtocol(const ProtocolCode
 	// JSON length
 	JsonResponsePacketSerializer::writeInt(str.size() + 1, writeBuffer);
 	writeBuffer += SIZE_JSON_LEN;
+	
 	// Actual JSON
 	std::memcpy(writeBuffer + SIZE_CODE, str.c_str(), len);
 
