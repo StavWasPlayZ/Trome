@@ -9,8 +9,8 @@ class IRequestHandler;
 
 struct RequestResult
 {
-    RequestResult(const OBuffer& response, IRequestHandler* const newHandler);
+    RequestResult(const OBuffer& response, const IRequestHandler* const newHandler);
 
     const OBuffer response;
-    IRequestHandler* const newHandler;
+    const IRequestHandler* const newHandler;
 };

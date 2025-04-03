@@ -324,7 +324,7 @@ private:
 		const RequestInfo info = _waitForClientRequest(socket);
 
 		Client<T>* client = this->m_clients.at(socket);
-		IRequestHandler* const handler = client->requestHandler;
+		const IRequestHandler* const handler = client->requestHandler;
 
 		OBuffer responseBuffer;
 
@@ -338,9 +338,11 @@ private:
 		{
 			const RequestResult result = handler->handleRequest(info);
 
-			responseBuffer = result.response;
+			// The Handler did its job well.
+			// 🫡
+			delete handler;
 
-			delete client->requestHandler;
+			responseBuffer = result.response;
 			client->requestHandler = result.newHandler;
 		}
 

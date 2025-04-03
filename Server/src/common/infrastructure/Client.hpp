@@ -26,7 +26,7 @@ public:
 	}
 
 	const T socket;
-	IRequestHandler* requestHandler;
+	const IRequestHandler* requestHandler;
 
 	/**
 	* The Client thread of this user

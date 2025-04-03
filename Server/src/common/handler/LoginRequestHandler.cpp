@@ -9,7 +9,7 @@ bool LoginRequestHandler::isRequestRelevant(const RequestInfo &request) const
     return (request.id == ProtocolCode::LOGIN) || (request.id == ProtocolCode::SIGNUP);
 }
 
-RequestResult LoginRequestHandler::handleRequest(const RequestInfo &request)
+RequestResult LoginRequestHandler::handleRequest(const RequestInfo &request) const
 {
     //TODO: Actually implement
     return RequestResult(
