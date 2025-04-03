@@ -32,17 +32,24 @@ unsigned char *JsonResponsePacketSerializer::serializeJsonToProtocol(const Proto
 	const std::string str = data.dump();
 
 	const int len = SIZE_CODE + SIZE_JSON_LEN + str.size() + 1; // + 1 for null terminator
-	unsigned char* buffer = new unsigned char[len];
+	unsigned char* const buffer = new unsigned char[len];
 
-	buffer[0] = (unsigned char)msgCode;
+	unsigned char* writeBuffer = buffer;
 
-	JsonResponsePacketSerializer::writeIntToBytes(str.size() + 1, buffer);
-	std::memcpy(buffer + SIZE_CODE, str.c_str(), len);
+	// Serializing:
+	// Code
+	writeBuffer[0] = (unsigned char)msgCode;
+	writeBuffer += SIZE_CODE;
+	// JSON length
+	JsonResponsePacketSerializer::writeInt(str.size() + 1, writeBuffer);
+	writeBuffer += SIZE_JSON_LEN;
+	// Actual JSON
+	std::memcpy(writeBuffer + SIZE_CODE, str.c_str(), len);
 
 	return buffer;
 }
 
-void JsonResponsePacketSerializer::writeIntToBytes(const int num, unsigned char *buffer)
+void JsonResponsePacketSerializer::writeInt(const int num, unsigned char *buffer)
 {
-	std::memcpy(buffer, &num, sizeof(num));
+	std::memcpy(buffer, &num, sizeof(int));
 }

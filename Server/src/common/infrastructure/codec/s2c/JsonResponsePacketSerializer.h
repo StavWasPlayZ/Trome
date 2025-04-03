@@ -5,7 +5,6 @@ using json = nlohmann::json;
 
 #include "Response.h"
 #include "Constants.h"
-#include "infrastructure/Communicator.h"
 
 
 class JsonResponsePacketSerializer
@@ -38,5 +37,5 @@ private:
 	 */
 	static unsigned char* serializeJsonToProtocol(const ProtocolCode msgCode, const json data);
 
-	static void writeIntToBytes(const int num, unsigned char* buffer);
+	static void writeInt(const int num, unsigned char* buffer);
 };
