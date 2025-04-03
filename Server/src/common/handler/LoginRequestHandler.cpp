@@ -14,6 +14,6 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo &request) con
     //TODO: Actually implement
     return RequestResult(
         JsonResponsePacketSerializer::serializeResponse(LoginResponse(1)),
-        this
+        new LoginRequestHandler(*this)
     );
 }
