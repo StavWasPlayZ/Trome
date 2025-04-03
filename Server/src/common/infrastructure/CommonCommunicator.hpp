@@ -3,6 +3,8 @@
 #include <iostream>
 #include <stdexcept>
 
+#include "Constants.h"
+
 #include "exception/ForcedDisconnectionException.h"
 #include "exception/SocketTimeoutException.h"
 
@@ -280,20 +282,15 @@ private:
 		close();
 	}
 
-	//ANCHOR This is where we actually process the client sockets.
 	void _clientThreadFunc(const T socket)
 	{
 		try
 		{
-			sendMsg(socket, CMD_HELLO.c_str(), CMD_HELLO.length());
-
 			while (this->_running)
 			{
-				unsigned char buffer[6];
-	
 				try
 				{
-					recieveMsg(socket, buffer, sizeof(buffer));
+					_handleClientMessage(socket);
 				}
 				catch (const SocketTimeoutException& e)
 				{
@@ -305,13 +302,6 @@ private:
 				{
 					break;
 				}
-	
-				buffer[5] = 0;
-	
-				if ((char*)buffer == CMD_HELLO)
-				{
-					sendMsg(socket, CMD_HELLO.c_str(), CMD_HELLO.length());
-				}
 			}
 		}
 		catch (const std::exception& e)
@@ -320,6 +310,15 @@ private:
 		}
 	
 		_enqueueDisconnectClient(socket);
+	}
+
+	//ANCHOR This is where we actually process the client sockets.
+	void _handleClientMessage(const T socket)
+	{
+		char reqCode;
+		recieveMsg(socket, &reqCode, SIZE_CODE);
+
+		//TODO: Complete
 	}
 
 	void _clientCleanerThreadFunc()

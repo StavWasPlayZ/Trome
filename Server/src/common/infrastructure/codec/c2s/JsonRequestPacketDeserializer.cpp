@@ -3,9 +3,9 @@
 // For platform-correct network include
 #include "infrastructure/Communicator.h"
 
-LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(const unsigned char *data)
+LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(const unsigned char *data, const int jsonLen)
 {
-    const json parsedData = deserializeProtocolMessage(data);
+    const json parsedData = readJson(data, jsonLen);
 
 	return LoginRequest(
 		parsedData.at("username"),
@@ -13,9 +13,9 @@ LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(const unsign
 	);
 }
 
-SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(const unsigned char *data)
+SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(const unsigned char *data, const int jsonLen)
 {
-    const json parsedData = deserializeProtocolMessage(data);
+    const json parsedData = readJson(data, jsonLen);
 
 	return SignupRequest(
 		parsedData.at("username"),
@@ -24,16 +24,16 @@ SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(const unsi
 	);
 }
 
-json JsonRequestPacketDeserializer::deserializeProtocolMessage(const unsigned char *data)
-{
-    // Skip the code (we already persumably know it if we're here)
-	data += SIZE_CODE;
+// json JsonRequestPacketDeserializer::deserializeProtocolMessage(const unsigned char *data)
+// {
+//     // Skip the code (we already persumably know it if we're here)
+// 	data += SIZE_CODE;
 
-	const int jsonLen = readInt(data) * sizeof(char);
-	data += SIZE_JSON_LEN;
+// 	const int jsonLen = readInt(data) * sizeof(char);
+// 	data += SIZE_JSON_LEN;
 
-	return readJson(data, jsonLen);
-}
+// 	return readJson(data, jsonLen);
+// }
 
 json JsonRequestPacketDeserializer::readJson(const unsigned char *data, const int jsonLen)
 {
