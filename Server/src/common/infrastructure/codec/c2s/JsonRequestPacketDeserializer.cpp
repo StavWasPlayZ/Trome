@@ -1,0 +1,33 @@
+#include "JsonRequestPacketDeserializer.h"
+
+// For platform-correct network include
+#include "infrastructure/Communicator.h"
+
+json JsonRequestPacketDeserializer::readJson(const unsigned char *data)
+{
+	// Skip the code (we already persumably know it if we're here)
+	data += SIZE_CODE;
+
+	const int jsonLen = readInt(data) * sizeof(char);
+	data += SIZE_JSON_LEN;
+
+	// Avoid naughty buffer overflows
+	if (jsonLen <= 0)
+	{
+        throw std::runtime_error("Invalid JSON length");
+    }
+
+	std::string jsonRaw;
+	std::memcpy(&jsonRaw, data, jsonLen * sizeof(char));
+
+    return json::parse(jsonRaw);
+}
+
+int JsonRequestPacketDeserializer::readInt(const unsigned char *buffer)
+{
+	int result;
+    std::memcpy(&result, buffer, sizeof(int));
+
+	// Internet said to wrap result in this
+	return ntohl(result);
+}

@@ -34,6 +34,8 @@ add_executable (Server
 
   "src/common/infrastructure/codec/c2s/Request.h"
   "src/common/infrastructure/codec/c2s/Request.cpp"
+  "src/common/infrastructure/codec/c2s/JsonRequestPacketDeserializer.h"
+  "src/common/infrastructure/codec/c2s/JsonRequestPacketDeserializer.cpp"
 )
 
 # Platform-specific sources

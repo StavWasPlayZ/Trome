@@ -1,5 +1,8 @@
 #include "JsonResponsePacketSerializer.h"
 
+// For platform-correct network include
+#include "infrastructure/Communicator.h"
+
 unsigned char *JsonResponsePacketSerializer::serializeResponse(const LoginResponse &response)
 {
 	json data = {
@@ -49,7 +52,10 @@ unsigned char *JsonResponsePacketSerializer::serializeJsonToProtocol(const Proto
 	return buffer;
 }
 
-void JsonResponsePacketSerializer::writeInt(const int num, unsigned char *buffer)
+void JsonResponsePacketSerializer::writeInt(int num, unsigned char *const buffer)
 {
+	// Internet said to wrap value in this
+	num = htonl(num);
+
 	std::memcpy(buffer, &num, sizeof(int));
 }
