@@ -286,7 +286,7 @@ private:
 		try
 		{
 			sendMsg(socket, CMD_HELLO.c_str(), CMD_HELLO.length());
-			
+
 			while (this->_running)
 			{
 				unsigned char buffer[6];
@@ -358,8 +358,10 @@ private:
 			delete this->m_clients.at(clientSock);
 			m_clients.erase(clientSock);
 		}
-	
+
 		this->m_clients_mutex.unlock();
+		
+		this->_disconnectingClients.clear();
 		this->_disconnectingClients_mutex.unlock();
 	}
 };
