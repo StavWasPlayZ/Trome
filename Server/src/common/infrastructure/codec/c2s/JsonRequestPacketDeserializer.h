@@ -1,7 +1,6 @@
 #pragma once
 
 #include <nlohmann/json.hpp>
-using json = nlohmann::json;
 
 #include "Request.h"
 #include "Constants.h"
@@ -9,19 +8,18 @@ using json = nlohmann::json;
 class JsonRequestPacketDeserializer
 {
 public:
-	/**
-	* Returns: The deserialized object.
-	*/
-	static LoginRequest deserializeLoginRequest(const unsigned char* data);
+	static nlohmann::json readJson(const unsigned char* data, const int jsonLen);
 
 	/**
 	* Returns: The deserialized object.
 	*/
-	static SignupRequest deserializeSignupRequest(const unsigned char* data);
+	static LoginRequest deserializeLoginRequest(const nlohmann::json& data);
+
+	/**
+	* Returns: The deserialized object.
+	*/
+	static SignupRequest deserializeSignupRequest(const nlohmann::json& data);
 
 private:
-	static json deserializeProtocolMessage(const unsigned char* data);
-
-	static json readJson(const unsigned char* data, const int jsonLen);
 	static int readInt(const unsigned char* buffer);
 };

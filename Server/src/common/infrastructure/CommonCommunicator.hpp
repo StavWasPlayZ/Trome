@@ -3,6 +3,10 @@
 #include <iostream>
 #include <stdexcept>
 
+#include <chrono>
+
+#include "Constants.h"
+
 #include "exception/ForcedDisconnectionException.h"
 #include "exception/SocketTimeoutException.h"
 
@@ -19,6 +23,12 @@
 #include <atomic>
 
 #include "infrastructure/Client.hpp"
+
+#include "codec/s2c/Response.h"
+
+#include "codec/c2s/JsonRequestPacketDeserializer.h"
+#include "codec/s2c/JsonResponsePacketSerializer.h"
+#include "request/RequestInfo.h"
 
 #include "handler/LoginRequestHandler.h"
 
@@ -221,7 +231,7 @@ protected:
 	*/
 	virtual void recieveMsg(const T socket, void* buffer, const int length) const = 0;
 
-	void sendMsg(const T socket, const char* buffer, const int length) const
+	void sendMsg(const T socket, const unsigned char* buffer, const int length) const
 	{
 		bool didError;
 
@@ -280,46 +290,94 @@ private:
 		close();
 	}
 
-	//ANCHOR This is where we actually process the client sockets.
 	void _clientThreadFunc(const T socket)
 	{
-		try
+		while (this->_running)
 		{
-			sendMsg(socket, CMD_HELLO.c_str(), CMD_HELLO.length());
-
-			while (this->_running)
+			try
 			{
-				unsigned char buffer[6];
-	
-				try
-				{
-					recieveMsg(socket, buffer, sizeof(buffer));
-				}
-				catch (const SocketTimeoutException& e)
-				{
-					// If we timed out (see RECV_REFRESH_TIMEOUT),
-					// simply wait for the next recv cycle (if applicable).
-					continue;
-				}
-				catch (const ForcedDisconnectionException& e)
-				{
-					break;
-				}
-	
-				buffer[5] = 0;
-	
-				if ((char*)buffer == CMD_HELLO)
-				{
-					sendMsg(socket, CMD_HELLO.c_str(), CMD_HELLO.length());
-				}
+				_handleClient(socket);
 			}
-		}
-		catch (const std::exception& e)
-		{
-			std::cerr << "Unknown exception occured (" << e.what() << "); Assuming client disconnection" << std::endl;
+			catch (const SocketTimeoutException& e)
+			{
+				// If we timed out (see RECV_REFRESH_TIMEOUT),
+				// simply wait for the next recv cycle (if applicable).
+				continue;
+			}
+			catch (const ForcedDisconnectionException& e)
+			{
+				break;
+			}
+			catch (const std::exception& e)
+			{
+				std::cerr << "Unknown exception occured (" << e.what() << "); Assuming client disconnection" << std::endl;
+				break;
+			}
 		}
 	
 		_enqueueDisconnectClient(socket);
+	}
+
+	//ANCHOR This is where we actually process the client sockets.
+	void _handleClient(const T socket)
+	{
+		const RequestInfo info = _waitForClientRequest(socket);
+
+		Client<T>* client = this->m_clients.at(socket);
+		const IRequestHandler* const handler = client->requestHandler;
+
+		OBuffer responseBuffer;
+
+		if (!handler->isRequestRelevant(info))
+		{
+			responseBuffer = JsonResponsePacketSerializer::serializeResponse(
+				ErrorResponse("Illegal request")
+			);
+		}
+		else
+		{
+			const RequestResult result = handler->handleRequest(info);
+
+			// The Handler did its job well.
+			// 🫡
+			delete handler;
+
+			responseBuffer = result.response;
+			client->requestHandler = result.newHandler;
+		}
+
+		sendMsg(socket, responseBuffer.contents, responseBuffer.length);
+		responseBuffer.freeContents();
+	}
+
+	RequestInfo _waitForClientRequest(const T socket)
+	{
+		unsigned char reqCode;
+		recieveMsg(socket, &reqCode, SIZE_CODE);
+
+		int jsonLen;
+		recieveMsg(socket, &jsonLen, SIZE_JSON_LEN);
+		jsonLen *= sizeof(char);
+
+		if (jsonLen <= 0)
+		{
+			throw std::runtime_error("Invalid JSON length");
+		}
+
+		unsigned char* const data = new unsigned char[jsonLen + 1]; // +1 for null termination (better be safe than sorry).
+		recieveMsg(socket, data, jsonLen + 1);
+
+		const RequestInfo info(
+			(ProtocolCode)reqCode,
+			std::chrono::system_clock::to_time_t(
+				std::chrono::system_clock::now()
+			),
+			JsonRequestPacketDeserializer::readJson(data, jsonLen)
+		);
+
+		delete[] data;
+
+		return info;
 	}
 
 	void _clientCleanerThreadFunc()

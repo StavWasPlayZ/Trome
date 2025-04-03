@@ -2,21 +2,25 @@
 
 #include <string>
 
-struct LoginResponse
+
+struct ProtocolResponse {};
+
+
+struct LoginResponse : ProtocolResponse
 {
 	LoginResponse(const unsigned int status);
 	
 	const unsigned int status;
 };
 
-struct SignupResponse
+struct SignupResponse : ProtocolResponse
 {
 	SignupResponse(const unsigned int status);
 	
 	const unsigned int status;
 };
 
-struct ErrorResponse
+struct ErrorResponse : ProtocolResponse
 {
 	ErrorResponse(const std::string& message);
 	

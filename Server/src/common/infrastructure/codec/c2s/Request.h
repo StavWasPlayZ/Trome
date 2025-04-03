@@ -2,7 +2,13 @@
 
 #include <string>
 
-struct LoginRequest
+#include <unordered_map>
+
+
+struct ProtocolRequest {};
+
+
+struct LoginRequest : ProtocolRequest
 {
 	LoginRequest(const std::string& username, const std::string& password);
 	
@@ -10,7 +16,7 @@ struct LoginRequest
 	const std::string password;
 };
 
-struct SignupRequest
+struct SignupRequest : ProtocolRequest
 {
 	SignupRequest(const std::string& username, const std::string& password, const std::string& email);
 	
