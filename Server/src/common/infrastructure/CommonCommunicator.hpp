@@ -223,11 +223,19 @@ protected:
 
 	void sendMsg(const T socket, const char* buffer, const int length) const
 	{
-		if (send(socket, buffer, length, 0) == -1)
+		bool didError;
+
+		try
 		{
-			throwPlatformError("Failed to send message to client socket " + std::to_string(socket));
-			throw std::exception();
+			didError = send(socket, buffer, length, 0) == -1;
 		}
+		catch (...)
+		{
+			didError = true;
+		}
+
+		throwPlatformError("Failed to send message to client socket " + std::to_string(socket));
+		throw std::exception();
 	}
 	
 
