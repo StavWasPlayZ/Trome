@@ -5,7 +5,7 @@
 
 unsigned char *JsonResponsePacketSerializer::serializeResponse(const LoginResponse &response)
 {
-	json data = {
+	nlohmann::json data = {
 		{ProtocolJsonKeys::STATUS, response.status}
 	};
 
@@ -14,7 +14,7 @@ unsigned char *JsonResponsePacketSerializer::serializeResponse(const LoginRespon
 
 unsigned char *JsonResponsePacketSerializer::serializeResponse(const SignupResponse &response)
 {
-	json data = {
+	nlohmann::json data = {
 		{ProtocolJsonKeys::STATUS, response.status}
 	};
 
@@ -23,14 +23,14 @@ unsigned char *JsonResponsePacketSerializer::serializeResponse(const SignupRespo
 
 unsigned char *JsonResponsePacketSerializer::serializeResponse(const ErrorResponse &response)
 {
-	json data = {
+	nlohmann::json data = {
 		{ProtocolJsonKeys::MESSAGE, response.message}
 	};
 
 	return serializeJsonToProtocol(ProtocolCode::ERROR, data);
 }
 
-unsigned char *JsonResponsePacketSerializer::serializeJsonToProtocol(const ProtocolCode msgCode, const json data)
+unsigned char *JsonResponsePacketSerializer::serializeJsonToProtocol(const ProtocolCode msgCode, const nlohmann::json data)
 {
 	const std::string str = data.dump();
 

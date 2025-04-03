@@ -3,6 +3,8 @@
 #include <iostream>
 #include <stdexcept>
 
+#include <chrono>
+
 #include "Constants.h"
 
 #include "exception/ForcedDisconnectionException.h"
@@ -21,6 +23,9 @@
 #include <atomic>
 
 #include "infrastructure/Client.hpp"
+
+#include "codec/c2s/JsonRequestPacketDeserializer.h"
+#include "request/RequestInfo.h"
 
 #include "handler/LoginRequestHandler.h"
 
@@ -288,7 +293,7 @@ private:
 		{
 			try
 			{
-				_handleClientMessage(socket);
+				_handleClient(socket);
 			}
 			catch (const SocketTimeoutException& e)
 			{
@@ -311,12 +316,31 @@ private:
 	}
 
 	//ANCHOR This is where we actually process the client sockets.
-	void _handleClientMessage(const T socket)
+	void _handleClient(const T socket)
 	{
-		char reqCode;
+		unsigned char reqCode;
 		recieveMsg(socket, &reqCode, SIZE_CODE);
 
-		//TODO: Complete
+		int jsonLen;
+		recieveMsg(socket, &jsonLen, SIZE_JSON_LEN);
+
+		if (jsonLen <= 0)
+		{
+			throw std::runtime_error("Invalid JSON length");
+		}
+
+		unsigned char* const data = new unsigned char[jsonLen + 1]; // +1 for null termination (better be safe than sorry).
+		recieveMsg(socket, data, jsonLen + 1);
+
+		RequestInfo info(
+			(ProtocolCode)reqCode,
+			std::chrono::system_clock::to_time_t(
+				std::chrono::system_clock::now()
+			),
+			JsonRequestPacketDeserializer::readJson(data, jsonLen)
+		);
+
+		delete[] data;
 	}
 
 	void _clientCleanerThreadFunc()

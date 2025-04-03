@@ -1,7 +1,6 @@
 #pragma once
 
 #include <nlohmann/json.hpp>
-using json = nlohmann::json;
 
 #include "Response.h"
 #include "Constants.h"
@@ -35,7 +34,7 @@ private:
 	 * 
 	 * NOTE: The returned resource must be freed.
 	 */
-	static unsigned char* serializeJsonToProtocol(const ProtocolCode msgCode, const json data);
+	static unsigned char* serializeJsonToProtocol(const ProtocolCode msgCode, const nlohmann::json data);
 
 	static void writeInt(int num, unsigned char* const buffer);
 };

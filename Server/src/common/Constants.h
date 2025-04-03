@@ -2,11 +2,11 @@
 
 #include <iostream>
 
-enum class ProtocolCode : unsigned int
+enum class ProtocolCode : unsigned char
 {
+    ERROR = 0,
     LOGIN = 1,
-    SIGNUP = 2,
-    ERROR = 400,
+    SIGNUP = 2
 };
 
 struct ProtocolJsonKeys

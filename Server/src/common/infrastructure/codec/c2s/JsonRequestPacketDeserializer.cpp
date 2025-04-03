@@ -3,24 +3,20 @@
 // For platform-correct network include
 #include "infrastructure/Communicator.h"
 
-LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(const unsigned char *data, const int jsonLen)
+LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(const nlohmann::json &data)
 {
-    const json parsedData = readJson(data, jsonLen);
-
 	return LoginRequest(
-		parsedData.at("username"),
-		parsedData.at("password")
+		data.at("username"),
+		data.at("password")
 	);
 }
 
-SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(const unsigned char *data, const int jsonLen)
+SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(const nlohmann::json &data)
 {
-    const json parsedData = readJson(data, jsonLen);
-
 	return SignupRequest(
-		parsedData.at("username"),
-		parsedData.at("password"),
-		parsedData.at("email")
+		data.at("username"),
+		data.at("password"),
+		data.at("email")
 	);
 }
 
@@ -35,7 +31,7 @@ SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(const unsi
 // 	return readJson(data, jsonLen);
 // }
 
-json JsonRequestPacketDeserializer::readJson(const unsigned char *data, const int jsonLen)
+nlohmann::json JsonRequestPacketDeserializer::readJson(const unsigned char *data, const int jsonLen)
 {
 	// Avoid naughty buffer overflows
 	if (jsonLen <= 0)
@@ -46,7 +42,7 @@ json JsonRequestPacketDeserializer::readJson(const unsigned char *data, const in
 	std::string jsonRaw;
 	std::memcpy(&jsonRaw, data, jsonLen * sizeof(char));
 
-    return json::parse(jsonRaw);
+    return nlohmann::json::parse(jsonRaw);
 }
 
 int JsonRequestPacketDeserializer::readInt(const unsigned char *buffer)
