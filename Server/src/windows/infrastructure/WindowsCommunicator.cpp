@@ -2,6 +2,7 @@
 
 #include "windows/exception/WSAException.h"
 #include "exception/ForcedDisconnectionException.h"
+#include "exception/SocketTimeoutException.h"
 
 #include "handler/LoginRequestHandler.h"
 
@@ -87,7 +88,7 @@ void WindowsCommunicator::setRecvTimeout(const unsigned int timeoutMs) const
     );
 }
 
-bool WindowsCommunicator::recieveMsg(const SOCKET socket, char *buffer, const int length) const
+void WindowsCommunicator::recieveMsg(const SOCKET socket, char *buffer, const int length) const
 {
     int result = recv(socket, buffer, length, 0);
 
@@ -95,7 +96,7 @@ bool WindowsCommunicator::recieveMsg(const SOCKET socket, char *buffer, const in
     {
         if (WSAGetLastError() == WSAETIMEDOUT)
         {
-            return false;
+            throw SocketTimeoutException();
         }
 
         if (WSAGetLastError() == WSAECONNRESET)

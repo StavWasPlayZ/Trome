@@ -24,6 +24,8 @@ add_executable (Server
   "src/common/infrastructure/Communicator.h"
   "src/common/exception/ForcedDisconnectionException.h"
   "src/common/exception/ForcedDisconnectionException.cpp"
+  "src/common/exception/SocketTimeoutException.h"
+  "src/common/exception/SocketTimeoutException.cpp"
   "src/common/Constants.h"
   "src/common/Constants.cpp"
 

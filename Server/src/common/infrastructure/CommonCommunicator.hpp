@@ -4,6 +4,7 @@
 #include <stdexcept>
 
 #include "exception/ForcedDisconnectionException.h"
+#include "exception/SocketTimeoutException.h"
 
 #include <string>
 #include <map>
@@ -215,11 +216,10 @@ protected:
 	}
 
 
-	//TODO: Make return type not only tell timeout, but also disconnection.
 	/**
 	* Returns true whether the message did not time out.
 	*/
-	virtual bool recieveMsg(const T socket, char* buffer, const int length) const = 0;
+	virtual void recieveMsg(const T socket, char* buffer, const int length) const = 0;
 
 	void sendMsg(const T socket, const char* buffer, const int length) const
 	{
@@ -282,12 +282,13 @@ private:
 	
 				try
 				{
-					if (!recieveMsg(socket, buffer, sizeof(buffer)))
-					{
-						// If we timed out (see RECV_REFRESH_TIMEOUT),
-						// simply wait for the next recv cycle (if applicable).
-						continue;
-					}
+					recieveMsg(socket, buffer, sizeof(buffer));
+				}
+				catch (const SocketTimeoutException& e)
+				{
+					// If we timed out (see RECV_REFRESH_TIMEOUT),
+					// simply wait for the next recv cycle (if applicable).
+					continue;
 				}
 				catch (const ForcedDisconnectionException& e)
 				{
