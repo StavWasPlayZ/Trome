@@ -38,5 +38,5 @@ private:
 	 */
 	static unsigned char* serializeJsonToProtocol(const ProtocolCode msgCode, const json data);
 
-	static void writeIntToFourBytes(const int num, unsigned char* buffer);
+	static void writeIntToBytes(const int num, unsigned char* buffer);
 };

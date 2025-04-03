@@ -35,18 +35,14 @@ unsigned char *JsonResponsePacketSerializer::serializeJsonToProtocol(const Proto
 	unsigned char* buffer = new unsigned char[len];
 
 	buffer[0] = (unsigned char)msgCode;
-	JsonResponsePacketSerializer::writeIntToFourBytes(str.size() + 1, buffer + 1);
 
-	memcpy(buffer, str.c_str(), len);
+	JsonResponsePacketSerializer::writeIntToBytes(str.size() + 1, buffer);
+	std::memcpy(buffer + SIZE_CODE, str.c_str(), len);
 
 	return buffer;
 }
 
-void JsonResponsePacketSerializer::writeIntToFourBytes(const int num, unsigned char *buffer)
+void JsonResponsePacketSerializer::writeIntToBytes(const int num, unsigned char *buffer)
 {
-	// Bit-shift the number into its respected bytes representation
-	buffer[0] = (num >> 24) & 0xFF;
-	buffer[1] = (num >> 16) & 0xFF;
-	buffer[2] = (num >> 8) & 0xFF;
-	buffer[3] = num & 0xFF;
+	std::memcpy(buffer, &num, sizeof(num));
 }
