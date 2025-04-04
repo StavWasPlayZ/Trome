@@ -17,9 +17,6 @@ add_executable (Server
   "src/common/Main.cpp"
   "src/common/infrastructure/Server.h"
   "src/common/infrastructure/Server.cpp"
-  "src/common/handler/IRequestHandler.h"
-  "src/common/handler/LoginRequestHandler.h"
-  "src/common/handler/LoginRequestHandler.cpp"
   "src/common/infrastructure/CommonCommunicator.hpp"
   "src/common/infrastructure/Client.hpp"
   "src/common/infrastructure/OBuffer.h"
@@ -31,6 +28,12 @@ add_executable (Server
   "src/common/exception/SocketTimeoutException.cpp"
   "src/common/Constants.h"
   "src/common/Constants.cpp"
+
+  "src/common/handler/IRequestHandler.h"
+  "src/common/handler/LoginRequestHandler.h"
+  "src/common/handler/LoginRequestHandler.cpp"
+  "src/common/handler/MenuRequestHandler.h"
+  "src/common/handler/MenuRequestHandler.cpp"
 
   "src/common/handler/codec/s2c/Response.h"
   "src/common/handler/codec/s2c/Response.cpp"
