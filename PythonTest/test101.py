@@ -37,9 +37,24 @@ def serialize(code, data):
     :rtype: bytes
     """
     json_bytes = json.dumps(data).encode('utf-8')
-    json_len_bytes = len(json_bytes).to_bytes(4, byteorder='big') # big means the format we need
+    json_len_bytes = len(json_bytes).to_bytes(4, byteorder='big') # big is the format we need
     message = bytes([code]) + json_len_bytes + json_bytes
     return message
+
+def deserialzer(data):
+    """
+    deserialze data
+    :param data: data to send
+    :type data: bytes
+    :return: code, json_len, json
+    :rtype: tuple
+    """
+    code = data[0]
+    json_len = int.from_bytes(data[1:5], byteorder='big')  # big is the format we need
+    json_bytes = data[5:5+json_len]
+    data_json = json.loads(json_bytes.decode('utf-8'))
+    return code, json_len, data_json
+
 
 if __name__ == "__main__":
     main()
