@@ -14,17 +14,34 @@ def main():
         sock.connect(SERVER_INFO)
 
         try:
-            msg = serialize(LOGIN, JSON_TEST_LOGIN)
-            sock.sendall(msg)
-            print("Sent: Code:", LOGIN, "\nData:", JSON_TEST_LOGIN, "\nIn bytes:", msg)
-
-            server_msg = sock.recv(1024).decode()
-        
-            print("Recieved:", server_msg)
-
+            sendAndRecv(LOGIN, JSON_TEST_LOGIN, sock)
+            sendAndRecv(SIGNUP, JSON_TEST_SIGNUP, sock)
         except:
             print("Something went wrong :(")
             return
+        
+def sendAndRecv(code, data_to_send, sock):
+    """
+    sends then data and recv server's response
+    :param data_to_send: data to send
+    :param code: code to send
+    :param sock: socket
+    :type data: json
+    :type code: int
+    :type sock: socket
+    :return: none
+    :rtype: none
+    """
+    msg = serialize(code, data_to_send)
+    sock.sendall(msg)
+    print("Sent: Code:", code, "\nData:", JSON_TEST_LOGIN, "\nIn bytes:", msg)
+
+    server_msg = sock.recv(1024)
+    data = deserialzer(server_msg)
+
+    print("Sent: Code:", data[0], "\nData Len:", data[1], "\nData:", data[2], "\nIn bytes:", server_msg)
+    return
+
 
 def serialize(code, data):
     """
