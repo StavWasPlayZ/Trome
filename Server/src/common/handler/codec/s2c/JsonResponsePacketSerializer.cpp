@@ -53,7 +53,7 @@ OBuffer JsonResponsePacketSerializer::serializeJsonToProtocol(const ProtocolCode
 	writeBuffer += SIZE_JSON_LEN;
 	
 	// Actual JSON
-	std::memcpy(writeBuffer, dataStr.c_str(), len);
+	std::memcpy(writeBuffer, dataStr.c_str(), dataStr.size());
 
 	return OBuffer(buffer, len);
 }
