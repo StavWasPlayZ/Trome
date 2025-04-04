@@ -12,8 +12,5 @@ bool MenuRequestHandler::isRequestRelevant(const RequestInfo &request) const
 RequestResult MenuRequestHandler::handleRequest(const RequestInfo &request) const
 {
     //TODO: Implement
-    return RequestResult(
-        JsonResponsePacketSerializer::serializeResponse(ErrorResponse("Unimplemented server-side")),
-        new MenuRequestHandler(*this)
-    );
+    return errorServerUnimplemented<MenuRequestHandler>();
 }

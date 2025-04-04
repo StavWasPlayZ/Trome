@@ -30,6 +30,7 @@ add_executable (Server
   "src/common/Constants.cpp"
 
   "src/common/handler/IRequestHandler.h"
+  "src/common/handler/IRequestHandler.tpp"
   "src/common/handler/LoginRequestHandler.h"
   "src/common/handler/LoginRequestHandler.cpp"
   "src/common/handler/MenuRequestHandler.h"

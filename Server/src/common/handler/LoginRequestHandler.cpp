@@ -11,9 +11,6 @@ bool LoginRequestHandler::isRequestRelevant(const RequestInfo &request) const
 
 RequestResult LoginRequestHandler::handleRequest(const RequestInfo &request) const
 {
-    //TODO: Actually implement
-    return RequestResult(
-        JsonResponsePacketSerializer::serializeResponse(LoginResponse(1)),
-        new LoginRequestHandler(*this)
-    );
+    //TODO: Implement
+    return errorServerUnimplemented<LoginRequestHandler>();
 }
