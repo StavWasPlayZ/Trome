@@ -22,7 +22,7 @@
 // It was suggested online to use this when sharing a resource.
 #include <atomic>
 
-#include "infrastructure/Client.hpp"
+#include "infrastructure/Client.h"
 
 #include "handler/codec/s2c/Response.h"
 
