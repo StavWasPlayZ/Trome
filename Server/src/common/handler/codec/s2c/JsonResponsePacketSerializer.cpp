@@ -3,6 +3,11 @@
 // For platform-correct network include
 #include "infrastructure/Communicator.h"
 
+// fucking windows and their stupid ass macros cost me 1 hour 30
+#ifdef ERROR
+#undef ERROR
+#endif
+
 OBuffer JsonResponsePacketSerializer::serializeResponse(const LoginResponse &response)
 {
 	nlohmann::json data = {

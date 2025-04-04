@@ -18,7 +18,7 @@ public:
 	* Returns: The future handling the client sockets.
 	* Completes when server closes.
 	*/
-	virtual std::future<void>& bindAndListen() override;
+	virtual void bindAndListen() override;
 
 protected:
 	virtual bool isValidSocket(const SOCKET result) const override;
