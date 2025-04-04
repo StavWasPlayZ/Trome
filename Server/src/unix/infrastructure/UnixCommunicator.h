@@ -5,7 +5,7 @@
 class UnixCommunicator : public CommonCommunicator<int>
 {
 public:
-	UnixCommunicator();
+	UnixCommunicator(const RequestHandlerFactory& handlerFactory);
 
 protected:
 	virtual bool isValidSocket(const int result) const override;

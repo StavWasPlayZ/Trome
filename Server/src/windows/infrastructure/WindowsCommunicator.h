@@ -10,7 +10,7 @@
 class WindowsCommunicator : public CommonCommunicator<SOCKET>
 {
 public:
-	WindowsCommunicator();
+	WindowsCommunicator(const RequestHandlerFactory& handlerFactory);
 
 	/**
 	* Binds this instance to the program port, and begins to listen for new clients.

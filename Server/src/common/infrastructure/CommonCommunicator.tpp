@@ -19,8 +19,9 @@
 
 
 template <typename T>
-CommonCommunicator<T>::CommonCommunicator(const T defaultSocket) :
+CommonCommunicator<T>::CommonCommunicator(const T defaultSocket, const RequestHandlerFactory& handlerFactory) :
     m_serverSocket(defaultSocket),
+    m_handlerFactory(handlerFactory),
     _serverSockAddr({ 0 }),
     _running(false)
 {}
@@ -114,7 +115,7 @@ void CommonCommunicator<T>::registerClient(const T socket)
 {
     this->m_clients[socket] = new Client<T>(
         socket,
-        new LoginRequestHandler(),
+        this->m_handlerFactory.createLoginRequestHandler(),
         [this, socket]()
         {
             _clientThreadFunc(socket);
