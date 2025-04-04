@@ -19,7 +19,4 @@ public:
 	* Returns: The deserialized object.
 	*/
 	static SignupRequest deserializeSignupRequest(const nlohmann::json& data);
-
-private:
-	static int readInt(const unsigned char* buffer);
 };

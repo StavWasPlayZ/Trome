@@ -254,7 +254,7 @@ RequestInfo CommonCommunicator<T>::_waitForClientRequest(const T socket)
 
     int jsonLen;
     recieveMsg(socket, &jsonLen, SIZE_JSON_LEN);
-    jsonLen *= sizeof(char);
+    jsonLen = ntohl(jsonLen) * sizeof(char);
 
     if (jsonLen <= 0)
     {
