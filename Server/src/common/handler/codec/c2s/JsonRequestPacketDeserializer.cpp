@@ -25,8 +25,8 @@ nlohmann::json JsonRequestPacketDeserializer::readJson(const unsigned char *data
         throw std::runtime_error("Invalid JSON length");
     }
 
-	std::string jsonRaw;
-	std::memcpy(&jsonRaw, data, jsonLen * sizeof(char));
+	char* const jsonRaw = new char[jsonLen];
+	std::memcpy(jsonRaw, data, jsonLen * sizeof(char));
 
-    return nlohmann::json::parse(jsonRaw);
+    return nlohmann::json::parse(std::string(jsonRaw, jsonLen));
 }
