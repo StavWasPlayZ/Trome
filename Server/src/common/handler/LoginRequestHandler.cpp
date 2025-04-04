@@ -16,12 +16,12 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo &request) con
 {
     if (request.id == ProtocolCode::LOGIN)
     {
-        login(request);
+        return login(request);
     }
     else
     {
         // We already checked that it must be either of the 2.
-        signup(request);
+        return signup(request);
     }
 }
 
