@@ -154,7 +154,8 @@ void CommonCommunicator<T>::sendMsg(const T socket, const unsigned char* buffer,
 
     try
     {
-        didError = send(socket, buffer, length, 0) == -1;
+        // Casting for crybaby Windows
+        didError = send(socket, (char*)buffer, length, 0) == -1;
     }
     catch (...)
     {

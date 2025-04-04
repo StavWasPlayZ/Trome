@@ -11,7 +11,7 @@
 WindowsCommunicator::WindowsCommunicator(const RequestHandlerFactory& handlerFactory) : CommonCommunicator(INVALID_SOCKET, handlerFactory)
 {}
 
-std::future<void> &WindowsCommunicator::bindAndListen()
+void WindowsCommunicator::bindAndListen()
 {
     WSADATA wsaData;
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
@@ -20,7 +20,7 @@ std::future<void> &WindowsCommunicator::bindAndListen()
         throw std::exception();
     }
 
-    return CommonCommunicator::bindAndListen();
+    CommonCommunicator::bindAndListen();
 }
 
 bool WindowsCommunicator::isValidSocket(const SOCKET result) const
@@ -89,7 +89,7 @@ void WindowsCommunicator::setRecvTimeout(const unsigned int timeoutMs) const
 
 void WindowsCommunicator::recieveMsg(const SOCKET socket, void *buffer, const int length) const
 {
-    int result = recv(socket, buffer, length, 0);
+    int result = recv(socket, (char*)buffer, length, 0);
 
     if (result == SOCKET_ERROR)
     {
@@ -104,8 +104,5 @@ void WindowsCommunicator::recieveMsg(const SOCKET socket, void *buffer, const in
         }
 
         throwPlatformError("Error occured while handling client socket " + std::to_string(socket));
-        return false;
     }
-
-    return true;
 }

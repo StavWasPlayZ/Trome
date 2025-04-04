@@ -3,6 +3,11 @@
 // For platform-correct network include
 #include "infrastructure/Communicator.h"
 
+// fucking windows and their stupid ass macros cost me 1 hour 30
+#ifdef ERROR
+#undef ERROR
+#endif
+
 OBuffer JsonResponsePacketSerializer::serializeResponse(const LoginResponse &response)
 {
 	nlohmann::json data = {
@@ -48,7 +53,7 @@ OBuffer JsonResponsePacketSerializer::serializeJsonToProtocol(const ProtocolCode
 	writeBuffer += SIZE_JSON_LEN;
 	
 	// Actual JSON
-	std::memcpy(writeBuffer, dataStr.c_str(), len);
+	std::memcpy(writeBuffer, dataStr.c_str(), dataStr.size());
 
 	return OBuffer(buffer, len);
 }
