@@ -261,8 +261,8 @@ RequestInfo CommonCommunicator<T>::_waitForClientRequest(const T socket)
         throw std::runtime_error("Invalid JSON length");
     }
 
-    unsigned char* const data = new unsigned char[jsonLen + 1]; // +1 for null termination (better be safe than sorry).
-    recieveMsg(socket, data, jsonLen + 1);
+    unsigned char* const data = new unsigned char[jsonLen]; // readJson already handles null termination.
+    recieveMsg(socket, data, jsonLen);
 
     const RequestInfo info(
         (ProtocolCode)reqCode,
