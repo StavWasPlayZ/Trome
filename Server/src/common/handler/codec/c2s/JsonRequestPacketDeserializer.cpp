@@ -1,8 +1,5 @@
 #include "JsonRequestPacketDeserializer.h"
 
-// For platform-correct network include
-#include "infrastructure/Communicator.h"
-
 LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(const nlohmann::json &data)
 {
 	return LoginRequest(
@@ -28,17 +25,8 @@ nlohmann::json JsonRequestPacketDeserializer::readJson(const unsigned char *data
         throw std::runtime_error("Invalid JSON length");
     }
 
-	std::string jsonRaw;
-	std::memcpy(&jsonRaw, data, jsonLen * sizeof(char));
+	char* const jsonRaw = new char[jsonLen];
+	std::memcpy(jsonRaw, data, jsonLen * sizeof(char));
 
-    return nlohmann::json::parse(jsonRaw);
-}
-
-int JsonRequestPacketDeserializer::readInt(const unsigned char *buffer)
-{
-	int result;
-    std::memcpy(&result, buffer, sizeof(int));
-
-	// Internet said to wrap result in this
-	return ntohl(result);
+    return nlohmann::json::parse(std::string(jsonRaw, jsonLen));
 }

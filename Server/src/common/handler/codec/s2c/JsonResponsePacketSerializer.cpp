@@ -32,9 +32,9 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const ErrorResponse &res
 
 OBuffer JsonResponsePacketSerializer::serializeJsonToProtocol(const ProtocolCode msgCode, const nlohmann::json data)
 {
-	const std::string str = data.dump();
+	const std::string dataStr = data.dump();
 
-	const int len = SIZE_CODE + SIZE_JSON_LEN + str.size() + 1; // + 1 for null terminator
+	const int len = SIZE_CODE + SIZE_JSON_LEN + dataStr.size();
 	unsigned char* const buffer = new unsigned char[len];
 
 	unsigned char* writeBuffer = buffer;
@@ -44,11 +44,11 @@ OBuffer JsonResponsePacketSerializer::serializeJsonToProtocol(const ProtocolCode
 	writeBuffer[0] = (unsigned char)msgCode;
 	writeBuffer += SIZE_CODE;
 	// JSON length
-	JsonResponsePacketSerializer::writeInt(str.size() + 1, writeBuffer);
+	JsonResponsePacketSerializer::writeInt(dataStr.size(), writeBuffer);
 	writeBuffer += SIZE_JSON_LEN;
 	
 	// Actual JSON
-	std::memcpy(writeBuffer + SIZE_CODE, str.c_str(), len);
+	std::memcpy(writeBuffer, dataStr.c_str(), len);
 
 	return OBuffer(buffer, len);
 }
