@@ -27,6 +27,8 @@ add_executable (Server
   "src/common/infrastructure/OBuffer.h"
   "src/common/infrastructure/OBuffer.cpp"
   "src/common/infrastructure/Communicator.h"
+  "src/common/infrastructure/LoginManager.h"
+  "src/common/infrastructure/db/IDatabase.h"
   "src/common/exception/ForcedDisconnectionException.h"
   "src/common/exception/ForcedDisconnectionException.cpp"
   "src/common/exception/SocketTimeoutException.h"
@@ -36,6 +38,10 @@ add_executable (Server
 
   "src/common/handler/IRequestHandler.h"
   "src/common/handler/IRequestHandler.tpp"
+  "src/common/handler/IRequestHandler.cpp"
+  "src/common/handler/RequestHandlerFactory.h"
+  "src/common/handler/RequestHandlerFactory.cpp"
+  
   "src/common/handler/LoginRequestHandler.h"
   "src/common/handler/LoginRequestHandler.cpp"
   "src/common/handler/MenuRequestHandler.h"

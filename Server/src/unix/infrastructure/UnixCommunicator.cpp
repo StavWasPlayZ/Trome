@@ -13,8 +13,7 @@
 #include <cstring>
 #include <errno.h>
 
-UnixCommunicator::UnixCommunicator() :
-    CommonCommunicator(0)
+UnixCommunicator::UnixCommunicator(const RequestHandlerFactory& handlerFactory) : CommonCommunicator(0, handlerFactory)
 {}
 
 bool UnixCommunicator::isValidSocket(const int result) const

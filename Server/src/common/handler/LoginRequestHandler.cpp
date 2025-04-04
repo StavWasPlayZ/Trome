@@ -3,6 +3,9 @@
 #include "codec/s2c/JsonResponsePacketSerializer.h"
 #include "codec/s2c/Response.h"
 
+LoginRequestHandler::LoginRequestHandler(const RequestHandlerFactory &handlerFactory) : IRequestHandler(handlerFactory)
+{}
+
 bool LoginRequestHandler::isRequestRelevant(const RequestInfo &request) const
 {
     //TODO: Check if client is already logged in (?)

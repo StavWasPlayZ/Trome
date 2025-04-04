@@ -14,6 +14,7 @@
 
 #include "infrastructure/Client.h"
 
+#include "handler/RequestHandlerFactory.h"
 #include "request/RequestInfo.h"
 
 
@@ -34,7 +35,7 @@ template <typename T>
 class CommonCommunicator
 {
 public:
-	CommonCommunicator(const T defaultSocket);
+	CommonCommunicator(const T defaultSocket, const RequestHandlerFactory& handlerFactory);
 	virtual ~CommonCommunicator();
 
 	bool isRunning() const;
@@ -115,6 +116,8 @@ protected:
 	T m_serverSocket;
 
 private:
+	const RequestHandlerFactory m_handlerFactory;
+
 	std::mutex _disconnectingClients_mutex;
 	
 	/**
