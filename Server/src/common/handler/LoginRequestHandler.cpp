@@ -1,7 +1,7 @@
 #include "LoginRequestHandler.h"
 
-#include "infrastructure/codec/s2c/JsonResponsePacketSerializer.h"
-#include "infrastructure/codec/s2c/Response.h"
+#include "codec/s2c/JsonResponsePacketSerializer.h"
+#include "codec/s2c/Response.h"
 
 bool LoginRequestHandler::isRequestRelevant(const RequestInfo &request) const
 {

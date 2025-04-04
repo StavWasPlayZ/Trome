@@ -24,10 +24,10 @@
 
 #include "infrastructure/Client.hpp"
 
-#include "codec/s2c/Response.h"
+#include "handler/codec/s2c/Response.h"
 
-#include "codec/c2s/JsonRequestPacketDeserializer.h"
-#include "codec/s2c/JsonResponsePacketSerializer.h"
+#include "handler/codec/c2s/JsonRequestPacketDeserializer.h"
+#include "handler/codec/s2c/JsonResponsePacketSerializer.h"
 #include "request/RequestInfo.h"
 
 #include "handler/LoginRequestHandler.h"
