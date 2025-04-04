@@ -1,6 +1,6 @@
 #pragma once
 
-#include "infrastructure/CommonCommunicator.hpp"
+#include "infrastructure/CommonCommunicator.h"
 
 class UnixCommunicator : public CommonCommunicator<int>
 {
