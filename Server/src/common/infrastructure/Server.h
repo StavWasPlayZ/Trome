@@ -21,9 +21,9 @@ public:
 	bool isRunning() const;
 
 private:
-	Communicator m_communicator;
-    LoginManager m_loginManager;
+	LoginManager m_loginManager;
 	IDatabase* const m_database;
-
+	
+	Communicator m_communicator;
 	RequestHandlerFactory m_handlerFactory;
 };

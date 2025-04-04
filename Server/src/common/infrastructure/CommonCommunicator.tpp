@@ -20,10 +20,10 @@
 
 template <typename T>
 CommonCommunicator<T>::CommonCommunicator(const T defaultSocket, const RequestHandlerFactory& handlerFactory) :
-    m_serverSocket(defaultSocket),
-    m_handlerFactory(handlerFactory),
+    _running(false),
     _serverSockAddr({ 0 }),
-    _running(false)
+    m_serverSocket(defaultSocket),
+    m_handlerFactory(handlerFactory)
 {}
 
 template <typename T>

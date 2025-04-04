@@ -11,6 +11,7 @@ class IRequestHandler
 {
 public:
     IRequestHandler(const RequestHandlerFactory& handlerFactory);
+    virtual ~IRequestHandler();
 
     virtual bool isRequestRelevant(const RequestInfo& request) const = 0;
     virtual RequestResult handleRequest(const RequestInfo& request) const = 0;
