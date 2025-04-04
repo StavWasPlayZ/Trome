@@ -1,6 +1,5 @@
 #include <iostream>
 
-#include <thread>
 #include "infrastructure/Server.h"
 
 const std::string CMD_EXIT = "EXIT";
@@ -11,11 +10,8 @@ void cmdHandler();
 
 int main()
 {
-	std::future<void>& serverThread = server.run();
-
-	std::thread(cmdHandler).detach();
-
-	serverThread.wait();
+	server.run();
+	cmdHandler();
 }
 
 void cmdHandler()

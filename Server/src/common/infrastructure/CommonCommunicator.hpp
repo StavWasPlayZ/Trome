@@ -71,10 +71,10 @@ public:
 	* Returns: The future handling the client sockets.
 	* Completes when server closes.
 	*/
-	virtual std::future<void>& bindAndListen()
+	virtual void bindAndListen()
 	{
 		commonSetup();
-		return startServerThreads();
+		startServerThreads();
 	}
 
 	void close()
@@ -202,7 +202,7 @@ protected:
 	* Returns: The future handling the client sockets.
 	* Completes when server closes.
 	*/
-	std::future<void>& startServerThreads()
+	void startServerThreads()
 	{
 		this->_serverThread = std::async(
 			std::launch::async,
@@ -221,8 +221,6 @@ protected:
 		).detach();
 
 		std::cout << "Listening on port " << PORT << "..." << std::endl;
-
-		return this->_serverThread;
 	}
 
 

@@ -1,8 +1,8 @@
 ﻿#include "Server.h"
 
-std::future<void>& Server::run()
+void Server::run()
 {
-	return this->m_communicator.bindAndListen();
+	this->m_communicator.bindAndListen();
 }
 
 void Server::close()
