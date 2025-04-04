@@ -11,6 +11,25 @@ bool LoginRequestHandler::isRequestRelevant(const RequestInfo &request) const
 
 RequestResult LoginRequestHandler::handleRequest(const RequestInfo &request) const
 {
-    //TODO: Implement
-    return errorServerUnimplemented<LoginRequestHandler>();
+    if (request.id == ProtocolCode::LOGIN)
+    {
+        login(request);
+    }
+    else
+    {
+        // We already checked that it must be either of the 2.
+        signup(request);
+    }
+}
+
+RequestResult LoginRequestHandler::login(const RequestInfo &request) const
+{
+    //TODO: Implement after LoginManager is complete
+    return errorUnimplementedResult<LoginRequestHandler>();
+}
+
+RequestResult LoginRequestHandler::signup(const RequestInfo &request) const
+{
+    //TODO: Implement after LoginManager is complete
+    return errorUnimplementedResult<LoginRequestHandler>();
 }

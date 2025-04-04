@@ -12,5 +12,5 @@ bool MenuRequestHandler::isRequestRelevant(const RequestInfo &request) const
 RequestResult MenuRequestHandler::handleRequest(const RequestInfo &request) const
 {
     //TODO: Implement
-    return errorServerUnimplemented<MenuRequestHandler>();
+    return errorUnimplementedResult<MenuRequestHandler>();
 }

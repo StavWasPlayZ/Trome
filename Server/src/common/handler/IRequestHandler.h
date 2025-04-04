@@ -14,7 +14,7 @@ public:
      * T - The current handler type
      */
     template <typename T>
-    RequestResult errorServerUnimplemented() const;
+    RequestResult errorUnimplementedResult() const;
 };
 
 
