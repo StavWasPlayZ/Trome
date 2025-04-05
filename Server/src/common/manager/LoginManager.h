@@ -10,6 +10,8 @@
 class LoginManager
 {
 public:
+	LoginManager(IDatabase* const m_database);
+
 	/**
 	 * Signs up a new user, then registers them as logged in.
 	 */

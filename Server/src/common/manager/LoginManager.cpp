@@ -2,6 +2,10 @@
 
 #include <algorithm>
 
+LoginManager::LoginManager(IDatabase* const database) :
+	m_database(database)
+{}
+
 SignupResponse LoginManager::signup(const std::string& username, const std::string& password, const std::string& email)
 {
 	try
