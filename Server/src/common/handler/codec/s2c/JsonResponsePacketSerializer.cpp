@@ -14,6 +14,11 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const LoginResponse &res
 		{ProtocolJsonKeys::STATUS, response.status}
 	};
 
+	if (response.userId != -1)
+	{
+		data[ProtocolJsonKeys::USER_ID] = response.userId;
+	}
+
 	return serializeJsonToProtocol(ProtocolCode::LOGIN, data);
 }
 
@@ -22,6 +27,11 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const SignupResponse &re
 	nlohmann::json data = {
 		{ProtocolJsonKeys::STATUS, response.status}
 	};
+
+	if (response.userId != -1)
+	{
+		data[ProtocolJsonKeys::USER_ID] = response.userId;
+	}
 
 	return serializeJsonToProtocol(ProtocolCode::SIGNUP, data);
 }
