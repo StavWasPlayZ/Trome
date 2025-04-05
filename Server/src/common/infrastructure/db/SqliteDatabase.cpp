@@ -1,14 +1,17 @@
 #include "SqliteDatabase.h"
 
+/*
+	opens the DB
+*/
 bool SqliteDatabase::open()
 {
 	char* errMessage = nullptr;
 
-	int file_exists = _access(_dbName.c_str(), 0);
-	int res = sqlite3_open(_dbName.c_str(), &_db);
+	int file_exists = _access(this->_dbName.c_str(), 0);
+	int res = sqlite3_open(this->_dbName.c_str(), &(this->_db));
 	if (res != SQLITE_OK)
 	{
-		_db = nullptr;
+		this->_db = nullptr;
 		return false;
 	}
 
@@ -20,7 +23,7 @@ bool SqliteDatabase::open()
 			"password TEXT NOT NULL, ";
 			"mail TEXT NOT NULL);";
 
-		res = sqlite3_exec(_db, str.c_str(), nullptr, nullptr, &errMessage);
+		res = sqlite3_exec(this->_db, str.c_str(), nullptr, nullptr, &errMessage);
 
 		if (res != SQLITE_OK)
 		{
@@ -31,4 +34,14 @@ bool SqliteDatabase::open()
 
 
 	return true;
+}
+
+/*
+	closes the DB
+*/
+bool SqliteDatabase::close()
+{
+	bool done = sqlite3_close(this->_db) == SQLITE_OK;
+	this->_db = nullptr;
+	return done;
 }
