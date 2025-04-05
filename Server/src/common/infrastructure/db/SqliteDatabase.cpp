@@ -5,7 +5,7 @@ const std::string SqliteDatabase::TABLE_USERS = "users";
 const std::string SqliteDatabase::CREATE_USERS_TBL_QUERY = 
 	"CREATE TABLE IF NOT EXISTS " + SqliteDatabase::TABLE_USERS + " ("
 		"id INTEGER PRIMARY KEY AUTOINCREMENT, "
-		"username TEXT NOT NULL, "
+		"username TEXT NOT NULL UNIQUE, "
 		"password TEXT NOT NULL, "
 		"mail TEXT NOT NULL"
 	");";
