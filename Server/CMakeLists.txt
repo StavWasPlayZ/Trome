@@ -61,7 +61,7 @@ add_executable (Server
   "src/common/infrastructure/request/RequestInfo.cpp"
   "src/common/infrastructure/request/RequestResult.h"
   "src/common/infrastructure/request/RequestResult.cpp"
-)
+ "src/sqlite3.c" "src/sqlite3.h")
 
 # Platform-specific sources
 if (WIN32)
