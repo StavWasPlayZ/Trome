@@ -4,6 +4,7 @@
 //REVIEW: Convert to SQLiteCpp
 #include "sqlite3.h"
 
+#include <string>
 #include <map>
 #include <list>
 #include <functional>
