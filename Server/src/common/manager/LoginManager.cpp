@@ -24,3 +24,13 @@ unsigned char LoginManager::login(const std::string& username, const std::string
 	this->m_loggedUsers.push_back(username);
 	return (unsigned char)ProtocolCode::OK;
 }
+
+void LoginManager::logout(const std::string& username)
+{
+	auto it = std::find(m_loggedUsers.begin(), m_loggedUsers.end(), username); // finds username
+
+	if (it != m_loggedUsers.end()) // if found
+	{
+		m_loggedUsers.erase(it);
+	}
+}
