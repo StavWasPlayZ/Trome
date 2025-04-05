@@ -23,9 +23,7 @@ SqliteDatabase::~SqliteDatabase()
 
 bool SqliteDatabase::open()
 {
-	char* errMessage = nullptr;
-
-	int res = sqlite3_open(this->_dbName.c_str(), &(this->_dbInstance));
+	const int res = sqlite3_open(this->_dbName.c_str(), &(this->_dbInstance));
 	if (res != SQLITE_OK)
 	{
 		this->_dbInstance = nullptr;
