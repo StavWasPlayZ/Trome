@@ -12,6 +12,7 @@ enum class ProtocolCode : unsigned char
 struct ProtocolJsonKeys
 {
     static const std::string STATUS;
+    static const std::string USER_ID;
     static const std::string MESSAGE;
 };
 

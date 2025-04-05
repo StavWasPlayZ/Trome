@@ -34,6 +34,18 @@ public:
 
 private:
 	/**
+	 * Serializes the base response into the provided json.
+	 */
+	template <typename S>
+	static void serializeBaseResponseToJson(nlohmann::json& json, const ProtocolResponse<S>& response);
+
+	/**
+	 * Serializes the response into the provided json.
+	 */
+	template <typename S>
+	static void serializeResponseToJson(nlohmann::json& json, const RegistrationResponse<S>& response);
+
+	/**
 	 * Converts the provided json into a writable resource,
 	 * prepending the necessary binary headers.
 	 * 
@@ -43,3 +55,6 @@ private:
 
 	static void writeInt(int num, unsigned char* const buffer);
 };
+
+
+#include "JsonResponsePacketSerializer.tpp"

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Communicator.h"
-#include "LoginManager.h"
+#include "manager/LoginManager.h"
 #include "handler/RequestHandlerFactory.h"
 #include "db/IDatabase.h"
 
@@ -21,8 +21,8 @@ public:
 	bool isRunning() const;
 
 private:
-	LoginManager m_loginManager;
 	IDatabase* const m_database;
+	LoginManager m_loginManager;
 	
 	Communicator m_communicator;
 	RequestHandlerFactory m_handlerFactory;

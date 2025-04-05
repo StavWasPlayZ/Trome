@@ -5,9 +5,9 @@ const std::string SqliteDatabase::TABLE_USERS = "users";
 const std::string SqliteDatabase::CREATE_USERS_TBL_QUERY = 
 	"CREATE TABLE IF NOT EXISTS " + SqliteDatabase::TABLE_USERS + " ("
 		"id INTEGER PRIMARY KEY AUTOINCREMENT, "
-		"username TEXT NOT NULL, "
+		"username TEXT NOT NULL UNIQUE, "
 		"password TEXT NOT NULL, "
-		"mail TEXT NOT NULL"
+		"email TEXT NOT NULL"
 	");";
 
 
@@ -59,32 +59,30 @@ bool SqliteDatabase::doesUserExist(const std::string& username) const
 	);
 }
 
-bool SqliteDatabase::doesPasswordMatch(const std::string& username, const std::string& password) const
+unsigned int SqliteDatabase::getIdOfUser(const std::string& username, const std::string& password) const
 {
-	return queryExists(
-		"SELECT EXISTS("
-			"SELECT 1 FROM " + TABLE_USERS +
-			" WHERE "
-			"username = '" + username + "'"
-			" AND "
-			"password = '" + password + "'"
-		") AS q_exists;"
+	const std::list<unsigned int> ids = queryIds(
+		"SELECT id FROM " + TABLE_USERS +
+		" WHERE "
+		"username = '" + username + "'"
+		" AND "
+		"password = '" + password + "';"
 	);
+
+	if (ids.empty())
+		return -1;
+
+	return *ids.begin();
 }
 
-unsigned int SqliteDatabase::addNewUser(const std::string& username, const std::string& password, const std::string& mail) const
+unsigned int SqliteDatabase::addNewUser(const std::string& username, const std::string& password, const std::string& email) const
 {
-	return *querySql<unsigned int>(
-		"INSERT INTO " + TABLE_USERS + " (username, password, mail)"
+	return *queryIds(
+		"INSERT INTO " + TABLE_USERS + " (username, password, email)"
 		" VALUES "
-		"('" + username + "','" + password + "','" + mail + "')"
+		"('" + username + "','" + password + "','" + email + "')"
 
-		" RETURNING ID;",
-
-		[](const std::map<std::string, std::string> columns) -> unsigned int
-		{
-			return (unsigned int) std::stoul(columns.at("ID"));
-		}
+		" RETURNING id;"
 	).begin();
 }
 
@@ -101,6 +99,18 @@ bool SqliteDatabase::queryExists(const std::string& query) const
 			return columns.at("q_exists") == "1";
 		}
 	).begin();
+}
+
+std::list<unsigned int> SqliteDatabase::queryIds(const std::string &query) const
+{
+    return querySql<unsigned int>(
+		query,
+
+		[](const std::map<std::string, std::string> columns) -> unsigned int
+		{
+			return (unsigned int) std::stoul(columns.at("id"));
+		}
+	);
 }
 
 void SqliteDatabase::execSql(const std::string& query) const

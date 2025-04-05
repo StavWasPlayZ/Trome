@@ -1,7 +1,7 @@
 #pragma once
 
 #include "infrastructure/db/IDatabase.h"
-#include "infrastructure/LoginManager.h"
+#include "manager/LoginManager.h"
 
 #include "handler/LoginRequestHandler.h"
 

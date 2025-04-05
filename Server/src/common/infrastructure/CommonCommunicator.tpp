@@ -229,7 +229,7 @@ void CommonCommunicator<T>::_handleClient(const T socket)
     if (!handler->isRequestRelevant(info))
     {
         responseBuffer = JsonResponsePacketSerializer::serializeResponse(
-            ErrorResponse("Illegal request")
+            ErrorResponse(ErrorStatus::ILLEGAL_REQUEST, "Illegal request")
         );
     }
     else
@@ -286,7 +286,7 @@ void CommonCommunicator<T>::_clientCleanerThreadFunc()
 	
 	while (this->_running)
 	{
-		// waits for _enqueueDisconnectClient to be called
+		// Waits for _enqueueDisconnectClient to be called
 		this->_disconectedClientConditionalVariable.wait(lock);
 
 		_freeDisconnectedClients();

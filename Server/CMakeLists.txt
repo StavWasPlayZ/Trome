@@ -27,7 +27,6 @@ add_executable (Server
   "src/common/infrastructure/OBuffer.h"
   "src/common/infrastructure/OBuffer.cpp"
   "src/common/infrastructure/Communicator.h"
-  "src/common/infrastructure/LoginManager.h"
   "src/common/infrastructure/db/IDatabase.h"
   "src/common/exception/ForcedDisconnectionException.h"
   "src/common/exception/ForcedDisconnectionException.cpp"
@@ -49,8 +48,10 @@ add_executable (Server
 
   "src/common/handler/codec/s2c/Response.h"
   "src/common/handler/codec/s2c/Response.cpp"
+  "src/common/handler/codec/s2c/Response.tpp"
   "src/common/handler/codec/s2c/JsonResponsePacketSerializer.h"
   "src/common/handler/codec/s2c/JsonResponsePacketSerializer.cpp"
+  "src/common/handler/codec/s2c/JsonResponsePacketSerializer.tpp"
 
   "src/common/handler/codec/c2s/Request.h"
   "src/common/handler/codec/c2s/Request.cpp"
@@ -65,6 +66,11 @@ add_executable (Server
   "src/common/infrastructure/db/IDatabase.cpp"
   "src/common/infrastructure/db/SqliteDatabase.cpp"
   "src/common/infrastructure/db/SqliteDatabase.tpp"
+
+  "src/common/manager/LoginManager.h"
+  "src/common/manager/LoginManager.cpp"
+  "src/common/manager/LoggedUser.cpp"
+  "src/common/manager/LoggedUser.h"
 )
 
 # Platform-specific sources

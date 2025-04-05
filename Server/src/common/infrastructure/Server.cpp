@@ -4,6 +4,7 @@
 
 Server::Server() :
 	m_database(new SqliteDatabase()),
+	m_loginManager(m_database),
 	m_communicator(this->m_handlerFactory),
 	m_handlerFactory(this->m_loginManager, this->m_database)
 {}
