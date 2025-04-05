@@ -1,6 +1,35 @@
 #pragma once
+#include <iostream>
 
 class IDatabase
 {
+public:
+	virtual ~IDatabase();
 
+	/**
+	 * Open the database.ADJ_OFFSET_SINGLESHOT
+	 * 
+	 * Returns: Whether the operation succeed
+	 */
+	virtual bool open() = 0;
+	/**
+	 * Closes the database
+	 * 
+	 * Returns: Whether the operation succeed
+	 */
+	virtual bool close() = 0;
+	/**
+	 * Returns: Whether the user exists within the databse
+	 */
+	virtual bool doesUserExist(const std::string& username) const = 0;
+	/**
+	 * Returns: Whether the password matches for the provided user
+	 */
+	virtual bool doesPasswordMatch(const std::string& username, const std::string& password) const = 0;
+	/**
+	 * Adds a new user.
+	 * 
+	 * Returns: Its new ID
+	 */
+	virtual unsigned int addNewUser(const std::string& username, const std::string& password, const std::string& mail) const = 0;	
 };

@@ -92,6 +92,7 @@
         "set": "cpp",
         "unordered_set": "cpp",
         "*.tpp": "cpp",
-        "chrono": "cpp"
+        "chrono": "cpp",
+        "cinttypes": "cpp"
     },
 }

@@ -15,6 +15,7 @@ Server::~Server()
 
 void Server::run()
 {
+	m_database->open();
 	this->m_communicator.bindAndListen();
 }
 
