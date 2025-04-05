@@ -64,9 +64,6 @@ add_executable (Server
   
   "src/common/infrastructure/db/IDatabase.cpp"
   "src/common/infrastructure/db/SqliteDatabase.cpp"
-
-  "src/sqlite3.c"
-  "src/sqlite3.h"
 )
 
 # Platform-specific sources
@@ -97,6 +94,12 @@ FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download
 FetchContent_MakeAvailable(json)
 
 target_link_libraries(Server PRIVATE nlohmann_json::nlohmann_json)
+
+# sqlite3
+add_library(sqlite3 STATIC lib/sqlite3/sqlite3.c)
+target_include_directories(sqlite3 PUBLIC lib/sqlite3)
+
+target_link_libraries(Server PRIVATE sqlite3)
 
 
 # Support includes starting from relative paths
