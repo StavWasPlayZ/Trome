@@ -6,27 +6,23 @@
 
 class LoginManager
 {
-private:
-	IDatabase* m_database;
-	std::vector<std::string> m_loggedUsers;
-
 public:
-	/*
-		signs up a user
-		returns status to send
-	*/
+	/**
+	 * Signs up a new user, then registers them as logged in.
+	 */
 	unsigned char signup(const std::string& username, const std::string& password, const std::string& mail);
 
-
-	/*
-		login a user
-		returns status to send
-	*/
+	/**
+	 * Registers the provided user as logged in, provided their credentials match.
+	 */
 	unsigned char login(const std::string& username, const std::string& password);
 
-
-	/*
-		logouts a user
-	*/
+	/**
+	 * Unregisters the user as being signed in.
+	 */
 	void logout(const std::string& username);
+
+private:
+	IDatabase* const m_database;
+	std::vector<std::string> m_loggedUsers;
 };

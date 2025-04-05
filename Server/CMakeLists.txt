@@ -65,7 +65,10 @@ add_executable (Server
   "src/common/infrastructure/db/IDatabase.cpp"
   "src/common/infrastructure/db/SqliteDatabase.cpp"
   "src/common/infrastructure/db/SqliteDatabase.tpp"
- "src/common/manager/LoginManager.h" "src/common/manager/LoginManager.cpp")
+
+  "src/common/manager/LoginManager.h"
+  "src/common/manager/LoginManager.cpp"
+)
 
 # Platform-specific sources
 if (WIN32)

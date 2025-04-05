@@ -1,5 +1,7 @@
 #include "manager/LoginManager.h"
 
+#include <algorithm>
+
 unsigned char LoginManager::signup(const std::string& username, const std::string& password, const std::string& mail)
 {
 	try
@@ -7,7 +9,7 @@ unsigned char LoginManager::signup(const std::string& username, const std::strin
 		this->m_database->addNewUser(username, password, mail);
 		return this->login(username, password);
 	}
-	catch (std::runtime_error& e) // addNewUser will return runtime_error when adding a user with the same username bc its UNIQE
+	catch (std::runtime_error& e) // addNewUser will return runtime_error when adding a user with the same username bc its UNIQUE.
 	{
 		return (unsigned char)ProtocolCode::ERROR;
 	}
