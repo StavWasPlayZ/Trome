@@ -1,8 +1,10 @@
 #pragma once
 
-#include <vector>
+#include <unordered_map>
 
 #include "Constants.h"
+
+#include "LoggedUser.h"
 
 #include "infrastructure/db/IDatabase.h"
 #include "handler/codec/s2c/Response.h"
@@ -29,5 +31,11 @@ public:
 
 private:
 	IDatabase* const m_database;
-	std::vector<std::string> m_loggedUsers;
+	/**
+	 * Maps a username to a logged in user.
+	 * Mapping as such because the keys are based, for some reason, on usernames only.
+	 * 
+	 * TODO: Ask if it may be done with IDs.
+	 */
+	std::unordered_map<std::string, LoggedUser> m_loggedUsers;
 };

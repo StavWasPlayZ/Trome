@@ -33,20 +33,21 @@ SignupResponse LoginManager::signup(const std::string& username, const std::stri
 
 LoginResponse LoginManager::login(const std::string& username, const std::string& password)
 {
-	unsigned int userId = this->m_database->getIdOfUser(username, password);
+	const unsigned int userId = this->m_database->getIdOfUser(username, password);
 
 	if (userId == -1)
 	{
 		return LoginResponse(LoginStatus::FAILED_INVALID_CREDENTIALS);
 	}
 
-	this->m_loggedUsers.push_back(username);
+	this->m_loggedUsers.insert({username, LoggedUser(userId, username)});
+
 	return LoginResponse(LoginStatus::SUCCESS, userId);
 }
 
 LogoutResponse LoginManager::logout(const std::string& username)
 {
-	auto it = std::find(m_loggedUsers.begin(), m_loggedUsers.end(), username); // finds username
+	const auto it = this->m_loggedUsers.find(username);
 
 	if (it == m_loggedUsers.end()) // if found
 	{

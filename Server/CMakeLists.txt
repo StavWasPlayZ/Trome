@@ -69,6 +69,8 @@ add_executable (Server
 
   "src/common/manager/LoginManager.h"
   "src/common/manager/LoginManager.cpp"
+  "src/common/manager/LoggedUser.cpp"
+  "src/common/manager/LoggedUser.h"
 )
 
 # Platform-specific sources
