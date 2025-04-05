@@ -17,8 +17,8 @@ bool SqliteDatabase::open()
 
 	if (file_exists != 0)
 	{
-		std::string str = "CREATE TABLE users ("
-			"id INTEGER PRIMARY KEY AUTOINCREMENT, "
+		std::string str = "CREATE TABLE " + TABLE_USERS +
+			" (id INTEGER PRIMARY KEY AUTOINCREMENT, "
 			"username TEXT NOT NULL, ";
 			"password TEXT NOT NULL, ";
 			"mail TEXT NOT NULL);";
@@ -44,4 +44,50 @@ bool SqliteDatabase::close()
 	bool done = sqlite3_close(this->_db) == SQLITE_OK;
 	this->_db = nullptr;
 	return done;
+}
+
+/*
+	checks if a user exists in db
+*/
+bool SqliteDatabase::doesUserExists(const std::string username) const
+{
+	std::string str = "SELECT * FROM " + TABLE_USERS + " WHERE username = " + username + ";";
+	char* errMessage = nullptr;
+	bool result = false;
+	int res = sqlite3_exec(_db, str.c_str(), callbackDoesExist, &result, &errMessage);
+
+	if (res != SQLITE_OK)
+	{
+		throw std::runtime_error("Error getting users table");
+	}
+
+	return result;
+}
+
+/*
+	checks if a user have that password
+*/
+bool SqliteDatabase::doesPasswordMatch(const std::string username, const std::string password) const
+{
+	std::string str = "SELECT * FROM " + TABLE_USERS + " WHERE username = " + username + " AND password = " + password + ";";
+	char* errMessage = nullptr;
+	bool result = false;
+	int res = sqlite3_exec(_db, str.c_str(), callbackDoesExist, &result, &errMessage);
+
+	if (res != SQLITE_OK)
+	{
+		throw std::runtime_error("Error getting users table");
+	}
+
+	return result;
+}
+
+/*
+	the callback used to check if some thing is in db
+	data - bool*
+*/
+int callbackDoesExist(void* data, int argc, char** argv, char** azColName)
+{
+	bool* result = (bool*)data;
+	*result = true;
 }

@@ -2,6 +2,12 @@
 
 #include "IDatabase.h"
 
+const std::string TABLE_USERS = "users";
+
+
+// callbacks
+int callbackDoesExist(void* data, int argc, char** argv, char** azColName);
+
 class SqliteDatabase : public IDatabase
 {
 public:
