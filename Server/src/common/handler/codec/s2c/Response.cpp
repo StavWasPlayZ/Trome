@@ -1,19 +1,15 @@
 #include "Response.h"
 
-LoginResponse::LoginResponse(const LoginResponse::Status status, const unsigned int userId) :
-    status(status),
-    userId(userId)
+LoginResponse::LoginResponse(const LoginStatus status, const unsigned int userId) : RegistrationResponse(status, userId)
 {}
 
-LoginResponse::LoginResponse(const LoginResponse::Status status) : LoginResponse(status, -1)
+LoginResponse::LoginResponse(const LoginStatus status) : RegistrationResponse(status)
 {}
 
-SignupResponse::SignupResponse(const SignupResponse::Status status, const unsigned int userId) :
-    status(status),
-    userId(userId)
+SignupResponse::SignupResponse(const SignupStatus status, const unsigned int userId) : RegistrationResponse(status, userId)
 {}
 
-SignupResponse::SignupResponse(const SignupResponse::Status status) : SignupResponse(status, -1)
+SignupResponse::SignupResponse(const SignupStatus status) : SignupResponse(status, -1)
 {}
 
 ErrorResponse::ErrorResponse(const std::string &message) :

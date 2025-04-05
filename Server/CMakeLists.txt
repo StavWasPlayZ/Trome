@@ -49,8 +49,10 @@ add_executable (Server
 
   "src/common/handler/codec/s2c/Response.h"
   "src/common/handler/codec/s2c/Response.cpp"
+  "src/common/handler/codec/s2c/Response.tpp"
   "src/common/handler/codec/s2c/JsonResponsePacketSerializer.h"
   "src/common/handler/codec/s2c/JsonResponsePacketSerializer.cpp"
+  "src/common/handler/codec/s2c/JsonResponsePacketSerializer.tpp"
 
   "src/common/handler/codec/c2s/Request.h"
   "src/common/handler/codec/c2s/Request.cpp"
