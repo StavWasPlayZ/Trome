@@ -27,7 +27,6 @@ add_executable (Server
   "src/common/infrastructure/OBuffer.h"
   "src/common/infrastructure/OBuffer.cpp"
   "src/common/infrastructure/Communicator.h"
-  "src/common/infrastructure/LoginManager.h"
   "src/common/infrastructure/db/IDatabase.h"
   "src/common/exception/ForcedDisconnectionException.h"
   "src/common/exception/ForcedDisconnectionException.cpp"
