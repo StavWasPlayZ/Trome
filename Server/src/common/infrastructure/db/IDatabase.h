@@ -23,9 +23,9 @@ public:
 	 */
 	virtual bool doesUserExist(const std::string& username) const = 0;
 	/**
-	 * Returns: Whether the password matches for the provided user
+	 * Returns: The ID of the user matching the provided credentials; -1 otherwise.
 	 */
-	virtual bool doesPasswordMatch(const std::string& username, const std::string& password) const = 0;
+	virtual unsigned int getIdOfUser(const std::string& username, const std::string& password) const = 0;
 	/**
 	 * Adds a new user.
 	 * 

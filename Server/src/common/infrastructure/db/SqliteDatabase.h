@@ -18,7 +18,7 @@ public:
 	virtual bool open() override;
 	virtual bool close() override;
 	virtual bool doesUserExist(const std::string& username) const override;
-	virtual bool doesPasswordMatch(const std::string& username, const std::string& password) const override;
+	virtual unsigned int getIdOfUser(const std::string& username, const std::string& password) const override;
 	virtual unsigned int addNewUser(const std::string& username, const std::string& password, const std::string& mail) const override;
 
 private:
@@ -35,6 +35,10 @@ private:
 	* The associated column must be named "exists".
 	*/
 	bool queryExists(const std::string& query) const;
+	/*
+	* The associated column must be named "id".
+	*/
+	std::list<unsigned int> queryIds(const std::string& query) const;
 
 	/**
 	 * Executes the provided query.
