@@ -1,111 +1,124 @@
 #include "SqliteDatabase.h"
 
-/*
-	opens the DB
-*/
+const std::string SqliteDatabase::TABLE_USERS = "users";
+
+const std::string SqliteDatabase::CREATE_USERS_TBL_QUERY = 
+	"CREATE TABLE IF NOT EXISTS " + SqliteDatabase::TABLE_USERS + " ("
+		"id INTEGER PRIMARY KEY AUTOINCREMENT, "
+		"username TEXT NOT NULL, "
+		"password TEXT NOT NULL, "
+		"mail TEXT NOT NULL"
+	");";
+
+
+SqliteDatabase::SqliteDatabase() :
+	_dbName("trivia-database")
+{}
+
+SqliteDatabase::~SqliteDatabase()
+{
+	close();
+}
+
+
 bool SqliteDatabase::open()
 {
 	char* errMessage = nullptr;
 
-	int file_exists = _access(this->_dbName.c_str(), 0);
-	int res = sqlite3_open(this->_dbName.c_str(), &(this->_db));
+	int res = sqlite3_open(this->_dbName.c_str(), &(this->_dbInstance));
 	if (res != SQLITE_OK)
 	{
-		this->_db = nullptr;
+		this->_dbInstance = nullptr;
 		return false;
 	}
 
-	if (file_exists != 0)
-	{
-		std::string str = "CREATE TABLE " + TABLE_USERS +
-			" (id INTEGER PRIMARY KEY AUTOINCREMENT, "
-			"username TEXT NOT NULL, ";
-			"password TEXT NOT NULL, ";
-			"mail TEXT NOT NULL);";
-
-		res = sqlite3_exec(this->_db, str.c_str(), nullptr, nullptr, &errMessage);
-
-		if (res != SQLITE_OK)
-		{
-			this->close();
-			return false;
-		}
-	}
-
+	// Initialize the database with the tables.
+	// Will not execute if the tables already exist.
+	execSql(CREATE_USERS_TBL_QUERY);
 
 	return true;
 }
 
-/*
-	closes the DB
-*/
 bool SqliteDatabase::close()
 {
-	bool done = sqlite3_close(this->_db) == SQLITE_OK;
-	this->_db = nullptr;
-	return done;
-}
-
-/*
-	checks if a user exists in db
-*/
-bool SqliteDatabase::doesUserExists(const std::string& username) const
-{
-	std::string str = "SELECT * FROM " + TABLE_USERS + " WHERE username = '" + username + "';";
-	char* errMessage = nullptr;
-	bool result = false;
-	int res = sqlite3_exec(_db, str.c_str(), callbackDoesExist, &result, &errMessage);
-
-	if (res != SQLITE_OK)
+	if (sqlite3_close(this->_dbInstance) == SQLITE_OK)
 	{
-		throw std::runtime_error("Error getting users table");
+		this->_dbInstance = nullptr;
+		return true;
 	}
 
-	return result;
+	return false;
 }
 
-/*
-	checks if a user have that password
-*/
+bool SqliteDatabase::doesUserExist(const std::string& username) const
+{
+	return queryExists(
+		"SELECT EXISTS("
+			"SELECT 1 FROM " + TABLE_USERS +
+			" WHERE "
+			"username = '" + username + "'"
+		") AS q_exists;"
+	);
+}
+
 bool SqliteDatabase::doesPasswordMatch(const std::string& username, const std::string& password) const
 {
-	std::string str = "SELECT * FROM " + TABLE_USERS + " WHERE username = '" + username + "' AND password = '" + password + "';";
-	char* errMessage = nullptr;
-	bool result = false;
-	int res = sqlite3_exec(_db, str.c_str(), callbackDoesExist, &result, &errMessage);
-
-	if (res != SQLITE_OK)
-	{
-		throw std::runtime_error("Error getting users table");
-	}
-
-	return result;
+	return queryExists(
+		"SELECT EXISTS("
+			"SELECT 1 FROM " + TABLE_USERS +
+			" WHERE "
+			"username = '" + username + "'"
+			" AND "
+			"password = '" + password + "'"
+		") AS q_exists;"
+	);
 }
 
-/*
-	adds new user
-*/
-bool SqliteDatabase::addNewUser(const std::string& username, const std::string& password, const std::string& mail) const
+unsigned int SqliteDatabase::addNewUser(const std::string& username, const std::string& password, const std::string& mail) const
 {
-	std::string str = "INSERT INTO " + TABLE_USERS + " (username, password, mail) VALUES ('" + username + "','" + password + "','" + mail + "';";
-	char* errMessage = nullptr;
+	return *querySql<unsigned int>(
+		"INSERT INTO " + TABLE_USERS + " (username, password, mail)"
+		" VALUES "
+		"('" + username + "','" + password + "','" + mail + "')"
 
-	int res = sqlite3_exec(_db, str.c_str(), nullptr, nullptr, &errMessage);
+		" RETURNING ID;",
 
-	if (res != SQLITE_OK)
-	{
-		throw std::runtime_error("Error inserting into users table");
-	}
-
-	return true;
+		[](const std::map<std::string, std::string> columns) -> unsigned int
+		{
+			return (unsigned int) std::stoul(columns.at("ID"));
+		}
+	).begin();
 }
 
-/*
-	the callback used to check if some thing is in db
-	data - bool*
-*/
-int callbackDoesExist(void* data, int argc, char** argv, char** azColName)
+
+
+// Generic wrapper implementations
+
+bool SqliteDatabase::queryExists(const std::string& query) const
 {
-	bool* result = (bool*)data;
-	*result = true;
+	return *querySql<bool>(
+		query,
+		[](const std::map<std::string, std::string> columns) -> bool
+		{
+			return columns.at("q_exists") == "1";
+		}
+	).begin();
+}
+
+void SqliteDatabase::execSql(const std::string& query) const
+{
+	char* errMessage;
+
+	int result = sqlite3_exec(
+		this->_dbInstance,
+		query.c_str(),
+		nullptr,
+		nullptr,
+		&errMessage
+	);
+
+	if (result != SQLITE_OK)
+	{
+		throw std::runtime_error("Error in SQL: " + std::string(errMessage));
+	}
 }

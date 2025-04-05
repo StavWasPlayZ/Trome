@@ -64,6 +64,7 @@ add_executable (Server
   
   "src/common/infrastructure/db/IDatabase.cpp"
   "src/common/infrastructure/db/SqliteDatabase.cpp"
+  "src/common/infrastructure/db/SqliteDatabase.tpp"
 )
 
 # Platform-specific sources
