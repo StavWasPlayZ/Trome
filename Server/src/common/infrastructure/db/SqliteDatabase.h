@@ -24,6 +24,9 @@ private:
 	static const std::string CREATE_USERS_TBL_QUERY;
 	static const std::string TABLE_USERS;
 
+	/**
+	 * Simply executes the provided query.
+	 */
 	void execSql(const std::string& query) const;
 
 	/*
@@ -32,6 +35,14 @@ private:
 	*/
 	bool queryExists(const std::string& query) const;
 
+	/**
+	 * Executes the provided query.
+	 * 
+	 * rowMapper is passed, for each row found, a mapping of
+	 * the column name to the value (in string) that it possesses.
+	 * 
+	 * The result returned from it will be accumulated as an item in the returned list.
+	 */
 	template <typename T>
 	std::list<T> querySql(
 		const std::string& query,
