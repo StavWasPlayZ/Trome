@@ -49,7 +49,7 @@ bool SqliteDatabase::close()
 /*
 	checks if a user exists in db
 */
-bool SqliteDatabase::doesUserExists(const std::string username) const
+bool SqliteDatabase::doesUserExists(const std::string& username) const
 {
 	std::string str = "SELECT * FROM " + TABLE_USERS + " WHERE username = '" + username + "';";
 	char* errMessage = nullptr;
@@ -67,7 +67,7 @@ bool SqliteDatabase::doesUserExists(const std::string username) const
 /*
 	checks if a user have that password
 */
-bool SqliteDatabase::doesPasswordMatch(const std::string username, const std::string password) const
+bool SqliteDatabase::doesPasswordMatch(const std::string& username, const std::string& password) const
 {
 	std::string str = "SELECT * FROM " + TABLE_USERS + " WHERE username = '" + username + "' AND password = '" + password + "';";
 	char* errMessage = nullptr;
@@ -85,7 +85,7 @@ bool SqliteDatabase::doesPasswordMatch(const std::string username, const std::st
 /*
 	adds new user
 */
-bool SqliteDatabase::addNewUser(const std::string username, const std::string password, const std::string mail) const
+bool SqliteDatabase::addNewUser(const std::string& username, const std::string& password, const std::string& mail) const
 {
 	std::string str = "INSERT INTO " + TABLE_USERS + " (username, password, mail) VALUES ('" + username + "','" + password + "','" + mail + "';";
 	char* errMessage = nullptr;
