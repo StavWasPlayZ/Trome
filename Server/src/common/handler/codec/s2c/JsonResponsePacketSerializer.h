@@ -34,10 +34,16 @@ public:
 
 private:
 	/**
-	 * Returns: The serialized object.
+	 * Serializes the base response into the provided json.
 	 */
 	template <typename S>
-	static nlohmann::json serializeResponseToJson(const RegistrationResponse<S>& response);
+	static void serializeBaseResponseToJson(nlohmann::json& json, const ProtocolResponse<S>& response);
+
+	/**
+	 * Serializes the response into the provided json.
+	 */
+	template <typename S>
+	static void serializeResponseToJson(nlohmann::json& json, const RegistrationResponse<S>& response);
 
 	/**
 	 * Converts the provided json into a writable resource,

@@ -229,7 +229,7 @@ void CommonCommunicator<T>::_handleClient(const T socket)
     if (!handler->isRequestRelevant(info))
     {
         responseBuffer = JsonResponsePacketSerializer::serializeResponse(
-            ErrorResponse("Illegal request")
+            ErrorResponse(ErrorStatus::ILLEGAL_REQUEST, "Illegal request")
         );
     }
     else

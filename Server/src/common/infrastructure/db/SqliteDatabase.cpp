@@ -7,7 +7,7 @@ const std::string SqliteDatabase::CREATE_USERS_TBL_QUERY =
 		"id INTEGER PRIMARY KEY AUTOINCREMENT, "
 		"username TEXT NOT NULL UNIQUE, "
 		"password TEXT NOT NULL, "
-		"mail TEXT NOT NULL"
+		"email TEXT NOT NULL"
 	");";
 
 
@@ -72,12 +72,12 @@ bool SqliteDatabase::doesPasswordMatch(const std::string& username, const std::s
 	);
 }
 
-unsigned int SqliteDatabase::addNewUser(const std::string& username, const std::string& password, const std::string& mail) const
+unsigned int SqliteDatabase::addNewUser(const std::string& username, const std::string& password, const std::string& email) const
 {
 	return *querySql<unsigned int>(
-		"INSERT INTO " + TABLE_USERS + " (username, password, mail)"
+		"INSERT INTO " + TABLE_USERS + " (username, password, email)"
 		" VALUES "
-		"('" + username + "','" + password + "','" + mail + "')"
+		"('" + username + "','" + password + "','" + email + "')"
 
 		" RETURNING ID;",
 

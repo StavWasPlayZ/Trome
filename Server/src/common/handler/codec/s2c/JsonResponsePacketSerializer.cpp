@@ -10,7 +10,10 @@
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const LoginResponse &response)
 {
-	nlohmann::json data = serializeResponseToJson<LoginStatus>(
+	nlohmann::json data;
+
+	serializeResponseToJson<LoginStatus>(
+		data,
 		(const RegistrationResponse<LoginStatus>&) response
 	);
 
@@ -19,7 +22,10 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const LoginResponse &res
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const SignupResponse &response)
 {
-	nlohmann::json data = serializeResponseToJson<SignupStatus>(
+	nlohmann::json data;
+
+	serializeResponseToJson<SignupStatus>(
+		data,
 		(const RegistrationResponse<SignupStatus>&) response
 	);
 
@@ -28,9 +34,14 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const SignupResponse &re
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const ErrorResponse &response)
 {
-	nlohmann::json data = {
-		{ProtocolJsonKeys::MESSAGE, response.message}
-	};
+	nlohmann::json data;
+
+	serializeBaseResponseToJson<ErrorStatus>(
+		data,
+		(const ProtocolResponse<ErrorStatus>&) response
+	);
+
+	data[ProtocolJsonKeys::MESSAGE] = response.message;
 
 	return serializeJsonToProtocol(ProtocolCode::ERROR, data);
 }

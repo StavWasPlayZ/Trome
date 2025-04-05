@@ -3,13 +3,23 @@
 #include <string>
 
 
-struct ProtocolResponse {};
+/**
+ * S - The enum Status type
+ */
+template <typename S>
+struct ProtocolResponse
+{
+	ProtocolResponse(const S status);
+
+	const S status;
+};
+
 
 /**
  * S - The enum Status type
  */
 template <typename S>
-struct RegistrationResponse : ProtocolResponse
+struct RegistrationResponse : ProtocolResponse<S>
 {
 	RegistrationResponse(const S status, const unsigned int userId);
 	/**
@@ -17,7 +27,6 @@ struct RegistrationResponse : ProtocolResponse
 	 */
 	RegistrationResponse(const S status);
 
-	const S status;
 	/**
 	 * For failure, equals -1 (4294967295).
 	 */
@@ -59,9 +68,29 @@ struct SignupResponse : RegistrationResponse<SignupStatus>
 };
 
 
-struct ErrorResponse : ProtocolResponse
+enum class LogoutStatus : unsigned char
 {
-	ErrorResponse(const std::string& message);
+	SUCCESS = 1,
+	FAILED_NOT_LOGGED_IN = 2,
+	FAILED_INTERNAL_ERROR = 0
+};
+
+struct LogoutResponse : ProtocolResponse<LogoutStatus>
+{
+	LogoutResponse(const LogoutStatus status);
+};
+
+
+enum class ErrorStatus : unsigned char
+{
+	GENERIC = 0,
+	SERVER_UNIMPLEMENTED,
+	ILLEGAL_REQUEST
+};
+
+struct ErrorResponse : ProtocolResponse<ErrorStatus>
+{
+	ErrorResponse(const ErrorStatus status, const std::string& message);
 	
 	const std::string message;
 };

@@ -6,8 +6,7 @@ enum class ProtocolCode : unsigned char
 {
     ERROR = 0,
     LOGIN = 1,
-    SIGNUP = 2,
-    OK = 255
+    SIGNUP = 2
 };
 
 struct ProtocolJsonKeys

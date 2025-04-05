@@ -9,9 +9,12 @@ LoginResponse::LoginResponse(const LoginStatus status) : RegistrationResponse(st
 SignupResponse::SignupResponse(const SignupStatus status, const unsigned int userId) : RegistrationResponse(status, userId)
 {}
 
-SignupResponse::SignupResponse(const SignupStatus status) : SignupResponse(status, -1)
+SignupResponse::SignupResponse(const SignupStatus status) : RegistrationResponse(status)
 {}
 
-ErrorResponse::ErrorResponse(const std::string &message) :
+LogoutResponse::LogoutResponse(const LogoutStatus status) : ProtocolResponse(status)
+{}
+
+ErrorResponse::ErrorResponse(const ErrorStatus status, const std::string &message) : ProtocolResponse(status),
     message(message)
 {}

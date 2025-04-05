@@ -2,37 +2,51 @@
 
 #include <algorithm>
 
-unsigned char LoginManager::signup(const std::string& username, const std::string& password, const std::string& mail)
+SignupResponse LoginManager::signup(const std::string& username, const std::string& password, const std::string& email)
 {
 	try
 	{
-		this->m_database->addNewUser(username, password, mail);
-		return this->login(username, password);
+		this->m_database->addNewUser(username, password, email);
 	}
 	catch (std::runtime_error& e) // addNewUser will return runtime_error when adding a user with the same username bc its UNIQUE.
 	{
-		return (unsigned char)ProtocolCode::ERROR;
+		//TODO: Check what e.what says about that, and act accordingly.
+		// Only throw this if relevant, otherwise generic/internal error.
+		return SignupResponse(SignupStatus::FAILED_USERNAME_TAKEN);
 	}
+
+	const LoginResponse loginRes = this->login(username, password);
+		
+	// Simply convert the login response to a signup one
+	if (loginRes.status == LoginStatus::SUCCESS)
+	{
+		return SignupResponse(SignupStatus::SUCCESS, loginRes.userId);
+	}
+
+	return SignupResponse(SignupStatus::FAILED_INTERNAL_ERROR);
 }
 
 
-unsigned char LoginManager::login(const std::string& username, const std::string& password)
+LoginResponse LoginManager::login(const std::string& username, const std::string& password)
 {
 	if (!(this->m_database->doesPasswordMatch(username, password)))
 	{
-		return (unsigned char)ProtocolCode::ERROR;
+		return LoginResponse(LoginStatus::FAILED_INVALID_CREDENTIALS);
 	}
 
 	this->m_loggedUsers.push_back(username);
-	return (unsigned char)ProtocolCode::OK;
+	return LoginResponse(LoginStatus::SUCCESS);
 }
 
-void LoginManager::logout(const std::string& username)
+LogoutResponse LoginManager::logout(const std::string& username)
 {
 	auto it = std::find(m_loggedUsers.begin(), m_loggedUsers.end(), username); // finds username
 
-	if (it != m_loggedUsers.end()) // if found
+	if (it == m_loggedUsers.end()) // if found
 	{
-		m_loggedUsers.erase(it);
+		return LogoutResponse(LogoutStatus::FAILED_NOT_LOGGED_IN);
 	}
+
+	m_loggedUsers.erase(it);
+	return LogoutResponse(LogoutStatus::SUCCESS);
 }

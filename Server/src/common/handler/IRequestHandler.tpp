@@ -12,7 +12,12 @@ template <typename T>
 RequestResult IRequestHandler::errorUnimplementedResult() const
 {
     return RequestResult(
-        JsonResponsePacketSerializer::serializeResponse(ErrorResponse("Unimplemented server-side")),
+        JsonResponsePacketSerializer::serializeResponse(
+            ErrorResponse(
+                ErrorStatus::SERVER_UNIMPLEMENTED,
+                "Unimplemented server-side"
+            )
+        ),
         new T(*((T*)this))
     );
 }

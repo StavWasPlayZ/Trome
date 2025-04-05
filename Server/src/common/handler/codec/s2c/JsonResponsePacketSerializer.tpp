@@ -1,16 +1,18 @@
 #include "JsonResponsePacketSerializer.h"
 
 template <typename S>
-inline nlohmann::json JsonResponsePacketSerializer::serializeResponseToJson(const RegistrationResponse<S> &response)
+inline void JsonResponsePacketSerializer::serializeBaseResponseToJson(nlohmann::json& json, const ProtocolResponse<S>& response)
 {
-    nlohmann::json data = {
-		{ProtocolJsonKeys::STATUS, response.status}
-	};
+	json[ProtocolJsonKeys::STATUS] = response.status;
+}
+
+template <typename S>
+inline void JsonResponsePacketSerializer::serializeResponseToJson(nlohmann::json& json, const RegistrationResponse<S>& response)
+{
+	serializeBaseResponseToJson<S>(json, response);
 
 	if (response.userId != -1)
 	{
-		data[ProtocolJsonKeys::USER_ID] = response.userId;
+		json[ProtocolJsonKeys::USER_ID] = response.userId;
 	}
-
-	return data;
 }
