@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include "exception/ForcedDisconnectionException.h"
+#include "exception/SocketTimeoutException.h"
 
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -96,7 +97,7 @@ void UnixCommunicator::setRecvTimeout(const unsigned int timeoutMs) const
     return;
 }
 
-bool UnixCommunicator::recieveMsg(const int socket, char *buffer, const int length) const
+void UnixCommunicator::recieveMsg(const int socket, void *buffer, const int length) const
 {
     ssize_t result = recv(socket, buffer, length, 0);
 
@@ -105,7 +106,7 @@ bool UnixCommunicator::recieveMsg(const int socket, char *buffer, const int leng
         // Supposedly, this is timeout.
         if (errno == EAGAIN || errno == EWOULDBLOCK)
         {
-            return false;
+            throw SocketTimeoutException();
         }
 
         if (errno == ECONNRESET)
@@ -116,6 +117,4 @@ bool UnixCommunicator::recieveMsg(const int socket, char *buffer, const int leng
         throwPlatformError("Error occured while handling client socket " + std::to_string(socket));
         throw std::exception();
     }
-
-    return true;
 }

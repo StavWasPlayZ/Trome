@@ -14,22 +14,17 @@ template <typename T>
 class Client
 {
 public:
-	Client(const T socket, IRequestHandler* const requestHandler, const std::function<void()> clientThreadFunc) :
-		socket(socket),
-		requestHandler(requestHandler),
-		thread(std::async(std::launch::async, clientThreadFunc))
-	{}
-
-	~Client()
-	{
-		delete this->requestHandler;
-	}
+	Client(const T socket, IRequestHandler* const requestHandler, const std::function<void()> clientThreadFunc);
+	~Client();
 
 	const T socket;
-	IRequestHandler* requestHandler;
+	const IRequestHandler* requestHandler;
 
 	/**
 	* The Client thread of this user
 	*/
 	const std::future<void> thread;
 };
+
+
+#include "Client.tpp"

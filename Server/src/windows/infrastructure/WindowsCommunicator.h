@@ -1,6 +1,6 @@
 #pragma once
 
-#include "infrastructure/CommonCommunicator.hpp"
+#include "infrastructure/CommonCommunicator.h"
 
 #pragma comment(lib, "ws2_32.lib")
 
@@ -18,7 +18,7 @@ public:
 	* Returns: The future handling the client sockets.
 	* Completes when server closes.
 	*/
-	virtual std::future<void>& bindAndListen() override;
+	virtual void bindAndListen() override;
 
 protected:
 	virtual bool isValidSocket(const SOCKET result) const override;
@@ -28,7 +28,7 @@ protected:
 	virtual void acceptClients() override;
 
 	virtual void setRecvTimeout(const unsigned int timeoutMs) const override;
-	virtual bool recieveMsg(const SOCKET socket, char* buffer, const int length) const override;
+	virtual void recieveMsg(const SOCKET socket, void* buffer, const int length) const override;
 
 	virtual void platformClose() override;
 	virtual void closeClientSocket(const SOCKET socket) override;
