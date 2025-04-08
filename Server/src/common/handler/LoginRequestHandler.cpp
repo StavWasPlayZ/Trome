@@ -19,7 +19,7 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo &request) con
     {
         return login(request);
     }
-    else
+    else if (request.id == ProtocolCode::SIGNUP)
     {
         // We already checked that it must be either of the 2.
         return signup(request);
