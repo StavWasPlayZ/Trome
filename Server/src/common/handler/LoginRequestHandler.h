@@ -2,6 +2,8 @@
 
 #include "IRequestHandler.h"
 
+class RequestHandlerFactory;  // Circle calling so i need to put this here
+
 class LoginRequestHandler : public IRequestHandler
 {
 public:
