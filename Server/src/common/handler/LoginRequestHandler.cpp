@@ -40,6 +40,12 @@ RequestResult LoginRequestHandler::login(const RequestInfo &request) const
 
 RequestResult LoginRequestHandler::signup(const RequestInfo &request) const
 {
-    //TODO: Implement after LoginManager is complete
-    return errorUnimplementedResult<LoginRequestHandler>();
+    SignupResponse response = this->m_handlerFactory.getLoginManager().signup(request.data["username"], request.data["password"], request.data["mail"]);
+
+    if (response.status == SignupStatus::FAILED_INTERNAL_ERROR)
+    {
+        return RequestResult(JsonResponsePacketSerializer::serializeResponse(response), this);
+    }
+
+    return RequestResult(JsonResponsePacketSerializer::serializeResponse(response), this); // change this later to have a MenuRequestHandler instead of this
 }
