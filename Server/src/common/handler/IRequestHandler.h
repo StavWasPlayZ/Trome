@@ -22,7 +22,7 @@ public:
     template <typename T>
     RequestResult errorUnimplementedResult() const;
 
-private:
+protected:
     const RequestHandlerFactory& m_handlerFactory;
 };
 
