@@ -31,5 +31,5 @@ public:
 	 * 
 	 * Returns: Its new ID
 	 */
-	virtual unsigned int addNewUser(const std::string& username, const std::string& password, const std::string& mail) const = 0;	
+	virtual unsigned int addNewUser(const std::string& username, const std::string& password, const std::string& email) const = 0;	
 };

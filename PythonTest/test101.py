@@ -7,7 +7,7 @@ LOGIN = 1
 SIGNUP = 2
 
 JSON_TEST_LOGIN = {"username": "user1", "password": "1234"}
-JSON_TEST_SIGNUP = {"username": "user1", "password": "1234", "mail": "user1@gmail.com"}
+JSON_TEST_SIGNUP = {"username": "user1", "password": "1234", "email": "user1@gmail.com"}
 
 SERVER_INFO = ("127.0.0.1", 6942)
 
@@ -36,7 +36,7 @@ def sendAndRecv(code: int, data: json, sock: socket.socket):
     server_msg = sock.recv(1024)
     raw_data = deserialzer(server_msg)
 
-    print("Sent: Code:", raw_data[0], "\nData Len:", raw_data[1], "\nData:", raw_data[2], "\nIn bytes:", server_msg)
+    print("Recieved: Code:", raw_data[0], "\nData Len:", raw_data[1], "\nData:", raw_data[2], "\nIn bytes:", server_msg)
 
 
 def serialize(code: int, data: json) -> bytes:

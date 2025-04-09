@@ -2,6 +2,7 @@
 
 #include "codec/s2c/JsonResponsePacketSerializer.h"
 #include "codec/s2c/Response.h"
+#include "handler/RequestHandlerFactory.h"
 
 LoginRequestHandler::LoginRequestHandler(const RequestHandlerFactory &handlerFactory) : IRequestHandler(handlerFactory)
 {}
@@ -14,25 +15,54 @@ bool LoginRequestHandler::isRequestRelevant(const RequestInfo &request) const
 
 RequestResult LoginRequestHandler::handleRequest(const RequestInfo &request) const
 {
-    if (request.id == ProtocolCode::LOGIN)
+    switch (request.id)
     {
-        return login(request);
-    }
-    else
-    {
-        // We already checked that it must be either of the 2.
-        return signup(request);
+    case ProtocolCode::LOGIN: return login(request);
+    case ProtocolCode::SIGNUP: return signup(request);
+
+    default: throw std::runtime_error("Unexpected request ID");
     }
 }
 
 RequestResult LoginRequestHandler::login(const RequestInfo &request) const
 {
-    //TODO: Implement after LoginManager is complete
-    return errorUnimplementedResult<LoginRequestHandler>();
+    LoginResponse response = this->m_handlerFactory.getLoginManager().login(
+        request.data.at("username"),
+        request.data.at("password")
+    );
+
+    if (response.status == LoginStatus::FAILED_INVALID_CREDENTIALS)
+    {
+        return RequestResult(
+            JsonResponsePacketSerializer::serializeResponse(response),
+            new LoginRequestHandler(*this)
+        );
+    }
+
+    return RequestResult(
+        JsonResponsePacketSerializer::serializeResponse(response),
+        new LoginRequestHandler(*this)
+    ); // change this later to have a MenuRequestHandler instead of this
 }
 
 RequestResult LoginRequestHandler::signup(const RequestInfo &request) const
 {
-    //TODO: Implement after LoginManager is complete
-    return errorUnimplementedResult<LoginRequestHandler>();
+    SignupResponse response = this->m_handlerFactory.getLoginManager().signup(
+        request.data.at("username"),
+        request.data.at("password"),
+        request.data.at("email")
+    );
+
+    if (response.status == SignupStatus::FAILED_INTERNAL_ERROR)
+    {
+        return RequestResult(
+            JsonResponsePacketSerializer::serializeResponse(response),
+            new LoginRequestHandler(*this)
+        );
+    }
+
+    return RequestResult(
+        JsonResponsePacketSerializer::serializeResponse(response),
+        new LoginRequestHandler(*this)
+    ); // change this later to have a MenuRequestHandler instead of this
 }

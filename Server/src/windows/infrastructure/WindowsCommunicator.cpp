@@ -1,7 +1,7 @@
 #include "WindowsCommunicator.h"
 
 #include "windows/exception/WSAException.h"
-#include "exception/ForcedDisconnectionException.h"
+#include "exception/SocketDisconnectionException.h"
 #include "exception/SocketTimeoutException.h"
 
 #include "handler/LoginRequestHandler.h"
@@ -89,7 +89,14 @@ void WindowsCommunicator::setRecvTimeout(const unsigned int timeoutMs) const
 
 void WindowsCommunicator::recieveMsg(const SOCKET socket, void *buffer, const int length) const
 {
-    int result = recv(socket, (char*)buffer, length, 0);
+    const int result = recv(socket, (char*)buffer, length, 0);
+
+    if (result == 0)
+    {
+        // Client has ✨✨gracefully✨✨ disconnected
+        // Still throw an error to catch this event
+        throw SocketDisconnectionException();
+    }
 
     if (result == SOCKET_ERROR)
     {
@@ -100,7 +107,7 @@ void WindowsCommunicator::recieveMsg(const SOCKET socket, void *buffer, const in
 
         if (WSAGetLastError() == WSAECONNRESET)
         {
-            throw ForcedDisconnectionException();
+            throw SocketDisconnectionException();
         }
 
         throwPlatformError("Error occured while handling client socket " + std::to_string(socket));
