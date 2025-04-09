@@ -36,7 +36,7 @@ def sendAndRecv(code: int, data: json, sock: socket.socket):
     server_msg = sock.recv(1024)
     raw_data = deserialzer(server_msg)
 
-    print("Sent: Code:", raw_data[0], "\nData Len:", raw_data[1], "\nData:", raw_data[2], "\nIn bytes:", server_msg)
+    print("Recieved: Code:", raw_data[0], "\nData Len:", raw_data[1], "\nData:", raw_data[2], "\nIn bytes:", server_msg)
 
 
 def serialize(code: int, data: json) -> bytes:
