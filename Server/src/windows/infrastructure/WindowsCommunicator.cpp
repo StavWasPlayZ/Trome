@@ -91,6 +91,13 @@ void WindowsCommunicator::recieveMsg(const SOCKET socket, void *buffer, const in
 {
     const int result = recv(socket, (char*)buffer, length, 0);
 
+    if (result == 0)
+    {
+        // Client has ✨✨gracefully✨✨ disconnected
+        // Still throw an error to catch this event
+        throw SocketDisconnectionException();
+    }
+
     if (result == SOCKET_ERROR)
     {
         if (WSAGetLastError() == WSAETIMEDOUT)
