@@ -31,7 +31,7 @@ RequestResult LoginRequestHandler::login(const RequestInfo &request) const
         request.data.at("password")
     );
 
-    if (response.status == LoginStatus::FAILED_INVALID_CREDENTIALS)
+    if (response.status != LoginStatus::SUCCESS)
     {
         return RequestResult(
             JsonResponsePacketSerializer::serializeResponse(response),
@@ -53,7 +53,7 @@ RequestResult LoginRequestHandler::signup(const RequestInfo &request) const
         request.data.at("email")
     );
 
-    if (response.status == SignupStatus::FAILED_INTERNAL_ERROR)
+    if (response.status != SignupStatus::SUCCESS)
     {
         return RequestResult(
             JsonResponsePacketSerializer::serializeResponse(response),
