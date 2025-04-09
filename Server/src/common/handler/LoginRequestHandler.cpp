@@ -28,7 +28,10 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo &request) con
 
 RequestResult LoginRequestHandler::login(const RequestInfo &request) const
 {
-    LoginResponse response = this->m_handlerFactory.getLoginManager().login(request.data["username"], request.data["password"]);
+    LoginResponse response = this->m_handlerFactory.getLoginManager().login(
+        request.data.at("username"),
+        request.data.at("password")
+    );
 
     if (response.status == LoginStatus::FAILED_INVALID_CREDENTIALS)
     {
@@ -40,7 +43,11 @@ RequestResult LoginRequestHandler::login(const RequestInfo &request) const
 
 RequestResult LoginRequestHandler::signup(const RequestInfo &request) const
 {
-    SignupResponse response = this->m_handlerFactory.getLoginManager().signup(request.data["username"], request.data["password"], request.data["mail"]);
+    SignupResponse response = this->m_handlerFactory.getLoginManager().signup(
+        request.data.at("username"),
+        request.data.at("password"),
+        request.data.at("email")
+    );
 
     if (response.status == SignupStatus::FAILED_INTERNAL_ERROR)
     {

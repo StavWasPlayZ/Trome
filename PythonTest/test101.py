@@ -7,7 +7,7 @@ LOGIN = 1
 SIGNUP = 2
 
 JSON_TEST_LOGIN = {"username": "user1", "password": "1234"}
-JSON_TEST_SIGNUP = {"username": "user1", "password": "1234", "mail": "user1@gmail.com"}
+JSON_TEST_SIGNUP = {"username": "user1", "password": "1234", "email": "user1@gmail.com"}
 
 SERVER_INFO = ("127.0.0.1", 6942)
 
