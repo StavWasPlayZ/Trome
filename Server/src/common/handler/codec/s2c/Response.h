@@ -38,7 +38,8 @@ enum class LoginStatus : unsigned char
 {
 	SUCCESS = 1,
 	FAILED_INVALID_CREDENTIALS = 2,
-	FAILED_INTERNAL_ERROR = 0
+	FAILED_INTERNAL_ERROR = 0,
+	FAILED_ALREADY_LOGGED_IN = 3
 };
 
 struct LoginResponse : RegistrationResponse<LoginStatus>
