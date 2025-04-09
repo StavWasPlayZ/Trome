@@ -19,9 +19,9 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo &request) con
     {
     case ProtocolCode::LOGIN: return login(request);
     case ProtocolCode::SIGNUP: return signup(request);
-    }
 
-    throw std::runtime_error("Unexpected request ID");
+    default: throw std::runtime_error("Unexpected request ID");
+    }
 }
 
 RequestResult LoginRequestHandler::login(const RequestInfo &request) const
