@@ -40,6 +40,11 @@ LoginResponse LoginManager::login(const std::string& username, const std::string
 		return LoginResponse(LoginStatus::FAILED_INVALID_CREDENTIALS);
 	}
 
+	if (this->m_loggedUsers.find(username) != this->m_loggedUsers.end())
+	{
+		return LoginResponse(LoginStatus::FAILED_ALREADY_LOGGED_IN);
+	}
+
 	this->m_loggedUsers.insert({username, LoggedUser(userId, username)});
 
 	return LoginResponse(LoginStatus::SUCCESS, userId);
