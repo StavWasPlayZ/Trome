@@ -33,10 +33,16 @@ RequestResult LoginRequestHandler::login(const RequestInfo &request) const
 
     if (response.status == LoginStatus::FAILED_INVALID_CREDENTIALS)
     {
-        return RequestResult(JsonResponsePacketSerializer::serializeResponse(response), this);
+        return RequestResult(
+            JsonResponsePacketSerializer::serializeResponse(response),
+            new LoginRequestHandler(*this)
+        );
     }
 
-    return RequestResult(JsonResponsePacketSerializer::serializeResponse(response), this); // change this later to have a MenuRequestHandler instead of this
+    return RequestResult(
+        JsonResponsePacketSerializer::serializeResponse(response),
+        new LoginRequestHandler(*this)
+    ); // change this later to have a MenuRequestHandler instead of this
 }
 
 RequestResult LoginRequestHandler::signup(const RequestInfo &request) const
@@ -49,8 +55,14 @@ RequestResult LoginRequestHandler::signup(const RequestInfo &request) const
 
     if (response.status == SignupStatus::FAILED_INTERNAL_ERROR)
     {
-        return RequestResult(JsonResponsePacketSerializer::serializeResponse(response), this);
+        return RequestResult(
+            JsonResponsePacketSerializer::serializeResponse(response),
+            new LoginRequestHandler(*this)
+        );
     }
 
-    return RequestResult(JsonResponsePacketSerializer::serializeResponse(response), this); // change this later to have a MenuRequestHandler instead of this
+    return RequestResult(
+        JsonResponsePacketSerializer::serializeResponse(response),
+        new LoginRequestHandler(*this)
+    ); // change this later to have a MenuRequestHandler instead of this
 }
