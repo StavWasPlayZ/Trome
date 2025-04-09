@@ -1,7 +1,7 @@
 #include "WindowsCommunicator.h"
 
 #include "windows/exception/WSAException.h"
-#include "exception/ForcedDisconnectionException.h"
+#include "exception/SocketDisconnectionException.h"
 #include "exception/SocketTimeoutException.h"
 
 #include "handler/LoginRequestHandler.h"
@@ -100,7 +100,7 @@ void WindowsCommunicator::recieveMsg(const SOCKET socket, void *buffer, const in
 
         if (WSAGetLastError() == WSAECONNRESET)
         {
-            throw ForcedDisconnectionException();
+            throw SocketDisconnectionException();
         }
 
         throwPlatformError("Error occured while handling client socket " + std::to_string(socket));

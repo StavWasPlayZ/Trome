@@ -7,7 +7,7 @@
 
 #include "Constants.h"
 
-#include "exception/ForcedDisconnectionException.h"
+#include "exception/SocketDisconnectionException.h"
 #include "exception/SocketTimeoutException.h"
 
 #include "handler/codec/s2c/Response.h"
@@ -208,7 +208,7 @@ void CommonCommunicator<T>::_clientThreadFunc(const T socket)
             // simply wait for the next recv cycle (if applicable).
             continue;
         }
-        catch (const ForcedDisconnectionException& e)
+        catch (const SocketDisconnectionException& e)
         {
             break;
         }

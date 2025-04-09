@@ -3,9 +3,9 @@
 #include <exception>
 #include <string>
 
-class ForcedDisconnectionException : public std::exception
+class SocketDisconnectionException : public std::exception
 {
 public:
-    explicit ForcedDisconnectionException() = default;
+    explicit SocketDisconnectionException() = default;
     const char* what() const noexcept override;
 };

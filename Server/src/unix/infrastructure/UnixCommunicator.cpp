@@ -4,7 +4,7 @@
 
 #include <iostream>
 
-#include "exception/ForcedDisconnectionException.h"
+#include "exception/SocketDisconnectionException.h"
 #include "exception/SocketTimeoutException.h"
 
 #include <sys/socket.h>
@@ -100,6 +100,13 @@ void UnixCommunicator::recieveMsg(const int socket, void *buffer, const int leng
 {
     const ssize_t result = recv(socket, buffer, length, 0);
 
+    if (result == 0)
+    {
+        // Client has ✨✨gracefully✨✨ disconnected
+        // Still throw an error to catch this event
+        throw SocketDisconnectionException();
+    }
+
     if (result == -1)
     {
         // Supposedly, this is timeout.
@@ -108,9 +115,9 @@ void UnixCommunicator::recieveMsg(const int socket, void *buffer, const int leng
             throw SocketTimeoutException();
         }
 
-        if (errno == ECONNRESET)
+        if (errno == ECONNRESET || errno == EPIPE)
         {
-            throw ForcedDisconnectionException();
+            throw SocketDisconnectionException();
         }
 
         throwPlatformError("Error occured while handling client socket " + std::to_string(socket));
