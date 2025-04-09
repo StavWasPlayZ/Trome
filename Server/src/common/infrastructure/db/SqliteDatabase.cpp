@@ -13,7 +13,9 @@ const std::string SqliteDatabase::CREATE_USERS_TBL_QUERY =
 
 SqliteDatabase::SqliteDatabase() :
 	_dbName("trivia-database")
-{}
+{
+	std::cout << "C++ SQLite version: " << sqlite3_libversion() << std::endl;
+}
 
 SqliteDatabase::~SqliteDatabase()
 {
