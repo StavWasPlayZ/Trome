@@ -89,7 +89,7 @@ void WindowsCommunicator::setRecvTimeout(const unsigned int timeoutMs) const
 
 void WindowsCommunicator::recieveMsg(const SOCKET socket, void *buffer, const int length) const
 {
-    int result = recv(socket, (char*)buffer, length, 0);
+    const int result = recv(socket, (char*)buffer, length, 0);
 
     if (result == SOCKET_ERROR)
     {

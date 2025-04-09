@@ -180,7 +180,14 @@ void CommonCommunicator<T>::_serverThreadFunc()
 {
     while (this->_running)
     {
-        acceptClients();
+        try
+        {
+            acceptClients();
+        }
+        catch (const std::exception& e)
+        {
+            std::cout << "Uncaught exception in server thread: " << e.what() << std::endl;
+        }
     }
 
     close();

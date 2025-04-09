@@ -98,7 +98,7 @@ void UnixCommunicator::setRecvTimeout(const unsigned int timeoutMs) const
 
 void UnixCommunicator::recieveMsg(const int socket, void *buffer, const int length) const
 {
-    ssize_t result = recv(socket, buffer, length, 0);
+    const ssize_t result = recv(socket, buffer, length, 0);
 
     if (result == -1)
     {
