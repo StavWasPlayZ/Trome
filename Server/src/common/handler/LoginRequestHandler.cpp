@@ -15,15 +15,13 @@ bool LoginRequestHandler::isRequestRelevant(const RequestInfo &request) const
 
 RequestResult LoginRequestHandler::handleRequest(const RequestInfo &request) const
 {
-    if (request.id == ProtocolCode::LOGIN)
+    switch (request.id)
     {
-        return login(request);
+    case ProtocolCode::LOGIN: return login(request);
+    case ProtocolCode::SIGNUP: return signup(request);
     }
-    else if (request.id == ProtocolCode::SIGNUP)
-    {
-        // We already checked that it must be either of the 2.
-        return signup(request);
-    }
+
+    throw std::runtime_error("Unexpected request ID");
 }
 
 RequestResult LoginRequestHandler::login(const RequestInfo &request) const
