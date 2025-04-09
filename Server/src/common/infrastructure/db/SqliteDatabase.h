@@ -13,7 +13,7 @@ class SqliteDatabase : public IDatabase
 {
 public:
 	SqliteDatabase();
-	~SqliteDatabase();
+	virtual ~SqliteDatabase();
 
 	virtual bool open() override;
 	virtual bool close() override;
