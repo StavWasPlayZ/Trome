@@ -118,8 +118,8 @@ private:
 	 */
 	std::list<SOCKET> _disconnectingClients;
 
-	std::condition_variable _disconectedClientConditionalVariable;
-	std::mutex _disconectedClient_mutex;
+	std::condition_variable _disconnectedClientConditionalVariable;
+	std::mutex _disconnectedClient_mutex;
 
 	//SECTION Thread Functions
 

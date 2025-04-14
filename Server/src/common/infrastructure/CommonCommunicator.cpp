@@ -47,7 +47,7 @@ void CommonCommunicator::close()
     this->_running = false;
 
     // Release the client cleaner thread
-    this->_disconectedClientConditionalVariable.notify_all();
+    this->_disconnectedClientConditionalVariable.notify_all();
 
     // Wait for 'em to close
     this->m_clients_mutex.lock();
@@ -271,12 +271,12 @@ RequestInfo CommonCommunicator::_waitForClientRequest(const SOCKET socket)
 
 void CommonCommunicator::_clientCleanerThreadFunc()
 {
-	std::unique_lock<std::mutex> lock(this->_disconectedClient_mutex);
+	std::unique_lock<std::mutex> lock(this->_disconnectedClient_mutex);
 	
 	while (this->_running)
 	{
 		// Waits for _enqueueDisconnectClient to be called
-		this->_disconectedClientConditionalVariable.wait(lock);
+		this->_disconnectedClientConditionalVariable.wait(lock);
 
 		_freeDisconnectedClients();
 	}
@@ -290,7 +290,7 @@ void CommonCommunicator::_enqueueDisconnectClient(const SOCKET socket)
 	this->_disconnectingClients.push_back(socket);
 	this->_disconnectingClients_mutex.unlock();
 	
-	this->_disconectedClientConditionalVariable.notify_one();
+	this->_disconnectedClientConditionalVariable.notify_one();
 }
 
 void CommonCommunicator::_freeDisconnectedClients()
