@@ -242,10 +242,10 @@ void CommonCommunicator::_handleClient(const SOCKET socket)
 RequestInfo CommonCommunicator::_waitForClientRequest(const SOCKET socket)
 {
     unsigned char reqCode;
-    recieveMsg(socket, &reqCode, SIZE_CODE);
+    receiveMsg(socket, &reqCode, SIZE_CODE);
 
     int jsonLen;
-    recieveMsg(socket, &jsonLen, SIZE_JSON_LEN);
+    receiveMsg(socket, &jsonLen, SIZE_JSON_LEN);
     jsonLen = ntohl(jsonLen) * sizeof(char);
 
     if (jsonLen <= 0)
@@ -254,7 +254,7 @@ RequestInfo CommonCommunicator::_waitForClientRequest(const SOCKET socket)
     }
 
     unsigned char* const data = new unsigned char[jsonLen]; // readJson already handles null termination.
-    recieveMsg(socket, data, jsonLen);
+    receiveMsg(socket, data, jsonLen);
 
     const RequestInfo info(
         (ProtocolCode)reqCode,

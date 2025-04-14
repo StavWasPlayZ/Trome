@@ -5,7 +5,7 @@
 #include <list>
 
 #include <mutex>
-// Much (much) better than threads in modern C++, and this usecase in particular.
+// Much (much) better than threads in modern C++, and this use case in particular.
 #include <future>
 // It was suggested online to use this when sharing a resource.
 #include <atomic>
@@ -91,7 +91,7 @@ protected:
 	/**
 	 * Returns true whether the message did not time out.
 	 */
-	virtual void recieveMsg(SOCKET socket, void* buffer, int length) const = 0;
+	virtual void receiveMsg(SOCKET socket, void* buffer, int length) const = 0;
 
 	void sendMsg(SOCKET socket, const unsigned char* buffer, int length) const;
 

@@ -91,7 +91,7 @@ void UnixCommunicator::setRecvTimeout(const unsigned int timeoutMs) const
     );
 }
 
-void UnixCommunicator::recieveMsg(const int socket, void *buffer, const int length) const
+void UnixCommunicator::receiveMsg(const int socket, void *buffer, const int length) const
 {
     const ssize_t result = recv(socket, buffer, length, 0);
 
@@ -115,7 +115,7 @@ void UnixCommunicator::recieveMsg(const int socket, void *buffer, const int leng
             throw SocketDisconnectionException();
         }
 
-        throwPlatformError("Error occured while handling client socket " + std::to_string(socket));
+        throwPlatformError("Error occurred while handling client socket " + std::to_string(socket));
         throw std::exception();
     }
 }
