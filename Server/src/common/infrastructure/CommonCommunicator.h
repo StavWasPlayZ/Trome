@@ -25,14 +25,10 @@
 #endif
 
 
-/**
- * T - The platform socket address type
- */
-template <typename T>
 class CommonCommunicator
 {
 public:
-	CommonCommunicator(T defaultSocket, const RequestHandlerFactory& handlerFactory);
+	CommonCommunicator(SOCKET defaultSocket, const RequestHandlerFactory& handlerFactory);
 	virtual ~CommonCommunicator();
 
 	bool isRunning() const;
@@ -67,16 +63,16 @@ protected:
 	 * Contains all active clients.
 	 * Maps their socket address to their Client instantiation.
 	 */
-	std::map<T, Client<T>*> m_clients;
+	std::map<SOCKET, Client*> m_clients;
 
 	/**
 	 * The binding & listening process code common to all OSs
 	 */
 	void commonSetup();
 
-	virtual bool isValidSocket(T result) const = 0;
-	virtual bool isValidBind(T result) const = 0;
-	virtual bool isValidListen(T result) const = 0;
+	virtual bool isValidSocket(SOCKET result) const = 0;
+	virtual bool isValidBind(SOCKET result) const = 0;
+	virtual bool isValidListen(SOCKET result) const = 0;
 	virtual void setRecvTimeout(unsigned int timeoutMs) const = 0;
 	virtual void acceptClients() = 0;
 
@@ -84,7 +80,7 @@ protected:
 	 * Registers the provided socket as a client to the internal m_clients map.
 	 * The client is initiated with the LoginRequestHandler state.
 	 */
-	void registerClient(T socket);
+	void registerClient(SOCKET socket);
 
 	/**
 	 * Returns: The future handling the client sockets.
@@ -95,22 +91,22 @@ protected:
 	/**
 	 * Returns true whether the message did not time out.
 	 */
-	virtual void recieveMsg(T socket, void* buffer, int length) const = 0;
+	virtual void recieveMsg(SOCKET socket, void* buffer, int length) const = 0;
 
-	void sendMsg(T socket, const unsigned char* buffer, int length) const;
+	void sendMsg(SOCKET socket, const unsigned char* buffer, int length) const;
 
 	/**
 	 * Platform-specific method for closing the server communication.
 	 */
 	virtual void platformClose() = 0;
-	virtual void closeClientSocket(T socket) = 0;
+	virtual void closeClientSocket(SOCKET socket) = 0;
 
 	/**
 	 * Throws an exception with respect to the platform's preferred error type.
 	 */
 	virtual void throwPlatformError(const std::string& msg) const;
 
-	T m_serverSocket;
+	SOCKET m_serverSocket;
 
 private:
 	const RequestHandlerFactory m_handlerFactory;
@@ -120,7 +116,7 @@ private:
 	/**
 	 * A list containing all clients that need to be disconnected
 	 */
-	std::list<T> _disconnectingClients;
+	std::list<SOCKET> _disconnectingClients;
 
 	std::condition_variable _disconectedClientConditionalVariable;
 	std::mutex _disconectedClient_mutex;
@@ -128,19 +124,16 @@ private:
 	//SECTION Thread Functions
 
 	void _serverThreadFunc();
-	void _clientThreadFunc(T socket);
+	void _clientThreadFunc(SOCKET socket);
 
 	//ANCHOR Actual client processing function.
-	void _handleClient(T socket);
+	void _handleClient(SOCKET socket);
 
-	RequestInfo _waitForClientRequest(T socket);
+	RequestInfo _waitForClientRequest(SOCKET socket);
 	void _clientCleanerThreadFunc();
 
 	//!SECTION
 
-	void _enqueueDisconnectClient(T socket);
+	void _enqueueDisconnectClient(SOCKET socket);
 	void _freeDisconnectedClients();
 };
-
-
-#include "CommonCommunicator.tpp"

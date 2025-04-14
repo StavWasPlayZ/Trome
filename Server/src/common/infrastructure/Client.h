@@ -4,20 +4,22 @@
 #include <future>
 #include <functional>
 
+#ifndef _WIN32
+// In Unix, socket = int.
+#define SOCKET int
+#endif
+
 /**
  * A client in the Trivia server.
  * Holds technical information about the connection between this server and the client.
- * 
- * T - The platform socket address type
  */
-template <typename T>
 class Client
 {
 public:
-	Client(T socket, const IRequestHandler* requestHandler, const std::function<void()> &clientThreadFunc);
+	Client(SOCKET socket, const IRequestHandler* requestHandler, const std::function<void()> &clientThreadFunc);
 	~Client();
 
-	const T socket;
+	const SOCKET socket;
 	const IRequestHandler* requestHandler;
 
 	/**
@@ -25,6 +27,3 @@ public:
 	*/
 	const std::future<void> thread;
 };
-
-
-#include "Client.tpp"

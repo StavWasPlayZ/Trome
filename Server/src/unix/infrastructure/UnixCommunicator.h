@@ -2,7 +2,7 @@
 
 #include "infrastructure/CommonCommunicator.h"
 
-class UnixCommunicator : public CommonCommunicator<int>
+class UnixCommunicator : public CommonCommunicator
 {
 public:
 	explicit UnixCommunicator(const RequestHandlerFactory& handlerFactory);

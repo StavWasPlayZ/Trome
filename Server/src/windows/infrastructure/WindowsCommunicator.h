@@ -7,7 +7,7 @@
 #include <winsock2.h>
 #include <ws2tcpip.h>
 
-class WindowsCommunicator : public CommonCommunicator<SOCKET>
+class WindowsCommunicator : public CommonCommunicator
 {
 public:
 	WindowsCommunicator(const RequestHandlerFactory& handlerFactory);
