@@ -7,7 +7,7 @@
  */
 struct OBuffer
 {
-    OBuffer(const unsigned char* const contents, const size_t length);
+    OBuffer(const unsigned char* contents, size_t length);
     OBuffer();
 
     void freeContents();

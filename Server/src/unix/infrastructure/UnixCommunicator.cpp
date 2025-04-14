@@ -2,15 +2,12 @@
 
 #include "handler/LoginRequestHandler.h"
 
-#include <iostream>
-
 #include "exception/SocketDisconnectionException.h"
 #include "exception/SocketTimeoutException.h"
 
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <unistd.h>
-#include <cstring>
 #include <errno.h>
 
 UnixCommunicator::UnixCommunicator(const RequestHandlerFactory& handlerFactory) : CommonCommunicator(0, handlerFactory)
@@ -81,7 +78,7 @@ void UnixCommunicator::throwPlatformError(const std::string &msg) const
 
 void UnixCommunicator::setRecvTimeout(const unsigned int timeoutMs) const
 {
-    struct timeval timeoutVal;
+    timeval timeoutVal;
     timeoutVal.tv_sec = timeoutMs / 1000;
     timeoutVal.tv_usec = (timeoutMs % 1000) * 1000;
 
@@ -92,11 +89,9 @@ void UnixCommunicator::setRecvTimeout(const unsigned int timeoutMs) const
         &timeoutVal,
         sizeof(timeoutVal)
     );
-
-    return;
 }
 
-void UnixCommunicator::recieveMsg(const int socket, void *buffer, const int length) const
+void UnixCommunicator::receiveMsg(const int socket, void *buffer, const int length) const
 {
     const ssize_t result = recv(socket, buffer, length, 0);
 
@@ -120,7 +115,7 @@ void UnixCommunicator::recieveMsg(const int socket, void *buffer, const int leng
             throw SocketDisconnectionException();
         }
 
-        throwPlatformError("Error occured while handling client socket " + std::to_string(socket));
+        throwPlatformError("Error occurred while handling client socket " + std::to_string(socket));
         throw std::exception();
     }
 }

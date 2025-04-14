@@ -5,8 +5,9 @@
 class MenuRequestHandler : public IRequestHandler
 {
 public:
-    MenuRequestHandler(const RequestHandlerFactory& handlerFactory);
+    explicit MenuRequestHandler(const RequestHandlerFactory& handlerFactory);
 
-    virtual bool isRequestRelevant(const RequestInfo& request) const override;
-    virtual RequestResult handleRequest(const RequestInfo& request) const override;
+    bool isRequestRelevant(const RequestInfo& request) const override;
+
+    RequestResult handleRequest(const RequestInfo& request) const override;
 };

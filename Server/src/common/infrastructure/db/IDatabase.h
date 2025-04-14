@@ -1,4 +1,5 @@
 #pragma once
+
 #include <iostream>
 
 class IDatabase
@@ -7,7 +8,7 @@ public:
 	virtual ~IDatabase();
 
 	/**
-	 * Open the database.ADJ_OFFSET_SINGLESHOT
+	 * Open the database.
 	 * 
 	 * Returns: Whether the operation succeed
 	 */

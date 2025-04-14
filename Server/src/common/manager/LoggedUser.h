@@ -1,12 +1,12 @@
 #pragma once
 
 #include <string>
+#include "infrastructure/Client.h"
 
 class LoggedUser
 {
 public:
-    LoggedUser(const unsigned int id, const std::string& username);
-    
+    LoggedUser(unsigned int id, const std::string& username, const Client* client);
     const std::string& getUsername() const;
     unsigned int getId() const;
     
@@ -14,5 +14,5 @@ private:
     const unsigned int m_id;
     std::string m_username;
 
-    //TODO: Add Client<T>*.
+    const Client* const m_client;
 };

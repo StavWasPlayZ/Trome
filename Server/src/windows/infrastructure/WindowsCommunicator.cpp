@@ -87,7 +87,7 @@ void WindowsCommunicator::setRecvTimeout(const unsigned int timeoutMs) const
     );
 }
 
-void WindowsCommunicator::recieveMsg(const SOCKET socket, void *buffer, const int length) const
+void WindowsCommunicator::receiveMsg(const SOCKET socket, void *buffer, const int length) const
 {
     const int result = recv(socket, (char*)buffer, length, 0);
 

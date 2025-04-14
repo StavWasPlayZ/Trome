@@ -13,7 +13,7 @@
 class RequestHandlerFactory
 {
 public:
-    RequestHandlerFactory(LoginManager& loginManager, IDatabase* const database);
+    RequestHandlerFactory(LoginManager& loginManager, IDatabase* database);
 
     LoginManager& getLoginManager() const;
 

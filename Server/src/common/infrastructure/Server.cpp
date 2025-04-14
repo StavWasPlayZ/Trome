@@ -2,8 +2,6 @@
 
 #include "db/SqliteDatabase.h"
 
-#include <iostream>
-
 Server::Server() :
 	m_database(new SqliteDatabase()),
 	m_loginManager(m_database),

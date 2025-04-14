@@ -13,13 +13,13 @@ class SqliteDatabase : public IDatabase
 {
 public:
 	SqliteDatabase();
-	virtual ~SqliteDatabase();
+	~SqliteDatabase() override;
 
-	virtual bool open() override;
-	virtual bool close() override;
-	virtual bool doesUserExist(const std::string& username) const override;
-	virtual unsigned int getIdOfUser(const std::string& username, const std::string& password) const override;
-	virtual unsigned int addNewUser(const std::string& username, const std::string& password, const std::string& email) const override;
+	bool open() override;
+	bool close() override;
+	bool doesUserExist(const std::string& username) const override;
+	unsigned int getIdOfUser(const std::string& username, const std::string& password) const override;
+	unsigned int addNewUser(const std::string& username, const std::string& password, const std::string& email) const override;
 
 private:
 	static const std::string CREATE_USERS_TBL_QUERY;

@@ -6,21 +6,21 @@ LoginManager::LoginManager(IDatabase* const database) :
 	m_database(database)
 {}
 
-SignupResponse LoginManager::signup(const std::string& username, const std::string& password, const std::string& email)
+SignupResponse LoginManager::signup(const Client* const client, const std::string& username, const std::string& password, const std::string& email)
 {
 	try
 	{
 		this->m_database->addNewUser(username, password, email);
 	}
-	catch (std::runtime_error& e) // addNewUser will return runtime_error when adding a user with the same username bc its UNIQUE.
+	catch (std::runtime_error& _) // addNewUser will return runtime_error when adding a user with the same username bc its UNIQUE.
 	{
 		//TODO: Check what e.what says about that, and act accordingly.
 		// Only throw this if relevant, otherwise generic/internal error.
 		return SignupResponse(SignupStatus::FAILED_USERNAME_TAKEN);
 	}
 
-	const LoginResponse loginRes = this->login(username, password);
-		
+	const LoginResponse loginRes = this->login(client, username, password);
+
 	// Simply convert the login response to a signup one
 	if (loginRes.status == LoginStatus::SUCCESS)
 	{
@@ -31,7 +31,7 @@ SignupResponse LoginManager::signup(const std::string& username, const std::stri
 }
 
 
-LoginResponse LoginManager::login(const std::string& username, const std::string& password)
+LoginResponse LoginManager::login(const Client* client, const std::string& username, const std::string& password)
 {
 	const unsigned int userId = this->m_database->getIdOfUser(username, password);
 
@@ -40,12 +40,12 @@ LoginResponse LoginManager::login(const std::string& username, const std::string
 		return LoginResponse(LoginStatus::FAILED_INVALID_CREDENTIALS);
 	}
 
-	if (this->m_loggedUsers.find(username) != this->m_loggedUsers.end())
+	if (this->m_loggedUsers.contains(username))
 	{
 		return LoginResponse(LoginStatus::FAILED_ALREADY_LOGGED_IN);
 	}
 
-	this->m_loggedUsers.insert({username, LoggedUser(userId, username)});
+	this->m_loggedUsers.insert({username, LoggedUser(userId, username, client)});
 
 	return LoginResponse(LoginStatus::SUCCESS, userId);
 }

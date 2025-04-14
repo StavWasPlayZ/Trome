@@ -2,15 +2,17 @@
 
 #include "infrastructure/request/RequestInfo.h"
 
+struct RequestInfo;
 struct RequestResult;
 class RequestHandlerFactory;
+class Client;
 
 // This is technically an abstract class the way it's implemented lmao
 // But we don't mindddd
 class IRequestHandler
 {
 public:
-    IRequestHandler(const RequestHandlerFactory& handlerFactory);
+    explicit IRequestHandler(const RequestHandlerFactory& handlerFactory);
     virtual ~IRequestHandler();
 
     virtual bool isRequestRelevant(const RequestInfo& request) const = 0;
