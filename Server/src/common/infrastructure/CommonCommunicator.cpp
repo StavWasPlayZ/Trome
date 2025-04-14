@@ -208,7 +208,7 @@ void CommonCommunicator::_clientThreadFunc(const SOCKET socket)
 }
 
 //ANCHOR Actual client processing function.
-void CommonCommunicator::_handleClient(const SOCKET socket)
+void CommonCommunicator::_handleClient(const SOCKET socket) const
 {
     const RequestInfo info = _waitForClientRequest(socket);
 
@@ -239,7 +239,7 @@ void CommonCommunicator::_handleClient(const SOCKET socket)
     responseBuffer.freeContents();
 }
 
-RequestInfo CommonCommunicator::_waitForClientRequest(const SOCKET socket)
+RequestInfo CommonCommunicator::_waitForClientRequest(const SOCKET socket) const
 {
     unsigned char reqCode;
     receiveMsg(socket, &reqCode, SIZE_CODE);
@@ -257,6 +257,8 @@ RequestInfo CommonCommunicator::_waitForClientRequest(const SOCKET socket)
     receiveMsg(socket, data, jsonLen);
 
     const RequestInfo info(
+        this->m_clients.at(socket),
+
         (ProtocolCode)reqCode,
         std::chrono::system_clock::to_time_t(
             std::chrono::system_clock::now()
@@ -271,7 +273,7 @@ RequestInfo CommonCommunicator::_waitForClientRequest(const SOCKET socket)
 
 void CommonCommunicator::_clientCleanerThreadFunc()
 {
-	std::unique_lock<std::mutex> lock(this->_disconnectedClient_mutex);
+	std::unique_lock lock(this->_disconnectedClient_mutex);
 	
 	while (this->_running)
 	{

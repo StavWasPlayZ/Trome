@@ -127,9 +127,9 @@ private:
 	void _clientThreadFunc(SOCKET socket);
 
 	//ANCHOR Actual client processing function.
-	void _handleClient(SOCKET socket);
+	void _handleClient(SOCKET socket) const;
 
-	RequestInfo _waitForClientRequest(SOCKET socket);
+	RequestInfo _waitForClientRequest(SOCKET socket) const;
 	void _clientCleanerThreadFunc();
 
 	//!SECTION

@@ -9,6 +9,8 @@
 #define SOCKET int
 #endif
 
+class IRequestHandler;
+
 /**
  * A client in the Trivia server.
  * Holds technical information about the connection between this server and the client.

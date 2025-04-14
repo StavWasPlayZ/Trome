@@ -9,7 +9,7 @@ bool MenuRequestHandler::isRequestRelevant(const RequestInfo &request) const
     return true;
 }
 
-RequestResult MenuRequestHandler::handleRequest(const RequestInfo &request) const
+RequestResult MenuRequestHandler::handleRequest(const RequestInfo& request) const
 {
     //TODO: Implement
     return errorUnimplementedResult<MenuRequestHandler>();

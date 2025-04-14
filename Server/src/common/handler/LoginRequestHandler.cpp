@@ -13,7 +13,7 @@ bool LoginRequestHandler::isRequestRelevant(const RequestInfo &request) const
     return (request.id == ProtocolCode::LOGIN) || (request.id == ProtocolCode::SIGNUP);
 }
 
-RequestResult LoginRequestHandler::handleRequest(const RequestInfo &request) const
+RequestResult LoginRequestHandler::handleRequest(const RequestInfo& request) const
 {
     switch (request.id)
     {
@@ -24,9 +24,10 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo &request) con
     }
 }
 
-RequestResult LoginRequestHandler::login(const RequestInfo &request) const
+RequestResult LoginRequestHandler::login(const RequestInfo& request) const
 {
     const LoginResponse response = this->m_handlerFactory.getLoginManager().login(
+        request.client,
         request.data.at("username"),
         request.data.at("password")
     );
@@ -45,9 +46,10 @@ RequestResult LoginRequestHandler::login(const RequestInfo &request) const
     ); // change this later to have a MenuRequestHandler instead of this
 }
 
-RequestResult LoginRequestHandler::signup(const RequestInfo &request) const
+RequestResult LoginRequestHandler::signup(const RequestInfo& request) const
 {
     const SignupResponse response = this->m_handlerFactory.getLoginManager().signup(
+        request.client,
         request.data.at("username"),
         request.data.at("password"),
         request.data.at("email")

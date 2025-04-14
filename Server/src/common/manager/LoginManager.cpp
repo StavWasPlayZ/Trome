@@ -6,7 +6,7 @@ LoginManager::LoginManager(IDatabase* const database) :
 	m_database(database)
 {}
 
-SignupResponse LoginManager::signup(const std::string& username, const std::string& password, const std::string& email)
+SignupResponse LoginManager::signup(const Client* const client, const std::string& username, const std::string& password, const std::string& email)
 {
 	try
 	{
@@ -19,7 +19,7 @@ SignupResponse LoginManager::signup(const std::string& username, const std::stri
 		return SignupResponse(SignupStatus::FAILED_USERNAME_TAKEN);
 	}
 
-	const LoginResponse loginRes = this->login(username, password);
+	const LoginResponse loginRes = this->login(client, username, password);
 
 	// Simply convert the login response to a signup one
 	if (loginRes.status == LoginStatus::SUCCESS)
@@ -31,7 +31,7 @@ SignupResponse LoginManager::signup(const std::string& username, const std::stri
 }
 
 
-LoginResponse LoginManager::login(const std::string& username, const std::string& password)
+LoginResponse LoginManager::login(const Client* client, const std::string& username, const std::string& password)
 {
 	const unsigned int userId = this->m_database->getIdOfUser(username, password);
 
@@ -45,7 +45,7 @@ LoginResponse LoginManager::login(const std::string& username, const std::string
 		return LoginResponse(LoginStatus::FAILED_ALREADY_LOGGED_IN);
 	}
 
-	this->m_loggedUsers.insert({username, LoggedUser(userId, username)});
+	this->m_loggedUsers.insert({username, LoggedUser(userId, username, client)});
 
 	return LoginResponse(LoginStatus::SUCCESS, userId);
 }
