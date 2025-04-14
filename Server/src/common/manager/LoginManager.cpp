@@ -1,7 +1,5 @@
 #include "manager/LoginManager.h"
 
-#include <algorithm>
-
 LoginManager::LoginManager(IDatabase* const database) :
 	m_database(database)
 {}
