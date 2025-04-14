@@ -10,7 +10,7 @@ class RequestHandlerFactory;
 class IRequestHandler
 {
 public:
-    IRequestHandler(const RequestHandlerFactory& handlerFactory);
+    explicit IRequestHandler(const RequestHandlerFactory& handlerFactory);
     virtual ~IRequestHandler();
 
     virtual bool isRequestRelevant(const RequestInfo& request) const = 0;

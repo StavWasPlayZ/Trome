@@ -3,7 +3,7 @@
 const std::string SqliteDatabase::TABLE_USERS = "users";
 
 const std::string SqliteDatabase::CREATE_USERS_TBL_QUERY = 
-	"CREATE TABLE IF NOT EXISTS " + SqliteDatabase::TABLE_USERS + " ("
+	"CREATE TABLE IF NOT EXISTS " + TABLE_USERS + " ("
 		"id INTEGER PRIMARY KEY AUTOINCREMENT, "
 		"username TEXT NOT NULL UNIQUE, "
 		"password TEXT NOT NULL, "
@@ -12,14 +12,15 @@ const std::string SqliteDatabase::CREATE_USERS_TBL_QUERY =
 
 
 SqliteDatabase::SqliteDatabase() :
-	_dbName("trivia-database")
+	_dbName("trivia-database"),
+	_dbInstance(nullptr)
 {
 	std::cout << "C++ SQLite version: " << sqlite3_libversion() << std::endl;
 }
 
 SqliteDatabase::~SqliteDatabase()
 {
-	close();
+	SqliteDatabase::close();
 }
 
 
@@ -96,7 +97,7 @@ bool SqliteDatabase::queryExists(const std::string& query) const
 {
 	return *querySql<bool>(
 		query,
-		[](const std::map<std::string, std::string> columns) -> bool
+		[](const std::map<std::string, std::string> &columns) -> bool
 		{
 			return columns.at("q_exists") == "1";
 		}
@@ -108,7 +109,7 @@ std::list<unsigned int> SqliteDatabase::queryIds(const std::string &query) const
     return querySql<unsigned int>(
 		query,
 
-		[](const std::map<std::string, std::string> columns) -> unsigned int
+		[](const std::map<std::string, std::string> &columns) -> unsigned int
 		{
 			return (unsigned int) std::stoul(columns.at("id"));
 		}
@@ -119,7 +120,7 @@ void SqliteDatabase::execSql(const std::string& query) const
 {
 	char* errMessage;
 
-	int result = sqlite3_exec(
+	const int result = sqlite3_exec(
 		this->_dbInstance,
 		query.c_str(),
 		nullptr,

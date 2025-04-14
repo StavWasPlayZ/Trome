@@ -12,7 +12,7 @@ SignupResponse LoginManager::signup(const std::string& username, const std::stri
 	{
 		this->m_database->addNewUser(username, password, email);
 	}
-	catch (std::runtime_error& e) // addNewUser will return runtime_error when adding a user with the same username bc its UNIQUE.
+	catch (std::runtime_error& _) // addNewUser will return runtime_error when adding a user with the same username bc its UNIQUE.
 	{
 		//TODO: Check what e.what says about that, and act accordingly.
 		// Only throw this if relevant, otherwise generic/internal error.
@@ -20,7 +20,7 @@ SignupResponse LoginManager::signup(const std::string& username, const std::stri
 	}
 
 	const LoginResponse loginRes = this->login(username, password);
-		
+
 	// Simply convert the login response to a signup one
 	if (loginRes.status == LoginStatus::SUCCESS)
 	{
@@ -40,7 +40,7 @@ LoginResponse LoginManager::login(const std::string& username, const std::string
 		return LoginResponse(LoginStatus::FAILED_INVALID_CREDENTIALS);
 	}
 
-	if (this->m_loggedUsers.find(username) != this->m_loggedUsers.end())
+	if (this->m_loggedUsers.contains(username))
 	{
 		return LoginResponse(LoginStatus::FAILED_ALREADY_LOGGED_IN);
 	}

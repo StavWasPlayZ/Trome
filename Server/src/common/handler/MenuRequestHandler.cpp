@@ -1,8 +1,5 @@
 #include "MenuRequestHandler.h"
 
-#include "codec/s2c/JsonResponsePacketSerializer.h"
-#include "codec/s2c/Response.h"
-
 MenuRequestHandler::MenuRequestHandler(const RequestHandlerFactory &handlerFactory) : IRequestHandler(handlerFactory)
 {}
 

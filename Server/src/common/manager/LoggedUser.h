@@ -5,7 +5,7 @@
 class LoggedUser
 {
 public:
-    LoggedUser(const unsigned int id, const std::string& username);
+    LoggedUser(unsigned int id, const std::string& username);
     
     const std::string& getUsername() const;
     unsigned int getId() const;

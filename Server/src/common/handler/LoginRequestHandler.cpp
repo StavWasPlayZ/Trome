@@ -26,7 +26,7 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo &request) con
 
 RequestResult LoginRequestHandler::login(const RequestInfo &request) const
 {
-    LoginResponse response = this->m_handlerFactory.getLoginManager().login(
+    const LoginResponse response = this->m_handlerFactory.getLoginManager().login(
         request.data.at("username"),
         request.data.at("password")
     );
@@ -47,7 +47,7 @@ RequestResult LoginRequestHandler::login(const RequestInfo &request) const
 
 RequestResult LoginRequestHandler::signup(const RequestInfo &request) const
 {
-    SignupResponse response = this->m_handlerFactory.getLoginManager().signup(
+    const SignupResponse response = this->m_handlerFactory.getLoginManager().signup(
         request.data.at("username"),
         request.data.at("password"),
         request.data.at("email")

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <exception>
-#include <string>
 
 class SocketDisconnectionException : public std::exception
 {

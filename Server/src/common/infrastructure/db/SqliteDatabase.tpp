@@ -1,3 +1,5 @@
+#pragma once
+
 #include "SqliteDatabase.h"
 
 
@@ -10,7 +12,7 @@ struct QueryCallbackContext
 };
 
 template <typename T>
-inline std::list<T> SqliteDatabase::querySql(
+std::list<T> SqliteDatabase::querySql(
 	const std::string& query,
 	std::function<T(const std::map<std::string, std::string>&)> rowMapper
 ) const
@@ -23,10 +25,10 @@ inline std::list<T> SqliteDatabase::querySql(
 		rowMapper
 	};
 
-	int result = sqlite3_exec(
+	const int result = sqlite3_exec(
 		this->_dbInstance,
 		query.c_str(),
-		[](void* data, int argc, char** argv, char** azColName) -> int
+		[](void* data, const int argc, char** argv, char** azColName) -> int
 		{
 			const QueryCallbackContext<T>* context = (QueryCallbackContext<T>*) data;
 

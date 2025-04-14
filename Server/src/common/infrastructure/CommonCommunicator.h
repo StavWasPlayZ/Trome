@@ -1,7 +1,5 @@
 #pragma once
 
-#include <stdexcept>
-
 #include <string>
 #include <map>
 #include <list>
@@ -23,8 +21,7 @@
 #ifdef _WIN32
 	#include <winsock2.h>
 #else
-	#include <sys/socket.h>
-	#include <netinet/in.h>
+#include <netinet/in.h>
 #endif
 
 
@@ -35,7 +32,7 @@ template <typename T>
 class CommonCommunicator
 {
 public:
-	CommonCommunicator(const T defaultSocket, const RequestHandlerFactory& handlerFactory);
+	CommonCommunicator(T defaultSocket, const RequestHandlerFactory& handlerFactory);
 	virtual ~CommonCommunicator();
 
 	bool isRunning() const;
@@ -62,7 +59,7 @@ protected:
 	std::atomic<bool> _running;
 	std::future<void> _serverThread;
 
-	struct sockaddr_in _serverSockAddr;
+	sockaddr_in _serverSockAddr;
 
 	std::mutex m_clients_mutex;
 	// Holding Client pointers because futures are immovable.
@@ -77,17 +74,17 @@ protected:
 	 */
 	void commonSetup();
 
-	virtual bool isValidSocket(const T result) const = 0;
-	virtual bool isValidBind(const T result) const = 0;
-	virtual bool isValidListen(const T result) const = 0;
-	virtual void setRecvTimeout(const unsigned int timeoutMs) const = 0;
+	virtual bool isValidSocket(T result) const = 0;
+	virtual bool isValidBind(T result) const = 0;
+	virtual bool isValidListen(T result) const = 0;
+	virtual void setRecvTimeout(unsigned int timeoutMs) const = 0;
 	virtual void acceptClients() = 0;
 
 	/**
 	 * Registers the provided socket as a client to the internal m_clients map.
 	 * The client is initiated with the LoginRequestHandler state.
 	 */
-	void registerClient(const T socket);
+	void registerClient(T socket);
 
 	/**
 	 * Returns: The future handling the client sockets.
@@ -98,15 +95,15 @@ protected:
 	/**
 	 * Returns true whether the message did not time out.
 	 */
-	virtual void recieveMsg(const T socket, void* buffer, const int length) const = 0;
+	virtual void recieveMsg(T socket, void* buffer, int length) const = 0;
 
-	void sendMsg(const T socket, const unsigned char* buffer, const int length) const;
+	void sendMsg(T socket, const unsigned char* buffer, int length) const;
 
 	/**
 	 * Platform-specific method for closing the server communication.
 	 */
 	virtual void platformClose() = 0;
-	virtual void closeClientSocket(const T socket) = 0;
+	virtual void closeClientSocket(T socket) = 0;
 
 	/**
 	 * Throws an exception with respect to the platform's preferred error type.
@@ -131,17 +128,17 @@ private:
 	//SECTION Thread Functions
 
 	void _serverThreadFunc();
-	void _clientThreadFunc(const T socket);
+	void _clientThreadFunc(T socket);
 
 	//ANCHOR Actual client processing function.
-	void _handleClient(const T socket);
+	void _handleClient(T socket);
 
-	RequestInfo _waitForClientRequest(const T socket);
+	RequestInfo _waitForClientRequest(T socket);
 	void _clientCleanerThreadFunc();
 
 	//!SECTION
 
-	void _enqueueDisconnectClient(const T socket);
+	void _enqueueDisconnectClient(T socket);
 	void _freeDisconnectedClients();
 };
 

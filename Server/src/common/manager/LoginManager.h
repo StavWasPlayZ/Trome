@@ -2,8 +2,6 @@
 
 #include <unordered_map>
 
-#include "Constants.h"
-
 #include "LoggedUser.h"
 
 #include "infrastructure/db/IDatabase.h"
@@ -12,7 +10,7 @@
 class LoginManager
 {
 public:
-	LoginManager(IDatabase* const m_database);
+	explicit LoginManager(IDatabase* m_database);
 
 	/**
 	 * Signs up a new user, then registers them as logged in.

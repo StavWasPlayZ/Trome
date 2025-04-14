@@ -9,7 +9,7 @@
 template <typename S>
 struct ProtocolResponse
 {
-	ProtocolResponse(const S status);
+	explicit ProtocolResponse(S status);
 
 	const S status;
 };
@@ -21,11 +21,11 @@ struct ProtocolResponse
 template <typename S>
 struct RegistrationResponse : ProtocolResponse<S>
 {
-	RegistrationResponse(const S status, const unsigned int userId);
+	RegistrationResponse(S status, unsigned int userId);
 	/**
 	 * A failed login response. Provided no user ID.
 	 */
-	RegistrationResponse(const S status);
+	explicit RegistrationResponse(S status);
 
 	/**
 	 * For failure, equals -1 (4294967295).
@@ -44,11 +44,11 @@ enum class LoginStatus : unsigned char
 
 struct LoginResponse : RegistrationResponse<LoginStatus>
 {
-	LoginResponse(const LoginStatus status, const unsigned int userId);
+	LoginResponse(LoginStatus status, unsigned int userId);
 	/**
 	 * A failed login response. Provided no user ID.
 	 */
-	LoginResponse(const LoginStatus status);
+	explicit LoginResponse(LoginStatus status);
 };
 
 
@@ -61,11 +61,11 @@ enum class SignupStatus : unsigned char
 
 struct SignupResponse : RegistrationResponse<SignupStatus>
 {
-	SignupResponse(const SignupStatus status, const unsigned int userId);
+	SignupResponse(SignupStatus status, unsigned int userId);
 	/**
 	 * A failed login response. Provided no user ID.
 	 */
-	SignupResponse(const SignupStatus status);
+	explicit SignupResponse(SignupStatus status);
 };
 
 
@@ -78,7 +78,7 @@ enum class LogoutStatus : unsigned char
 
 struct LogoutResponse : ProtocolResponse<LogoutStatus>
 {
-	LogoutResponse(const LogoutStatus status);
+	explicit LogoutResponse(LogoutStatus status);
 };
 
 
@@ -91,7 +91,7 @@ enum class ErrorStatus : unsigned char
 
 struct ErrorResponse : ProtocolResponse<ErrorStatus>
 {
-	ErrorResponse(const ErrorStatus status, const std::string& message);
+	ErrorResponse(ErrorStatus status, const std::string& message);
 	
 	const std::string message;
 };

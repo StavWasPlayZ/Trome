@@ -11,11 +11,7 @@
 OBuffer JsonResponsePacketSerializer::serializeResponse(const LoginResponse &response)
 {
 	nlohmann::json data;
-
-	serializeResponseToJson<LoginStatus>(
-		data,
-		(const RegistrationResponse<LoginStatus>&) response
-	);
+	serializeResponseToJson<LoginStatus>(data, response);
 
 	return serializeJsonToProtocol(ProtocolCode::LOGIN, data);
 }
@@ -23,11 +19,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const LoginResponse &res
 OBuffer JsonResponsePacketSerializer::serializeResponse(const SignupResponse &response)
 {
 	nlohmann::json data;
-
-	serializeResponseToJson<SignupStatus>(
-		data,
-		(const RegistrationResponse<SignupStatus>&) response
-	);
+	serializeResponseToJson<SignupStatus>(data, response);
 
 	return serializeJsonToProtocol(ProtocolCode::SIGNUP, data);
 }
@@ -35,18 +27,14 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const SignupResponse &re
 OBuffer JsonResponsePacketSerializer::serializeResponse(const ErrorResponse &response)
 {
 	nlohmann::json data;
-
-	serializeBaseResponseToJson<ErrorStatus>(
-		data,
-		(const ProtocolResponse<ErrorStatus>&) response
-	);
+	serializeBaseResponseToJson<ErrorStatus>(data, response);
 
 	data[ProtocolJsonKeys::MESSAGE] = response.message;
 
 	return serializeJsonToProtocol(ProtocolCode::ERROR, data);
 }
 
-OBuffer JsonResponsePacketSerializer::serializeJsonToProtocol(const ProtocolCode msgCode, const nlohmann::json data)
+OBuffer JsonResponsePacketSerializer::serializeJsonToProtocol(const ProtocolCode msgCode, const nlohmann::json &data)
 {
 	const std::string dataStr = data.dump();
 
@@ -60,7 +48,7 @@ OBuffer JsonResponsePacketSerializer::serializeJsonToProtocol(const ProtocolCode
 	writeBuffer[0] = (unsigned char)msgCode;
 	writeBuffer += SIZE_CODE;
 	// JSON length
-	JsonResponsePacketSerializer::writeInt(dataStr.size(), writeBuffer);
+	writeInt(dataStr.size(), writeBuffer);
 	writeBuffer += SIZE_JSON_LEN;
 	
 	// Actual JSON

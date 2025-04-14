@@ -7,7 +7,7 @@
 
 struct RequestInfo
 {
-    RequestInfo(const ProtocolCode id, const std::time_t receivalTime, const nlohmann::json& data);
+    RequestInfo(ProtocolCode id, std::time_t receivalTime, const nlohmann::json& data);
 
     const ProtocolCode id;
     const std::time_t receivalTime;

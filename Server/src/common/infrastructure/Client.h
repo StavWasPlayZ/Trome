@@ -14,7 +14,7 @@ template <typename T>
 class Client
 {
 public:
-	Client(const T socket, const IRequestHandler* const requestHandler, const std::function<void()> clientThreadFunc);
+	Client(T socket, const IRequestHandler* requestHandler, const std::function<void()> &clientThreadFunc);
 	~Client();
 
 	const T socket;

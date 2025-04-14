@@ -1,9 +1,10 @@
+#pragma once
+
 #include "CommonCommunicator.h"
 
 #include <iostream>
 
 #include <thread>
-#include <chrono>
 
 #include "Constants.h"
 
@@ -15,13 +16,11 @@
 #include "handler/codec/c2s/JsonRequestPacketDeserializer.h"
 #include "handler/codec/s2c/JsonResponsePacketSerializer.h"
 
-#include "handler/LoginRequestHandler.h"
-
 
 template <typename T>
 CommonCommunicator<T>::CommonCommunicator(const T defaultSocket, const RequestHandlerFactory& handlerFactory) :
     _running(false),
-    _serverSockAddr({ 0 }),
+    _serverSockAddr({}),
     m_serverSocket(defaultSocket),
     m_handlerFactory(handlerFactory)
 {}
@@ -67,7 +66,7 @@ void CommonCommunicator<T>::close()
 
     platformClose();
 
-    this->_serverSockAddr = { 0 };
+    this->_serverSockAddr = {};
     this->_serverThread = std::future<void>();
 }
 
@@ -92,7 +91,7 @@ void CommonCommunicator<T>::commonSetup()
     this->_serverSockAddr.sin_port = htons(PORT);
 
     if (!isValidBind(
-        bind(this->m_serverSocket, (struct sockaddr*)&this->_serverSockAddr, sizeof(this->_serverSockAddr))
+        bind(this->m_serverSocket, (sockaddr*)&this->_serverSockAddr, sizeof(this->_serverSockAddr))
     )) {
         close();
         throwPlatformError("Binding failed");
@@ -202,13 +201,13 @@ void CommonCommunicator<T>::_clientThreadFunc(const T socket)
         {
             _handleClient(socket);
         }
-        catch (const SocketTimeoutException& e)
+        catch (const SocketTimeoutException& _)
         {
             // If we timed out (see RECV_REFRESH_TIMEOUT),
             // simply wait for the next recv cycle (if applicable).
             continue;
         }
-        catch (const SocketDisconnectionException& e)
+        catch (const SocketDisconnectionException& _)
         {
             break;
         }
@@ -303,7 +302,7 @@ void CommonCommunicator<T>::_clientCleanerThreadFunc()
 template <typename T>
 void CommonCommunicator<T>::_enqueueDisconnectClient(const T socket)
 {	
-	std::cout << "Socket " << std::to_string(socket) << " disconected" << std::endl;
+	std::cout << "Socket " << std::to_string(socket) << " disconnected" << std::endl;
 
 	this->_disconnectingClients_mutex.lock();
 	this->_disconnectingClients.push_back(socket);

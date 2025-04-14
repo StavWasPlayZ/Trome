@@ -3,12 +3,11 @@
 #include <nlohmann/json.hpp>
 
 #include "Request.h"
-#include "Constants.h"
 
 class JsonRequestPacketDeserializer
 {
 public:
-	static nlohmann::json readJson(const unsigned char* data, const int jsonLen);
+	static nlohmann::json readJson(const unsigned char* data, int jsonLen);
 
 	/**
 	* Returns: The deserialized object.
