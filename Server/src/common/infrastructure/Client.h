@@ -7,6 +7,9 @@
 #ifndef _WIN32
 // In Unix, socket = int.
 #define SOCKET int
+#else
+// To have SOCKET, we need WinSock.
+#include <WinSock2.h>
 #endif
 
 class IRequestHandler;
