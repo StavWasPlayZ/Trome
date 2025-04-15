@@ -187,13 +187,13 @@ void CommonCommunicator::_clientThreadFunc(const SOCKET socket)
         {
             _handleClient(socket);
         }
-        catch (const SocketTimeoutException& _)
+        catch (const SocketTimeoutException&)
         {
             // If we timed out (see RECV_REFRESH_TIMEOUT),
             // simply wait for the next recv cycle (if applicable).
             continue;
         }
-        catch (const SocketDisconnectionException& _)
+        catch (const SocketDisconnectionException&)
         {
             break;
         }

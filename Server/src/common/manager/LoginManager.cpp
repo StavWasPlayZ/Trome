@@ -10,9 +10,9 @@ SignupResponse LoginManager::signup(const Client& client, const std::string& use
 	{
 		this->m_database->addNewUser(username, password, email);
 	}
-	catch (std::runtime_error& _) // addNewUser will return runtime_error when adding a user with the same username bc its UNIQUE.
+	catch (std::runtime_error& e) // addNewUser will return runtime_error when adding a user with the same username bc its UNIQUE.
 	{
-		//TODO: Check what e.what says about that, and act accordingly.
+		//TODO: actually check what the error is about, and act accordingly.
 		// Only throw this if relevant, otherwise generic/internal error.
 		return SignupResponse(SignupStatus::FAILED_USERNAME_TAKEN);
 	}
