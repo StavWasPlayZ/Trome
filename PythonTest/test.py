@@ -6,10 +6,20 @@ from typing import *
 LOGIN = 1
 SIGNUP = 2
 
-SEPERATOR =  "-----------------"
+SEPARATOR =  "-----------------"
 
-JSON_TEST_LOGIN = {"username": "user1", "password": "1234"}
-JSON_TEST_SIGNUP = {"username": "user1", "password": "1234", "email": "user1@gmail.com"}
+JSON_TEST_LOGIN = {
+    "username": "user1",
+    "password": "1234"
+}
+JSON_TEST_SIGNUP = {
+    "username": "user1",
+    "password": "1234",
+    "email": "user1@gmail.com",
+    "phone": "0555555555",
+    "birthdate": "11/11/2011",
+    "address": "some, thing, ig"
+}
 
 SERVER_INFO = ("127.0.0.1", 6942)
 
@@ -35,13 +45,13 @@ def sendAndRecv(code: int, data: json, sock: socket.socket):
     """
     msg = serialize(code, data)
     sock.sendall(msg)
-    print(SEPERATOR)
+    print(SEPARATOR)
     print("Sent: Code:", code, "\nData:", data, "\nIn bytes:", msg)
 
     server_msg = sock.recv(1024)
     raw_data = deserialzer(server_msg)
 
-    print(SEPERATOR)
+    print(SEPARATOR)
     print("Recieved: Code:", raw_data[0], "\nData Len:", raw_data[1], "\nData:", raw_data[2], "\nIn bytes:", server_msg)
 
 
