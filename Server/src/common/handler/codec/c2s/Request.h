@@ -36,6 +36,7 @@ struct SignupRequest : LoginRequest
 		const std::string& username,
 		const std::string& password,
 		const std::string& email,
+		const std::string& phone,
 		const std::string& birthdate,
 		const std::optional<std::string>& address
 	);
