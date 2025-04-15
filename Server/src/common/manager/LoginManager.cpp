@@ -1,23 +1,40 @@
 #include "manager/LoginManager.h"
 
+#include "exception/RegexViolationException.h"
+
 LoginManager::LoginManager(IDatabase* const database) :
 	m_database(database)
 {}
 
-SignupResponse LoginManager::signup(const Client& client, const std::string& username, const std::string& password, const std::string& email)
+SignupResponse LoginManager::signup(const RequestInfo &context, const SignupRequest &request)
 {
 	try
 	{
-		this->m_database->addNewUser(username, password, email);
+		this->m_database->addNewUser(
+			request.username,
+			request.password,
+			request.email,
+			request.phone,
+			request.birthdate,
+			request.address
+		);
 	}
-	catch (std::runtime_error& e) // addNewUser will return runtime_error when adding a user with the same username bc its UNIQUE.
+    catch (const RegexViolationException &e)
+    {
+        //TODO: Add detail as to what regex failed (contained in e.field)
+        // Generally add a field for optional failure details.
+        return SignupResponse(SignupStatus::FAILED_INVALID_ARGUMENT);
+    }
+	catch (const std::runtime_error& e)
 	{
+	    // addNewUser will return runtime_error when adding a user with the same username bc its UNIQUE.
+
 		//TODO: actually check what the error is about, and act accordingly.
 		// Only throw this if relevant, otherwise generic/internal error.
 		return SignupResponse(SignupStatus::FAILED_USERNAME_TAKEN);
 	}
 
-	const LoginResponse loginRes = this->login(client, username, password);
+	const LoginResponse loginRes = this->login(context, request);
 
 	// Simply convert the login response to a signup one
 	if (loginRes.status == LoginStatus::SUCCESS)
@@ -29,21 +46,21 @@ SignupResponse LoginManager::signup(const Client& client, const std::string& use
 }
 
 
-LoginResponse LoginManager::login(const Client &client, const std::string& username, const std::string& password)
+LoginResponse LoginManager::login(const RequestInfo &context, const LoginRequest &request)
 {
-	const unsigned int userId = this->m_database->getIdOfUser(username, password);
+	const unsigned int userId = this->m_database->getIdOfUser(request.username, request.password);
 
 	if (userId == -1)
 	{
 		return LoginResponse(LoginStatus::FAILED_INVALID_CREDENTIALS);
 	}
 
-	if (this->m_loggedUsers.contains(username))
+	if (this->m_loggedUsers.contains(request.username))
 	{
 		return LoginResponse(LoginStatus::FAILED_ALREADY_LOGGED_IN);
 	}
 
-	this->m_loggedUsers.insert({username, LoggedUser(userId, username, &client)});
+	this->m_loggedUsers.insert({request.username, LoggedUser(userId, request.username, &context.client)});
 
 	return LoginResponse(LoginStatus::SUCCESS, userId);
 }

@@ -13,7 +13,10 @@ SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(const nloh
 	return SignupRequest(
 		data.at("username"),
 		data.at("password"),
-		data.at("email")
+		data.at("email"),
+		data.at("phone"),
+		data.at("birthdate"),
+		data.contains("address") ? std::optional(data.at("address")) : std::nullopt
 	);
 }
 

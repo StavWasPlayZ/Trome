@@ -19,7 +19,15 @@ public:
 	bool close() override;
 	bool doesUserExist(const std::string& username) const override;
 	unsigned int getIdOfUser(const std::string& username, const std::string& password) const override;
-	unsigned int addNewUser(const std::string& username, const std::string& password, const std::string& email) const override;
+
+	unsigned int addNewUser(
+		const std::string& username,
+		const std::string& password,
+		const std::string& email,
+		const std::string& phone,
+		const std::string& birthdate,
+		const std::optional<std::string>& address
+	) const override;
 
 private:
 	static const std::string CREATE_USERS_TBL_QUERY;

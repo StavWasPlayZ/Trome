@@ -225,7 +225,9 @@ void CommonCommunicator::_handleClient(const SOCKET socket) const
     }
     else
     {
-        const RequestResult result = handler->handleRequest(info);
+        const ProtocolRequest* request = ProtocolRequest::fromRequest(info);
+        const RequestResult result = handler->handleRequest(info, *request);
+        delete request;
 
         // The Handler did its job well.
         // 🫡
@@ -259,7 +261,7 @@ RequestInfo CommonCommunicator::_waitForClientRequest(const SOCKET socket) const
     const RequestInfo info(
         *this->m_clients.at(socket),
 
-        (ProtocolCode)reqCode,
+        (RequestCode) reqCode,
         std::chrono::system_clock::to_time_t(
             std::chrono::system_clock::now()
         ),

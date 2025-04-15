@@ -7,30 +7,26 @@
 LoginRequestHandler::LoginRequestHandler(const RequestHandlerFactory &handlerFactory) : IRequestHandler(handlerFactory)
 {}
 
-bool LoginRequestHandler::isRequestRelevant(const RequestInfo &request) const
+bool LoginRequestHandler::isRequestRelevant(const RequestInfo &info) const
 {
     //TODO: Check if client is already logged in (?)
-    return (request.id == ProtocolCode::LOGIN) || (request.id == ProtocolCode::SIGNUP);
+    return (info.id == RequestCode::LOGIN) || (info.id == RequestCode::SIGNUP);
 }
 
-RequestResult LoginRequestHandler::handleRequest(const RequestInfo& request) const
+RequestResult LoginRequestHandler::handleRequest(const RequestInfo& info, const ProtocolRequest& request) const
 {
-    switch (request.id)
+    switch (info.id)
     {
-    case ProtocolCode::LOGIN: return login(request);
-    case ProtocolCode::SIGNUP: return signup(request);
+    case RequestCode::LOGIN: return login(info, (LoginRequest&) request);
+    case RequestCode::SIGNUP: return signup(info, (SignupRequest&) request);
 
     default: throw std::runtime_error("Unexpected request ID");
     }
 }
 
-RequestResult LoginRequestHandler::login(const RequestInfo& request) const
+RequestResult LoginRequestHandler::login(const RequestInfo& context, const LoginRequest& request) const
 {
-    const LoginResponse response = this->m_handlerFactory.getLoginManager().login(
-        request.client,
-        request.data.at("username"),
-        request.data.at("password")
-    );
+    const LoginResponse response = this->m_handlerFactory.getLoginManager().login(context, request);
 
     if (response.status != LoginStatus::SUCCESS)
     {
@@ -46,14 +42,9 @@ RequestResult LoginRequestHandler::login(const RequestInfo& request) const
     ); // change this later to have a MenuRequestHandler instead of this
 }
 
-RequestResult LoginRequestHandler::signup(const RequestInfo& request) const
+RequestResult LoginRequestHandler::signup(const RequestInfo& context, const SignupRequest& request) const
 {
-    const SignupResponse response = this->m_handlerFactory.getLoginManager().signup(
-        request.client,
-        request.data.at("username"),
-        request.data.at("password"),
-        request.data.at("email")
-    );
+    const SignupResponse response = this->m_handlerFactory.getLoginManager().signup(context, request);
 
     if (response.status != SignupStatus::SUCCESS)
     {

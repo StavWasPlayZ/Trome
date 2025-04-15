@@ -44,7 +44,6 @@ public:
 
 protected:
 	static constexpr unsigned int PORT = 6942;
-	static inline const std::string CMD_HELLO = "Hello";
 
 	/**
 	 * The timeout for the recv method.

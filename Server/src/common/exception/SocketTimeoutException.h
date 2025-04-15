@@ -5,6 +5,6 @@
 class SocketTimeoutException : public std::exception
 {
 public:
-    explicit SocketTimeoutException() = default;
+    explicit SocketTimeoutException();
     const char* what() const noexcept override;
 };
