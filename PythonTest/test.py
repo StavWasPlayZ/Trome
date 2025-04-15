@@ -10,7 +10,7 @@ SEPARATOR =  "-----------------"
 
 JSON_TEST_LOGIN = {
     "username": "user1",
-    "password": "1234"
+    "password": "Aa12345!"
 }
 JSON_TEST_SIGNUP = {
     "username": "user1",
@@ -18,7 +18,7 @@ JSON_TEST_SIGNUP = {
     "email": "user1@gmail.com",
     "phone": "0555555555",
     "birthdate": "11/11/2011",
-    "address": "some, thing, ig"
+    "address": "some, 69, ig"
 }
 JSON_WRONG_PASSWORD = {
     "username": "user wrong password",
@@ -26,7 +26,7 @@ JSON_WRONG_PASSWORD = {
     "email": "user1@gmail.com",
     "phone": "0555555555",
     "birthdate": "11/11/2011",
-    "address": "some, thing, ig"
+    "address": "some, 69, ig"
 }
 JSON_WRONG_EMAIL = {
     "username": "user wrong email",
@@ -34,7 +34,7 @@ JSON_WRONG_EMAIL = {
     "email": "user1@gmail", # no .com
     "phone": "0555555555",
     "birthdate": "11/11/2011",
-    "address": "some, thing, ig"
+    "address": "some, 69, ig"
 }
 JSON_WRONG_PHONE = {
     "username": "user wrong phone",
@@ -42,7 +42,7 @@ JSON_WRONG_PHONE = {
     "email": "user1@gmail.com",
     "phone": "11111", # illegal phone number
     "birthdate": "11/11/2011",
-    "address": "some, thing, ig"
+    "address": "some, 69, ig"
 }
 JSON_WRONG_DATE = {
     "username": "user wrong date",
@@ -50,7 +50,7 @@ JSON_WRONG_DATE = {
     "email": "user1@gmail.com",
     "phone": "0555555555",
     "birthdate": "11-11/2011", # not in format of DD/MM/YYYY
-    "address": "some, thing, ig"
+    "address": "some, 69, ig"
 }
 JSON_WRONG_ADDRESS = {
     "username": "user wrong address",
@@ -58,7 +58,7 @@ JSON_WRONG_ADDRESS = {
     "email": "user1@gmail.com",
     "phone": "0555555555",
     "birthdate": "11/11/2011",
-    "address": "some, thing" # no 3rd arg
+    "address": "some, 69" # no 3rd arg
 }
 
 SERVER_INFO = ("127.0.0.1", 6942)
