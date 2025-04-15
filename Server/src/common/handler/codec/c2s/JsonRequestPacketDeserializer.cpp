@@ -14,7 +14,7 @@ SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(const nloh
 		data.at("username"),
 		data.at("password"),
 		data.at("email"),
-		data.at("birthdate"),
+		data.contains("birthdate") ? data.at("birthdate") : std::nullopt,
 		data.at("address")
 	);
 }
