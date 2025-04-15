@@ -97,7 +97,10 @@ endif()
 include(FetchContent)
 
 #nlohmann_json
-FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz)
+FetchContent_Declare(
+  json
+  URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz
+)
 FetchContent_MakeAvailable(json)
 
 target_link_libraries(Server PRIVATE nlohmann_json::nlohmann_json)
@@ -107,6 +110,15 @@ add_library(sqlite3 STATIC lib/sqlite3/sqlite3.c)
 target_include_directories(sqlite3 PUBLIC lib/sqlite3)
 
 target_link_libraries(Server PRIVATE sqlite3)
+
+# ctre (Compile Time Regular Expressions v3)
+FetchContent_Declare(
+  ctre
+  GIT_REPOSITORY https://github.com/hanickadot/compile-time-regular-expressions.git
+  GIT_TAG v3.9.0
+)
+FetchContent_MakeAvailable(ctre)
+target_link_libraries(Server PRIVATE ctre)
 
 
 # Support includes starting from relative paths
