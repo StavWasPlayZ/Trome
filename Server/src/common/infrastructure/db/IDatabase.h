@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <optional>
 
 class IDatabase
 {
@@ -20,7 +21,7 @@ public:
 	 */
 	virtual bool close() = 0;
 	/**
-	 * Returns: Whether the user exists within the databse
+	 * Returns: Whether the user exists within the database
 	 */
 	virtual bool doesUserExist(const std::string& username) const = 0;
 	/**
@@ -32,5 +33,12 @@ public:
 	 * 
 	 * Returns: Its new ID
 	 */
-	virtual unsigned int addNewUser(const std::string& username, const std::string& password, const std::string& email) const = 0;	
+	virtual unsigned int addNewUser(
+		const std::string& username,
+		const std::string& password,
+		const std::string& email,
+		const std::string& phone,
+		const std::string& birthdate,
+		const std::optional<std::string>& address
+	) const = 0;
 };

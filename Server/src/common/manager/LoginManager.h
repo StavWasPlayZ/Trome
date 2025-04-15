@@ -6,6 +6,7 @@
 
 #include "infrastructure/db/IDatabase.h"
 #include "handler/codec/s2c/Response.h"
+#include "handler/codec/c2s/Request.h"
 
 class LoginManager
 {
@@ -15,12 +16,12 @@ public:
 	/**
 	 * Signs up a new user, then registers them as logged in.
 	 */
-	SignupResponse signup(const Client& client, const std::string& username, const std::string& password, const std::string& email);
+	SignupResponse signup(const RequestInfo& context, const SignupRequest& request);
 
 	/**
 	 * Registers the provided user as logged in, provided their credentials match.
 	 */
-	LoginResponse login(const Client& client, const std::string& username, const std::string& password);
+	LoginResponse login(const RequestInfo& context, const LoginRequest& request);
 
 	/**
 	 * Unregisters the user as being signed in.

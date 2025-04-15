@@ -13,7 +13,9 @@ SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(const nloh
 	return SignupRequest(
 		data.at("username"),
 		data.at("password"),
-		data.at("email")
+		data.at("email"),
+		data.at("birthdate"),
+		data.at("address")
 	);
 }
 

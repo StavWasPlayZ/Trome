@@ -1,13 +1,23 @@
 #include "SqliteDatabase.h"
 
+#include <sstream>
+
 const std::string SqliteDatabase::TABLE_USERS = "users";
 
 const std::string SqliteDatabase::CREATE_USERS_TBL_QUERY = 
 	"CREATE TABLE IF NOT EXISTS " + TABLE_USERS + " ("
 		"id INTEGER PRIMARY KEY AUTOINCREMENT, "
-		"username TEXT NOT NULL UNIQUE, "
-		"password TEXT NOT NULL, "
-		"email TEXT NOT NULL"
+		// Lengths below are as suggested by the internet
+		"username NVARCHAR(20) NOT NULL UNIQUE, "
+		"password NVARCHAR(64) NOT NULL, "
+		"email NVARCHAR(254) NOT NULL, "
+
+		"phone NVARCHAR(180), "
+		"address NVARCHAR(180), "
+		// Would 99% of times be of type DATE,
+		// but shall be entertained as a string for the sake of the exercise.
+		// DD/MM/YYYY
+		"birthdate NVARCHAR(10) NOT NULL"
 	");";
 
 
@@ -78,15 +88,29 @@ unsigned int SqliteDatabase::getIdOfUser(const std::string& username, const std:
 	return *ids.begin();
 }
 
-unsigned int SqliteDatabase::addNewUser(const std::string& username, const std::string& password, const std::string& email) const
-{
-	return *queryIds(
-		"INSERT INTO " + TABLE_USERS + " (username, password, email)"
-		" VALUES "
-		"('" + username + "','" + password + "','" + email + "')"
+unsigned int SqliteDatabase::addNewUser(
+	const std::string& username,
+	const std::string& password,
+	const std::string& email,
+	const std::string& phone,
+	const std::string& birthdate,
+	const std::optional<std::string>& address
+) const {
+	std::ostringstream builder;
 
-		" RETURNING id;"
-	).begin();
+	builder << "INSERT INTO " << TABLE_USERS << " (username, password, email, phone, address, birthdate)"
+		" VALUES "
+		"('"
+			<< username << "','"
+			<< password << "','"
+			<< email << "','"
+			<< phone << "','"
+			<< (address.has_value() ? address.value() : "NULL") << "','"
+			<< birthdate <<
+		"')"
+	" RETURNING id;";
+
+	return *queryIds(builder.str()).begin();
 }
 
 

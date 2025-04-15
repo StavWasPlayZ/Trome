@@ -225,7 +225,9 @@ void CommonCommunicator::_handleClient(const SOCKET socket) const
     }
     else
     {
-        const RequestResult result = handler->handleRequest(info);
+        const ProtocolRequest* request = ProtocolRequest::fromRequest(info);
+        const RequestResult result = handler->handleRequest(info, *request);
+        delete request;
 
         // The Handler did its job well.
         // 🫡
