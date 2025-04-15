@@ -74,8 +74,14 @@ protected:
         "^0.{8,9}$"
     >;
 
+	// add docs later
+	inline static auto dateMatcher = ctre::match<
+		"^\\d{2}\\/\\d{2}\\/\\d{4}$"
+	>;
+
 
 	static void validateSignupInfo(
+		const std::string& password,
 		const std::string& email,
 		const std::string& phone,
 		const std::string& birthdate,
