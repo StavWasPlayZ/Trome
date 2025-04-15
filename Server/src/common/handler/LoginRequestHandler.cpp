@@ -10,15 +10,15 @@ LoginRequestHandler::LoginRequestHandler(const RequestHandlerFactory &handlerFac
 bool LoginRequestHandler::isRequestRelevant(const RequestInfo &info) const
 {
     //TODO: Check if client is already logged in (?)
-    return (info.id == ProtocolCode::LOGIN) || (info.id == ProtocolCode::SIGNUP);
+    return (info.id == RequestCode::LOGIN) || (info.id == RequestCode::SIGNUP);
 }
 
 RequestResult LoginRequestHandler::handleRequest(const RequestInfo& info, const ProtocolRequest& request) const
 {
     switch (info.id)
     {
-    case ProtocolCode::LOGIN: return login(info, (LoginRequest&) request);
-    case ProtocolCode::SIGNUP: return signup(info, (SignupRequest&) request);
+    case RequestCode::LOGIN: return login(info, (LoginRequest&) request);
+    case RequestCode::SIGNUP: return signup(info, (SignupRequest&) request);
 
     default: throw std::runtime_error("Unexpected request ID");
     }

@@ -3,6 +3,13 @@
 #include <string>
 
 
+enum class ResponseCode : unsigned char
+{
+	ERROR = 0,
+	LOGIN = 1,
+	SIGNUP = 2
+};
+
 /**
  * S - The enum Status type
  */

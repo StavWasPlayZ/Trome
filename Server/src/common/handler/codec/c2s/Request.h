@@ -5,6 +5,11 @@
 
 #include "infrastructure/request/RequestInfo.h"
 
+enum class RequestCode : unsigned char
+{
+	LOGIN = 1,
+	SIGNUP = 2
+};
 
 struct ProtocolRequest
 {

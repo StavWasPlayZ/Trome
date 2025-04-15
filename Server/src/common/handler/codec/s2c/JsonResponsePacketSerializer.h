@@ -51,7 +51,7 @@ private:
 	 * 
 	 * NOTE: The returned resource must be freed.
 	 */
-	static OBuffer serializeJsonToProtocol(ProtocolCode msgCode, const nlohmann::json &data);
+	static OBuffer serializeJsonToProtocol(ResponseCode msgCode, const nlohmann::json &data);
 
 	static void writeInt(int num, unsigned char* buffer);
 };

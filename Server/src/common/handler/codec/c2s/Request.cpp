@@ -22,8 +22,8 @@ SignupRequest::SignupRequest(
 ProtocolRequest *ProtocolRequest::fromRequest(const RequestInfo &info) {
     switch (info.id)
     {
-    case ProtocolCode::LOGIN: return new LoginRequest(JsonRequestPacketDeserializer::deserializeLoginRequest(info.data));
-    case ProtocolCode::SIGNUP: return new SignupRequest(JsonRequestPacketDeserializer::deserializeSignupRequest(info.data));
+    case RequestCode::LOGIN: return new LoginRequest(JsonRequestPacketDeserializer::deserializeLoginRequest(info.data));
+    case RequestCode::SIGNUP: return new SignupRequest(JsonRequestPacketDeserializer::deserializeSignupRequest(info.data));
 
     default: throw std::invalid_argument("Invalid request ID");
     }
