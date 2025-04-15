@@ -15,12 +15,12 @@ public:
 	/**
 	 * Signs up a new user, then registers them as logged in.
 	 */
-	SignupResponse signup(const Client* client, const std::string& username, const std::string& password, const std::string& email);
+	SignupResponse signup(const Client& client, const std::string& username, const std::string& password, const std::string& email);
 
 	/**
 	 * Registers the provided user as logged in, provided their credentials match.
 	 */
-	LoginResponse login(const Client* client, const std::string& username, const std::string& password);
+	LoginResponse login(const Client& client, const std::string& username, const std::string& password);
 
 	/**
 	 * Unregisters the user as being signed in.

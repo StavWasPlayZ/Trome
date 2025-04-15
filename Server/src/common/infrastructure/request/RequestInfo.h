@@ -4,15 +4,14 @@
 #include <nlohmann/json.hpp>
 
 #include "Constants.h"
-#include "infrastructure/Client.h"
 
 class Client;
 
 struct RequestInfo
 {
-    RequestInfo(const Client* client, ProtocolCode id, std::time_t receivalTime, const nlohmann::json& data);
+    RequestInfo(const Client& client, ProtocolCode id, std::time_t receivalTime, const nlohmann::json& data);
 
-    const Client* const client;
+    const Client& client;
 
     const ProtocolCode id;
     const std::time_t receivalTime;

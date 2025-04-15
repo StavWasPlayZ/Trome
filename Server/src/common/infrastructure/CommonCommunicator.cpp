@@ -212,7 +212,7 @@ void CommonCommunicator::_handleClient(const SOCKET socket) const
 {
     const RequestInfo info = _waitForClientRequest(socket);
 
-    Client* client = this->m_clients.at(socket);
+    Client* const client = this->m_clients.at(socket);
     const IRequestHandler* const handler = client->requestHandler;
 
     OBuffer responseBuffer;
@@ -257,7 +257,7 @@ RequestInfo CommonCommunicator::_waitForClientRequest(const SOCKET socket) const
     receiveMsg(socket, data, jsonLen);
 
     const RequestInfo info(
-        this->m_clients.at(socket),
+        *this->m_clients.at(socket),
 
         (ProtocolCode)reqCode,
         std::chrono::system_clock::to_time_t(

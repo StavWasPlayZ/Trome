@@ -4,7 +4,7 @@ LoginManager::LoginManager(IDatabase* const database) :
 	m_database(database)
 {}
 
-SignupResponse LoginManager::signup(const Client* const client, const std::string& username, const std::string& password, const std::string& email)
+SignupResponse LoginManager::signup(const Client& client, const std::string& username, const std::string& password, const std::string& email)
 {
 	try
 	{
@@ -29,7 +29,7 @@ SignupResponse LoginManager::signup(const Client* const client, const std::strin
 }
 
 
-LoginResponse LoginManager::login(const Client* client, const std::string& username, const std::string& password)
+LoginResponse LoginManager::login(const Client &client, const std::string& username, const std::string& password)
 {
 	const unsigned int userId = this->m_database->getIdOfUser(username, password);
 
@@ -43,7 +43,7 @@ LoginResponse LoginManager::login(const Client* client, const std::string& usern
 		return LoginResponse(LoginStatus::FAILED_ALREADY_LOGGED_IN);
 	}
 
-	this->m_loggedUsers.insert({username, LoggedUser(userId, username, client)});
+	this->m_loggedUsers.insert({username, LoggedUser(userId, username, &client)});
 
 	return LoginResponse(LoginStatus::SUCCESS, userId);
 }
