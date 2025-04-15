@@ -8,6 +8,7 @@
 #include <map>
 #include <list>
 #include <functional>
+#include <stdexcept>
 
 class SqliteDatabase : public IDatabase
 {

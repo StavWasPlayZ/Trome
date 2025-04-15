@@ -13,10 +13,10 @@ void IDatabase::validateSignupInfo(
     if (!emailMatcher.match(email))
         throw RegexViolationException("email");
 
-    if (!emailMatcher.match(phone))
+    if (!phoneMatcher.match(phone))
         throw RegexViolationException("phone");
 
-    if (!emailMatcher.match(birthdate))
+    if (!emailMatcher.match(birthdate)) // fix this
         throw RegexViolationException("birthdate");
 
     if (address.has_value() && !emailMatcher.match(address.value()))
