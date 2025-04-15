@@ -97,6 +97,8 @@ unsigned int SqliteDatabase::addNewUser(
 	const std::string& birthdate,
 	const std::optional<std::string>& address
 ) const {
+    validateSignupInfo(email, phone, birthdate, address);
+
 	std::ostringstream builder;
 
 	builder << "INSERT INTO " << TABLE_USERS << " (username, password, email, phone, address, birthdate)"

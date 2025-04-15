@@ -32,6 +32,8 @@ add_executable (Server
   "src/common/exception/SocketDisconnectionException.cpp"
   "src/common/exception/SocketTimeoutException.h"
   "src/common/exception/SocketTimeoutException.cpp"
+  "src/common/exception/RegexViolationException.cpp"
+  "src/common/exception/RegexViolationException.h"
   "src/common/Constants.h"
   "src/common/Constants.cpp"
 

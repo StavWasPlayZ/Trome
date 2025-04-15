@@ -1,5 +1,7 @@
 #include "manager/LoginManager.h"
 
+#include "exception/RegexViolationException.h"
+
 LoginManager::LoginManager(IDatabase* const database) :
 	m_database(database)
 {}
@@ -17,8 +19,16 @@ SignupResponse LoginManager::signup(const RequestInfo &context, const SignupRequ
 			request.address
 		);
 	}
-	catch (std::runtime_error& e) // addNewUser will return runtime_error when adding a user with the same username bc its UNIQUE.
+    catch (const RegexViolationException &e)
+    {
+        //TODO: Add detail as to what regex failed (contained in e.field)
+        // Generally add a field for optional failure details.
+        return SignupResponse(SignupStatus::FAILED_INVALID_ARGUMENT);
+    }
+	catch (const std::runtime_error& e)
 	{
+	    // addNewUser will return runtime_error when adding a user with the same username bc its UNIQUE.
+
 		//TODO: actually check what the error is about, and act accordingly.
 		// Only throw this if relevant, otherwise generic/internal error.
 		return SignupResponse(SignupStatus::FAILED_USERNAME_TAKEN);
