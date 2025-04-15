@@ -13,7 +13,7 @@ const std::string SqliteDatabase::CREATE_USERS_TBL_QUERY =
 		"password NVARCHAR(64) NOT NULL, "
 		"email NVARCHAR(254) NOT NULL, "
 
-		"phone NVARCHAR(16), "
+		"phone NVARCHAR(16) NOT NULL, "
 		"address NVARCHAR(180), "
 		// Would 99% of times be of type DATE,
 		// but shall be entertained as a string for the sake of the exercise.
