@@ -73,7 +73,7 @@ add_executable (Server
   "src/common/manager/LoginManager.cpp"
   "src/common/manager/LoggedUser.cpp"
   "src/common/manager/LoggedUser.h"
-)
+ "src/common/infrastructure/Room.h" "src/common/infrastructure/Room.cpp")
 
 # Platform-specific sources
 if (WIN32)
