@@ -60,7 +60,7 @@ LoginResponse LoginManager::login(const RequestInfo &context, const LoginRequest
 		return LoginResponse(LoginStatus::FAILED_ALREADY_LOGGED_IN);
 	}
 
-	this->m_loggedUsers.insert({request.username, LoggedUser(userId, request.username, &context.client)});
+	this->m_loggedUsers.emplace(request.username, LoggedUser(userId, request.username, &context.client));
 
 	return LoginResponse(LoginStatus::SUCCESS, userId);
 }
