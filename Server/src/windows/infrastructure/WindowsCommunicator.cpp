@@ -8,8 +8,15 @@
 
 #include <iostream>
 
-WindowsCommunicator::WindowsCommunicator(const RequestHandlerFactory& handlerFactory) : CommonCommunicator(INVALID_SOCKET, handlerFactory)
+WindowsCommunicator::WindowsCommunicator(const RequestHandlerFactory& handlerFactory) :
+    CommonCommunicator(INVALID_SOCKET, handlerFactory)
 {}
+
+WindowsCommunicator &WindowsCommunicator::getInstance(const RequestHandlerFactory& handlerFactory)
+{
+    static WindowsCommunicator instance(handlerFactory);
+    return instance;
+}
 
 void WindowsCommunicator::bindAndListen()
 {

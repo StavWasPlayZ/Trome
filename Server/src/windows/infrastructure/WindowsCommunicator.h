@@ -10,7 +10,10 @@
 class WindowsCommunicator : public CommonCommunicator
 {
 public:
-	WindowsCommunicator(const RequestHandlerFactory& handlerFactory);
+    WindowsCommunicator(const WindowsCommunicator&) = delete;
+    void operator=(const WindowsCommunicator&) = delete;
+
+    static WindowsCommunicator& getInstance(const RequestHandlerFactory& handlerFactory);
 
 	/**
 	* Binds this instance to the program port, and begins to listen for new clients.
@@ -34,4 +37,7 @@ protected:
 	virtual void closeClientSocket(const SOCKET socket) override;
 
 	void throwPlatformError(const std::string &msg) const override;
+
+private:
+    WindowsCommunicator(const RequestHandlerFactory& handlerFactory);
 };

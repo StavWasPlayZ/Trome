@@ -2,7 +2,7 @@
 
 #include "exception/RegexViolationException.h"
 
-LoginManager::LoginManager(IDatabase* const database) :
+LoginManager::LoginManager(const IDatabase& database) :
 	m_database(database)
 {}
 
@@ -10,7 +10,7 @@ SignupResponse LoginManager::signup(const RequestInfo &context, const SignupRequ
 {
 	try
 	{
-		this->m_database->addNewUser(
+		this->m_database.addNewUser(
 			request.username,
 			request.password,
 			request.email,
@@ -48,7 +48,7 @@ SignupResponse LoginManager::signup(const RequestInfo &context, const SignupRequ
 
 LoginResponse LoginManager::login(const RequestInfo &context, const LoginRequest &request)
 {
-	const unsigned int userId = this->m_database->getIdOfUser(request.username, request.password);
+	const unsigned int userId = this->m_database.getIdOfUser(request.username, request.password);
 
 	if (userId == -1)
 	{

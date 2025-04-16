@@ -28,9 +28,6 @@
 class CommonCommunicator
 {
 public:
-	CommonCommunicator(SOCKET defaultSocket, const RequestHandlerFactory& handlerFactory);
-	virtual ~CommonCommunicator();
-
 	bool isRunning() const;
 
 	/**
@@ -43,6 +40,13 @@ public:
 	void close();
 
 protected:
+    CommonCommunicator(SOCKET defaultSocket, const RequestHandlerFactory& handlerFactory);
+    virtual ~CommonCommunicator();
+
+    CommonCommunicator(const CommonCommunicator&) = delete;
+    void operator=(const CommonCommunicator&) = delete;
+
+
 	static constexpr unsigned int PORT = 6942;
 
 	/**

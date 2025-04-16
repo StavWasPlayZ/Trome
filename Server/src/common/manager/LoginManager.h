@@ -11,7 +11,7 @@
 class LoginManager
 {
 public:
-	explicit LoginManager(IDatabase* m_database);
+	explicit LoginManager(const IDatabase& m_database);
 
 	/**
 	 * Signs up a new user, then registers them as logged in.
@@ -29,7 +29,7 @@ public:
 	LogoutResponse logout(const std::string& username);
 
 private:
-	IDatabase* const m_database;
+	const IDatabase& m_database;
 	/**
 	 * Maps a username to a logged in user.
 	 * Mapping as such because the keys are based, for some reason, on usernames only.
