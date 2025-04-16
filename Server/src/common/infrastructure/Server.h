@@ -8,22 +8,27 @@
 class Server
 {
 public:
-	Server();
-	~Server();
+    // https://stackoverflow.com/a/1008289
+    Server(const Server&) = delete;
+    void operator=(const Server&) = delete;
+
+    static Server& getInstance();
 
 	/**
 	* Runs the server.
 	*/
-	void run();
+	void run() const;
 
-	void close();
+	void close() const;
 
 	bool isRunning() const;
 
 private:
-	IDatabase* const m_database;
+    Server();
+
+	IDatabase& m_database;
 	LoginManager m_loginManager;
 	
 	RequestHandlerFactory m_handlerFactory;
-	Communicator m_communicator;
+	Communicator& m_communicator;
 };

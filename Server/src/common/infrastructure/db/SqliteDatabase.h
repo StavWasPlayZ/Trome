@@ -8,12 +8,15 @@
 #include <map>
 #include <list>
 #include <functional>
-#include <stdexcept>
 
 class SqliteDatabase : public IDatabase
 {
 public:
-	SqliteDatabase();
+	SqliteDatabase(const SqliteDatabase&) = delete;
+	void operator=(const SqliteDatabase&) = delete;
+
+	static SqliteDatabase& getInstance();
+
 	~SqliteDatabase() override;
 
 	bool open() override;
@@ -31,6 +34,8 @@ public:
 	) const override;
 
 private:
+	SqliteDatabase();
+
 	static const std::string CREATE_USERS_TBL_QUERY;
 	static const std::string TABLE_USERS;
 

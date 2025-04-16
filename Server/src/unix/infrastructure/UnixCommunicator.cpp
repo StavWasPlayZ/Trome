@@ -10,8 +10,15 @@
 #include <unistd.h>
 #include <errno.h>
 
-UnixCommunicator::UnixCommunicator(const RequestHandlerFactory& handlerFactory) : CommonCommunicator(0, handlerFactory)
+UnixCommunicator::UnixCommunicator(const RequestHandlerFactory &handlerFactory) :
+    CommonCommunicator(0, handlerFactory)
 {}
+
+UnixCommunicator &UnixCommunicator::getInstance(const RequestHandlerFactory& handlerFactory)
+{
+    static UnixCommunicator instance(handlerFactory);
+    return instance;
+}
 
 bool UnixCommunicator::isValidSocket(const int result) const
 {

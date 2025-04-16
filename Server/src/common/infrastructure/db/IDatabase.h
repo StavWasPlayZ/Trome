@@ -6,6 +6,9 @@
 class IDatabase
 {
 public:
+    IDatabase(const IDatabase&) = delete;
+    void operator=(const IDatabase&) = delete;
+
 	virtual ~IDatabase();
 
 	/**
@@ -43,6 +46,8 @@ public:
 	) const = 0;
 
 protected:
+    IDatabase() = default;
+
     // Regexes.
 
     //NOTE: Made the password length be at LEAST 8 characters, not *exactly*.

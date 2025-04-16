@@ -13,17 +13,17 @@
 class RequestHandlerFactory
 {
 public:
-    RequestHandlerFactory(LoginManager& loginManager, IDatabase* database);
+    RequestHandlerFactory(LoginManager& loginManager, const IDatabase& database);
 
     LoginManager& getLoginManager() const;
 
     /**
-     *NOTE: The returned resource must be freed.
+     * NOTE: The returned resource must be freed.
      */
     const LoginRequestHandler* createLoginRequestHandler() const;
 
 private:
     //NOTE: Actual LoginManager instantiated via Server (or otherwise).
     LoginManager& loginManager;
-    IDatabase* const m_database;
+    const IDatabase& m_database;
 };

@@ -11,6 +11,13 @@
 class JsonResponsePacketSerializer
 {
 public:
+    // Define as a static class (not a singleton):
+    JsonResponsePacketSerializer() = delete;
+    JsonResponsePacketSerializer(const JsonResponsePacketSerializer&) = delete;
+    JsonResponsePacketSerializer& operator=(const JsonResponsePacketSerializer&) = delete;
+    JsonResponsePacketSerializer(JsonResponsePacketSerializer&&) = delete;
+    JsonResponsePacketSerializer& operator=(JsonResponsePacketSerializer&&) = delete;
+
 	/**
 	 * Returns: The serialized object.
 	 * 

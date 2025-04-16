@@ -1,6 +1,6 @@
 #include "RequestHandlerFactory.h"
 
-RequestHandlerFactory::RequestHandlerFactory(LoginManager& loginManager, IDatabase *const database) :
+RequestHandlerFactory::RequestHandlerFactory(LoginManager &loginManager, const IDatabase& database) :
     loginManager(loginManager),
     m_database(database)
 {}

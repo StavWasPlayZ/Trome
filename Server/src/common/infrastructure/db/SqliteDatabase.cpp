@@ -2,6 +2,7 @@
 
 #include <sstream>
 #include <iostream>
+#include <stdexcept>
 
 const std::string SqliteDatabase::TABLE_USERS = "users";
 
@@ -22,11 +23,15 @@ const std::string SqliteDatabase::CREATE_USERS_TBL_QUERY =
 	");";
 
 
-SqliteDatabase::SqliteDatabase() :
-	_dbName("trivia-database"),
-	_dbInstance(nullptr)
+SqliteDatabase::SqliteDatabase() : _dbName("trivia-database"), _dbInstance(nullptr)
 {
-	std::cout << "C++ SQLite version: " << sqlite3_libversion() << std::endl;
+    std::cout << "C++ SQLite version: " << sqlite3_libversion() << std::endl;
+}
+
+SqliteDatabase &SqliteDatabase::getInstance()
+{
+    static SqliteDatabase instance;
+    return instance;
 }
 
 SqliteDatabase::~SqliteDatabase()
