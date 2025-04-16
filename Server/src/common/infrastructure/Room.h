@@ -6,8 +6,8 @@
 
 enum class RoomStatus : unsigned int
 {
-    UNACTIVE = 0,
-    ACTIVE = 1
+    WAITING = 0,
+    PLAYING = 1
 };
 
 struct RoomData
