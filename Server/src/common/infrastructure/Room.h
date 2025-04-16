@@ -31,5 +31,5 @@ public:
 
     void addUser(const LoggedUser &user);
     void removeUser(const LoggedUser& user);
-    std::vector<LoggedUser> &getAllUsers() const;
+    std::vector<LoggedUser>& getAllUsers();
 };
