@@ -1,22 +1,22 @@
 # pragma once
 
-#include <map>
+#include <unordered_map>
 #include <optional>
 #include "infrastructure/Room.h"
 
 class RoomManager
 {
-private:
-    std::map<int, Room&> m_rooms;
-
 public:
-    RoomManager() = default;
-    ~RoomManager() = default;
+    void createRoom(LoggedUser &admin, const RoomData &data);
+    void deleteRoom(int roomID);
 
-    void createRoom(LoggedUser &admin, RoomData &data);
-    void deleteRoom(const int roomID);
+    RoomStatus getRoomStatus(int roomID) const;
+    std::vector<RoomData*> getRooms() const;
+    std::optional<Room*> getRoom(int roomID) const;
 
-    RoomStatus getRoomStatus(const int roomID) const;
-    std::vector<RoomData>& getRooms() const;
-    std::optional<Room &> getRoom(const int roomID) const;
+private:
+    /**
+     * Room ID to room mappings.
+     */
+    std::unordered_map<unsigned int, Room&> m_rooms;
 };
