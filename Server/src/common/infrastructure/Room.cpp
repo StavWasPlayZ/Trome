@@ -21,7 +21,7 @@ void Room::removeUser(const LoggedUser &user)
     }
 }
 
-std::vector<LoggedUser>& Room::getAllUsers()
+std::vector<LoggedUser&> Room::getAllUsers() const
 {
     return this->m_users;
 }

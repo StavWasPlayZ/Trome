@@ -23,7 +23,7 @@ class Room
 {
 private:
     RoomData m_metadata;
-    std::vector<LoggedUser> m_users;
+    std::vector<LoggedUser&> m_users;
 
 public:
     Room(const RoomData &data); // shouldn't get the users in c'tor, better to add them
@@ -31,5 +31,5 @@ public:
 
     void addUser(const LoggedUser &user);
     void removeUser(const LoggedUser& user);
-    std::vector<LoggedUser>& getAllUsers();
+    std::vector<LoggedUser &> getAllUsers() const;
 };
