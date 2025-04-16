@@ -15,3 +15,8 @@ unsigned int LoggedUser::getId() const
 {
     return this->m_id;
 }
+
+bool LoggedUser::operator==(const LoggedUser &other) const
+{
+    return this->getId() == other.getId();
+}
