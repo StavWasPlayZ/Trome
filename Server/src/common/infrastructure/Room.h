@@ -1,6 +1,8 @@
 #pragma once
 
 #include <string>
+#include <vector>
+#include "manager/LoggedUser.h"
 
 enum class RoomStatus : unsigned int
 {
@@ -15,4 +17,19 @@ struct RoomData
     unsigned int maxPlayers;
     unsigned int timePerQuestion;
     RoomStatus status;
+};
+
+class Room
+{
+private:
+    RoomData m_metadata;
+    std::vector<LoggedUser> m_users;
+
+public:
+    Room(RoomData& const data); // shouldn't get the users in c'tor, better to add them
+    ~Room() = default;
+
+    void addUser(LoggedUser &const user);
+    void removeUser(LoggedUser &const user);
+    std::vector<LoggedUser> &getAllUsers();
 };
