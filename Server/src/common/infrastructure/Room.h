@@ -26,10 +26,10 @@ private:
     std::vector<LoggedUser> m_users;
 
 public:
-    Room(RoomData& const data); // shouldn't get the users in c'tor, better to add them
+    Room(const RoomData &data); // shouldn't get the users in c'tor, better to add them
     ~Room() = default;
 
-    void addUser(LoggedUser &const user);
-    void removeUser(LoggedUser &const user);
+    void addUser(const LoggedUser& user);
+    void removeUser(const LoggedUser& user);
     std::vector<LoggedUser> &getAllUsers();
 };
