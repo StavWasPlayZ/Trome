@@ -7,7 +7,7 @@ Room::Room(const RoomData &data) : m_metadata(data)
 {
 }
 
-void Room::addUser(const LoggedUser &user)
+void Room::addUser(LoggedUser &user)
 {
     this->m_users.push_back(user);
 }
