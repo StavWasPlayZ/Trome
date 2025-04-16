@@ -25,3 +25,8 @@ std::vector<LoggedUser&> Room::getAllUsers() const
 {
     return this->m_users;
 }
+
+RoomData Room::getData() const
+{
+    return this->m_metadata;
+}

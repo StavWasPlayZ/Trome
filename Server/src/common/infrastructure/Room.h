@@ -7,7 +7,8 @@
 enum class RoomStatus : unsigned int
 {
     WAITING = 0,
-    PLAYING = 1
+    PLAYING = 1,
+    NOT_FOUND = 2
 };
 
 struct RoomData
@@ -32,4 +33,5 @@ public:
     void addUser(LoggedUser &user);
     void removeUser(const LoggedUser& user);
     std::vector<LoggedUser &> getAllUsers() const;
+    RoomData getData() const;
 };
