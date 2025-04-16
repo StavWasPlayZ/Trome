@@ -25,4 +25,8 @@ void IDatabase::validateSignupInfo(
 
     if (address.has_value() && !addressMatcher.match(address.value()))
         throw RegexViolationException("address");
+
+    //TODO: Actual date validation.
+    // Maybe.
+    // Perhaps not.
 }
