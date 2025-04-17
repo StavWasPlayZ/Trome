@@ -34,6 +34,20 @@ public:
 		const std::optional<std::string>& address
 	) const override;
 
+    void addTime(const std::string &username, const unsigned int time);
+    void addTotalAns(const std::string &username, const unsigned int ans = 1);
+    void addCorrectAns(const std::string &username, const unsigned int ans = 1);
+    void addGamesPlayed(const std::string &username, const unsigned int games = 1);
+    void addPoints(const std::string &username, const unsigned int points);
+
+    unsigned int getTime(const std::string &username) const;
+    unsigned int getTotalAns(const std::string &username) const;
+    unsigned int getCorrectAns(const std::string &username) const;
+    unsigned int getGamesPlayed(const std::string &username) const;
+    unsigned int getPoints(const std::string &username) const;
+
+    unsigned int getPlayerAverageAnsTime(const std::string &username) const;
+
 private:
 	SqliteDatabase(); 
 	unsigned int getIdOfUser(const std::string &username) const;
