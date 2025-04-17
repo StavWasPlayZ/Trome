@@ -8,6 +8,7 @@
 #include <map>
 #include <list>
 #include <functional>
+#include <stdexcept> // for std::runtime_error
 
 class SqliteDatabase : public IDatabase
 {
