@@ -36,7 +36,7 @@ const std::string SqliteDatabase::CREATE_STATISTICS_TBL_QUERY =
 
 
 
-SqliteDatabase::SqliteDatabase() : _dbName("trivia-database"), _dbInstance(nullptr)
+SqliteDatabase::SqliteDatabase() : _dbName("trivia-database.db"), _dbInstance(nullptr)
 {
     std::cout << "C++ SQLite version: " << sqlite3_libversion() << std::endl;
 }
