@@ -65,6 +65,7 @@ bool SqliteDatabase::open()
 	// Initialize the database with the tables.
 	// Will not execute if the tables already exist.
 	execSql(CREATE_USERS_TBL_QUERY);
+    execSql(CREATE_STATISTICS_TBL_QUERY);
 
 	return true;
 }
