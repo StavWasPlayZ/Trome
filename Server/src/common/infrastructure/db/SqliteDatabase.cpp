@@ -159,6 +159,66 @@ unsigned int SqliteDatabase::addNewUser(
 	return *queryIds(builder.str()).begin();
 }
 
+void SqliteDatabase::addTime(const std::string &username, const unsigned int time)
+{
+    unsigned int id = getIdOfUser(username);
+
+	if (id == -1)
+	{
+        return;
+	}
+
+	addToColumn(id, "total_time", time, TABLE_STATISTICS);
+}
+
+void SqliteDatabase::addTotalAns(const std::string &username, const unsigned int ans)
+{
+    unsigned int id = getIdOfUser(username);
+
+    if (id == -1)
+    {
+        return;
+    }
+
+    addToColumn(id, "total_ans", ans, TABLE_STATISTICS);
+}
+
+void SqliteDatabase::addCorrectAns(const std::string &username, const unsigned int ans)
+{
+    unsigned int id = getIdOfUser(username);
+
+    if (id == -1)
+    {
+        return;
+    }
+
+    addToColumn(id, "correct_ans", ans, TABLE_STATISTICS);
+}
+
+void SqliteDatabase::addGamesPlayed(const std::string &username, const unsigned int games)
+{
+    unsigned int id = getIdOfUser(username);
+
+    if (id == -1)
+    {
+        return;
+    }
+
+    addToColumn(id, "games_played", games, TABLE_STATISTICS);
+}
+
+void SqliteDatabase::addPoints(const std::string &username, const unsigned int points)
+{
+    unsigned int id = getIdOfUser(username);
+
+    if (id == -1)
+    {
+        return;
+    }
+
+    addToColumn(id, "points", points, TABLE_STATISTICS);
+}
+
 
 
 // Generic wrapper implementations
