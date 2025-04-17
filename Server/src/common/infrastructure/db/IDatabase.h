@@ -48,6 +48,12 @@ public:
 protected:
     IDatabase() = default;
 
+	
+	/**
+     * Returns: The ID of the user connected user; -1 otherwise.
+     */
+    virtual unsigned int getIdOfUser(const std::string &username) const = 0;
+
     // Regexes.
 
     //NOTE: Made the password length be at LEAST 8 characters, not *exactly*.

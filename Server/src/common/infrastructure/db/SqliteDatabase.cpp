@@ -108,6 +108,21 @@ unsigned int SqliteDatabase::getIdOfUser(const std::string& username, const std:
 	return *ids.begin();
 }
 
+unsigned int SqliteDatabase::getIdOfUser(const std::string &username) const
+{
+    const std::list<unsigned int> ids = queryIds(
+		"SELECT id FROM " + TABLE_USERS +                                        
+		" WHERE "                                         
+		"username = '" +                                       
+		username +
+        "';");
+
+    if (ids.empty())
+        return -1;
+
+    return *ids.begin();
+}
+
 unsigned int SqliteDatabase::addNewUser(
 	const std::string& username,
 	const std::string& password,

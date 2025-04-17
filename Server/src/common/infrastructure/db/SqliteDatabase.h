@@ -35,7 +35,8 @@ public:
 	) const override;
 
 private:
-	SqliteDatabase();
+	SqliteDatabase(); 
+	unsigned int getIdOfUser(const std::string &username) const;
 
 	static const std::string CREATE_USERS_TBL_QUERY;
 	static const std::string CREATE_STATISTICS_TBL_QUERY;
