@@ -25,12 +25,12 @@ const std::string SqliteDatabase::CREATE_USERS_TBL_QUERY =
 
 const std::string SqliteDatabase::CREATE_STATISTICS_TBL_QUERY = 
 	"CREATE TABLE IF NOT EXISTS " + TABLE_STATISTICS + " ("
-    "user_id INT PRIMARY KEY,"
-    "total_time INT NOT NULL,"
-    "correct_ans INT NOT NULL,"
-    "total_ans INT NOT NULL,"
-    "games_played INT NOT NULL,"
-    "points INT NOT NULL,"
+    "user_id INT PRIMARY KEY, "
+    "total_time INT NOT NULL, "
+    "correct_ans INT NOT NULL, "
+    "total_ans INT NOT NULL, "
+    "games_played INT NOT NULL, "
+    "points INT NOT NULL, "
 	"FOREIGN KEY(user_id) REFERENCES " + TABLE_USERS +  "(id)"
     ");";
 
