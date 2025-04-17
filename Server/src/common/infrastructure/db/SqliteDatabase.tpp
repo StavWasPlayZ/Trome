@@ -12,46 +12,51 @@ struct QueryCallbackContext
 };
 
 template <typename T>
-std::list<T> SqliteDatabase::querySql(
-	const std::string& query,
-	std::function<T(const std::map<std::string, std::string>&)> rowMapper
-) const
+std::list<T> SqliteDatabase::querySql(const std::string &query,
+                                      std::function<T(const std::map<std::string, std::string> &)> rowMapper) const
 {
-	char* errMsg;
-	std::list<T> results;
+    char *errMsg;
+    std::list<T> results;
 
-	QueryCallbackContext<T> context = {
-		results,
-		rowMapper
-	};
+    QueryCallbackContext<T> context = {results, rowMapper};
 
-	const int result = sqlite3_exec(
-		this->_dbInstance,
-		query.c_str(),
-		[](void* data, const int argc, char** argv, char** azColName) -> int
-		{
-			const QueryCallbackContext<T>* context = (QueryCallbackContext<T>*) data;
+    const int result = sqlite3_exec(
+        this->_dbInstance, query.c_str(),
+        [](void *data, const int argc, char **argv, char **azColName) -> int {
+            const QueryCallbackContext<T> *context = (QueryCallbackContext<T> *)data;
 
-			// Convert the args to a string vector to be passed to the provided mapper function
-			std::map<std::string, std::string> columns;
+            // Convert the args to a string vector to be passed to the provided mapper function
+            std::map<std::string, std::string> columns;
 
-			for (size_t i = 0; i < argc; i++)
-			{
-				columns[std::string(azColName[i])] = std::string(argv[i]);
-			}
+            for (size_t i = 0; i < argc; i++)
+            {
+                columns[std::string(azColName[i])] = std::string(argv[i]);
+            }
 
-			context->results.push_back(context->rowMapper(columns));
+            context->results.push_back(context->rowMapper(columns));
 
-			return 0;
-		},
-		&context,
-		&errMsg
-	);
+            return 0;
+        },
 
-	if (result != SQLITE_OK)
-	{
-		throw std::runtime_error("Error in SQL: " + std::string(errMsg));
-	}
+        &context,
+        &errMsg
+    );
 
-	return results;
+    if (result != SQLITE_OK)
+    {
+        throw std::runtime_error("Error in SQL: " + std::string(errMsg));
+    }
+
+    return results;
+}
+
+template <typename T>
+const T &SqliteDatabase::getResultAsSingular(const std::list<T> &results)
+{
+    if (results.empty())
+    {
+        return -1;
+    }
+
+    return *results.begin();
 }

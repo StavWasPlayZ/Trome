@@ -25,13 +25,13 @@ const std::string SqliteDatabase::CREATE_USERS_TBL_QUERY =
 
 const std::string SqliteDatabase::CREATE_STATISTICS_TBL_QUERY = 
 	"CREATE TABLE IF NOT EXISTS " + TABLE_STATISTICS + " ("
-    "user_id INT PRIMARY KEY, "
-    "total_time INT NOT NULL, "
-    "correct_ans INT NOT NULL, "
-    "total_ans INT NOT NULL, "
-    "games_played INT NOT NULL, "
-    "points INT NOT NULL, "
-	"FOREIGN KEY(user_id) REFERENCES " + TABLE_USERS +  "(id)"
+        "user_id INT PRIMARY KEY, "
+        "total_time INT NOT NULL, "
+        "correct_ans INT NOT NULL, "
+        "total_ans INT NOT NULL, "
+        "games_played INT NOT NULL, "
+        "points INT NOT NULL, "
+	    "FOREIGN KEY(user_id) REFERENCES " + TABLE_USERS + "(id)"
     ");";
 
 
@@ -94,42 +94,34 @@ bool SqliteDatabase::doesUserExist(const std::string& username) const
 
 unsigned int SqliteDatabase::getIdOfUser(const std::string& username, const std::string& password) const
 {
-	const std::list<unsigned int> ids = queryIds(
+	return getResultAsSingular(queryIds(
 		"SELECT id FROM " + TABLE_USERS +
 		" WHERE "
 		"username = '" + username + "'"
 		" AND "
 		"password = '" + password + "';"
-	);
-
-	if (ids.empty())
-		return -1;
-
-	return *ids.begin();
+	));
 }
 
 unsigned int SqliteDatabase::getIdOfUser(const std::string &username) const
 {
-    const std::list<unsigned int> ids = queryIds(
-		"SELECT id FROM " + TABLE_USERS +                                        
-		" WHERE "                                         
-		"username = '" +                                       
-		username +
-        "';");
-
-    if (ids.empty())
-        return -1;
-
-    return *ids.begin();
+    return getResultAsSingular(queryIds(
+        genQueryUserIdStr(username) + ";"
+    ));
 }
 
-void SqliteDatabase::addToColumn(const unsigned int id, const std::string &column, const unsigned int n, const std::string &table)
+void SqliteDatabase::addToColumn(const std::string &username, const std::string &column, int n,
+                                 const std::string &table)
 {
-    execSql(
-		"UPDATE " + table + " SET " +
-        column + " = " + column + " + " + std::to_string(n) +
-        " WHERE user_id = " + std::to_string(id) + ";"
-	);
+    std::ostringstream builder;
+
+    builder << "UPDATE " << table <<
+        " SET " << column << " = " << column << " + " << n <<
+        " WHERE "
+        "user_id = (" << genQueryUserIdStr(username) << ")"
+    ";";
+
+    execSql(builder.str());
 }
 
 unsigned int SqliteDatabase::addNewUser(
@@ -159,232 +151,67 @@ unsigned int SqliteDatabase::addNewUser(
 	return *queryIds(builder.str()).begin();
 }
 
-void SqliteDatabase::addTime(const std::string &username, const unsigned int time)
+void SqliteDatabase::addTime(const std::string &username, const int time)
 {
-    unsigned int id = getIdOfUser(username);
-
-	if (id == -1)
-	{
-        return;
-	}
-
-	addToColumn(id, "total_time", time, TABLE_STATISTICS);
+	addToColumn(username, "total_time", time, TABLE_STATISTICS);
 }
 
-void SqliteDatabase::addTotalAns(const std::string &username, const unsigned int ans)
+void SqliteDatabase::addTotalAns(const std::string &username, const int ans)
 {
-    unsigned int id = getIdOfUser(username);
-
-    if (id == -1)
-    {
-        return;
-    }
-
-    addToColumn(id, "total_ans", ans, TABLE_STATISTICS);
+    addToColumn(username, "total_ans", ans, TABLE_STATISTICS);
 }
 
-void SqliteDatabase::addCorrectAns(const std::string &username, const unsigned int ans)
+void SqliteDatabase::addCorrectAns(const std::string &username, const int ans)
 {
-    unsigned int id = getIdOfUser(username);
-
-    if (id == -1)
-    {
-        return;
-    }
-
-    addToColumn(id, "correct_ans", ans, TABLE_STATISTICS);
+    addToColumn(username, "correct_ans", ans, TABLE_STATISTICS);
 }
 
-void SqliteDatabase::addGamesPlayed(const std::string &username, const unsigned int games)
+void SqliteDatabase::addGamesPlayed(const std::string &username, const int games)
 {
-    unsigned int id = getIdOfUser(username);
-
-    if (id == -1)
-    {
-        return;
-    }
-
-    addToColumn(id, "games_played", games, TABLE_STATISTICS);
+    addToColumn(username, "games_played", games, TABLE_STATISTICS);
 }
 
-void SqliteDatabase::addPoints(const std::string &username, const unsigned int points)
+void SqliteDatabase::addPoints(const std::string &username, const int points)
 {
-    unsigned int id = getIdOfUser(username);
-
-    if (id == -1)
-    {
-        return;
-    }
-
-    addToColumn(id, "points", points, TABLE_STATISTICS);
+    addToColumn(username, "points", points, TABLE_STATISTICS);
 }
 
-unsigned int SqliteDatabase::getTime(const std::string &username) const
+int SqliteDatabase::getTime(const std::string &username) const
 {
-    unsigned int id = getIdOfUser(username);
-
-	if (id == -1)
-	{
-        return -1;
-	}
-
-	std::string query = 
-		"SELECT total_time FROM " + TABLE_STATISTICS +                                        
-		" WHERE "                                         
-		"user_id = " +                                       
-		std::to_string(id) +
-        "';";
-
-    std::list<unsigned int> res = querySql<unsigned int>(
-		query,
-
-        [](const std::map<std::string, std::string> &columns) -> unsigned int {
-            return (unsigned int)std::stoul(columns.at("total_time"));
-        });
-
-    if (res.empty())
-    {
-        return -1;
-    }
-
-    return *res.begin();
+    return getStat(username, "total_time");
 }
 
-unsigned int SqliteDatabase::getTotalAns(const std::string &username) const
+int SqliteDatabase::getTotalAns(const std::string &username) const
 {
-    unsigned int id = getIdOfUser(username);
-
-    if (id == -1)
-    {
-        return -1;
-    }
-
-    std::string query =
-		"SELECT total_ans FROM " + TABLE_STATISTICS +
-        " WHERE "
-        "user_id = " +
-        std::to_string(id) + "';";
-
-    std::list<unsigned int> res =
-        querySql<unsigned int>(
-			query,
-
-            [](const std::map<std::string, std::string> &columns) -> unsigned int {
-                return (unsigned int)std::stoul(columns.at("total_ans"));
-            });
-
-    if (res.empty())
-    {
-        return -1;
-    }
-
-    return *res.begin();
+    return getStat(username, "total_ans");
 }
 
-unsigned int SqliteDatabase::getCorrectAns(const std::string &username) const
+int SqliteDatabase::getCorrectAns(const std::string &username) const
 {
-    unsigned int id = getIdOfUser(username);
-
-    if (id == -1)
-    {
-        return -1;
-    }
-
-    std::string query = 
-		"SELECT correct_ans FROM " + TABLE_STATISTICS +
-        " WHERE "
-        "user_id = " +
-        std::to_string(id) + "';";
-
-    std::list<unsigned int> res =
-        querySql<unsigned int>(
-			query,
-
-			[](const std::map<std::string, std::string> &columns) -> unsigned int {
-				return (unsigned int)std::stoul(columns.at("correct_ans"));
-			});
-
-    if (res.empty())
-    {
-        return -1;
-    }
-
-    return *res.begin();
+    return getStat(username, "correct_ans");
 }
 
-unsigned int SqliteDatabase::getGamesPlayed(const std::string &username) const
+int SqliteDatabase::getGamesPlayed(const std::string &username) const
 {
-    unsigned int id = getIdOfUser(username);
-
-    if (id == -1)
-    {
-        return -1;
-    }
-
-    std::string query = 
-		"SELECT games_played FROM " + TABLE_STATISTICS +
-        " WHERE "
-        "user_id = " +
-        std::to_string(id) + "';";
-
-    std::list<unsigned int> res =
-        querySql<unsigned int>(
-			query,
-
-            [](const std::map<std::string, std::string> &columns) -> unsigned int {
-                return (unsigned int)std::stoul(columns.at("games_played"));
-            });
-
-    if (res.empty())
-    {
-        return -1;
-    }
-
-    return *res.begin();
+    return getStat(username, "games_played");
 }
 
-unsigned int SqliteDatabase::getPoints(const std::string &username) const
+int SqliteDatabase::getPoints(const std::string &username) const
 {
-    unsigned int id = getIdOfUser(username);
-
-    if (id == -1)
-    {
-        return -1;
-    }
-
-    std::string query = 
-		"SELECT points FROM " + TABLE_STATISTICS +
-        " WHERE "
-        "user_id = " +
-        std::to_string(id) + "';";
-
-    std::list<unsigned int> res =
-        querySql<unsigned int>(
-			query,
-
-            [](const std::map<std::string, std::string> &columns) -> unsigned int {
-                return (unsigned int)std::stoul(columns.at("points"));
-            });
-
-	if (res.empty())
-	{
-        return -1;
-	}
-
-	return *res.begin();
+    return getStat(username, "points");
 }
 
 float SqliteDatabase::getPlayerAverageAnsTime(const std::string &username) const
 {
-    unsigned int totalTime = getTime(username);
-    unsigned int totalAns = getTotalAns(username);
+    const unsigned int totalTime = getTime(username);
+    const unsigned int totalAns = getTotalAns(username);
 
     if (totalAns == -1 || totalAns == 0 || totalTime == -1)
     {
         return -1;
     }
 
-    return (float)(totalTime) / totalAns;
+    return (float)totalTime / totalAns;
 }
 
 
@@ -412,6 +239,38 @@ std::list<unsigned int> SqliteDatabase::queryIds(const std::string &query) const
 			return (unsigned int) std::stoul(columns.at("id"));
 		}
 	);
+}
+
+std::list<int> SqliteDatabase::queryInts(const std::string& query, const std::string& colName) const
+{
+    return querySql<int>(
+        query,
+
+        [colName](const std::map<std::string, std::string> &columns) -> int
+        {
+            return std::stoi(columns.at(colName));
+        }
+    );
+}
+
+int SqliteDatabase::getStat(const std::string &username, const std::string &colName) const
+{
+    std::ostringstream builder;
+
+    builder << "SELECT " << colName << " FROM " << TABLE_STATISTICS <<
+        " WHERE "
+        "user_id = (" << genQueryUserIdStr(username) << ")"
+    ";";
+
+    return getResultAsSingular(queryInts(builder.str(), colName));
+}
+
+std::string SqliteDatabase::genQueryUserIdStr(const std::string& username)
+{
+    return "SELECT id FROM " + TABLE_USERS +
+        " WHERE "
+        "username = '" + username + "'"
+    ;
 }
 
 void SqliteDatabase::execSql(const std::string& query) const
