@@ -46,7 +46,7 @@ public:
     unsigned int getGamesPlayed(const std::string &username) const;
     unsigned int getPoints(const std::string &username) const;
 
-    unsigned int getPlayerAverageAnsTime(const std::string &username) const;
+    float getPlayerAverageAnsTime(const std::string &username) const;
 
 private:
 	SqliteDatabase(); 

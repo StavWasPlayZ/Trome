@@ -219,6 +219,174 @@ void SqliteDatabase::addPoints(const std::string &username, const unsigned int p
     addToColumn(id, "points", points, TABLE_STATISTICS);
 }
 
+unsigned int SqliteDatabase::getTime(const std::string &username) const
+{
+    unsigned int id = getIdOfUser(username);
+
+	if (id == -1)
+	{
+        return -1;
+	}
+
+	std::string query = 
+		"SELECT total_time FROM " + TABLE_STATISTICS +                                        
+		" WHERE "                                         
+		"user_id = " +                                       
+		std::to_string(id) +
+        "';";
+
+    std::list<unsigned int> res = querySql<unsigned int>(
+		query,
+
+        [](const std::map<std::string, std::string> &columns) -> unsigned int {
+            return (unsigned int)std::stoul(columns.at("total_time"));
+        });
+
+    if (res.empty())
+    {
+        return -1;
+    }
+
+    return *res.begin();
+}
+
+unsigned int SqliteDatabase::getTotalAns(const std::string &username) const
+{
+    unsigned int id = getIdOfUser(username);
+
+    if (id == -1)
+    {
+        return -1;
+    }
+
+    std::string query =
+		"SELECT total_ans FROM " + TABLE_STATISTICS +
+        " WHERE "
+        "user_id = " +
+        std::to_string(id) + "';";
+
+    std::list<unsigned int> res =
+        querySql<unsigned int>(
+			query,
+
+            [](const std::map<std::string, std::string> &columns) -> unsigned int {
+                return (unsigned int)std::stoul(columns.at("total_ans"));
+            });
+
+    if (res.empty())
+    {
+        return -1;
+    }
+
+    return *res.begin();
+}
+
+unsigned int SqliteDatabase::getCorrectAns(const std::string &username) const
+{
+    unsigned int id = getIdOfUser(username);
+
+    if (id == -1)
+    {
+        return -1;
+    }
+
+    std::string query = 
+		"SELECT correct_ans FROM " + TABLE_STATISTICS +
+        " WHERE "
+        "user_id = " +
+        std::to_string(id) + "';";
+
+    std::list<unsigned int> res =
+        querySql<unsigned int>(
+			query,
+
+			[](const std::map<std::string, std::string> &columns) -> unsigned int {
+				return (unsigned int)std::stoul(columns.at("correct_ans"));
+			});
+
+    if (res.empty())
+    {
+        return -1;
+    }
+
+    return *res.begin();
+}
+
+unsigned int SqliteDatabase::getGamesPlayed(const std::string &username) const
+{
+    unsigned int id = getIdOfUser(username);
+
+    if (id == -1)
+    {
+        return -1;
+    }
+
+    std::string query = 
+		"SELECT games_played FROM " + TABLE_STATISTICS +
+        " WHERE "
+        "user_id = " +
+        std::to_string(id) + "';";
+
+    std::list<unsigned int> res =
+        querySql<unsigned int>(
+			query,
+
+            [](const std::map<std::string, std::string> &columns) -> unsigned int {
+                return (unsigned int)std::stoul(columns.at("games_played"));
+            });
+
+    if (res.empty())
+    {
+        return -1;
+    }
+
+    return *res.begin();
+}
+
+unsigned int SqliteDatabase::getPoints(const std::string &username) const
+{
+    unsigned int id = getIdOfUser(username);
+
+    if (id == -1)
+    {
+        return -1;
+    }
+
+    std::string query = 
+		"SELECT points FROM " + TABLE_STATISTICS +
+        " WHERE "
+        "user_id = " +
+        std::to_string(id) + "';";
+
+    std::list<unsigned int> res =
+        querySql<unsigned int>(
+			query,
+
+            [](const std::map<std::string, std::string> &columns) -> unsigned int {
+                return (unsigned int)std::stoul(columns.at("points"));
+            });
+
+	if (res.empty())
+	{
+        return -1;
+	}
+
+	return *res.begin();
+}
+
+float SqliteDatabase::getPlayerAverageAnsTime(const std::string &username) const
+{
+    unsigned int totalTime = getTime(username);
+    unsigned int totalAns = getTotalAns(username);
+
+    if (totalAns == -1 || totalAns == 0 || totalTime == -1)
+    {
+        return -1;
+    }
+
+    return (float)(totalTime) / totalAns;
+}
+
 
 
 // Generic wrapper implementations

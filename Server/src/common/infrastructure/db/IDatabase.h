@@ -66,7 +66,7 @@ public:
 	/**
 	 * Statistics
 	 */
-    virtual unsigned int getPlayerAverageAnsTime(const std::string &username) const = 0;
+    virtual float getPlayerAverageAnsTime(const std::string &username) const = 0;
 
 protected:
     IDatabase() = default;
