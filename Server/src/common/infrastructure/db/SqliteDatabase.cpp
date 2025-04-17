@@ -2,9 +2,9 @@
 
 #include <sstream>
 #include <iostream>
-#include <stdexcept>
 
 const std::string SqliteDatabase::TABLE_USERS = "users";
+const std::string SqliteDatabase::TABLE_STATISTICS = "statistics";
 
 const std::string SqliteDatabase::CREATE_USERS_TBL_QUERY = 
 	"CREATE TABLE IF NOT EXISTS " + TABLE_USERS + " ("
@@ -22,8 +22,20 @@ const std::string SqliteDatabase::CREATE_USERS_TBL_QUERY =
 		"birthdate NVARCHAR(10) NOT NULL"
 	");";
 
+const std::string SqliteDatabase::CREATE_STATISTICS_TBL_QUERY = 
+	"CREATE TABLE IF NOT EXISTS " + TABLE_STATISTICS + " ("
+        "user_id INT PRIMARY KEY, "
+        "total_time INT NOT NULL, "
+        "correct_ans INT NOT NULL, "
+        "total_ans INT NOT NULL, "
+        "games_played INT NOT NULL, "
+        "points INT NOT NULL, "
+	    "FOREIGN KEY(user_id) REFERENCES " + TABLE_USERS + "(id)"
+    ");";
 
-SqliteDatabase::SqliteDatabase() : _dbName("trivia-database"), _dbInstance(nullptr)
+
+
+SqliteDatabase::SqliteDatabase() : _dbName("trivia-database.db"), _dbInstance(nullptr)
 {
     std::cout << "C++ SQLite version: " << sqlite3_libversion() << std::endl;
 }
@@ -52,6 +64,7 @@ bool SqliteDatabase::open()
 	// Initialize the database with the tables.
 	// Will not execute if the tables already exist.
 	execSql(CREATE_USERS_TBL_QUERY);
+    execSql(CREATE_STATISTICS_TBL_QUERY);
 
 	return true;
 }
@@ -80,18 +93,34 @@ bool SqliteDatabase::doesUserExist(const std::string& username) const
 
 unsigned int SqliteDatabase::getIdOfUser(const std::string& username, const std::string& password) const
 {
-	const std::list<unsigned int> ids = queryIds(
+	return getResultAsSingular(queryIds(
 		"SELECT id FROM " + TABLE_USERS +
 		" WHERE "
 		"username = '" + username + "'"
 		" AND "
 		"password = '" + password + "';"
-	);
+	));
+}
 
-	if (ids.empty())
-		return -1;
+unsigned int SqliteDatabase::getIdOfUser(const std::string &username) const
+{
+    return getResultAsSingular(queryIds(
+        genQueryUserIdStr(username) + ";"
+    ));
+}
 
-	return *ids.begin();
+void SqliteDatabase::addToColumn(const std::string &username, const std::string &column, int n,
+                                 const std::string &table)
+{
+    std::ostringstream builder;
+
+    builder << "UPDATE " << table <<
+        " SET " << column << " = " << column << " + " << n <<
+        " WHERE "
+        "user_id = (" << genQueryUserIdStr(username) << ")"
+    ";";
+
+    execSql(builder.str());
 }
 
 unsigned int SqliteDatabase::addNewUser(
@@ -121,6 +150,69 @@ unsigned int SqliteDatabase::addNewUser(
 	return *queryIds(builder.str()).begin();
 }
 
+void SqliteDatabase::addTime(const std::string &username, const int time)
+{
+	addToColumn(username, "total_time", time, TABLE_STATISTICS);
+}
+
+void SqliteDatabase::addTotalAns(const std::string &username, const int ans)
+{
+    addToColumn(username, "total_ans", ans, TABLE_STATISTICS);
+}
+
+void SqliteDatabase::addCorrectAns(const std::string &username, const int ans)
+{
+    addToColumn(username, "correct_ans", ans, TABLE_STATISTICS);
+}
+
+void SqliteDatabase::addGamesPlayed(const std::string &username, const int games)
+{
+    addToColumn(username, "games_played", games, TABLE_STATISTICS);
+}
+
+void SqliteDatabase::addPoints(const std::string &username, const int points)
+{
+    addToColumn(username, "points", points, TABLE_STATISTICS);
+}
+
+int SqliteDatabase::getTime(const std::string &username) const
+{
+    return getStat(username, "total_time");
+}
+
+int SqliteDatabase::getTotalAns(const std::string &username) const
+{
+    return getStat(username, "total_ans");
+}
+
+int SqliteDatabase::getCorrectAns(const std::string &username) const
+{
+    return getStat(username, "correct_ans");
+}
+
+int SqliteDatabase::getGamesPlayed(const std::string &username) const
+{
+    return getStat(username, "games_played");
+}
+
+int SqliteDatabase::getPoints(const std::string &username) const
+{
+    return getStat(username, "points");
+}
+
+float SqliteDatabase::getPlayerAverageAnsTime(const std::string &username) const
+{
+    const unsigned int totalTime = getTime(username);
+    const unsigned int totalAns = getTotalAns(username);
+
+    if (totalAns == -1 || totalAns == 0 || totalTime == -1)
+    {
+        return -1;
+    }
+
+    return (float)totalTime / totalAns;
+}
+
 
 
 // Generic wrapper implementations
@@ -146,6 +238,38 @@ std::list<unsigned int> SqliteDatabase::queryIds(const std::string &query) const
 			return (unsigned int) std::stoul(columns.at("id"));
 		}
 	);
+}
+
+std::list<int> SqliteDatabase::queryInts(const std::string& query, const std::string& colName) const
+{
+    return querySql<int>(
+        query,
+
+        [colName](const std::map<std::string, std::string> &columns) -> int
+        {
+            return std::stoi(columns.at(colName));
+        }
+    );
+}
+
+int SqliteDatabase::getStat(const std::string &username, const std::string &colName) const
+{
+    std::ostringstream builder;
+
+    builder << "SELECT " << colName << " FROM " << TABLE_STATISTICS <<
+        " WHERE "
+        "user_id = (" << genQueryUserIdStr(username) << ")"
+    ";";
+
+    return getResultAsSingular(queryInts(builder.str(), colName));
+}
+
+std::string SqliteDatabase::genQueryUserIdStr(const std::string& username)
+{
+    return "SELECT id FROM " + TABLE_USERS +
+        " WHERE "
+        "username = '" + username + "'"
+    ;
 }
 
 void SqliteDatabase::execSql(const std::string& query) const

@@ -45,8 +45,40 @@ public:
 		const std::optional<std::string>& address
 	) const = 0;
 
+
+    // Adding to statistics:
+
+	virtual void addTime(const std::string &username, int time) = 0;
+	virtual void addTotalAns(const std::string &username, int ans = 1) = 0;
+	virtual void addCorrectAns(const std::string &username, int ans = 1) = 0;
+	virtual void addGamesPlayed(const std::string &username, int games = 1) = 0;
+	virtual void addPoints(const std::string &username, int points) = 0;
+
+    // Retrieving statistics:
+
+	virtual int getTime(const std::string &username) const = 0;
+	virtual int getTotalAns(const std::string &username) const = 0;
+	virtual int getCorrectAns(const std::string &username) const = 0;
+	virtual int getGamesPlayed(const std::string &username) const = 0;
+	virtual int getPoints(const std::string &username) const = 0;
+    virtual float getPlayerAverageAnsTime(const std::string &username) const = 0;
+
 protected:
     IDatabase() = default;
+
+	
+	/**
+     * Returns: The ID of the user connected user; -1 otherwise.
+     */
+    virtual unsigned int getIdOfUser(const std::string &username) const = 0;
+
+	/**
+	* Adds `n` to the specified column for the given user.
+	*
+	* Said column must be numerable.
+	*/
+    virtual void addToColumn(const std::string &username, const std::string &column, int n,
+                             const std::string &table) = 0;
 
     // Regexes.
 
