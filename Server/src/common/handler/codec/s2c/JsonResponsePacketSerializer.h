@@ -34,12 +34,27 @@ public:
 
 private:
 	/**
+	 * Serializes the base response into the provided json.
+	 */
+	template <typename S>
+	static void serializeBaseResponseToJson(nlohmann::json& json, const ProtocolResponse<S>& response);
+
+	/**
+	 * Serializes the response into the provided json.
+	 */
+	template <typename S>
+	static void serializeResponseToJson(nlohmann::json& json, const RegistrationResponse<S>& response);
+
+	/**
 	 * Converts the provided json into a writable resource,
 	 * prepending the necessary binary headers.
 	 * 
 	 * NOTE: The returned resource must be freed.
 	 */
-	static OBuffer serializeJsonToProtocol(const ProtocolCode msgCode, const nlohmann::json data);
+	static OBuffer serializeJsonToProtocol(ProtocolCode msgCode, const nlohmann::json &data);
 
-	static void writeInt(int num, unsigned char* const buffer);
+	static void writeInt(int num, unsigned char* buffer);
 };
+
+
+#include "JsonResponsePacketSerializer.tpp"

@@ -3,11 +3,10 @@
 #include <iostream>
 
 #include <thread>
-#include <chrono>
 
 #include "Constants.h"
 
-#include "exception/ForcedDisconnectionException.h"
+#include "exception/SocketDisconnectionException.h"
 #include "exception/SocketTimeoutException.h"
 
 #include "handler/codec/s2c/Response.h"
@@ -15,37 +14,31 @@
 #include "handler/codec/c2s/JsonRequestPacketDeserializer.h"
 #include "handler/codec/s2c/JsonResponsePacketSerializer.h"
 
-#include "handler/LoginRequestHandler.h"
 
-
-template <typename T>
-CommonCommunicator<T>::CommonCommunicator(const T defaultSocket) :
+CommonCommunicator::CommonCommunicator(const SOCKET defaultSocket, const RequestHandlerFactory& handlerFactory) :
+    _running(false),
+    _serverSockAddr({}),
     m_serverSocket(defaultSocket),
-    _serverSockAddr({ 0 }),
-    _running(false)
+    m_handlerFactory(handlerFactory)
 {}
 
-template <typename T>
-CommonCommunicator<T>::~CommonCommunicator()
+CommonCommunicator::~CommonCommunicator()
 {
     close();
 }
 
-template <typename T>
-bool CommonCommunicator<T>::isRunning() const
+bool CommonCommunicator::isRunning() const
 {
     return this->_running;
 }
 
-template <typename T>
-void CommonCommunicator<T>::bindAndListen()
+void CommonCommunicator::bindAndListen()
 {
     commonSetup();
     startServerThreads();
 }
 
-template <typename T>
-void CommonCommunicator<T>::close()
+void CommonCommunicator::close()
 {
     if (!this->_running)
         return;
@@ -54,7 +47,7 @@ void CommonCommunicator<T>::close()
     this->_running = false;
 
     // Release the client cleaner thread
-    this->_disconectedClientConditionalVariable.notify_all();
+    this->_disconnectedClientConditionalVariable.notify_all();
 
     // Wait for 'em to close
     this->m_clients_mutex.lock();
@@ -66,12 +59,11 @@ void CommonCommunicator<T>::close()
 
     platformClose();
 
-    this->_serverSockAddr = { 0 };
+    this->_serverSockAddr = {};
     this->_serverThread = std::future<void>();
 }
 
-template <typename T>
-void CommonCommunicator<T>::commonSetup()
+void CommonCommunicator::commonSetup()
 {
     this->m_serverSocket = socket(AF_INET, SOCK_STREAM, 0);
     if (!isValidSocket(this->m_serverSocket))
@@ -91,7 +83,7 @@ void CommonCommunicator<T>::commonSetup()
     this->_serverSockAddr.sin_port = htons(PORT);
 
     if (!isValidBind(
-        bind(this->m_serverSocket, (struct sockaddr*)&this->_serverSockAddr, sizeof(this->_serverSockAddr))
+        bind(this->m_serverSocket, (sockaddr*)&this->_serverSockAddr, sizeof(this->_serverSockAddr))
     )) {
         close();
         throwPlatformError("Binding failed");
@@ -109,12 +101,11 @@ void CommonCommunicator<T>::commonSetup()
     }
 }
 
-template <typename T>
-void CommonCommunicator<T>::registerClient(const T socket)
+void CommonCommunicator::registerClient(const SOCKET socket)
 {
-    this->m_clients[socket] = new Client<T>(
+    this->m_clients[socket] = new Client(
         socket,
-        new LoginRequestHandler(),
+        this->m_handlerFactory.createLoginRequestHandler(),
         [this, socket]()
         {
             _clientThreadFunc(socket);
@@ -124,8 +115,7 @@ void CommonCommunicator<T>::registerClient(const T socket)
     std::cout << "Connection accepted from " + std::to_string(socket) << std::endl;
 }
 
-template <typename T>
-void CommonCommunicator<T>::startServerThreads()
+void CommonCommunicator::startServerThreads()
 {
     this->_serverThread = std::async(
         std::launch::async,
@@ -146,8 +136,7 @@ void CommonCommunicator<T>::startServerThreads()
     std::cout << "Listening on port " << PORT << "..." << std::endl;
 }
 
-template <typename T>
-void CommonCommunicator<T>::sendMsg(const T socket, const unsigned char* buffer, const int length) const
+void CommonCommunicator::sendMsg(const SOCKET socket, const unsigned char* buffer, const int length) const
 {
     bool didError;
 
@@ -168,25 +157,29 @@ void CommonCommunicator<T>::sendMsg(const T socket, const unsigned char* buffer,
     }
 }
 
-template <typename T>
-void CommonCommunicator<T>::throwPlatformError(const std::string& msg) const
+void CommonCommunicator::throwPlatformError(const std::string& msg) const
 {
     throw std::runtime_error(msg);
 }
 
-template <typename T>
-void CommonCommunicator<T>::_serverThreadFunc()
+void CommonCommunicator::_serverThreadFunc()
 {
     while (this->_running)
     {
-        acceptClients();
+        try
+        {
+            acceptClients();
+        }
+        catch (const std::exception& e)
+        {
+            std::cout << "Uncaught exception in server thread: " << e.what() << std::endl;
+        }
     }
 
     close();
 }
 
-template <typename T>
-void CommonCommunicator<T>::_clientThreadFunc(const T socket)
+void CommonCommunicator::_clientThreadFunc(const SOCKET socket)
 {
     while (this->_running)
     {
@@ -194,13 +187,13 @@ void CommonCommunicator<T>::_clientThreadFunc(const T socket)
         {
             _handleClient(socket);
         }
-        catch (const SocketTimeoutException& e)
+        catch (const SocketTimeoutException&)
         {
             // If we timed out (see RECV_REFRESH_TIMEOUT),
             // simply wait for the next recv cycle (if applicable).
             continue;
         }
-        catch (const ForcedDisconnectionException& e)
+        catch (const SocketDisconnectionException&)
         {
             break;
         }
@@ -215,12 +208,11 @@ void CommonCommunicator<T>::_clientThreadFunc(const T socket)
 }
 
 //ANCHOR Actual client processing function.
-template <typename T>
-void CommonCommunicator<T>::_handleClient(const T socket)
+void CommonCommunicator::_handleClient(const SOCKET socket) const
 {
     const RequestInfo info = _waitForClientRequest(socket);
 
-    Client<T>* client = this->m_clients.at(socket);
+    Client* const client = this->m_clients.at(socket);
     const IRequestHandler* const handler = client->requestHandler;
 
     OBuffer responseBuffer;
@@ -228,7 +220,7 @@ void CommonCommunicator<T>::_handleClient(const T socket)
     if (!handler->isRequestRelevant(info))
     {
         responseBuffer = JsonResponsePacketSerializer::serializeResponse(
-            ErrorResponse("Illegal request")
+            ErrorResponse(ErrorStatus::ILLEGAL_REQUEST, "Illegal request")
         );
     }
     else
@@ -247,14 +239,13 @@ void CommonCommunicator<T>::_handleClient(const T socket)
     responseBuffer.freeContents();
 }
 
-template <typename T>
-RequestInfo CommonCommunicator<T>::_waitForClientRequest(const T socket)
+RequestInfo CommonCommunicator::_waitForClientRequest(const SOCKET socket) const
 {
     unsigned char reqCode;
-    recieveMsg(socket, &reqCode, SIZE_CODE);
+    receiveMsg(socket, &reqCode, SIZE_CODE);
 
     int jsonLen;
-    recieveMsg(socket, &jsonLen, SIZE_JSON_LEN);
+    receiveMsg(socket, &jsonLen, SIZE_JSON_LEN);
     jsonLen = ntohl(jsonLen) * sizeof(char);
 
     if (jsonLen <= 0)
@@ -263,9 +254,11 @@ RequestInfo CommonCommunicator<T>::_waitForClientRequest(const T socket)
     }
 
     unsigned char* const data = new unsigned char[jsonLen]; // readJson already handles null termination.
-    recieveMsg(socket, data, jsonLen);
+    receiveMsg(socket, data, jsonLen);
 
     const RequestInfo info(
+        *this->m_clients.at(socket),
+
         (ProtocolCode)reqCode,
         std::chrono::system_clock::to_time_t(
             std::chrono::system_clock::now()
@@ -278,34 +271,31 @@ RequestInfo CommonCommunicator<T>::_waitForClientRequest(const T socket)
     return info;
 }
 
-template <typename T>
-void CommonCommunicator<T>::_clientCleanerThreadFunc()
+void CommonCommunicator::_clientCleanerThreadFunc()
 {
-	std::unique_lock<std::mutex> lock(this->_disconectedClient_mutex);
+	std::unique_lock lock(this->_disconnectedClient_mutex);
 	
 	while (this->_running)
 	{
-		// waits for _enqueueDisconnectClient to be called
-		this->_disconectedClientConditionalVariable.wait(lock);
+		// Waits for _enqueueDisconnectClient to be called
+		this->_disconnectedClientConditionalVariable.wait(lock);
 
 		_freeDisconnectedClients();
 	}
 }
 
-template <typename T>
-void CommonCommunicator<T>::_enqueueDisconnectClient(const T socket)
+void CommonCommunicator::_enqueueDisconnectClient(const SOCKET socket)
 {	
-	std::cout << "Socket " << std::to_string(socket) << " disconected" << std::endl;
+	std::cout << "Socket " << std::to_string(socket) << " disconnected" << std::endl;
 
 	this->_disconnectingClients_mutex.lock();
 	this->_disconnectingClients.push_back(socket);
 	this->_disconnectingClients_mutex.unlock();
 	
-	this->_disconectedClientConditionalVariable.notify_one();
+	this->_disconnectedClientConditionalVariable.notify_one();
 }
 
-template <typename T>
-void CommonCommunicator<T>::_freeDisconnectedClients()
+void CommonCommunicator::_freeDisconnectedClients()
 {
 	this->_disconnectingClients_mutex.lock();
 	this->m_clients_mutex.lock();

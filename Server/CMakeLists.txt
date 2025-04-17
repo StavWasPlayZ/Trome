@@ -21,23 +21,37 @@ add_executable (Server
   "src/common/handler/LoginRequestHandler.h"
   "src/common/handler/LoginRequestHandler.cpp"
   "src/common/infrastructure/CommonCommunicator.h"
-  "src/common/infrastructure/CommonCommunicator.tpp"
+  "src/common/infrastructure/CommonCommunicator.cpp"
   "src/common/infrastructure/Client.h"
-  "src/common/infrastructure/Client.tpp"
+  "src/common/infrastructure/Client.cpp"
   "src/common/infrastructure/OBuffer.h"
   "src/common/infrastructure/OBuffer.cpp"
   "src/common/infrastructure/Communicator.h"
-  "src/common/exception/ForcedDisconnectionException.h"
-  "src/common/exception/ForcedDisconnectionException.cpp"
+  "src/common/infrastructure/db/IDatabase.h"
+  "src/common/exception/SocketDisconnectionException.h"
+  "src/common/exception/SocketDisconnectionException.cpp"
   "src/common/exception/SocketTimeoutException.h"
   "src/common/exception/SocketTimeoutException.cpp"
   "src/common/Constants.h"
   "src/common/Constants.cpp"
 
+  "src/common/handler/IRequestHandler.h"
+  "src/common/handler/IRequestHandler.tpp"
+  "src/common/handler/IRequestHandler.cpp"
+  "src/common/handler/RequestHandlerFactory.h"
+  "src/common/handler/RequestHandlerFactory.cpp"
+  
+  "src/common/handler/LoginRequestHandler.h"
+  "src/common/handler/LoginRequestHandler.cpp"
+  "src/common/handler/MenuRequestHandler.h"
+  "src/common/handler/MenuRequestHandler.cpp"
+
   "src/common/handler/codec/s2c/Response.h"
   "src/common/handler/codec/s2c/Response.cpp"
+  "src/common/handler/codec/s2c/Response.tpp"
   "src/common/handler/codec/s2c/JsonResponsePacketSerializer.h"
   "src/common/handler/codec/s2c/JsonResponsePacketSerializer.cpp"
+  "src/common/handler/codec/s2c/JsonResponsePacketSerializer.tpp"
 
   "src/common/handler/codec/c2s/Request.h"
   "src/common/handler/codec/c2s/Request.cpp"
@@ -48,6 +62,15 @@ add_executable (Server
   "src/common/infrastructure/request/RequestInfo.cpp"
   "src/common/infrastructure/request/RequestResult.h"
   "src/common/infrastructure/request/RequestResult.cpp"
+  
+  "src/common/infrastructure/db/IDatabase.cpp"
+  "src/common/infrastructure/db/SqliteDatabase.cpp"
+  "src/common/infrastructure/db/SqliteDatabase.tpp"
+
+  "src/common/manager/LoginManager.h"
+  "src/common/manager/LoginManager.cpp"
+  "src/common/manager/LoggedUser.cpp"
+  "src/common/manager/LoggedUser.h"
 )
 
 # Platform-specific sources
@@ -78,6 +101,12 @@ FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download
 FetchContent_MakeAvailable(json)
 
 target_link_libraries(Server PRIVATE nlohmann_json::nlohmann_json)
+
+# sqlite3
+add_library(sqlite3 STATIC lib/sqlite3/sqlite3.c)
+target_include_directories(sqlite3 PUBLIC lib/sqlite3)
+
+target_link_libraries(Server PRIVATE sqlite3)
 
 
 # Support includes starting from relative paths

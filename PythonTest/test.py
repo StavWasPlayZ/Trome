@@ -6,8 +6,10 @@ from typing import *
 LOGIN = 1
 SIGNUP = 2
 
+SEPERATOR =  "-----------------"
+
 JSON_TEST_LOGIN = {"username": "user1", "password": "1234"}
-JSON_TEST_SIGNUP = {"username": "user1", "password": "1234", "mail": "user1@gmail.com"}
+JSON_TEST_SIGNUP = {"username": "user1", "password": "1234", "email": "user1@gmail.com"}
 
 SERVER_INFO = ("127.0.0.1", 6942)
 
@@ -16,8 +18,10 @@ def main():
         sock.connect(SERVER_INFO)
 
         try:
-            sendAndRecv(LOGIN, JSON_TEST_LOGIN, sock)
-            sendAndRecv(SIGNUP, JSON_TEST_SIGNUP, sock)
+            sendAndRecv(LOGIN, JSON_TEST_LOGIN, sock) # should login
+            sendAndRecv(LOGIN, JSON_TEST_LOGIN, sock) # shouldn't login - already logged in
+            sendAndRecv(SIGNUP, JSON_TEST_SIGNUP, sock) # shouldn't signup - already in DB
+            # TODO: add the input test later when REGEX is added
         except:
             print("Something went wrong :(")
             return
@@ -31,12 +35,14 @@ def sendAndRecv(code: int, data: json, sock: socket.socket):
     """
     msg = serialize(code, data)
     sock.sendall(msg)
+    print(SEPERATOR)
     print("Sent: Code:", code, "\nData:", data, "\nIn bytes:", msg)
 
     server_msg = sock.recv(1024)
     raw_data = deserialzer(server_msg)
 
-    print("Sent: Code:", raw_data[0], "\nData Len:", raw_data[1], "\nData:", raw_data[2], "\nIn bytes:", server_msg)
+    print(SEPERATOR)
+    print("Recieved: Code:", raw_data[0], "\nData Len:", raw_data[1], "\nData:", raw_data[2], "\nIn bytes:", server_msg)
 
 
 def serialize(code: int, data: json) -> bytes:

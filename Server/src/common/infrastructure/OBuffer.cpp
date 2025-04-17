@@ -10,6 +10,6 @@ OBuffer::OBuffer() : OBuffer(nullptr, 0)
 
 void OBuffer::freeContents()
 {
-    delete this->contents;
+    delete[] this->contents;
     *this = OBuffer();
 }

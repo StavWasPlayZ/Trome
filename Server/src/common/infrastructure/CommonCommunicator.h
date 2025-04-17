@@ -1,19 +1,18 @@
 #pragma once
 
-#include <stdexcept>
-
 #include <string>
 #include <map>
 #include <list>
 
 #include <mutex>
-// Much (much) better than threads in modern C++, and this usecase in particular.
+// Much (much) better than threads in modern C++, and this use case in particular.
 #include <future>
 // It was suggested online to use this when sharing a resource.
 #include <atomic>
 
 #include "infrastructure/Client.h"
 
+#include "handler/RequestHandlerFactory.h"
 #include "request/RequestInfo.h"
 
 
@@ -22,19 +21,14 @@
 #ifdef _WIN32
 	#include <winsock2.h>
 #else
-	#include <sys/socket.h>
-	#include <netinet/in.h>
+#include <netinet/in.h>
 #endif
 
 
-/**
- * T - The platform socket address type
- */
-template <typename T>
 class CommonCommunicator
 {
 public:
-	CommonCommunicator(const T defaultSocket);
+	CommonCommunicator(SOCKET defaultSocket, const RequestHandlerFactory& handlerFactory);
 	virtual ~CommonCommunicator();
 
 	bool isRunning() const;
@@ -61,7 +55,7 @@ protected:
 	std::atomic<bool> _running;
 	std::future<void> _serverThread;
 
-	struct sockaddr_in _serverSockAddr;
+	sockaddr_in _serverSockAddr;
 
 	std::mutex m_clients_mutex;
 	// Holding Client pointers because futures are immovable.
@@ -69,24 +63,24 @@ protected:
 	 * Contains all active clients.
 	 * Maps their socket address to their Client instantiation.
 	 */
-	std::map<T, Client<T>*> m_clients;
+	std::map<SOCKET, Client*> m_clients;
 
 	/**
 	 * The binding & listening process code common to all OSs
 	 */
 	void commonSetup();
 
-	virtual bool isValidSocket(const T result) const = 0;
-	virtual bool isValidBind(const T result) const = 0;
-	virtual bool isValidListen(const T result) const = 0;
-	virtual void setRecvTimeout(const unsigned int timeoutMs) const = 0;
+	virtual bool isValidSocket(SOCKET result) const = 0;
+	virtual bool isValidBind(SOCKET result) const = 0;
+	virtual bool isValidListen(SOCKET result) const = 0;
+	virtual void setRecvTimeout(unsigned int timeoutMs) const = 0;
 	virtual void acceptClients() = 0;
 
 	/**
 	 * Registers the provided socket as a client to the internal m_clients map.
 	 * The client is initiated with the LoginRequestHandler state.
 	 */
-	void registerClient(const T socket);
+	void registerClient(SOCKET socket);
 
 	/**
 	 * Returns: The future handling the client sockets.
@@ -97,50 +91,49 @@ protected:
 	/**
 	 * Returns true whether the message did not time out.
 	 */
-	virtual void recieveMsg(const T socket, void* buffer, const int length) const = 0;
+	virtual void receiveMsg(SOCKET socket, void* buffer, int length) const = 0;
 
-	void sendMsg(const T socket, const unsigned char* buffer, const int length) const;
+	void sendMsg(SOCKET socket, const unsigned char* buffer, int length) const;
 
 	/**
 	 * Platform-specific method for closing the server communication.
 	 */
 	virtual void platformClose() = 0;
-	virtual void closeClientSocket(const T socket) = 0;
+	virtual void closeClientSocket(SOCKET socket) = 0;
 
 	/**
 	 * Throws an exception with respect to the platform's preferred error type.
 	 */
 	virtual void throwPlatformError(const std::string& msg) const;
 
-	T m_serverSocket;
+	SOCKET m_serverSocket;
 
 private:
+	const RequestHandlerFactory m_handlerFactory;
+
 	std::mutex _disconnectingClients_mutex;
 	
 	/**
 	 * A list containing all clients that need to be disconnected
 	 */
-	std::list<T> _disconnectingClients;
+	std::list<SOCKET> _disconnectingClients;
 
-	std::condition_variable _disconectedClientConditionalVariable;
-	std::mutex _disconectedClient_mutex;
+	std::condition_variable _disconnectedClientConditionalVariable;
+	std::mutex _disconnectedClient_mutex;
 
 	//SECTION Thread Functions
 
 	void _serverThreadFunc();
-	void _clientThreadFunc(const T socket);
+	void _clientThreadFunc(SOCKET socket);
 
 	//ANCHOR Actual client processing function.
-	void _handleClient(const T socket);
+	void _handleClient(SOCKET socket) const;
 
-	RequestInfo _waitForClientRequest(const T socket);
+	RequestInfo _waitForClientRequest(SOCKET socket) const;
 	void _clientCleanerThreadFunc();
 
 	//!SECTION
 
-	void _enqueueDisconnectClient(const T socket);
+	void _enqueueDisconnectClient(SOCKET socket);
 	void _freeDisconnectedClients();
 };
-
-
-#include "CommonCommunicator.tpp"

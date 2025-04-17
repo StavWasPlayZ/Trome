@@ -7,10 +7,10 @@
 #include <winsock2.h>
 #include <ws2tcpip.h>
 
-class WindowsCommunicator : public CommonCommunicator<SOCKET>
+class WindowsCommunicator : public CommonCommunicator
 {
 public:
-	WindowsCommunicator();
+	WindowsCommunicator(const RequestHandlerFactory& handlerFactory);
 
 	/**
 	* Binds this instance to the program port, and begins to listen for new clients.
@@ -28,7 +28,7 @@ protected:
 	virtual void acceptClients() override;
 
 	virtual void setRecvTimeout(const unsigned int timeoutMs) const override;
-	virtual void recieveMsg(const SOCKET socket, void* buffer, const int length) const override;
+	virtual void receiveMsg(const SOCKET socket, void* buffer, const int length) const override;
 
 	virtual void platformClose() override;
 	virtual void closeClientSocket(const SOCKET socket) override;

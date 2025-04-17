@@ -4,20 +4,27 @@
 #include <future>
 #include <functional>
 
+#ifndef _WIN32
+// In Unix, socket = int.
+#define SOCKET int
+#else
+// To have SOCKET, we need WinSock.
+#include <WinSock2.h>
+#endif
+
+class IRequestHandler;
+
 /**
  * A client in the Trivia server.
  * Holds technical information about the connection between this server and the client.
- * 
- * T - The platform socket address type
  */
-template <typename T>
 class Client
 {
 public:
-	Client(const T socket, IRequestHandler* const requestHandler, const std::function<void()> clientThreadFunc);
+	Client(SOCKET socket, const IRequestHandler* requestHandler, const std::function<void()> &clientThreadFunc);
 	~Client();
 
-	const T socket;
+	const SOCKET socket;
 	const IRequestHandler* requestHandler;
 
 	/**
@@ -25,6 +32,3 @@ public:
 	*/
 	const std::future<void> thread;
 };
-
-
-#include "Client.tpp"
