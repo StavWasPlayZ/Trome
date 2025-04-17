@@ -51,6 +51,7 @@ public:
 private:
 	SqliteDatabase(); 
 	unsigned int getIdOfUser(const std::string &username) const;
+    void addToColumn(const unsigned int id, const std::string &column, const unsigned int n, const std::string &table);
 
 	static const std::string CREATE_USERS_TBL_QUERY;
 	static const std::string CREATE_STATISTICS_TBL_QUERY;

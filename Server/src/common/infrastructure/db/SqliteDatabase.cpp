@@ -123,6 +123,15 @@ unsigned int SqliteDatabase::getIdOfUser(const std::string &username) const
     return *ids.begin();
 }
 
+void SqliteDatabase::addToColumn(const unsigned int id, const std::string &column, const unsigned int n, const std::string &table)
+{
+    execSql(
+		"UPDATE " + table + " SET " +
+        column + " = " + column + " + " + std::to_string(n) +
+        " WHERE user_id = " + std::to_string(id) + ";"
+	);
+}
+
 unsigned int SqliteDatabase::addNewUser(
 	const std::string& username,
 	const std::string& password,

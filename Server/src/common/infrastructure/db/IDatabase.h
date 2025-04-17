@@ -77,6 +77,11 @@ protected:
      */
     virtual unsigned int getIdOfUser(const std::string &username) const = 0;
 
+	/**
+	* Adds n to the user's column
+	*/
+    virtual void addToColumn(const unsigned int id, const std::string &column, const unsigned int n, const std::string &table) = 0;
+
     // Regexes.
 
     //NOTE: Made the password length be at LEAST 8 characters, not *exactly*.
