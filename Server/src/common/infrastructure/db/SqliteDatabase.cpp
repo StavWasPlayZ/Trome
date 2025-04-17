@@ -2,7 +2,6 @@
 
 #include <sstream>
 #include <iostream>
-#include <stdexcept>
 
 const std::string SqliteDatabase::TABLE_USERS = "users";
 const std::string SqliteDatabase::TABLE_STATISTICS = "statistics";

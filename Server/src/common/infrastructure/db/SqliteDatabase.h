@@ -9,9 +9,9 @@
 #include <list>
 #include <functional>
 
-//REVIEW: This is already defined in the CPP.
-// Does it make any issues still...?
-#include <stdexcept> // for std::runtime_error
+// for std::runtime_error (Windows):
+// ReSharper disable once CppUnusedIncludeDirective
+#include <stdexcept>
 
 class SqliteDatabase : public IDatabase
 {
