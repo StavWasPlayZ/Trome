@@ -37,7 +37,9 @@ private:
 	SqliteDatabase();
 
 	static const std::string CREATE_USERS_TBL_QUERY;
+	static const std::string CREATE_STATISTICS_TBL_QUERY;
 	static const std::string TABLE_USERS;
+	static const std::string TABLE_STATISTICS;
 
 	/**
 	 * Simply executes the provided query.

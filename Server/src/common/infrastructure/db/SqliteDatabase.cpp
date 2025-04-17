@@ -5,6 +5,7 @@
 #include <stdexcept>
 
 const std::string SqliteDatabase::TABLE_USERS = "users";
+const std::string SqliteDatabase::TABLE_STATISTICS = "statistics";
 
 const std::string SqliteDatabase::CREATE_USERS_TBL_QUERY = 
 	"CREATE TABLE IF NOT EXISTS " + TABLE_USERS + " ("
@@ -21,6 +22,18 @@ const std::string SqliteDatabase::CREATE_USERS_TBL_QUERY =
 		// DD/MM/YYYY
 		"birthdate NVARCHAR(10) NOT NULL"
 	");";
+
+const std::string SqliteDatabase::CREATE_STATISTICS_TBL_QUERY = 
+	"CREATE TABLE IF NOT EXISTS " + TABLE_STATISTICS + " ("
+    "user_id INT PRIMARY KEY,"
+    "total_time INT NOT NULL,"
+    "correct_ans INT NOT NULL,"
+    "total_ans INT NOT NULL,"
+    "games_played INT NOT NULL,"
+    "points INT NOT NULL,"
+	"FOREIGN KEY(user_id) REFERENCES " + TABLE_USERS +  "(id)"
+    ");";
+
 
 
 SqliteDatabase::SqliteDatabase() : _dbName("trivia-database"), _dbInstance(nullptr)
