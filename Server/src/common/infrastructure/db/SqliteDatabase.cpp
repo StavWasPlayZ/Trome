@@ -133,9 +133,11 @@ unsigned int SqliteDatabase::addNewUser(
 ) const {
     validateSignupInfo(password, email, phone, birthdate, address);
 
-	std::ostringstream builder;
+	std::ostringstream builderUsers;
+	std::ostringstream builderStats;
+    int id = 0;
 
-	builder << "INSERT INTO " << TABLE_USERS << " (username, password, email, phone, address, birthdate)"
+	builderUsers << "INSERT INTO " << TABLE_USERS << " (username, password, email, phone, address, birthdate)"
 		" VALUES "
 		"('"
 			<< username << "','"
@@ -147,7 +149,15 @@ unsigned int SqliteDatabase::addNewUser(
 		"')"
 	" RETURNING id;";
 
-	return *queryIds(builder.str()).begin();
+    id = *queryIds(builderUsers.str()).begin();
+
+	builderStats << "INSERT INTO " << TABLE_STATISTICS
+                 << "(user_id, total_time, correct_ans, total_ans, games_played, points) VALUES (" << id
+                 << ", 0, 0, 0, 0, 0);";
+
+	execSql(builderStats.str());
+
+	return id;
 }
 
 void SqliteDatabase::addTime(const std::string &username, const int time)
