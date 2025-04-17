@@ -202,8 +202,8 @@ int SqliteDatabase::getPoints(const std::string &username) const
 
 float SqliteDatabase::getPlayerAverageAnsTime(const std::string &username) const
 {
-    const unsigned int totalTime = getTime(username);
-    const unsigned int totalAns = getTotalAns(username);
+    const int totalTime = getTime(username);
+    const int totalAns = getTotalAns(username);
 
     if (totalAns == -1 || totalAns == 0 || totalTime == -1)
     {
