@@ -45,6 +45,29 @@ public:
 		const std::optional<std::string>& address
 	) const = 0;
 
+	/*
+	 * Adds to the column
+	 */
+	virtual void addTime(const std::string &username, const unsigned int time) = 0;
+	virtual void addTotalAns(const std::string &username, const unsigned int ans = 1) = 0;
+	virtual void addCorrectAns(const std::string &username, const unsigned int ans = 1) = 0;
+	virtual void addGamesPlayed(const std::string &username, const unsigned int games = 1) = 0;
+	virtual void addPoints(const std::string &username, const unsigned int points) = 0;
+
+    /**
+     * Gets the column
+     */
+	virtual unsigned int getTime(const std::string &username) const = 0;
+	virtual unsigned int getTotalAns(const std::string &username) const = 0;
+	virtual unsigned int getCorrectAns(const std::string &username) const = 0;
+	virtual unsigned int getGamesPlayed(const std::string &username) const = 0;
+	virtual unsigned int getPoints(const std::string &username) const = 0;
+
+	/**
+	 * Statistics
+	 */
+    virtual unsigned int getPlayerAverageAnsTime(const std::string &username) const = 0;
+
 protected:
     IDatabase() = default;
 
