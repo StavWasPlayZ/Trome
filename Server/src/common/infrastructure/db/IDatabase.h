@@ -65,7 +65,7 @@ public:
 	virtual int getPoints(const std::string &username) const = 0;
     virtual float getPlayerAverageAnsTime(const std::string &username) const = 0;
 
-	virtual std::vector<std::pair<std::string, int>> getHighScores(unsigned int limit = 5) const = 0;
+	virtual std::vector<std::pair<std::string, int>> getHighScores(int limit = 5) const = 0;
 
 protected:
     IDatabase() = default;

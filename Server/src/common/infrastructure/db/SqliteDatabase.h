@@ -52,7 +52,7 @@ public:
 
     float getPlayerAverageAnsTime(const std::string &username) const override;
 
-	std::vector<std::pair<std::string, int>> getHighScores(unsigned int limit = 5) const override;
+	std::vector<std::pair<std::string, int>> getHighScores(int limit = 5) const override;
 
 protected:
 	unsigned int getIdOfUser(const std::string &username) const override;

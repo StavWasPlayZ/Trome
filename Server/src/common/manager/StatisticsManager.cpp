@@ -1,51 +1,36 @@
 #include "StatisticsManager.h"
 
-#include <sstream>
-#include <iostream>
+StatisticsManager::StatisticsManager(const IDatabase& db) :
+    m_database(db)
+{}
 
-StatisticsManager::StatisticsManager(IDatabase *db) : m_database(db)
+std::vector<std::pair<std::string, int>> StatisticsManager::getHighScore() const
 {
+    return m_database.getHighScores();
 }
 
-std::vector<std::pair<std::string, int>> StatisticsManager::getHighScore()
+std::vector<std::string> StatisticsManager::getUserStatistics(const std::string &username) const
 {
-    return m_database->getHighScores();
-}
+    std::vector<std::string> result;
 
-std::vector<std::string> StatisticsManager::getUserStatistics(const std::string &username)
-{
-    std::vector<std::string> v;
-    std::ostringstream oss;
+    result.push_back(
+        "Games played: " + std::to_string(m_database.getGamesPlayed(username))
+    );
+    result.push_back(
+        "Questions answered: " + std::to_string(m_database.getTotalAns(username))
+    );
+    result.push_back(
+        "Questions answered correctly: " + std::to_string(m_database.getCorrectAns(username))
+    );
+    result.push_back(
+        "Time took to answer all of the questions: " + std::to_string(m_database.getTime(username))
+    );
+    result.push_back(
+        "Average time per question: " + std::to_string(m_database.getPlayerAverageAnsTime(username))
+    );
+    result.push_back(
+        "Total points earned: " + std::to_string(m_database.getPoints(username))
+    );
 
-    oss << "Games played: " << m_database->getGamesPlayed(username);
-    v.push_back(oss.str());
-    oss.str("");
-    oss.clear();
-
-    oss << "Questions answered: " << m_database->getTotalAns(username);
-    v.push_back(oss.str());
-    oss.str("");
-    oss.clear();
-
-    oss << "Questions answered correctly: " << m_database->getCorrectAns(username);
-    v.push_back(oss.str());
-    oss.str("");
-    oss.clear();
-
-    oss << "Time took to answer all of the questions: " << m_database->getTime(username);
-    v.push_back(oss.str());
-    oss.str("");
-    oss.clear();
-
-    oss << "Average time per question: " << m_database->getPlayerAverageAnsTime(username);
-    v.push_back(oss.str());
-    oss.str("");
-    oss.clear();
-
-    oss << "Total points earned: " << m_database->getPoints(username);
-    v.push_back(oss.str());
-    oss.str("");
-    oss.clear();
-
-    return v;
+    return result;
 }
