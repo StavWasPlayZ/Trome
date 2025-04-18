@@ -223,6 +223,22 @@ float SqliteDatabase::getPlayerAverageAnsTime(const std::string &username) const
     return (float)totalTime / totalAns;
 }
 
+std::list<std::pair<std::string, int>> SqliteDatabase::getHighScores() const
+{
+    std::ostringstream builder;
+    builder << "SELECT u.username, s.points "
+          << "FROM " << TABLE_USERS << " u "
+          << "JOIN " << TABLE_STATISTICS << " s "
+          << "ON u.id = s.user_id "
+          << "ORDER BY s.points DESC "
+          << "LIMIT 5;";
+
+    return querySql<std::pair<std::string, int>>(
+        builder.str(), [](const std::map<std::string, std::string> &row) -> std::pair<std::string, int> {
+            return {row.at("username"), std::stoi(row.at("points"))};
+        });
+}
+
 
 
 // Generic wrapper implementations

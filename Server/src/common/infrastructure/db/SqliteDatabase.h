@@ -51,6 +51,8 @@ public:
 
     float getPlayerAverageAnsTime(const std::string &username) const override;
 
+	std::list<std::pair<std::string, int>> getHighScores() const override;
+
 protected:
 	unsigned int getIdOfUser(const std::string &username) const override;
     void addToColumn(const std::string &username, const std::string &column, int n, const std::string &table) override;
