@@ -17,7 +17,7 @@ const std::string SqliteDatabase::CREATE_USERS_TBL_QUERY =
 		"phone NVARCHAR(16) NOT NULL, "
 		"address NVARCHAR(180), "
 		// Would 99% of times be of type DATE,
-		// but shall be entertained as a string for the sake of the exercise.
+		// but shall be entertained for as a string for the sake of the exercise.
 		// DD/MM/YYYY
 		"birthdate NVARCHAR(10) NOT NULL"
 	");";
@@ -152,8 +152,10 @@ unsigned int SqliteDatabase::addNewUser(
     id = *queryIds(builderUsers.str()).begin();
 
 	builderStats << "INSERT INTO " << TABLE_STATISTICS
-                 << "(user_id, total_time, correct_ans, total_ans, games_played, points) VALUES (" << id
-                 << ", 0, 0, 0, 0, 0);";
+        << "(user_id, total_time, correct_ans, total_ans, games_played, points)"
+        << " VALUES "
+        << "(" << id << ", 0, 0, 0, 0, 0)"
+    ";";
 
 	execSql(builderStats.str());
 
@@ -223,6 +225,28 @@ float SqliteDatabase::getPlayerAverageAnsTime(const std::string &username) const
     return (float)totalTime / totalAns;
 }
 
+std::vector<std::pair<std::string, int>> SqliteDatabase::getHighScores(const int limit) const
+{
+    std::ostringstream builder;
+    builder << "SELECT users.username, stats.points "
+        << "FROM " << TABLE_USERS << " users "
+        << "JOIN " << TABLE_STATISTICS << " stats "
+        << "ON users.id = stats.user_id "
+        << "ORDER BY stats.points DESC "
+        << "LIMIT " << limit <<
+    ";";
+
+    const std::list<std::pair<std::string, int>> res = querySql<std::pair<std::string, int>>(
+        builder.str(),
+
+        [](const std::map<std::string, std::string> &row) -> std::pair<std::string, int>
+        {
+            return {row.at("username"), std::stoi(row.at("points"))};
+        }
+    );
+
+	return std::vector(res.begin(), res.end());
+}
 
 
 // Generic wrapper implementations

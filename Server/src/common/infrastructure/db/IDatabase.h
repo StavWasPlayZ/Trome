@@ -1,6 +1,8 @@
 #pragma once
 
 #include <optional>
+#include <vector>
+#include <utility> // for std::pair
 #include <ctre.hpp>
 
 class IDatabase
@@ -62,6 +64,8 @@ public:
 	virtual int getGamesPlayed(const std::string &username) const = 0;
 	virtual int getPoints(const std::string &username) const = 0;
     virtual float getPlayerAverageAnsTime(const std::string &username) const = 0;
+
+	virtual std::vector<std::pair<std::string, int>> getHighScores(int limit = 5) const = 0;
 
 protected:
     IDatabase() = default;
