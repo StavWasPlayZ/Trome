@@ -15,6 +15,6 @@ public:
     ~StatisticsManager() = default;
 
     std::vector<std::pair<std::string, int>> getHighScore();
-    std::vector<std::string &> &getUserStatistics(const std::string& username);
+    std::vector<std::string> getUserStatistics(const std::string& username);
 
 };
