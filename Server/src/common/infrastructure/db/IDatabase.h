@@ -1,7 +1,7 @@
 #pragma once
 
 #include <optional>
-#include <list>
+#include <vector>
 #include <utility> // for std::pair
 #include <ctre.hpp>
 
@@ -65,7 +65,7 @@ public:
 	virtual int getPoints(const std::string &username) const = 0;
     virtual float getPlayerAverageAnsTime(const std::string &username) const = 0;
 
-	virtual std::list<std::pair<std::string, int>> getHighScores() const = 0;
+	virtual std::vector<std::pair<std::string, int>> getHighScores(unsigned int limit = 5) const = 0;
 
 protected:
     IDatabase() = default;

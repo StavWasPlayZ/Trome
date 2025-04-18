@@ -3,6 +3,7 @@
 #include "infrastructure/db/IDatabase.h"
 #include <string>
 #include <vector>
+#include <utility> // for std::pair
 
 class StatisticsManager
 {
@@ -10,10 +11,10 @@ private:
 	IDatabase *m_database;
 
 public:
-    StatisticsManager(const IDatabase *db);
+    StatisticsManager(IDatabase *db);
     ~StatisticsManager() = default;
 
-    std::vector<std::string &> &getHighScore();
+    std::vector<std::pair<std::string, int>> getHighScore();
     std::vector<std::string &> &getUserStatistics(const std::string& username);
 
 };

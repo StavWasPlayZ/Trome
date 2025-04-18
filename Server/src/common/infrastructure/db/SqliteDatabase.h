@@ -6,6 +6,7 @@
 
 #include <string>
 #include <map>
+#include <vector>
 #include <list>
 #include <functional>
 
@@ -51,7 +52,7 @@ public:
 
     float getPlayerAverageAnsTime(const std::string &username) const override;
 
-	std::list<std::pair<std::string, int>> getHighScores() const override;
+	std::vector<std::pair<std::string, int>> getHighScores(unsigned int limit = 5) const override;
 
 protected:
 	unsigned int getIdOfUser(const std::string &username) const override;

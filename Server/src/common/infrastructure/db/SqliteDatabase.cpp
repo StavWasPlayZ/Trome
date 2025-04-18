@@ -223,7 +223,7 @@ float SqliteDatabase::getPlayerAverageAnsTime(const std::string &username) const
     return (float)totalTime / totalAns;
 }
 
-std::list<std::pair<std::string, int>> SqliteDatabase::getHighScores() const
+std::vector<std::pair<std::string, int>> SqliteDatabase::getHighScores(unsigned int limit) const
 {
     std::ostringstream builder;
     builder << "SELECT u.username, s.points "
@@ -231,12 +231,19 @@ std::list<std::pair<std::string, int>> SqliteDatabase::getHighScores() const
           << "JOIN " << TABLE_STATISTICS << " s "
           << "ON u.id = s.user_id "
           << "ORDER BY s.points DESC "
-          << "LIMIT 5;";
+          << "LIMIT " << limit << ";";
 
-    return querySql<std::pair<std::string, int>>(
+    std::list<std::pair<std::string, int>> res = querySql<std::pair<std::string, int>>(
         builder.str(), [](const std::map<std::string, std::string> &row) -> std::pair<std::string, int> {
             return {row.at("username"), std::stoi(row.at("points"))};
         });
+
+	std::vector<std::pair<std::string, int>> v;
+	for (auto pair : res)
+	{
+        v.push_back(pair);
+	}
+    return v;
 }
 
 
