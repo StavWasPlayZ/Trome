@@ -78,7 +78,7 @@ add_executable (Server
   "src/common/infrastructure/Room.cpp"
   "src/common/manager/RoomManager.h"
   "src/common/manager/RoomManager.cpp"
-)
+ "src/common/manager/StatisticsManager.h" "src/common/manager/StatisticsManager.cpp")
 
 # Platform-specific sources
 if (WIN32)
