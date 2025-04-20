@@ -1,13 +1,21 @@
 #pragma once
 
 #include <string>
-
+#include <vector>
+#include "infrastructure/RoomData.h"
 
 enum class ResponseCode : unsigned char
 {
 	ERROR = 0,
-	LOGIN = 1,
-	SIGNUP = 2
+	LOGIN,
+	SIGNUP,
+	LOGOUT,
+	JOIN_ROOM,
+	CREATE_ROOM,
+	GET_ROOMS,
+	GET_PLAYER_IN_ROOM,
+	GET_HIGH_SCORES,
+	GET_PERSONAL_STATISTICS
 };
 
 /**
@@ -102,6 +110,64 @@ struct ErrorResponse : ProtocolResponse<ErrorStatus>
 	ErrorResponse(ErrorStatus status, const std::string& message);
 	
 	const std::string message;
+};
+
+enum class GeneralRoomStatus : unsigned int
+{
+	SUCCESS = 1,
+	ERROR = 0
+};
+
+struct JoinRoomResponse : ProtocolResponse<GeneralRoomStatus>
+{
+    explicit JoinRoomResponse(GeneralRoomStatus status);
+};
+
+struct CreateRoomResponse : ProtocolResponse<GeneralRoomStatus>
+{
+    explicit CreateRoomResponse(GeneralRoomStatus status);
+};
+
+struct GetRoomsResponse : ProtocolResponse<GeneralRoomStatus>
+{
+    GetRoomsResponse(GeneralRoomStatus status, const std::vector<RoomData> &rooms);
+
+	const std::vector<RoomData> rooms;
+};
+
+enum class GetPlayersInRoomStatus : unsigned int
+{
+    SUCCESS = 1,
+    ERROR = 0,
+	NOT_IN_ROOM_ERROR = 2
+};
+
+struct GetPlayersInRoomResponse : ProtocolResponse<GetPlayersInRoomStatus>
+{
+    GetPlayersInRoomResponse(GetPlayersInRoomStatus status, const std::vector<std::string> &players);
+
+	const std::vector<std::string> players;
+};
+
+enum class GeneralStatsStatus : unsigned int
+{
+    SUCCESS = 1,
+    ERROR = 0,
+	NOT_CONNECTED_ERROR = 2
+};
+
+struct GetHighScoresResponse : ProtocolResponse<GeneralStatsStatus>
+{
+    GetHighScoresResponse(GeneralStatsStatus status, const std::vector<std::string> &stats);
+
+    const std::vector<std::string> stats;
+};
+
+struct GetPersonalStatsResponse : ProtocolResponse<GeneralStatsStatus>
+{
+    GetPersonalStatsResponse(GeneralStatsStatus status, const std::vector<std::string> &stats);
+
+    const std::vector<std::string> stats;
 };
 
 

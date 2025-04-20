@@ -1,4 +1,4 @@
-﻿# CMakeList.txt : CMake project for Server, include source and define
+# CMakeList.txt : CMake project for Server, include source and define
 # project specific logic here.
 #
 cmake_minimum_required (VERSION 3.8)
@@ -81,6 +81,8 @@ add_executable (Server
 
   "src/common/manager/StatisticsManager.h"
   "src/common/manager/StatisticsManager.cpp"
+  
+  "src/common/infrastructure/RoomData.h"
 )
 
 # Platform-specific sources
