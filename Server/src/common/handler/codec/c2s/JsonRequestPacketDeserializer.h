@@ -31,4 +31,9 @@ public:
      * Returns: The deserialized object.
      */
     static GetPlayersInRoomRequest deserializeGetPlayersInRoomRequest(const nlohmann::json &data);
+
+    /**
+     * Returns: The deserialized object.
+     */
+    static JoinRoomRequest deserializeJoinRoomRequest(const nlohmann::json &data);
 };

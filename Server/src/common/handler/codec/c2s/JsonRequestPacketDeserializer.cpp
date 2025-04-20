@@ -25,6 +25,11 @@ GetPlayersInRoomRequest JsonRequestPacketDeserializer::deserializeGetPlayersInRo
     return GetPlayersInRoomRequest(data.at("roomID"));
 }
 
+JoinRoomRequest JsonRequestPacketDeserializer::deserializeJoinRoomRequest(const nlohmann::json &data)
+{
+    return JoinRoomRequest(data.at("roomID"));
+}
+
 nlohmann::json JsonRequestPacketDeserializer::readJson(const unsigned char *data, const int jsonLen)
 {
 	// Avoid naughty buffer overflows
