@@ -49,14 +49,3 @@ std::list<T> SqliteDatabase::querySql(const std::string &query,
 
     return results;
 }
-
-template <typename T>
-const T &SqliteDatabase::getResultAsSingular(const std::list<T> &results)
-{
-    if (results.empty())
-    {
-        return -1;
-    }
-
-    return *results.begin();
-}

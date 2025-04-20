@@ -107,12 +107,6 @@ private:
 		std::function<T(const std::map<std::string, std::string>&)> rowMapper
 	) const;
 
-	/**
-	 * Either returns the first element in the provided list, or -1 if none.
-	 */
-	template <typename T>
-	static const T& getResultAsSingular(const std::list<T>& results);
-
 	const std::string _dbName;
 	sqlite3* _dbInstance;
 };
