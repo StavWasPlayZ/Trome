@@ -2,7 +2,7 @@
 
 #include <string>
 #include <vector>
-#include "infrastructure/Room.h"
+#include "infrastructure/RoomData.h"
 
 enum class ResponseCode : unsigned char
 {
