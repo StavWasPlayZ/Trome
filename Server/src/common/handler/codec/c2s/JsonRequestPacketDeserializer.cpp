@@ -30,6 +30,16 @@ JoinRoomRequest JsonRequestPacketDeserializer::deserializeJoinRoomRequest(const 
     return JoinRoomRequest(data.at("roomID"));
 }
 
+CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(const nlohmann::json &data)
+{
+    return CreateRoomRequest(
+		data.at("roomName"),
+		data.at("maxPlayers"),
+		data.at("questionCount"),
+		data.at("answerTime")
+	);
+}
+
 nlohmann::json JsonRequestPacketDeserializer::readJson(const unsigned char *data, const int jsonLen)
 {
 	// Avoid naughty buffer overflows
