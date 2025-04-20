@@ -113,17 +113,17 @@ enum class GeneralRoomStatus : unsigned int
 
 struct JoinRoomResponse : ProtocolResponse<GeneralRoomStatus>
 {
-    explicit JoinRoomResponse(const unsigned int status);
+    explicit JoinRoomResponse(GeneralRoomStatus status);
 };
 
 struct CreateRoomResponse : ProtocolResponse<GeneralRoomStatus>
 {
-    explicit CreateRoomResponse(const unsigned int status);
+    explicit CreateRoomResponse(GeneralRoomStatus status);
 };
 
 struct GetRoomsResponse : ProtocolResponse<GeneralRoomStatus>
 {
-    GetRoomsResponse(const unsigned int status, const std::vector<RoomData>& rooms);
+    GetRoomsResponse(GeneralRoomStatus status, const std::vector<RoomData> &rooms);
 
 	const std::vector<RoomData> rooms;
 };
@@ -137,7 +137,7 @@ enum class GetPlayersInRoomStatus : unsigned int
 
 struct GetPlayersInRoomResponse : ProtocolResponse<GetPlayersInRoomStatus>
 {
-    GetPlayersInRoomResponse(const unsigned int status, const std::vector<std::string> &players);
+    GetPlayersInRoomResponse(GetPlayersInRoomStatus status, const std::vector<std::string> &players);
 
 	const std::vector<std::string> players;
 };
@@ -151,14 +151,14 @@ enum class GeneralStatsStatus : unsigned int
 
 struct GetHighScoresResponse : ProtocolResponse<GeneralStatsStatus>
 {
-    GetHighScoresResponse(const unsigned int status, const std::vector<std::string> &stats);
+    GetHighScoresResponse(GeneralStatsStatus status, const std::vector<std::string> &stats);
 
     const std::vector<std::string> stats;
 };
 
 struct GetPersonalStats : ProtocolResponse<GeneralStatsStatus>
 {
-    GetPersonalStats(const unsigned int status, const std::vector<std::string> &stats);
+    GetPersonalStats(GeneralStatsStatus status, const std::vector<std::string> &stats);
 
     const std::vector<std::string> stats;
 };
