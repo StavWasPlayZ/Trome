@@ -10,7 +10,8 @@ enum class RequestCode : unsigned char
 	LOGIN = 1,
 	SIGNUP = 2,
 	GET_PLAYERS_IN_ROOM = 3,
-	JOIN_ROOM = 4
+	JOIN_ROOM = 4,
+	CREATE_ROOM = 5
 };
 
 struct ProtocolRequest
@@ -61,4 +62,19 @@ struct JoinRoomRequest : ProtocolRequest
     JoinRoomRequest(const unsigned int roomID);
 
     const unsigned int roomID;
+};
+
+struct CreateRoomRequest : ProtocolRequest
+{
+    CreateRoomRequest(
+		const std::string roomName,
+		const unsigned int maxPlayers,
+		const unsigned int questionCount,
+		const unsigned int answerTimeout
+	);
+
+	const std::string roomName;
+    const unsigned int maxPlayers;
+    const unsigned int questionCount;
+    const unsigned int answerTimeout;
 };

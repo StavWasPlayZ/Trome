@@ -39,3 +39,9 @@ ProtocolRequest *ProtocolRequest::fromRequest(const RequestInfo &info) {
 JoinRoomRequest::JoinRoomRequest(const unsigned int roomID) : roomID(roomID)
 {
 }
+
+CreateRoomRequest::CreateRoomRequest(const std::string roomName, const unsigned int maxPlayers,
+                                     const unsigned int questionCount, const unsigned int answerTimeout)
+    : roomName(roomName), maxPlayers(maxPlayers), questionCount(questionCount), answerTimeout(answerTimeout)
+{
+}
