@@ -91,7 +91,7 @@ bool SqliteDatabase::doesUserExist(const std::string& username) const
 	);
 }
 
-unsigned int SqliteDatabase::getIdOfUser(const std::string& username, const std::string& password) const
+unsigned int SqliteDatabase::queryIdOfUser(const std::string& username, const std::string& password) const
 {
     const std::list<unsigned int> results = queryIds(
         "SELECT id FROM " + TABLE_USERS +
@@ -109,7 +109,7 @@ unsigned int SqliteDatabase::getIdOfUser(const std::string& username, const std:
     return *results.begin();
 }
 
-unsigned int SqliteDatabase::getIdOfUser(const std::string &username) const
+unsigned int SqliteDatabase::queryIdOfUser(const std::string &username) const
 {
     const std::list<unsigned int> results = queryIds(
         genQueryUserIdStr(username) + ";"
@@ -201,35 +201,35 @@ void SqliteDatabase::addPoints(const std::string &username, const int points)
     addToColumn(username, "points", points, TABLE_STATISTICS);
 }
 
-int SqliteDatabase::getTime(const std::string &username) const
+int SqliteDatabase::queryTime(const std::string &username) const
 {
-    return getStat(username, "total_time");
+    return queryStat(username, "total_time");
 }
 
-int SqliteDatabase::getTotalAns(const std::string &username) const
+int SqliteDatabase::queryTotalAns(const std::string &username) const
 {
-    return getStat(username, "total_ans");
+    return queryStat(username, "total_ans");
 }
 
-int SqliteDatabase::getCorrectAns(const std::string &username) const
+int SqliteDatabase::queryCorrectAns(const std::string &username) const
 {
-    return getStat(username, "correct_ans");
+    return queryStat(username, "correct_ans");
 }
 
-int SqliteDatabase::getGamesPlayed(const std::string &username) const
+int SqliteDatabase::queryGamesPlayed(const std::string &username) const
 {
-    return getStat(username, "games_played");
+    return queryStat(username, "games_played");
 }
 
-int SqliteDatabase::getPoints(const std::string &username) const
+int SqliteDatabase::queryPoints(const std::string &username) const
 {
-    return getStat(username, "points");
+    return queryStat(username, "points");
 }
 
-float SqliteDatabase::getPlayerAverageAnsTime(const std::string &username) const
+float SqliteDatabase::queryPlayerAverageAnsTime(const std::string &username) const
 {
-    const int totalTime = getTime(username);
-    const int totalAns = getTotalAns(username);
+    const int totalTime = queryTime(username);
+    const int totalAns = queryTotalAns(username);
 
     if (totalAns == -1 || totalAns == 0 || totalTime == -1)
     {
@@ -239,7 +239,7 @@ float SqliteDatabase::getPlayerAverageAnsTime(const std::string &username) const
     return (float)totalTime / totalAns;
 }
 
-std::vector<std::pair<std::string, int>> SqliteDatabase::getHighScores(const int limit) const
+std::vector<std::pair<std::string, int>> SqliteDatabase::queryHighScores(const int limit) const
 {
     std::ostringstream builder;
     builder << "SELECT users.username, stats.points "
@@ -300,7 +300,7 @@ std::list<int> SqliteDatabase::queryInts(const std::string& query, const std::st
     );
 }
 
-int SqliteDatabase::getStat(const std::string &username, const std::string &colName) const
+int SqliteDatabase::queryStat(const std::string &username, const std::string &colName) const
 {
     std::ostringstream builder;
 

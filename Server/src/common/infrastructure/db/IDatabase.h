@@ -32,7 +32,7 @@ public:
 	/**
 	 * Returns: The ID of the user matching the provided credentials; -1 otherwise.
 	 */
-	virtual unsigned int getIdOfUser(const std::string& username, const std::string& password) const = 0;
+	virtual unsigned int queryIdOfUser(const std::string& username, const std::string& password) const = 0;
 	/**
 	 * Adds a new user.
 	 * 
@@ -58,14 +58,14 @@ public:
 
     // Retrieving statistics:
 
-	virtual int getTime(const std::string &username) const = 0;
-	virtual int getTotalAns(const std::string &username) const = 0;
-	virtual int getCorrectAns(const std::string &username) const = 0;
-	virtual int getGamesPlayed(const std::string &username) const = 0;
-	virtual int getPoints(const std::string &username) const = 0;
-    virtual float getPlayerAverageAnsTime(const std::string &username) const = 0;
+	virtual int queryTime(const std::string &username) const = 0;
+	virtual int queryTotalAns(const std::string &username) const = 0;
+	virtual int queryCorrectAns(const std::string &username) const = 0;
+	virtual int queryGamesPlayed(const std::string &username) const = 0;
+	virtual int queryPoints(const std::string &username) const = 0;
+    virtual float queryPlayerAverageAnsTime(const std::string &username) const = 0;
 
-	virtual std::vector<std::pair<std::string, int>> getHighScores(int limit = 5) const = 0;
+	virtual std::vector<std::pair<std::string, int>> queryHighScores(int limit = 5) const = 0;
 
 protected:
     IDatabase() = default;
@@ -74,7 +74,7 @@ protected:
 	/**
      * Returns: The ID of the user connected user; -1 otherwise.
      */
-    virtual unsigned int getIdOfUser(const std::string &username) const = 0;
+    virtual unsigned int queryIdOfUser(const std::string &username) const = 0;
 
 	/**
 	* Adds `n` to the specified column for the given user.

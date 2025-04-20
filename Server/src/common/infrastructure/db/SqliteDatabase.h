@@ -27,7 +27,7 @@ public:
 	bool open() override;
 	bool close() override;
 	bool doesUserExist(const std::string& username) const override;
-	unsigned int getIdOfUser(const std::string& username, const std::string& password) const override;
+	unsigned int queryIdOfUser(const std::string& username, const std::string& password) const override;
 
 	unsigned int addNewUser(
 		const std::string& username,
@@ -44,18 +44,18 @@ public:
     void addGamesPlayed(const std::string &username, int games = 1) override;
     void addPoints(const std::string &username, int points) override;
 
-    int getTime(const std::string &username) const override;
-    int getTotalAns(const std::string &username) const override;
-    int getCorrectAns(const std::string &username) const override;
-    int getGamesPlayed(const std::string &username) const override;
-    int getPoints(const std::string &username) const override;
+    int queryTime(const std::string &username) const override;
+    int queryTotalAns(const std::string &username) const override;
+    int queryCorrectAns(const std::string &username) const override;
+    int queryGamesPlayed(const std::string &username) const override;
+    int queryPoints(const std::string &username) const override;
 
-    float getPlayerAverageAnsTime(const std::string &username) const override;
+    float queryPlayerAverageAnsTime(const std::string &username) const override;
 
-	std::vector<std::pair<std::string, int>> getHighScores(int limit = 5) const override;
+	std::vector<std::pair<std::string, int>> queryHighScores(int limit = 5) const override;
 
 protected:
-	unsigned int getIdOfUser(const std::string &username) const override;
+	unsigned int queryIdOfUser(const std::string &username) const override;
     void addToColumn(const std::string &username, const std::string &column, int n, const std::string &table) override;
 
 private:
@@ -87,7 +87,7 @@ private:
      */
 	std::list<int> queryInts(const std::string& query, const std::string& colName) const;
 
-	int getStat(const std::string &username, const std::string &colName) const;
+	int queryStat(const std::string &username, const std::string &colName) const;
 
 
 	static std::string genQueryUserIdStr(const std::string& username);
