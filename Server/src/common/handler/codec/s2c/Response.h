@@ -1,7 +1,8 @@
 #pragma once
 
 #include <string>
-
+#include <vector>
+#include "infrastructure/Room.h"
 
 enum class ResponseCode : unsigned char
 {
@@ -104,5 +105,26 @@ struct ErrorResponse : ProtocolResponse<ErrorStatus>
 	const std::string message;
 };
 
+enum class GeneralRoomStatus : unsigned int
+{
+	SUCCESS = 1,
+	ERROR = 0
+};
 
+struct JoinRoomResponse : ProtocolResponse<GeneralRoomStatus>
+{
+    explicit JoinRoomResponse(const unsigned int status);
+};
+
+struct CreateRoomResponse : ProtocolResponse<GeneralRoomStatus>
+{
+    explicit CreateRoomResponse(const unsigned int status);
+};
+
+struct GetRoomsResponse : ProtocolResponse<GeneralRoomStatus>
+{
+    GetRoomsResponse(const unsigned int status, std::vector<RoomData> rooms);
+
+	const std::vector<RoomData> rooms;
+};
 #include "Response.tpp"
