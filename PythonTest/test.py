@@ -6,10 +6,60 @@ from typing import *
 LOGIN = 1
 SIGNUP = 2
 
-SEPERATOR =  "-----------------"
+SEPARATOR =  "-----------------"
 
-JSON_TEST_LOGIN = {"username": "user1", "password": "1234"}
-JSON_TEST_SIGNUP = {"username": "user1", "password": "1234", "email": "user1@gmail.com"}
+JSON_TEST_LOGIN = {
+    "username": "user1",
+    "password": "Aa12345!"
+}
+JSON_TEST_SIGNUP = {
+    "username": "user1",
+    "password": "Aa12345!",
+    "email": "user1@gmail.com",
+    "phone": "0555555555",
+    "birthdate": "11/11/2011",
+    "address": "some, 69, ig"
+}
+JSON_WRONG_PASSWORD = {
+    "username": "user wrong password",
+    "password": "Aa123456", # no special char
+    "email": "user1@gmail.com",
+    "phone": "0555555555",
+    "birthdate": "11/11/2011",
+    "address": "some, 69, ig"
+}
+JSON_WRONG_EMAIL = {
+    "username": "user wrong email",
+    "password": "Aa12345!",
+    "email": "user1@gmail", # no .com
+    "phone": "0555555555",
+    "birthdate": "11/11/2011",
+    "address": "some, 69, ig"
+}
+JSON_WRONG_PHONE = {
+    "username": "user wrong phone",
+    "password": "Aa12345!",
+    "email": "user1@gmail.com",
+    "phone": "11111", # illegal phone number
+    "birthdate": "11/11/2011",
+    "address": "some, 69, ig"
+}
+JSON_WRONG_DATE = {
+    "username": "user wrong date",
+    "password": "Aa12345!",
+    "email": "user1@gmail.com",
+    "phone": "0555555555",
+    "birthdate": "11-11/2011", # not in format of DD/MM/YYYY
+    "address": "some, 69, ig"
+}
+JSON_WRONG_ADDRESS = {
+    "username": "user wrong address",
+    "password": "Aa12345!",
+    "email": "user1@gmail.com",
+    "phone": "0555555555",
+    "birthdate": "11/11/2011",
+    "address": "some, 69" # no 3rd arg
+}
 
 SERVER_INFO = ("127.0.0.1", 6942)
 
@@ -18,10 +68,14 @@ def main():
         sock.connect(SERVER_INFO)
 
         try:
-            sendAndRecv(LOGIN, JSON_TEST_LOGIN, sock) # should login
-            sendAndRecv(LOGIN, JSON_TEST_LOGIN, sock) # shouldn't login - already logged in
             sendAndRecv(SIGNUP, JSON_TEST_SIGNUP, sock) # shouldn't signup - already in DB
-            # TODO: add the input test later when REGEX is added
+
+            # all of those shouldn't signup
+            sendAndRecv(SIGNUP, JSON_WRONG_PASSWORD, sock);
+            sendAndRecv(SIGNUP, JSON_WRONG_EMAIL, sock);
+            sendAndRecv(SIGNUP, JSON_WRONG_PHONE, sock);
+            sendAndRecv(SIGNUP, JSON_WRONG_DATE, sock);
+            sendAndRecv(SIGNUP, JSON_WRONG_ADDRESS, sock);
         except:
             print("Something went wrong :(")
             return
@@ -35,13 +89,13 @@ def sendAndRecv(code: int, data: json, sock: socket.socket):
     """
     msg = serialize(code, data)
     sock.sendall(msg)
-    print(SEPERATOR)
+    print(SEPARATOR)
     print("Sent: Code:", code, "\nData:", data, "\nIn bytes:", msg)
 
     server_msg = sock.recv(1024)
     raw_data = deserialzer(server_msg)
 
-    print(SEPERATOR)
+    print(SEPARATOR)
     print("Recieved: Code:", raw_data[0], "\nData Len:", raw_data[1], "\nData:", raw_data[2], "\nIn bytes:", server_msg)
 
 

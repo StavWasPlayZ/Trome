@@ -4,7 +4,7 @@
 
 const std::string CMD_EXIT = "EXIT";
 
-Server server;
+Server& server = Server::getInstance();
 
 void cmdHandler();
 

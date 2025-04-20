@@ -2,6 +2,7 @@
 
 #include "infrastructure/request/RequestInfo.h"
 
+struct ProtocolRequest;
 struct RequestInfo;
 struct RequestResult;
 class RequestHandlerFactory;
@@ -15,8 +16,8 @@ public:
     explicit IRequestHandler(const RequestHandlerFactory& handlerFactory);
     virtual ~IRequestHandler();
 
-    virtual bool isRequestRelevant(const RequestInfo& request) const = 0;
-    virtual RequestResult handleRequest(const RequestInfo& request) const = 0;
+    virtual bool isRequestRelevant(const RequestInfo& info) const = 0;
+    virtual RequestResult handleRequest(const RequestInfo& info, const ProtocolRequest& request) const = 0;
 
     /**
      * T - The current handler type

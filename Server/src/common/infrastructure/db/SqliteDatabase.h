@@ -12,16 +12,30 @@
 class SqliteDatabase : public IDatabase
 {
 public:
-	SqliteDatabase();
+	SqliteDatabase(const SqliteDatabase&) = delete;
+	void operator=(const SqliteDatabase&) = delete;
+
+	static SqliteDatabase& getInstance();
+
 	~SqliteDatabase() override;
 
 	bool open() override;
 	bool close() override;
 	bool doesUserExist(const std::string& username) const override;
 	unsigned int getIdOfUser(const std::string& username, const std::string& password) const override;
-	unsigned int addNewUser(const std::string& username, const std::string& password, const std::string& email) const override;
+
+	unsigned int addNewUser(
+		const std::string& username,
+		const std::string& password,
+		const std::string& email,
+		const std::string& phone,
+		const std::string& birthdate,
+		const std::optional<std::string>& address
+	) const override;
 
 private:
+	SqliteDatabase();
+
 	static const std::string CREATE_USERS_TBL_QUERY;
 	static const std::string TABLE_USERS;
 

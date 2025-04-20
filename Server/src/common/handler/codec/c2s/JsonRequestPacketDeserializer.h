@@ -7,6 +7,14 @@
 class JsonRequestPacketDeserializer
 {
 public:
+    // Define as a static class (not a singleton):
+    JsonRequestPacketDeserializer() = delete;
+    JsonRequestPacketDeserializer(const JsonRequestPacketDeserializer&) = delete;
+    JsonRequestPacketDeserializer& operator=(const JsonRequestPacketDeserializer&) = delete;
+    JsonRequestPacketDeserializer(JsonRequestPacketDeserializer&&) = delete;
+    JsonRequestPacketDeserializer& operator=(JsonRequestPacketDeserializer&&) = delete;
+
+
 	static nlohmann::json readJson(const unsigned char* data, int jsonLen);
 
 	/**

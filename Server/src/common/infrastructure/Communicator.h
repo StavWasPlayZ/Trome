@@ -1,6 +1,6 @@
 #pragma once
 
-// This header will define PlatformCommunicator, based on the current active platform.
+// This header will define Communicator, based on the current active platform.
 
 #ifdef _WIN32
     #include "windows/infrastructure/WindowsCommunicator.h"

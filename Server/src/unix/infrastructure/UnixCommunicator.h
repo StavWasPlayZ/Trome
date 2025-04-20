@@ -5,7 +5,10 @@
 class UnixCommunicator : public CommonCommunicator
 {
 public:
-	explicit UnixCommunicator(const RequestHandlerFactory& handlerFactory);
+    UnixCommunicator(const UnixCommunicator&) = delete;
+    void operator=(const UnixCommunicator&) = delete;
+
+    static UnixCommunicator& getInstance(const RequestHandlerFactory& handlerFactory);
 
 protected:
 	bool isValidSocket(int result) const override;
@@ -21,4 +24,7 @@ protected:
 	void acceptClients() override;
 
 	void throwPlatformError(const std::string& msg) const override;
+
+private:
+    explicit UnixCommunicator(const RequestHandlerFactory& handlerFactory);
 };

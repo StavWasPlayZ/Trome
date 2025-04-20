@@ -3,17 +3,16 @@
 #include <chrono>
 #include <nlohmann/json.hpp>
 
-#include "Constants.h"
-
+enum class RequestCode : unsigned char;
 class Client;
 
 struct RequestInfo
 {
-    RequestInfo(const Client& client, ProtocolCode id, std::time_t receivalTime, const nlohmann::json& data);
+    RequestInfo(const Client& client, RequestCode id, std::time_t receivalTime, const nlohmann::json& data);
 
     const Client& client;
 
-    const ProtocolCode id;
+    const RequestCode id;
     const std::time_t receivalTime;
 
     //NOTE: We will not use a buffer *vector* because:

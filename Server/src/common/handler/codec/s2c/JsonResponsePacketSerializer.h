@@ -11,6 +11,13 @@
 class JsonResponsePacketSerializer
 {
 public:
+    // Define as a static class (not a singleton):
+    JsonResponsePacketSerializer() = delete;
+    JsonResponsePacketSerializer(const JsonResponsePacketSerializer&) = delete;
+    JsonResponsePacketSerializer& operator=(const JsonResponsePacketSerializer&) = delete;
+    JsonResponsePacketSerializer(JsonResponsePacketSerializer&&) = delete;
+    JsonResponsePacketSerializer& operator=(JsonResponsePacketSerializer&&) = delete;
+
 	/**
 	 * Returns: The serialized object.
 	 * 
@@ -51,7 +58,7 @@ private:
 	 * 
 	 * NOTE: The returned resource must be freed.
 	 */
-	static OBuffer serializeJsonToProtocol(ProtocolCode msgCode, const nlohmann::json &data);
+	static OBuffer serializeJsonToProtocol(ResponseCode msgCode, const nlohmann::json &data);
 
 	static void writeInt(int num, unsigned char* buffer);
 };
