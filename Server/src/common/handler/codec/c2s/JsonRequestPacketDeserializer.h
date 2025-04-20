@@ -25,5 +25,10 @@ public:
 	/**
 	* Returns: The deserialized object.
 	*/
-	static SignupRequest deserializeSignupRequest(const nlohmann::json& data);
+    static SignupRequest deserializeSignupRequest(const nlohmann::json &data);
+
+    /**
+     * Returns: The deserialized object.
+     */
+    static GetPlayersInRoomRequest deserializeGetPlayersInRoomRequest(const nlohmann::json &data);
 };

@@ -20,6 +20,11 @@ SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(const nloh
 	);
 }
 
+GetPlayersInRoomRequest JsonRequestPacketDeserializer::deserializeGetPlayersInRoomRequest(const nlohmann::json &data)
+{
+    return GetPlayersInRoomRequest(data.at("roomID"));
+}
+
 nlohmann::json JsonRequestPacketDeserializer::readJson(const unsigned char *data, const int jsonLen)
 {
 	// Avoid naughty buffer overflows
