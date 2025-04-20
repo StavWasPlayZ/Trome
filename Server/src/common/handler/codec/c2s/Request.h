@@ -8,7 +8,8 @@
 enum class RequestCode : unsigned char
 {
 	LOGIN = 1,
-	SIGNUP = 2
+	SIGNUP = 2,
+	GET_PLAYERS_IN_ROOM = 3
 };
 
 struct ProtocolRequest
@@ -45,4 +46,11 @@ struct SignupRequest : LoginRequest
 	const std::string phone;
 	const std::optional<std::string> address;
 	const std::string birthdate;
+};
+
+struct GetPlayersInRoomRequest : ProtocolRequest
+{
+    GetPlayersInRoomRequest(const unsigned int roomID);
+
+	const unsigned int roomID;
 };

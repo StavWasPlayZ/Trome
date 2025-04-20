@@ -19,7 +19,12 @@ SignupRequest::SignupRequest(
     phone(phone),
     address(address),
     birthdate(birthdate)
-{}
+{
+}
+
+GetPlayersInRoomRequest::GetPlayersInRoomRequest(const unsigned int roomID) : roomID(roomID)
+{
+}
 
 ProtocolRequest *ProtocolRequest::fromRequest(const RequestInfo &info) {
     switch (info.id)
