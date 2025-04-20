@@ -35,3 +35,7 @@ ProtocolRequest *ProtocolRequest::fromRequest(const RequestInfo &info) {
     default: throw std::invalid_argument("Invalid request ID");
     }
 }
+
+JoinRoomRequest::JoinRoomRequest(const unsigned int roomID) : roomID(roomID)
+{
+}

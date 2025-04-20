@@ -9,7 +9,8 @@ enum class RequestCode : unsigned char
 {
 	LOGIN = 1,
 	SIGNUP = 2,
-	GET_PLAYERS_IN_ROOM = 3
+	GET_PLAYERS_IN_ROOM = 3,
+	JOIN_ROOM = 4
 };
 
 struct ProtocolRequest
@@ -52,5 +53,12 @@ struct GetPlayersInRoomRequest : ProtocolRequest
 {
     GetPlayersInRoomRequest(const unsigned int roomID);
 
-	const unsigned int roomID;
+    const unsigned int roomID;
+};
+
+struct JoinRoomRequest : ProtocolRequest
+{
+    JoinRoomRequest(const unsigned int roomID);
+
+    const unsigned int roomID;
 };
