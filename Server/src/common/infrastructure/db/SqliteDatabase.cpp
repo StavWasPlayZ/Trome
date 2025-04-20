@@ -93,20 +93,34 @@ bool SqliteDatabase::doesUserExist(const std::string& username) const
 
 unsigned int SqliteDatabase::getIdOfUser(const std::string& username, const std::string& password) const
 {
-	return getResultAsSingular(queryIds(
-		"SELECT id FROM " + TABLE_USERS +
-		" WHERE "
-		"username = '" + username + "'"
-		" AND "
-		"password = '" + password + "';"
-	));
+    const std::list<unsigned int> results = queryIds(
+        "SELECT id FROM " + TABLE_USERS +
+        " WHERE "
+        "username = '" + username + "'"
+        " AND "
+        "password = '" + password + "';"
+    );
+
+	if (results.empty())
+	{
+	    return -1;
+	}
+
+    return *results.begin();
 }
 
 unsigned int SqliteDatabase::getIdOfUser(const std::string &username) const
 {
-    return getResultAsSingular(queryIds(
+    const std::list<unsigned int> results = queryIds(
         genQueryUserIdStr(username) + ";"
-    ));
+    );
+
+    if (results.empty())
+    {
+        return -1;
+    }
+
+    return *results.begin();
 }
 
 void SqliteDatabase::addToColumn(const std::string &username, const std::string &column, int n,
@@ -295,7 +309,14 @@ int SqliteDatabase::getStat(const std::string &username, const std::string &colN
         "user_id = (" << genQueryUserIdStr(username) << ")"
     ";";
 
-    return getResultAsSingular(queryInts(builder.str(), colName));
+    const std::list<int> results = queryInts(builder.str(), colName);
+
+    if (results.empty())
+    {
+        return -1;
+    }
+
+    return *results.begin();
 }
 
 std::string SqliteDatabase::genQueryUserIdStr(const std::string& username)
