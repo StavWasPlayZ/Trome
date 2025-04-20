@@ -142,4 +142,26 @@ struct GetPlayersInRoomResponse : ProtocolResponse<GetPlayersInRoomStatus>
 	const std::vector<std::string> players;
 };
 
+enum class GeneralStatsStatus : unsigned int
+{
+    SUCCESS = 1,
+    ERROR = 0,
+	NOT_CONNECTED_ERROR = 2
+};
+
+struct GetHighScoresResponse : ProtocolResponse<GeneralStatsStatus>
+{
+    GetHighScoresResponse(const unsigned int status, const std::vector<std::string> &stats);
+
+    const std::vector<std::string> stats;
+};
+
+struct GetPersonalStats : ProtocolResponse<GeneralStatsStatus>
+{
+    GetPersonalStats(const unsigned int status, const std::vector<std::string> &stats);
+
+    const std::vector<std::string> stats;
+};
+
+
 #include "Response.tpp"
