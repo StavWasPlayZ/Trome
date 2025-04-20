@@ -7,8 +7,15 @@
 enum class ResponseCode : unsigned char
 {
 	ERROR = 0,
-	LOGIN = 1,
-	SIGNUP = 2
+	LOGIN,
+	SIGNUP,
+	LOGOUT,
+	JOIN_ROOM,
+	CREATE_ROOM,
+	GET_ROOMS,
+	GET_PLAYER_IN_ROOM,
+	GET_HIGH_SCORES,
+	GET_PERSONAL_STATISTICS
 };
 
 /**
