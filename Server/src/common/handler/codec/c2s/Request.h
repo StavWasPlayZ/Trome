@@ -21,13 +21,13 @@ struct ProtocolRequest
 	 *
 	 * NOTE: The returned resource must be freed.
 	 */
-	static ProtocolRequest* fromRequest(RequestInfo& info);
+    static ProtocolRequest *fromRequest(const RequestInfo &info);
 };
 
 
 struct LoginRequest : ProtocolRequest
 {
-	LoginRequest(std::string& username, const std::string& password);
+	LoginRequest(const std::string& username, const std::string& password);
 	
 	const std::string username;
 	const std::string password;
