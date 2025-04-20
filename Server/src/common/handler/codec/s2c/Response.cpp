@@ -18,3 +18,26 @@ LogoutResponse::LogoutResponse(const LogoutStatus status) : ProtocolResponse(sta
 ErrorResponse::ErrorResponse(const ErrorStatus status, const std::string &message) : ProtocolResponse(status),
     message(message)
 {}
+
+JoinRoomResponse::JoinRoomResponse(const GeneralRoomStatus status) : ProtocolResponse(status)
+{}
+
+CreateRoomResponse::CreateRoomResponse(const GeneralRoomStatus status) : ProtocolResponse(status)
+{}
+
+GetRoomsResponse::GetRoomsResponse(const GeneralRoomStatus status, const std::vector<RoomData> &rooms)
+    : ProtocolResponse(status), rooms(rooms)
+{}
+
+GetPlayersInRoomResponse::GetPlayersInRoomResponse(GetPlayersInRoomStatus status,
+                                                   const std::vector<std::string> &players)
+    : ProtocolResponse(status), players(players)
+{}
+
+GetHighScoresResponse::GetHighScoresResponse(GeneralStatsStatus status, const std::vector<std::string> &stats)
+    : ProtocolResponse(status), stats(stats)
+{}
+
+GetPersonalStatsResponse::GetPersonalStatsResponse(GeneralStatsStatus status, const std::vector<std::string> &stats)
+    : ProtocolResponse(status), stats(stats)
+{}

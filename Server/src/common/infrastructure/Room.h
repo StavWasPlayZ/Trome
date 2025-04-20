@@ -3,7 +3,6 @@
 #include <string>
 #include <vector>
 #include "manager/LoggedUser.h"
-#include "infrastructure/RoomData.h"
 
 class Room
 {

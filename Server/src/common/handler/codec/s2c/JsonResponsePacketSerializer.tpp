@@ -9,7 +9,7 @@ template <typename S>
 }
 
 template <typename S>
-void JsonResponsePacketSerializer::serializeResponseToJson(nlohmann::json& json, const RegistrationResponse<S>& response)
+void JsonResponsePacketSerializer::serializeRegistrationResponseToJson(nlohmann::json& json, const RegistrationResponse<S>& response)
 {
 	serializeBaseResponseToJson<S>(json, response);
 

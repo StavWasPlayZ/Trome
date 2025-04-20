@@ -19,7 +19,12 @@ SignupRequest::SignupRequest(
     phone(phone),
     address(address),
     birthdate(birthdate)
-{}
+{
+}
+
+GetPlayersInRoomRequest::GetPlayersInRoomRequest(const unsigned int roomID) : roomID(roomID)
+{
+}
 
 ProtocolRequest *ProtocolRequest::fromRequest(const RequestInfo &info) {
     switch (info.id)
@@ -29,4 +34,14 @@ ProtocolRequest *ProtocolRequest::fromRequest(const RequestInfo &info) {
 
     default: throw std::invalid_argument("Invalid request ID");
     }
+}
+
+JoinRoomRequest::JoinRoomRequest(const unsigned int roomID) : roomID(roomID)
+{
+}
+
+CreateRoomRequest::CreateRoomRequest(const std::string roomName, const unsigned int maxPlayers,
+                                     const unsigned int questionCount, const unsigned int answerTimeout)
+    : roomName(roomName), maxPlayers(maxPlayers), questionCount(questionCount), answerTimeout(answerTimeout)
+{
 }

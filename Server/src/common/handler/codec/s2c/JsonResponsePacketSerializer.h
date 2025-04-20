@@ -37,7 +37,56 @@ public:
 	 * 
 	 * NOTE: The returned resource must be freed.
 	 */
-	static OBuffer serializeResponse(const ErrorResponse& response);
+    static OBuffer serializeResponse(const ErrorResponse &response);
+
+    /**
+     * Returns: The serialized object.
+     *
+     * NOTE: The returned resource must be freed.
+     */
+    static OBuffer serializeResponse(const LogoutResponse &response);
+
+    /**
+     * Returns: The serialized object.
+     *
+     * NOTE: The returned resource must be freed.
+     */
+    static OBuffer serializeResponse(const JoinRoomResponse &response);
+
+    /**
+     * Returns: The serialized object.
+     *
+     * NOTE: The returned resource must be freed.
+     */
+    static OBuffer serializeResponse(const CreateRoomResponse &response);
+
+    /**
+     * Returns: The serialized object.
+     *
+     * NOTE: The returned resource must be freed.
+     */
+    static OBuffer serializeResponse(const GetRoomsResponse &response);
+
+    /**
+     * Returns: The serialized object.
+     *
+     * NOTE: The returned resource must be freed.
+     */
+    static OBuffer serializeResponse(const GetPlayersInRoomResponse &response);
+
+    /**
+     * Returns: The serialized object.
+     *
+     * NOTE: The returned resource must be freed.
+     */
+    static OBuffer serializeResponse(const GetHighScoresResponse &response);
+
+    /**
+     * Returns: The serialized object.
+     *
+     * NOTE: The returned resource must be freed.
+     */
+    static OBuffer serializeResponse(const GetPersonalStatsResponse &response);
 
 private:
 	/**
@@ -50,7 +99,7 @@ private:
 	 * Serializes the response into the provided json.
 	 */
 	template <typename S>
-	static void serializeResponseToJson(nlohmann::json& json, const RegistrationResponse<S>& response);
+    static void serializeRegistrationResponseToJson(nlohmann::json &json, const RegistrationResponse<S> &response);
 
 	/**
 	 * Converts the provided json into a writable resource,

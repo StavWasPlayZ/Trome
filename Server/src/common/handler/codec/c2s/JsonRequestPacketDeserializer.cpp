@@ -20,6 +20,26 @@ SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(const nloh
 	);
 }
 
+GetPlayersInRoomRequest JsonRequestPacketDeserializer::deserializeGetPlayersInRoomRequest(const nlohmann::json &data)
+{
+    return GetPlayersInRoomRequest(data.at("roomID"));
+}
+
+JoinRoomRequest JsonRequestPacketDeserializer::deserializeJoinRoomRequest(const nlohmann::json &data)
+{
+    return JoinRoomRequest(data.at("roomID"));
+}
+
+CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(const nlohmann::json &data)
+{
+    return CreateRoomRequest(
+		data.at("roomName"),
+		data.at("maxPlayers"),
+		data.at("questionCount"),
+		data.at("answerTime")
+	);
+}
+
 nlohmann::json JsonRequestPacketDeserializer::readJson(const unsigned char *data, const int jsonLen)
 {
 	// Avoid naughty buffer overflows
