@@ -261,7 +261,7 @@ RequestInfo CommonCommunicator::_waitForClientRequest(const SOCKET socket) const
     const RequestInfo info(
         *this->m_clients.at(socket),
 
-        (RequestCode) reqCode,
+        static_cast<RequestCode>(reqCode),
         std::chrono::system_clock::to_time_t(
             std::chrono::system_clock::now()
         ),

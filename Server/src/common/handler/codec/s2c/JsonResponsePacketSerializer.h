@@ -37,7 +37,21 @@ public:
 	 * 
 	 * NOTE: The returned resource must be freed.
 	 */
-	static OBuffer serializeResponse(const ErrorResponse& response);
+    static OBuffer serializeResponse(const ErrorResponse &response);
+
+    /**
+     * Returns: The serialized object.
+     *
+     * NOTE: The returned resource must be freed.
+     */
+    static OBuffer serializeResponse(const LogoutResponse &response);
+
+    /**
+     * Returns: The serialized object.
+     *
+     * NOTE: The returned resource must be freed.
+     */
+    static OBuffer serializeResponse(const JoinRoomResponse &response);
 
 private:
 	/**
