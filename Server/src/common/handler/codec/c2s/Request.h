@@ -21,13 +21,13 @@ struct ProtocolRequest
 	 *
 	 * NOTE: The returned resource must be freed.
 	 */
-	static ProtocolRequest* fromRequest(const RequestInfo& info);
+	static ProtocolRequest* fromRequest(RequestInfo& info);
 };
 
 
 struct LoginRequest : ProtocolRequest
 {
-	LoginRequest(const std::string& username, const std::string& password);
+	LoginRequest(std::string& username, const std::string& password);
 	
 	const std::string username;
 	const std::string password;
@@ -52,14 +52,14 @@ struct SignupRequest : LoginRequest
 
 struct GetPlayersInRoomRequest : ProtocolRequest
 {
-    GetPlayersInRoomRequest(const unsigned int roomID);
+    GetPlayersInRoomRequest(unsigned int roomID);
 
     const unsigned int roomID;
 };
 
 struct JoinRoomRequest : ProtocolRequest
 {
-    JoinRoomRequest(const unsigned int roomID);
+    JoinRoomRequest(unsigned int roomID);
 
     const unsigned int roomID;
 };
@@ -68,9 +68,9 @@ struct CreateRoomRequest : ProtocolRequest
 {
     CreateRoomRequest(
 		const std::string roomName,
-		const unsigned int maxPlayers,
-		const unsigned int questionCount,
-		const unsigned int answerTimeout
+		unsigned int maxPlayers,
+		unsigned int questionCount,
+		unsigned int answerTimeout
 	);
 
 	const std::string roomName;
