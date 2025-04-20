@@ -81,6 +81,7 @@ add_executable (Server
 
   "src/common/manager/StatisticsManager.h"
   "src/common/manager/StatisticsManager.cpp"
+  "src/common/infrastructure/RoomData.cpp"
 )
 
 # Platform-specific sources
