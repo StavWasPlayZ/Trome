@@ -8,7 +8,10 @@
 enum class RequestCode : unsigned char
 {
 	LOGIN = 1,
-	SIGNUP = 2
+	SIGNUP,
+	GET_PLAYERS_IN_ROOM,
+	JOIN_ROOM,
+	CREATE_ROOM
 };
 
 struct ProtocolRequest
