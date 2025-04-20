@@ -156,9 +156,9 @@ struct GetHighScoresResponse : ProtocolResponse<GeneralStatsStatus>
     const std::vector<std::string> stats;
 };
 
-struct GetPersonalStats : ProtocolResponse<GeneralStatsStatus>
+struct GetPersonalStatsResponse : ProtocolResponse<GeneralStatsStatus>
 {
-    GetPersonalStats(GeneralStatsStatus status, const std::vector<std::string> &stats);
+    GetPersonalStatsResponse(GeneralStatsStatus status, const std::vector<std::string> &stats);
 
     const std::vector<std::string> stats;
 };

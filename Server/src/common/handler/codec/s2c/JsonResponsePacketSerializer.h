@@ -53,6 +53,41 @@ public:
      */
     static OBuffer serializeResponse(const JoinRoomResponse &response);
 
+    /**
+     * Returns: The serialized object.
+     *
+     * NOTE: The returned resource must be freed.
+     */
+    static OBuffer serializeResponse(const CreateRoomResponse &response);
+
+    /**
+     * Returns: The serialized object.
+     *
+     * NOTE: The returned resource must be freed.
+     */
+    static OBuffer serializeResponse(const GetRoomsResponse &response);
+
+    /**
+     * Returns: The serialized object.
+     *
+     * NOTE: The returned resource must be freed.
+     */
+    static OBuffer serializeResponse(const GetPlayersInRoomResponse &response);
+
+    /**
+     * Returns: The serialized object.
+     *
+     * NOTE: The returned resource must be freed.
+     */
+    static OBuffer serializeResponse(const GetHighScoresResponse &response);
+
+    /**
+     * Returns: The serialized object.
+     *
+     * NOTE: The returned resource must be freed.
+     */
+    static OBuffer serializeResponse(const GetPersonalStats &response);
+
 private:
 	/**
 	 * Serializes the base response into the provided json.

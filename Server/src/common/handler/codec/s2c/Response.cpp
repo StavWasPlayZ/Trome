@@ -38,6 +38,6 @@ GetHighScoresResponse::GetHighScoresResponse(GeneralStatsStatus status, const st
     : ProtocolResponse(status), stats(stats)
 {}
 
-GetPersonalStats::GetPersonalStats(GeneralStatsStatus status, const std::vector<std::string> &stats)
+GetPersonalStatsResponse::GetPersonalStatsResponse(GeneralStatsStatus status, const std::vector<std::string> &stats)
     : ProtocolResponse(status), stats(stats)
 {}
