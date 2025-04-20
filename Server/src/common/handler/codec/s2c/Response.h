@@ -123,8 +123,23 @@ struct CreateRoomResponse : ProtocolResponse<GeneralRoomStatus>
 
 struct GetRoomsResponse : ProtocolResponse<GeneralRoomStatus>
 {
-    GetRoomsResponse(const unsigned int status, std::vector<RoomData> rooms);
+    GetRoomsResponse(const unsigned int status, const std::vector<RoomData>& rooms);
 
 	const std::vector<RoomData> rooms;
 };
+
+enum class GetPlayersInRoomStatus : unsigned int
+{
+    SUCCESS = 1,
+    ERROR = 0,
+	NOT_IN_ROOM_ERROR = 2
+};
+
+struct GetPlayersInRoomResponse : ProtocolResponse<GetPlayersInRoomStatus>
+{
+    GetPlayersInRoomResponse(const unsigned int status, const std::vector<std::string> &players);
+
+	const std::vector<std::string> players;
+};
+
 #include "Response.tpp"
