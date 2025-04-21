@@ -53,7 +53,7 @@ void CommonCommunicator::close()
     this->m_clients_mutex.lock();
     for (const auto& client : this->m_clients)
     {
-        client.second->thread.wait();
+        client.second->getThread().wait();
     }
     this->m_clients_mutex.unlock();
 
