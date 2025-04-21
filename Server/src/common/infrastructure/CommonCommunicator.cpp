@@ -143,6 +143,7 @@ void CommonCommunicator::sendMsg(const SOCKET socket, const unsigned char* buffe
     try
     {
         // Casting for crybaby Windows
+        // ReSharper disable once CppRedundantCastExpression
         didError = send(socket, (char*)buffer, length, 0) == -1;
     }
     catch (...)
@@ -225,16 +226,31 @@ void CommonCommunicator::_handleClient(const SOCKET socket) const
     }
     else
     {
-        const ProtocolRequest* request = ProtocolRequest::fromRequest(info);
-        const RequestResult result = handler->handleRequest(info, *request);
+        const RequestResult* result = nullptr;
+
+        const ProtocolRequest* const request = ProtocolRequest::fromRequest(info);
+
+        try
+        {
+            result = new RequestResult(handler->handleRequest(info, *request));
+        }
+        catch (const std::exception &)
+        {
+            delete request;
+            delete handler;
+            throw;
+        }
+
         delete request;
 
         // The Handler did its job well.
         // 🫡
         delete handler;
 
-        responseBuffer = result.response;
-        client->requestHandler = result.newHandler;
+        responseBuffer = result->response;
+        client->requestHandler = result->newHandler;
+
+        delete result;
     }
 
     sendMsg(socket, responseBuffer.contents, responseBuffer.length);
@@ -255,22 +271,36 @@ RequestInfo CommonCommunicator::_waitForClientRequest(const SOCKET socket) const
         throw std::runtime_error("Invalid JSON length");
     }
 
+    const RequestInfo* info = nullptr;
+
     unsigned char* const data = new unsigned char[jsonLen]; // readJson already handles null termination.
-    receiveMsg(socket, data, jsonLen);
 
-    const RequestInfo info(
-        *this->m_clients.at(socket),
+    try
+    {
+        receiveMsg(socket, data, jsonLen);
 
-        (RequestCode) reqCode,
-        std::chrono::system_clock::to_time_t(
-            std::chrono::system_clock::now()
-        ),
-        JsonRequestPacketDeserializer::readJson(data, jsonLen)
-    );
+        info = new RequestInfo(
+            *this->m_clients.at(socket),
+
+            (RequestCode) reqCode,
+            std::chrono::system_clock::to_time_t(
+                std::chrono::system_clock::now()
+            ),
+            JsonRequestPacketDeserializer::readJson(data, jsonLen)
+        );
+    }
+    catch (const std::exception& e)
+    {
+        delete[] data;
+        throw;
+    }
 
     delete[] data;
 
-    return info;
+    RequestInfo result = *info;
+    delete info;
+
+    return result;
 }
 
 void CommonCommunicator::_clientCleanerThreadFunc()
