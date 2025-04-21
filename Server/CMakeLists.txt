@@ -87,6 +87,8 @@ add_executable (Server
 
   "src/common/infrastructure/Question.cpp"
   "src/common/infrastructure/Question.h"
+  "src/common/infrastructure/Game.h"
+  "src/common/infrastructure/Game.cpp"
 )
 
 # Platform-specific sources

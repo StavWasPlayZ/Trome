@@ -12,12 +12,12 @@
  */
 
 #include "db/IDatabase.h"
-
-#include <vector>
-#include <stack>
-
 #include "manager/LoggedUser.h"
-#include "infrastructure/Question.h"
+
+#include <optional>
+#include <vector>
+
+class Game;
 
 class Room
 {
@@ -29,20 +29,8 @@ public:
      */
     Room(LoggedUser& admin, const RoomData& data, const IDatabase& database);
 
-    /**
-     * Starts the game for this room, populating it with questions
-     * and randomizing the rotation.
-     */
-    void startGame();
-    void endGame();
-
-    const Question& getCurrentQuestion() const;
-    /**
-     * Moves on to the next question.
-     *
-     * Returns: Whether more questions are available
-    */
-    bool nextQuestion();
+    std::optional<Game*> getCurrentGame() const;
+    void setCurrentGame(Game& game);
 
     void addUser(LoggedUser& user);
     void removeUser(const LoggedUser& user);
@@ -60,8 +48,7 @@ private:
     RoomData m_metadata;
     std::vector<LoggedUser*> m_users;
 
-    std::stack<Question> m_questions;
-    int m_questionsRotation;
+    Game* m_currentGame;
 
     const IDatabase& m_database;
 };

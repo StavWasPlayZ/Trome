@@ -27,8 +27,7 @@ private:
     Server();
 
     /**
-    * Populates the Questions table of the DB with
-    * questions from opentdb.com
+    * Populates the Questions table of the DB with questions from opentdb.com
     */
     void populateQuestionsFromWeb(int amount = 100) const;
     static std::vector<Question> deserializeWebQuestions(const nlohmann::json& data);

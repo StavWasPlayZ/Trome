@@ -1,7 +1,5 @@
 #include "Room.h"
 
-#include <ctime>
-
 #include <list>
 
 #include "db/IDatabase.h"
@@ -9,54 +7,20 @@
 Room::Room(LoggedUser &admin, const RoomData &data, const IDatabase& database) :
     m_admin(&admin),
     m_metadata(data),
-    m_questionsRotation(0),
     m_database(database)
 {
     // Add the admin to the room
     addUser(admin);
 }
 
-void Room::startGame()
+std::optional<Game *> Room::getCurrentGame() const
 {
-    this->m_metadata.status = RoomStatus::PLAYING;
-
-    const std::list<Question> questions = this->m_database.queryQuestions(this->m_metadata.questionsCount);
-
-    for (const Question &question : questions)
-    {
-        this->m_questions.push(question);
-    }
-
-    this->m_questionsRotation = std::rand() % 4;
+    return this->m_currentGame;
 }
 
-void Room::endGame()
+void Room::setCurrentGame(Game &game)
 {
-    this->m_metadata.status = RoomStatus::WAITING;
-
-    // Clear out all questions
-    while (!this->m_questions.empty())
-    {
-        this->m_questions.pop();
-    }
-
-    this->m_questionsRotation = 0;
-}
-
-const Question &Room::getCurrentQuestion() const
-{
-    if (this->m_questions.size() == 0)
-    {
-        throw std::runtime_error("Room is not populated with any questions; Game has either ended or yet to begin.");
-    }
-
-    return this->m_questions.top();
-}
-
-bool Room::nextQuestion()
-{
-    this->m_questions.pop();
-    return !this->m_questions.empty();
+    this->m_currentGame = &game;
 }
 
 void Room::addUser(LoggedUser &user)
