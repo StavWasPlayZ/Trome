@@ -14,8 +14,9 @@ struct RoomData
     RoomData::RoomData(
         const std::string &name,
         const RoomStatus &status,
-        unsigned int max_players,
-        unsigned int time_per_question
+        int maxPlayers,
+        int timePerQuestion,
+        int questionsCount
     );
 
     std::string name;
@@ -23,8 +24,9 @@ struct RoomData
 
     RoomStatus status;
 
-    unsigned int maxPlayers;
-    unsigned int timePerQuestion;
+    int maxPlayers;
+    int timePerQuestion;
+    int questionsCount;
 
 private:
     static unsigned int globalId;

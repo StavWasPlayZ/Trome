@@ -112,25 +112,25 @@ struct ErrorResponse : ProtocolResponse<ErrorStatus>
 	const std::string message;
 };
 
-enum class GeneralRoomStatus : unsigned int
+enum class GenericRoomResponseStatus : unsigned int
 {
 	SUCCESS = 1,
 	ERROR = 0
 };
 
-struct JoinRoomResponse : ProtocolResponse<GeneralRoomStatus>
+struct JoinRoomResponse : ProtocolResponse<GenericRoomResponseStatus>
 {
-    explicit JoinRoomResponse(GeneralRoomStatus status);
+    explicit JoinRoomResponse(GenericRoomResponseStatus status);
 };
 
-struct CreateRoomResponse : ProtocolResponse<GeneralRoomStatus>
+struct CreateRoomResponse : ProtocolResponse<GenericRoomResponseStatus>
 {
-    explicit CreateRoomResponse(GeneralRoomStatus status);
+    explicit CreateRoomResponse(GenericRoomResponseStatus status);
 };
 
-struct GetRoomsResponse : ProtocolResponse<GeneralRoomStatus>
+struct GetRoomsResponse : ProtocolResponse<GenericRoomResponseStatus>
 {
-    GetRoomsResponse(GeneralRoomStatus status, const std::vector<RoomData*> &rooms);
+    GetRoomsResponse(GenericRoomResponseStatus status, const std::vector<RoomData*> &rooms);
 
 	const std::vector<RoomData*> rooms;
 };

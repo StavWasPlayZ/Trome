@@ -19,13 +19,13 @@ ErrorResponse::ErrorResponse(const ErrorStatus status, const std::string &messag
     message(message)
 {}
 
-JoinRoomResponse::JoinRoomResponse(const GeneralRoomStatus status) : ProtocolResponse(status)
+JoinRoomResponse::JoinRoomResponse(const GenericRoomResponseStatus status) : ProtocolResponse(status)
 {}
 
-CreateRoomResponse::CreateRoomResponse(const GeneralRoomStatus status) : ProtocolResponse(status)
+CreateRoomResponse::CreateRoomResponse(const GenericRoomResponseStatus status) : ProtocolResponse(status)
 {}
 
-GetRoomsResponse::GetRoomsResponse(const GeneralRoomStatus status, const std::vector<RoomData*> &rooms)
+GetRoomsResponse::GetRoomsResponse(const GenericRoomResponseStatus status, const std::vector<RoomData*> &rooms)
     : ProtocolResponse(status), rooms(rooms)
 {}
 
