@@ -21,14 +21,15 @@ class IRequestHandler;
 class Client
 {
 public:
-	Client(SOCKET socket, const IRequestHandler* requestHandler, const std::function<void()> &clientThreadFunc);
+	Client(SOCKET socket, const IRequestHandler* requestHandler);
 	~Client();
 
 	const SOCKET socket;
 	const IRequestHandler* requestHandler;
 
-	/**
-	* The Client thread of this user
-	*/
-	const std::future<void> thread;
+    const std::future<void>& getThread() const;
+    void setAndStartThread(const std::function<void()>& threadFunc);
+
+private:
+	const std::future<void>* thread;
 };

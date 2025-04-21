@@ -26,7 +26,9 @@ public:
 	/**
 	 * Unregisters the user as being signed in.
 	 */
-	LogoutResponse logout(const std::string& username);
+	LogoutResponse logout(const RequestInfo& context, const std::string& username);
+
+    LoggedUser& getUserByClient(const Client& client) const;
 
 private:
 	const IDatabase& m_database;
@@ -37,4 +39,6 @@ private:
 	 * TODO: Ask if it may be done with IDs.
 	 */
 	std::unordered_map<std::string, LoggedUser> m_loggedUsers;
+
+    std::unordered_map<const Client*, LoggedUser*> clientToLoggedUser;
 };

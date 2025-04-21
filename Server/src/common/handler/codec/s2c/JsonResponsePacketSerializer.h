@@ -3,7 +3,6 @@
 #include <nlohmann/json.hpp>
 
 #include "Response.h"
-#include "Constants.h"
 
 #include "infrastructure/OBuffer.h"
 
@@ -86,7 +85,7 @@ public:
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serializeResponse(const GetPersonalStatsResponse &response);
+    static OBuffer serializeResponse(const GetPersonalStatisticsResponse &response);
 
 private:
 	/**

@@ -1,11 +1,12 @@
 #pragma once
 
+#include "Constants.h"
 #include "JsonResponsePacketSerializer.h"
 
 template <typename S>
  void JsonResponsePacketSerializer::serializeBaseResponseToJson(nlohmann::json& json, const ProtocolResponse<S>& response)
 {
-	json[ProtocolJsonKeys::STATUS] = response.status;
+	json["status"] = response.status;
 }
 
 template <typename S>
@@ -15,6 +16,6 @@ void JsonResponsePacketSerializer::serializeRegistrationResponseToJson(nlohmann:
 
 	if (response.userId != -1)
 	{
-		json[ProtocolJsonKeys::USER_ID] = response.userId;
+		json["user_id"] = response.userId;
 	}
 }

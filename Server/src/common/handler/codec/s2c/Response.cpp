@@ -19,25 +19,27 @@ ErrorResponse::ErrorResponse(const ErrorStatus status, const std::string &messag
     message(message)
 {}
 
-JoinRoomResponse::JoinRoomResponse(const GeneralRoomStatus status) : ProtocolResponse(status)
+JoinRoomResponse::JoinRoomResponse(const GenericRoomResponseStatus status) : ProtocolResponse(status)
 {}
 
-CreateRoomResponse::CreateRoomResponse(const GeneralRoomStatus status) : ProtocolResponse(status)
+CreateRoomResponse::CreateRoomResponse(const GenericRoomResponseStatus status, const unsigned int roomId) :
+    ProtocolResponse(status),
+    roomId(roomId)
 {}
 
-GetRoomsResponse::GetRoomsResponse(const GeneralRoomStatus status, const std::vector<RoomData> &rooms)
+GetRoomsResponse::GetRoomsResponse(const GenericRoomResponseStatus status, const std::vector<RoomData*> &rooms)
     : ProtocolResponse(status), rooms(rooms)
 {}
 
-GetPlayersInRoomResponse::GetPlayersInRoomResponse(GetPlayersInRoomStatus status,
+GetPlayersInRoomResponse::GetPlayersInRoomResponse(const GetPlayersInRoomStatus status,
                                                    const std::vector<std::string> &players)
     : ProtocolResponse(status), players(players)
 {}
 
-GetHighScoresResponse::GetHighScoresResponse(GeneralStatsStatus status, const std::vector<std::string> &stats)
+GetHighScoresResponse::GetHighScoresResponse(const GeneralStatsStatus status, const std::vector<std::pair<std::string, int>> &stats)
     : ProtocolResponse(status), stats(stats)
 {}
 
-GetPersonalStatsResponse::GetPersonalStatsResponse(GeneralStatsStatus status, const std::vector<std::string> &stats)
+GetPersonalStatisticsResponse::GetPersonalStatisticsResponse(const GeneralStatsStatus status, const std::vector<std::string> &stats)
     : ProtocolResponse(status), stats(stats)
 {}

@@ -1,3 +1,5 @@
+#pragma once
+
 #include <string>
 
 enum class RoomStatus : unsigned int
@@ -9,14 +11,23 @@ enum class RoomStatus : unsigned int
 
 struct RoomData
 {
-    RoomData(const std::string &name, unsigned int id, const RoomStatus &status, unsigned int max_players,
-             unsigned int time_per_question);
+    RoomData(
+        const std::string &name,
+        const RoomStatus &status,
+        int maxPlayers,
+        int timePerQuestion,
+        int questionsCount
+    );
 
     std::string name;
     unsigned int id;
 
     RoomStatus status;
 
-    unsigned int maxPlayers;
-    unsigned int timePerQuestion;
+    int maxPlayers;
+    int timePerQuestion;
+    int questionsCount;
+
+private:
+    static unsigned int globalId;
 };

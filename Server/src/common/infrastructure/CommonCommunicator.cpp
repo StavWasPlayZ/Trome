@@ -53,7 +53,7 @@ void CommonCommunicator::close()
     this->m_clients_mutex.lock();
     for (const auto& client : this->m_clients)
     {
-        client.second->thread.wait();
+        client.second->getThread().wait();
     }
     this->m_clients_mutex.unlock();
 
@@ -83,7 +83,7 @@ void CommonCommunicator::commonSetup()
     this->_serverSockAddr.sin_port = htons(PORT);
 
     if (!isValidBind(
-        bind(this->m_serverSocket, (sockaddr*)&this->_serverSockAddr, sizeof(this->_serverSockAddr))
+        bind(this->m_serverSocket, reinterpret_cast<sockaddr *>(&this->_serverSockAddr), sizeof(this->_serverSockAddr))
     )) {
         close();
         throwPlatformError("Binding failed");
@@ -103,9 +103,12 @@ void CommonCommunicator::commonSetup()
 
 void CommonCommunicator::registerClient(const SOCKET socket)
 {
-    this->m_clients[socket] = new Client(
+    Client* client = this->m_clients[socket] = new Client(
         socket,
-        this->m_handlerFactory.createLoginRequestHandler(),
+        this->m_handlerFactory.createLoginRequestHandler()
+    );
+
+    client->setAndStartThread(
         [this, socket]()
         {
             _clientThreadFunc(socket);
@@ -143,6 +146,7 @@ void CommonCommunicator::sendMsg(const SOCKET socket, const unsigned char* buffe
     try
     {
         // Casting for crybaby Windows
+        // ReSharper disable once CppRedundantCastExpression
         didError = send(socket, (char*)buffer, length, 0) == -1;
     }
     catch (...)
@@ -225,16 +229,31 @@ void CommonCommunicator::_handleClient(const SOCKET socket) const
     }
     else
     {
-        const ProtocolRequest* request = ProtocolRequest::fromRequest(info);
-        const RequestResult result = handler->handleRequest(info, *request);
+        const RequestResult* result = nullptr;
+
+        const ProtocolRequest* const request = ProtocolRequest::fromRequest(info);
+
+        try
+        {
+            result = new RequestResult(handler->handleRequest(info, *request));
+        }
+        catch (const std::exception &)
+        {
+            delete request;
+            delete handler;
+            throw;
+        }
+
         delete request;
 
         // The Handler did its job well.
         // 🫡
         delete handler;
 
-        responseBuffer = result.response;
-        client->requestHandler = result.newHandler;
+        responseBuffer = result->response;
+        client->requestHandler = result->newHandler;
+
+        delete result;
     }
 
     sendMsg(socket, responseBuffer.contents, responseBuffer.length);
@@ -255,22 +274,36 @@ RequestInfo CommonCommunicator::_waitForClientRequest(const SOCKET socket) const
         throw std::runtime_error("Invalid JSON length");
     }
 
+    const RequestInfo* info = nullptr;
+
     unsigned char* const data = new unsigned char[jsonLen]; // readJson already handles null termination.
-    receiveMsg(socket, data, jsonLen);
 
-    const RequestInfo info(
-        *this->m_clients.at(socket),
+    try
+    {
+        receiveMsg(socket, data, jsonLen);
 
-        (RequestCode) reqCode,
-        std::chrono::system_clock::to_time_t(
-            std::chrono::system_clock::now()
-        ),
-        JsonRequestPacketDeserializer::readJson(data, jsonLen)
-    );
+        info = new RequestInfo(
+            *this->m_clients.at(socket),
+
+            static_cast<RequestCode>(reqCode),
+            std::chrono::system_clock::to_time_t(
+                std::chrono::system_clock::now()
+            ),
+            JsonRequestPacketDeserializer::readJson(data, jsonLen)
+        );
+    }
+    catch (const std::exception& e)
+    {
+        delete[] data;
+        throw;
+    }
 
     delete[] data;
 
-    return info;
+    RequestInfo result = *info;
+    delete info;
+
+    return result;
 }
 
 void CommonCommunicator::_clientCleanerThreadFunc()

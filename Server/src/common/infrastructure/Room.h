@@ -1,5 +1,18 @@
 #pragma once
 
+/**
+* DO NOT INCLUDE #include "infrastructure/RoomData.h".
+*
+* this file includes manager/LoggedUser.h
+* ...that includes infrastructure/Client.h
+* ...that includes handler/IRequestHandler.h
+* ...that includes infrastructure/request/RequestInfo.h
+* ...which has enum class RequestCode : unsigned char;
+* ...which includes back "infrastructure/RoomData.h".
+*
+* Forward declaration may be possible here for that matter, though untested.
+*/
+
 #include <string>
 #include <vector>
 #include "manager/LoggedUser.h"

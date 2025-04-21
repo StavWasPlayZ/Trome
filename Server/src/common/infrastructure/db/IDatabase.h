@@ -1,9 +1,8 @@
 #pragma once
 
-#include <optional>
-#include <vector>
-#include <utility> // for std::pair
 #include <ctre.hpp>
+#include <optional>
+#include <unordered_map>
 
 class IDatabase
 {
@@ -65,7 +64,7 @@ public:
 	virtual int queryPoints(const std::string &username) const = 0;
     virtual float queryPlayerAverageAnsTime(const std::string &username) const = 0;
 
-	virtual std::vector<std::pair<std::string, int>> queryHighScores(int limit = 5) const = 0;
+	virtual std::unordered_map<std::string, int> queryHighScores(int limit = 20) const = 0;
 
 protected:
     IDatabase() = default;

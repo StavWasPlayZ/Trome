@@ -6,7 +6,6 @@
 
 #include <string>
 #include <map>
-#include <vector>
 #include <list>
 #include <functional>
 
@@ -52,7 +51,7 @@ public:
 
     float queryPlayerAverageAnsTime(const std::string &username) const override;
 
-	std::vector<std::pair<std::string, int>> queryHighScores(int limit = 5) const override;
+    std::unordered_map<std::string, int> queryHighScores(int limit = 20) const override;
 
 protected:
 	unsigned int queryIdOfUser(const std::string &username) const override;
@@ -92,6 +91,17 @@ private:
 
 	static std::string genQueryUserIdStr(const std::string& username);
 
+
+	/**
+	 * Executes the provided query.
+	 *
+	 * rowConsumer is passed, for each row found, a mapping of
+	 * the column name to the value (in string) that it possesses.
+	 */
+	void consumeSql(
+		const std::string& query,
+		std::function<void(const std::map<std::string, std::string>&)> rowConsumer
+	) const;
 
 	/**
 	 * Executes the provided query.

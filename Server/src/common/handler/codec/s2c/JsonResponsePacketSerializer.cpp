@@ -1,6 +1,7 @@
 #include "JsonResponsePacketSerializer.h"
 
 // For platform-correct network include
+#include "Constants.h"
 #include "infrastructure/Communicator.h"
 #include <list>
 
@@ -27,18 +28,26 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const SignupResponse &re
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const ErrorResponse &response)
 {
-	nlohmann::json data;
-	serializeBaseResponseToJson<ErrorStatus>(data, response);
+    nlohmann::json data;
+    serializeBaseResponseToJson<ErrorStatus>(data, response);
 
-	data[ProtocolJsonKeys::MESSAGE] = response.message;
+    data["message"] = response.message;
 
-	return serializeJsonToProtocol(ResponseCode::ERROR, data);
+    return serializeJsonToProtocol(ResponseCode::ERROR, data);
+}
+
+OBuffer JsonResponsePacketSerializer::serializeResponse(const LogoutResponse &response)
+{
+    nlohmann::json data;
+    serializeBaseResponseToJson<LogoutStatus>(data, response);
+
+    return serializeJsonToProtocol(ResponseCode::LOGOUT, data);
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const JoinRoomResponse &response)
 {
     nlohmann::json data;
-    serializeBaseResponseToJson<GeneralRoomStatus>(data, response);
+    serializeBaseResponseToJson<GenericRoomResponseStatus>(data, response);
 
     return serializeJsonToProtocol(ResponseCode::JOIN_ROOM, data);
 }
@@ -46,7 +55,9 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const JoinRoomResponse &
 OBuffer JsonResponsePacketSerializer::serializeResponse(const CreateRoomResponse &response)
 {
     nlohmann::json data;
-    serializeBaseResponseToJson<GeneralRoomStatus>(data, response);
+    serializeBaseResponseToJson<GenericRoomResponseStatus>(data, response);
+
+    data["room_id"] = response.roomId;
 
     return serializeJsonToProtocol(ResponseCode::CREATE_ROOM, data);
 }
@@ -55,20 +66,21 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetRoomsResponse &
 {
 
     nlohmann::json data;
-    std::list<nlohmann::json> rooms;
-    serializeBaseResponseToJson<GeneralRoomStatus>(data, response);
+    serializeBaseResponseToJson<GenericRoomResponseStatus>(data, response);
+
+    nlohmann::json rooms = nlohmann::json::array();
 
 	for (const auto& room : response.rooms)
     {
-        nlohmann::json temp;
+        nlohmann::json roomObj;
 
-		temp["id"] = room.id;
-		temp["name"] = room.name;
-        temp["maxPlayers"] = room.maxPlayers;
-        temp["status"] = room.status;
-        temp["timePerQuestion"] = room.timePerQuestion;
+		roomObj["id"] = room->id;
+		roomObj["name"] = room->name;
+        roomObj["maxPlayers"] = room->maxPlayers;
+        roomObj["status"] = room->status;
+        roomObj["timePerQuestion"] = room->timePerQuestion;
 
-        rooms.push_back(temp);
+        rooms.push_back(roomObj);
 	}
 
 	data["rooms"] = rooms;
@@ -89,12 +101,23 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetHighScoresRespo
 {
     nlohmann::json data;
     serializeBaseResponseToJson<GeneralStatsStatus>(data, response);
+
+    nlohmann::json scoresArr = nlohmann::json::array();
+
+    for (const auto& [username, score] : response.stats)
+    {
+        scoresArr.push_back({
+            {"username", username},
+            {"score", score}
+        });
+    }
+
     data["highScores"] = response.stats;
 
     return serializeJsonToProtocol(ResponseCode::GET_HIGH_SCORES, data);
 }
 
-OBuffer JsonResponsePacketSerializer::serializeResponse(const GetPersonalStatsResponse &response)
+OBuffer JsonResponsePacketSerializer::serializeResponse(const GetPersonalStatisticsResponse &response)
 {
 
     nlohmann::json data;
@@ -115,7 +138,7 @@ OBuffer JsonResponsePacketSerializer::serializeJsonToProtocol(const ResponseCode
 
 	// Serializing:
 	// Code
-	writeBuffer[0] = (unsigned char)msgCode;
+	writeBuffer[0] = static_cast<unsigned char>(msgCode);
 	writeBuffer += SIZE_CODE;
 	// JSON length
 	writeInt(dataStr.size(), writeBuffer);

@@ -236,10 +236,10 @@ float SqliteDatabase::queryPlayerAverageAnsTime(const std::string &username) con
         return -1;
     }
 
-    return (float)totalTime / totalAns;
+    return static_cast<float>(totalTime) / totalAns;
 }
 
-std::vector<std::pair<std::string, int>> SqliteDatabase::queryHighScores(const int limit) const
+std::unordered_map<std::string, int> SqliteDatabase::queryHighScores(const int limit) const
 {
     std::ostringstream builder;
     builder << "SELECT users.username, stats.points "
@@ -250,16 +250,18 @@ std::vector<std::pair<std::string, int>> SqliteDatabase::queryHighScores(const i
         << "LIMIT " << limit <<
     ";";
 
-    const std::list<std::pair<std::string, int>> res = querySql<std::pair<std::string, int>>(
+    std::unordered_map<std::string, int> results;
+
+    consumeSql(
         builder.str(),
 
-        [](const std::map<std::string, std::string> &row) -> std::pair<std::string, int>
+        [&results](const std::map<std::string, std::string> &row)
         {
-            return {row.at("username"), std::stoi(row.at("points"))};
+            results.emplace(row.at("username"), std::stoi(row.at("points")));
         }
     );
 
-	return std::vector(res.begin(), res.end());
+	return results;
 }
 
 
@@ -283,7 +285,7 @@ std::list<unsigned int> SqliteDatabase::queryIds(const std::string &query) const
 
 		[](const std::map<std::string, std::string> &columns) -> unsigned int
 		{
-			return (unsigned int) std::stoul(columns.at("id"));
+			return static_cast<unsigned int>(std::stoul(columns.at("id")));
 		}
 	);
 }
@@ -343,4 +345,41 @@ void SqliteDatabase::execSql(const std::string& query) const
 	{
 		throw std::runtime_error("Error in SQL: " + std::string(errMessage));
 	}
+}
+
+void SqliteDatabase::consumeSql(
+    const std::string &query,
+    std::function<void(const std::map<std::string, std::string> &)> rowConsumer
+) const {
+    char *errMsg;
+
+    const int result = sqlite3_exec(
+        this->_dbInstance, query.c_str(),
+        [](void *data, const int argc, char **argv, char **azColName) -> int {
+            const std::function<void(const std::map<std::string, std::string> &)> rowConsumer =
+                *static_cast<std::function<void(const std::map<std::string, std::string> &)>*>(data);
+
+            // Convert the args to a string vector to be passed to the provided mapper function
+            std::map<std::string, std::string> columns;
+
+            for (size_t i = 0; i < argc; i++)
+            {
+                columns[std::string(azColName[i])] = std::string(argv[i]);
+            }
+
+            rowConsumer(columns);
+            return 0;
+        },
+
+        &rowConsumer,
+        &errMsg
+    );
+
+    if (result != SQLITE_OK)
+    {
+        const std::string msg = std::string(errMsg);
+        sqlite3_free(errMsg);
+
+        throw std::runtime_error("Error in SQL: " + msg);
+    }
 }

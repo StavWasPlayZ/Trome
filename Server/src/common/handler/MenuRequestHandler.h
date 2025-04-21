@@ -10,4 +10,11 @@ public:
     bool isRequestRelevant(const RequestInfo& info) const override;
 
     RequestResult handleRequest(const RequestInfo& info, const ProtocolRequest& request) const override;
+
+private:
+    RequestResult createRoom(const RequestInfo& info, const ProtocolRequest& request) const;
+    RequestResult getRooms(const RequestInfo& info, const ProtocolRequest& request) const;
+    RequestResult getHighScores(const RequestInfo& info, const ProtocolRequest& request) const;
+    RequestResult getPersonalStatistics(const RequestInfo& info, const ProtocolRequest& request) const;
+    RequestResult logout(const RequestInfo& info, const ProtocolRequest& request) const;
 };

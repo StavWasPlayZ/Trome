@@ -7,15 +7,21 @@
 
 enum class RequestCode : unsigned char
 {
+    LOGOUT = 0,
 	LOGIN = 1,
 	SIGNUP,
 	GET_PLAYERS_IN_ROOM,
 	JOIN_ROOM,
-	CREATE_ROOM
+	CREATE_ROOM,
+    GET_ROOMS,
+    GET_HIGH_SCORES,
+    GET_PERSONAL_STATISTICS
 };
 
 struct ProtocolRequest
 {
+	virtual ~ProtocolRequest();
+	
 	/**
 	 * Constructs a new ProtocolRequest from the provided request info.
 	 *
@@ -52,22 +58,26 @@ struct SignupRequest : LoginRequest
 
 struct GetPlayersInRoomRequest : ProtocolRequest
 {
-    GetPlayersInRoomRequest(unsigned int roomID);
+    explicit GetPlayersInRoomRequest(unsigned int roomID);
 
     const unsigned int roomID;
 };
 
 struct JoinRoomRequest : ProtocolRequest
 {
-    JoinRoomRequest(unsigned int roomID);
+    explicit JoinRoomRequest(unsigned int roomID);
 
     const unsigned int roomID;
+};
+
+struct GetRoomsRequest : ProtocolRequest
+{
 };
 
 struct CreateRoomRequest : ProtocolRequest
 {
     CreateRoomRequest(
-		const std::string roomName,
+		const std::string &roomName,
 		unsigned int maxPlayers,
 		unsigned int questionCount,
 		unsigned int answerTimeout
@@ -77,4 +87,12 @@ struct CreateRoomRequest : ProtocolRequest
     const unsigned int maxPlayers;
     const unsigned int questionCount;
     const unsigned int answerTimeout;
+};
+
+struct GetHighScoresRequest : ProtocolRequest
+{
+};
+
+struct GetPersonalStatisticsRequest : ProtocolRequest
+{
 };
