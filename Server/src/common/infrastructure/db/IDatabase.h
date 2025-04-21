@@ -50,8 +50,8 @@ public:
 	) const = 0;
 
 
-    virtual int getQuestionsCount() const = 0;
-    virtual std::list<Question> getQuestions(int amount) const = 0;
+    virtual int queryQuestionsCount() const = 0;
+    virtual std::list<Question> queryQuestions(int amount) const = 0;
     virtual void addQuestions(std::vector<Question> questions) const = 0;
 
 

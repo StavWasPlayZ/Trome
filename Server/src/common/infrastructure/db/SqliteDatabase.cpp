@@ -181,7 +181,7 @@ unsigned int SqliteDatabase::addNewUser(const std::string &username, const std::
     return id;
 }
 
-int SqliteDatabase::getQuestionsCount() const
+int SqliteDatabase::queryQuestionsCount() const
 {
     return *queryInts(
         "SELECT COUNT(*) AS count FROM " + TABLE_QUESTIONS,
@@ -189,7 +189,7 @@ int SqliteDatabase::getQuestionsCount() const
     ).begin();
 }
 
-std::list<Question> SqliteDatabase::getQuestions(const int amount) const
+std::list<Question> SqliteDatabase::queryQuestions(const int amount) const
 {
     return querySql<Question>(
         "SELECT * FROM " + TABLE_QUESTIONS +
