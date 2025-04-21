@@ -71,11 +71,11 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetRoomsResponse &
     {
         nlohmann::json temp;
 
-		temp["id"] = room.id;
-		temp["name"] = room.name;
-        temp["maxPlayers"] = room.maxPlayers;
-        temp["status"] = room.status;
-        temp["timePerQuestion"] = room.timePerQuestion;
+		temp["id"] = room->id;
+		temp["name"] = room->name;
+        temp["maxPlayers"] = room->maxPlayers;
+        temp["status"] = room->status;
+        temp["timePerQuestion"] = room->timePerQuestion;
 
         rooms.push_back(temp);
 	}
