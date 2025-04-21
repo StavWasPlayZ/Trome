@@ -7,6 +7,8 @@
 class RoomManager
 {
 public:
+    RoomManager(const IDatabase& database);
+
     void createRoom(LoggedUser &admin, const RoomData &data);
     void deleteRoom(int roomID);
 
@@ -15,6 +17,8 @@ public:
     std::optional<Room*> getRoom(int roomID) const;
 
 private:
+    const IDatabase& m_database;
+
     /**
      * Room ID to room mappings.
      */

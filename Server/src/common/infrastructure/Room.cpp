@@ -1,11 +1,26 @@
 #include "Room.h"
 
-Room::Room(LoggedUser& admin, const RoomData &data) :
+#include <list>
+
+#include "db/IDatabase.h"
+
+Room::Room(LoggedUser &admin, const RoomData &data, const IDatabase& database) :
     m_admin(&admin),
-    m_metadata(data)
+    m_metadata(data),
+    m_database(database)
 {
     // Add the admin to the room
     addUser(admin);
+}
+
+std::optional<Game *> Room::getCurrentGame() const
+{
+    return this->m_currentGame;
+}
+
+void Room::setCurrentGame(Game &game)
+{
+    this->m_currentGame = &game;
 }
 
 void Room::addUser(LoggedUser &user)

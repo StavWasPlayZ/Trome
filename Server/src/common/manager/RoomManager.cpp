@@ -1,8 +1,12 @@
 #include "RoomManager.h"
 
+RoomManager::RoomManager(const IDatabase &database) :
+    m_database(database)
+{}
+
 void RoomManager::createRoom(LoggedUser &admin, const RoomData &data)
 {
-    Room room(admin, data);
+    Room room(admin, data, this->m_database);
     this->m_rooms.emplace(data.id, room);
 }
 

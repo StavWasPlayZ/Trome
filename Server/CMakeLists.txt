@@ -84,6 +84,11 @@ add_executable (Server
 
   "src/common/infrastructure/UserStatistics.h"
   "src/common/infrastructure/UserStatistics.cpp"
+
+  "src/common/infrastructure/Question.cpp"
+  "src/common/infrastructure/Question.h"
+  "src/common/infrastructure/Game.h"
+  "src/common/infrastructure/Game.cpp"
 )
 
 # Platform-specific sources
@@ -109,7 +114,7 @@ endif()
 # Libraries
 include(FetchContent)
 
-#nlohmann_json
+# nlohmann_json
 FetchContent_Declare(
   json
   URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz
@@ -117,6 +122,21 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(json)
 
 target_link_libraries(Server PRIVATE nlohmann_json::nlohmann_json)
+
+# cpp-httplib
+FetchContent_Declare(
+  httplib
+  GIT_REPOSITORY https://github.com/yhirose/cpp-httplib.git
+  GIT_TAG v0.20.0
+)
+FetchContent_MakeAvailable(httplib)
+
+target_link_libraries(Server PRIVATE httplib)
+
+# For HTTPS support
+
+target_compile_definitions(Server PRIVATE CPPHTTPLIB_OPENSSL_SUPPORT)
+target_link_libraries(Server PRIVATE ssl crypto)
 
 # sqlite3
 add_library(sqlite3 STATIC lib/sqlite3/sqlite3.c)
