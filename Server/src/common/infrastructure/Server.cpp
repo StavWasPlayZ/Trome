@@ -9,6 +9,7 @@
 Server::Server() :
     m_database(SqliteDatabase::getInstance()),
     m_loginManager(m_database),
+    m_roomManager(m_database),
     m_statisticsManager(m_database),
     m_handlerFactory(this->m_loginManager, this->m_roomManager, this->m_statisticsManager, this->m_database),
     m_communicator(Communicator::getInstance(this->m_handlerFactory))
