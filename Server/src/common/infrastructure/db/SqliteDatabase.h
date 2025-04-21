@@ -37,6 +37,10 @@ public:
 		const std::optional<std::string>& address
 	) const override;
 
+	int getQuestionsCount() const override;
+	std::list<Question> getQuestions(int amount) const override;
+	void addQuestions(std::vector<Question> questions) const override;
+
     void addTime(const std::string &username, int time) override;
     void addTotalAns(const std::string &username, int ans = 1) override;
     void addCorrectAns(const std::string &username, int ans = 1) override;
@@ -60,10 +64,13 @@ protected:
 private:
 	SqliteDatabase();
 
-	static const std::string CREATE_USERS_TBL_QUERY;
-	static const std::string CREATE_STATISTICS_TBL_QUERY;
 	static const std::string TABLE_USERS;
 	static const std::string TABLE_STATISTICS;
+	static const std::string TABLE_QUESTIONS;
+
+	static const std::string CREATE_USERS_TBL_QUERY;
+	static const std::string CREATE_STATISTICS_TBL_QUERY;
+	static const std::string CREATE_QUESTIONS_TBL_QUERY;
 
 	/**
 	 * Simply executes the provided query.

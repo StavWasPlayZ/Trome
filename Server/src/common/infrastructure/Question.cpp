@@ -12,7 +12,7 @@ std::vector<std::string> Question::getAnswersRotated(const int rotation) const
     if (rotation == 0)
         return answers;
 
-    if (rotation > 3 || rotation < 0)
+    if (rotation >= QUESTIONS_AMOUNT || rotation < 0)
     {
         throw std::invalid_argument("Invalid rotation");
     }

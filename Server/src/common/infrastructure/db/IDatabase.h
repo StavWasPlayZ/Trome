@@ -1,6 +1,9 @@
 #pragma once
 
+#include "infrastructure/Question.h"
+
 #include <ctre.hpp>
+#include <list>
 #include <optional>
 #include <unordered_map>
 
@@ -45,6 +48,11 @@ public:
 		const std::string& birthdate,
 		const std::optional<std::string>& address
 	) const = 0;
+
+
+    virtual int getQuestionsCount() const = 0;
+    virtual std::list<Question> getQuestions(int amount) const = 0;
+    virtual void addQuestions(std::vector<Question> questions) const = 0;
 
 
     // Adding to statistics:

@@ -5,6 +5,7 @@
 
 const std::string SqliteDatabase::TABLE_USERS = "users";
 const std::string SqliteDatabase::TABLE_STATISTICS = "statistics";
+const std::string SqliteDatabase::TABLE_QUESTIONS = "questions";
 
 const std::string SqliteDatabase::CREATE_USERS_TBL_QUERY = 
 	"CREATE TABLE IF NOT EXISTS " + TABLE_USERS + " ("
@@ -31,6 +32,16 @@ const std::string SqliteDatabase::CREATE_STATISTICS_TBL_QUERY =
         "games_played INT NOT NULL, "
         "points INT NOT NULL, "
 	    "FOREIGN KEY(user_id) REFERENCES " + TABLE_USERS + "(id)"
+    ");";
+
+const std::string SqliteDatabase::CREATE_QUESTIONS_TBL_QUERY =
+    "CREATE TABLE IF NOT EXISTS " + TABLE_QUESTIONS + " ("
+        "id INTEGER PRIMARY KEY NOT NULL, "
+        "question NVARCHAR(120) NOT NULL, "
+        "correct NVARCHAR(64) NOT NULL, "
+        "wrong_1 NVARCHAR(64) NOT NULL, "
+        "wrong_2 NVARCHAR(64) NOT NULL, "
+        "wrong_3 NVARCHAR(64) NOT NULL"
     ");";
 
 
@@ -65,6 +76,7 @@ bool SqliteDatabase::open()
 	// Will not execute if the tables already exist.
 	execSql(CREATE_USERS_TBL_QUERY);
     execSql(CREATE_STATISTICS_TBL_QUERY);
+    execSql(CREATE_QUESTIONS_TBL_QUERY);
 
 	return true;
 }
@@ -137,43 +149,102 @@ void SqliteDatabase::addToColumn(const std::string &username, const std::string 
     execSql(builder.str());
 }
 
-unsigned int SqliteDatabase::addNewUser(
-	const std::string& username,
-	const std::string& password,
-	const std::string& email,
-	const std::string& phone,
-	const std::string& birthdate,
-	const std::optional<std::string>& address
-) const {
+unsigned int SqliteDatabase::addNewUser(const std::string &username, const std::string &password,
+                                        const std::string &email, const std::string &phone,
+                                        const std::string &birthdate, const std::optional<std::string> &address) const
+{
     validateSignupInfo(password, email, phone, birthdate, address);
 
-	std::ostringstream builderUsers;
-	std::ostringstream builderStats;
+    std::ostringstream builderUsers;
+    std::ostringstream builderStats;
     int id = 0;
 
-	builderUsers << "INSERT INTO " << TABLE_USERS << " (username, password, email, phone, address, birthdate)"
-		" VALUES "
-		"('"
-			<< username << "','"
-			<< password << "','"
-			<< email << "','"
-			<< phone << "','"
-			<< (address.has_value() ? address.value() : "NULL") << "','"
-			<< birthdate <<
-		"')"
-	" RETURNING id;";
+    builderUsers << "INSERT INTO " << TABLE_USERS
+                 << " (username, password, email, phone, address, birthdate)"
+                    " VALUES "
+                    "('"
+                 << username << "','" << password << "','" << email << "','" << phone << "','"
+                 << (address.has_value() ? address.value() : "NULL") << "','" << birthdate
+                 << "')"
+                    " RETURNING id;";
 
     id = *queryIds(builderUsers.str()).begin();
 
-	builderStats << "INSERT INTO " << TABLE_STATISTICS
-        << "(user_id, total_time, correct_ans, total_ans, games_played, points)"
-        << " VALUES "
-        << "(" << id << ", 0, 0, 0, 0, 0)"
-    ";";
+    builderStats << "INSERT INTO " << TABLE_STATISTICS
+                 << "(user_id, total_time, correct_ans, total_ans, games_played, points)"
+                 << " VALUES "
+                 << "(" << id
+                 << ", 0, 0, 0, 0, 0)"
+                    ";";
 
-	execSql(builderStats.str());
+    execSql(builderStats.str());
 
-	return id;
+    return id;
+}
+
+int SqliteDatabase::getQuestionsCount() const
+{
+    return *queryInts(
+        "SELECT COUNT(*) AS count FROM " + TABLE_QUESTIONS,
+        "count"
+    ).begin();
+}
+
+std::list<Question> SqliteDatabase::getQuestions(const int amount) const
+{
+    return querySql<Question>(
+        "SELECT * FROM " + TABLE_QUESTIONS +
+        " ORDER BY RANDOM()"
+        " LIMIT " + std::to_string(amount) +
+        ";",
+
+        [](const std::map<std::string, std::string> &columns) -> Question
+        {
+            std::vector<std::string> answers;
+            answers.reserve(Question::QUESTIONS_AMOUNT);
+
+            answers.push_back(columns.at("correct"));
+
+            for (int i = 1; i < Question::QUESTIONS_AMOUNT; i++)
+            {
+                answers.push_back(columns.at("wrong_" + std::to_string(i)));
+            }
+
+            return Question(columns.at("question"), answers);
+        }
+    );
+}
+
+void SqliteDatabase::addQuestions(std::vector<Question> questions) const
+{
+    std::ostringstream builder;
+
+    builder << "INSERT INTO " << TABLE_QUESTIONS << " (question, correct, wrong_1, wrong_2, wrong_3)"
+        " VALUES ";
+
+    bool first = true;
+
+    for (const Question &question : questions)
+    {
+        if (!first)
+        {
+            builder << ", ";
+        }
+        first = false;
+
+
+        builder << "("
+            << question.question;
+
+        for (const std::string &answer : question.answers)
+        {
+            builder << ", " << answer;
+        }
+
+        builder << ")";
+    }
+
+    execSql(builder.str());
 }
 
 void SqliteDatabase::addTime(const std::string &username, const int time)

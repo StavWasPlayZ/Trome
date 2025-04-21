@@ -4,6 +4,8 @@
 #include <vector>
 
 struct Question {
+    static constexpr int QUESTIONS_AMOUNT = 4;
+
     Question(const std::string &question, const std::vector<std::string> &answers);
 
     const std::string question;
