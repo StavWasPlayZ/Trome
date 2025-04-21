@@ -83,7 +83,7 @@ void CommonCommunicator::commonSetup()
     this->_serverSockAddr.sin_port = htons(PORT);
 
     if (!isValidBind(
-        bind(this->m_serverSocket, (sockaddr*)&this->_serverSockAddr, sizeof(this->_serverSockAddr))
+        bind(this->m_serverSocket, reinterpret_cast<sockaddr *>(&this->_serverSockAddr), sizeof(this->_serverSockAddr))
     )) {
         close();
         throwPlatformError("Binding failed");
@@ -285,7 +285,7 @@ RequestInfo CommonCommunicator::_waitForClientRequest(const SOCKET socket) const
         info = new RequestInfo(
             *this->m_clients.at(socket),
 
-            (RequestCode) reqCode,
+            static_cast<RequestCode>(reqCode),
             std::chrono::system_clock::to_time_t(
                 std::chrono::system_clock::now()
             ),

@@ -236,7 +236,7 @@ float SqliteDatabase::queryPlayerAverageAnsTime(const std::string &username) con
         return -1;
     }
 
-    return (float)totalTime / totalAns;
+    return static_cast<float>(totalTime) / totalAns;
 }
 
 std::unordered_map<std::string, int> SqliteDatabase::queryHighScores(const int limit) const
@@ -285,7 +285,7 @@ std::list<unsigned int> SqliteDatabase::queryIds(const std::string &query) const
 
 		[](const std::map<std::string, std::string> &columns) -> unsigned int
 		{
-			return (unsigned int) std::stoul(columns.at("id"));
+			return static_cast<unsigned int>(std::stoul(columns.at("id")));
 		}
 	);
 }

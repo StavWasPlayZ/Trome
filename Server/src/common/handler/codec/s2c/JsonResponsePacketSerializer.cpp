@@ -138,7 +138,7 @@ OBuffer JsonResponsePacketSerializer::serializeJsonToProtocol(const ResponseCode
 
 	// Serializing:
 	// Code
-	writeBuffer[0] = (unsigned char)msgCode;
+	writeBuffer[0] = static_cast<unsigned char>(msgCode);
 	writeBuffer += SIZE_CODE;
 	// JSON length
 	writeInt(dataStr.size(), writeBuffer);
