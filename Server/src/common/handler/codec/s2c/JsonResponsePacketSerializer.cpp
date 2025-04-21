@@ -1,6 +1,7 @@
 #include "JsonResponsePacketSerializer.h"
 
 // For platform-correct network include
+#include "Constants.h"
 #include "infrastructure/Communicator.h"
 #include <list>
 
@@ -27,12 +28,20 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const SignupResponse &re
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const ErrorResponse &response)
 {
-	nlohmann::json data;
-	serializeBaseResponseToJson<ErrorStatus>(data, response);
+    nlohmann::json data;
+    serializeBaseResponseToJson<ErrorStatus>(data, response);
 
-	data[ProtocolJsonKeys::MESSAGE] = response.message;
+    data[ProtocolJsonKeys::MESSAGE] = response.message;
 
-	return serializeJsonToProtocol(ResponseCode::ERROR, data);
+    return serializeJsonToProtocol(ResponseCode::ERROR, data);
+}
+
+OBuffer JsonResponsePacketSerializer::serializeResponse(const LogoutResponse &response)
+{
+    nlohmann::json data;
+    serializeBaseResponseToJson<LogoutStatus>(data, response);
+
+    return serializeJsonToProtocol(ResponseCode::LOGOUT, data);
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const JoinRoomResponse &response)

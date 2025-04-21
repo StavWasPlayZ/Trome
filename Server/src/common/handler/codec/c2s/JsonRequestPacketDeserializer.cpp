@@ -10,14 +10,31 @@ LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(const nlohma
 
 SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(const nlohmann::json &data)
 {
-	return SignupRequest(
-		data.at("username"),
-		data.at("password"),
-		data.at("email"),
-		data.at("phone"),
-		data.at("birthdate"),
-		data.contains("address") ? std::optional(data.at("address")) : std::nullopt
-	);
+    return SignupRequest(
+        data.at("username"),
+        data.at("password"),
+        data.at("email"),
+        data.at("phone"),
+        data.at("birthdate"),
+        data.contains("address") ? std::optional(data.at("address")) : std::nullopt
+    );
+}
+
+GetRoomsRequest JsonRequestPacketDeserializer::deserializeGetRoomsRequest(const nlohmann::json &)
+{
+    return GetRoomsRequest();
+}
+
+GetRoomRequest JsonRequestPacketDeserializer::deserializeGetRoomRequest(const nlohmann::json &data)
+{
+    const int roomID = data.at("roomID");
+
+    if (roomID < 0)
+    {
+        throw std::runtime_error("Invalid room ID");
+    }
+
+    return GetRoomRequest(static_cast<unsigned int>(roomID));
 }
 
 GetPlayersInRoomRequest JsonRequestPacketDeserializer::deserializeGetPlayersInRoomRequest(const nlohmann::json &data)
@@ -28,6 +45,16 @@ GetPlayersInRoomRequest JsonRequestPacketDeserializer::deserializeGetPlayersInRo
 JoinRoomRequest JsonRequestPacketDeserializer::deserializeJoinRoomRequest(const nlohmann::json &data)
 {
     return JoinRoomRequest(data.at("roomID"));
+}
+
+GetHighScoresRequest JsonRequestPacketDeserializer::deserializeGetHighScoresRequest(const nlohmann::json &)
+{
+    return GetHighScoresRequest();
+}
+
+GetPersonalStatisticsRequest JsonRequestPacketDeserializer::GetPersonalStatisticsRequest(const nlohmann::json &)
+{
+    return GetPersonalStatisticsRequest();
 }
 
 CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(const nlohmann::json &data)

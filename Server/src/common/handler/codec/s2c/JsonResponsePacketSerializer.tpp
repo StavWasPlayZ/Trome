@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Constants.h"
 #include "JsonResponsePacketSerializer.h"
 
 template <typename S>

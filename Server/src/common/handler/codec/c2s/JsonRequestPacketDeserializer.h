@@ -30,12 +30,32 @@ public:
     /**
      * Returns: The deserialized object.
      */
+    static GetRoomsRequest deserializeGetRoomsRequest(const nlohmann::json &data);
+
+    /**
+     * Returns: The deserialized object.
+     */
+    static GetRoomRequest deserializeGetRoomRequest(const nlohmann::json &data);
+
+    /**
+     * Returns: The deserialized object.
+     */
     static GetPlayersInRoomRequest deserializeGetPlayersInRoomRequest(const nlohmann::json &data);
 
     /**
      * Returns: The deserialized object.
      */
     static JoinRoomRequest deserializeJoinRoomRequest(const nlohmann::json &data);
+
+    /**
+     * Returns: The deserialized object.
+     */
+    static GetHighScoresRequest deserializeGetHighScoresRequest(const nlohmann::json &data);
+
+    /**
+     * Returns: The deserialized object.
+     */
+    static GetPersonalStatisticsRequest GetPersonalStatisticsRequest(const nlohmann::json &data);
 
     /**
      * Returns: The deserialized object.
