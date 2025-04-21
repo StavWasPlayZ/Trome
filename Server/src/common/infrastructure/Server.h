@@ -27,7 +27,10 @@ private:
     Server();
 
 	IDatabase& m_database;
+
 	LoginManager m_loginManager;
+    RoomManager m_roomManager;
+    StatisticsManager m_statisticsManager;
 	
 	RequestHandlerFactory m_handlerFactory;
 	Communicator& m_communicator;
