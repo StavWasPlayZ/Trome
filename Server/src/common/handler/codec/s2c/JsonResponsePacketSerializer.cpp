@@ -31,7 +31,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const ErrorResponse &res
     nlohmann::json data;
     serializeBaseResponseToJson<ErrorStatus>(data, response);
 
-    data[ProtocolJsonKeys::MESSAGE] = response.message;
+    data["message"] = response.message;
 
     return serializeJsonToProtocol(ResponseCode::ERROR, data);
 }
@@ -56,6 +56,8 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const CreateRoomResponse
 {
     nlohmann::json data;
     serializeBaseResponseToJson<GenericRoomResponseStatus>(data, response);
+
+    data["message"] = response.roomId;
 
     return serializeJsonToProtocol(ResponseCode::CREATE_ROOM, data);
 }

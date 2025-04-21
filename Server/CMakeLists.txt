@@ -35,7 +35,6 @@ add_executable (Server
   "src/common/exception/RegexViolationException.cpp"
   "src/common/exception/RegexViolationException.h"
   "src/common/Constants.h"
-  "src/common/Constants.cpp"
 
   "src/common/handler/IRequestHandler.h"
   "src/common/handler/IRequestHandler.tpp"
