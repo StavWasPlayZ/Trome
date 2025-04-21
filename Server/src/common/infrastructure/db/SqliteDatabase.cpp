@@ -37,7 +37,7 @@ const std::string SqliteDatabase::CREATE_STATISTICS_TBL_QUERY =
 const std::string SqliteDatabase::CREATE_QUESTIONS_TBL_QUERY =
     "CREATE TABLE IF NOT EXISTS " + TABLE_QUESTIONS + " ("
         "id INTEGER PRIMARY KEY NOT NULL, "
-        "question NVARCHAR(120) NOT NULL, "
+        "question NVARCHAR(120) UNIQUE NOT NULL, "
         "correct NVARCHAR(64) NOT NULL, "
         "wrong_1 NVARCHAR(64) NOT NULL, "
         "wrong_2 NVARCHAR(64) NOT NULL, "
