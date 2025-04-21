@@ -76,9 +76,9 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetRoomsResponse &
 
 		roomObj["id"] = room->id;
 		roomObj["name"] = room->name;
-        roomObj["maxPlayers"] = room->maxPlayers;
+        roomObj["max_players"] = room->maxPlayers;
         roomObj["status"] = room->status;
-        roomObj["timePerQuestion"] = room->timePerQuestion;
+        roomObj["time_per_question"] = room->timePerQuestion;
 
         rooms.push_back(roomObj);
 	}
