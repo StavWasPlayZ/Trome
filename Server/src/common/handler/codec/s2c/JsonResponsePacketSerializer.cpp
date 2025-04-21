@@ -122,7 +122,17 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetPersonalStatist
 
     nlohmann::json data;
     serializeBaseResponseToJson<GeneralStatsStatus>(data, response);
-    data["personalStats"] = response.stats;
+
+    nlohmann::json stats;
+
+    stats["points"] = response.stats.points;
+    stats["games_played"] = response.stats.gamesPlayed;
+    stats["questions_answered"] = response.stats.questionsAnswered;
+    stats["questions_answered_correct"] = response.stats.questionsAnsweredCorrect;
+    stats["time_on_questions_overall"] = response.stats.timeOnQuestionsOverall;
+    stats["time_per_questions_avg"] = response.stats.timePerQuestionsAvg;
+
+    data["personalStats"] = stats;
 
     return serializeJsonToProtocol(ResponseCode::GET_PERSONAL_STATISTICS, data);
 }

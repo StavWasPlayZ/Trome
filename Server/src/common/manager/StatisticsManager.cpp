@@ -24,30 +24,14 @@ std::vector<std::pair<std::string, int>> StatisticsManager::getHighScores() cons
     return results;
 }
 
-std::vector<std::string> StatisticsManager::getUserStatistics(const std::string &username) const
+UserStatistics StatisticsManager::getUserStatistics(const std::string &username) const
 {
-    //TODO: Convert to KVP or object of results.
-
-    std::vector<std::string> result;
-
-    result.push_back(
-        "Games played: " + std::to_string(m_database.queryGamesPlayed(username))
+    return UserStatistics(
+        m_database.queryGamesPlayed(username),
+        m_database.queryTotalAns(username),
+        m_database.queryCorrectAns(username),
+        m_database.queryTime(username),
+        m_database.queryPlayerAverageAnsTime(username),
+        m_database.queryPoints(username)
     );
-    result.push_back(
-        "Questions answered: " + std::to_string(m_database.queryTotalAns(username))
-    );
-    result.push_back(
-        "Questions answered correctly: " + std::to_string(m_database.queryCorrectAns(username))
-    );
-    result.push_back(
-        "Time took to answer all of the questions: " + std::to_string(m_database.queryTime(username))
-    );
-    result.push_back(
-        "Average time per question: " + std::to_string(m_database.queryPlayerAverageAnsTime(username))
-    );
-    result.push_back(
-        "Total points earned: " + std::to_string(m_database.queryPoints(username))
-    );
-
-    return result;
 }

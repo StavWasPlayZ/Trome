@@ -1,8 +1,11 @@
 #pragma once
 
+#include "infrastructure/RoomData.h"
+#include "infrastructure/UserStatistics.h"
+
 #include <string>
 #include <vector>
-#include "infrastructure/RoomData.h"
+
 
 enum class ResponseCode : unsigned char
 {
@@ -167,9 +170,9 @@ struct GetHighScoresResponse : ProtocolResponse<GeneralStatsStatus>
 
 struct GetPersonalStatisticsResponse : ProtocolResponse<GeneralStatsStatus>
 {
-    GetPersonalStatisticsResponse(GeneralStatsStatus status, const std::vector<std::string> &stats);
+    GetPersonalStatisticsResponse(GeneralStatsStatus status, const UserStatistics &stats);
 
-    const std::vector<std::string> stats;
+    const UserStatistics stats;
 };
 
 
