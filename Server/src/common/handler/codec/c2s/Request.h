@@ -14,7 +14,6 @@ enum class RequestCode : unsigned char
 	JOIN_ROOM,
 	CREATE_ROOM,
     GET_ROOMS,
-    GET_PLAYER_IN_ROOM,
     GET_HIGH_SCORES,
     GET_PERSONAL_STATISTICS
 };

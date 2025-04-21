@@ -45,9 +45,6 @@ ProtocolRequest *ProtocolRequest::fromRequest(const RequestInfo &info) {
     case RequestCode::GET_ROOMS: return new GetRoomsRequest(
         JsonRequestPacketDeserializer::deserializeGetRoomsRequest(info.data)
     );
-    case RequestCode::GET_PLAYER_IN_ROOM: return new GetPlayersInRoomRequest(
-        JsonRequestPacketDeserializer::deserializeGetPlayersInRoomRequest(info.data)
-    );
     case RequestCode::GET_HIGH_SCORES: return new GetHighScoresRequest(
         JsonRequestPacketDeserializer::deserializeGetHighScoresRequest(info.data)
     );
