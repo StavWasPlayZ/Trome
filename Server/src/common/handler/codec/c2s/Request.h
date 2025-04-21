@@ -20,6 +20,8 @@ enum class RequestCode : unsigned char
 
 struct ProtocolRequest
 {
+	virtual ~ProtocolRequest();
+	
 	/**
 	 * Constructs a new ProtocolRequest from the provided request info.
 	 *

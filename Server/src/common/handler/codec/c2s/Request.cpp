@@ -22,7 +22,10 @@ SignupRequest::SignupRequest(
 {}
 
 GetPlayersInRoomRequest::GetPlayersInRoomRequest(const unsigned int roomID) : roomID(roomID)
-{}
+{
+}
+
+ProtocolRequest::~ProtocolRequest() = default;
 
 ProtocolRequest *ProtocolRequest::fromRequest(const RequestInfo &info) {
     switch (info.id)

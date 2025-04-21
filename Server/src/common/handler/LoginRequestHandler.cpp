@@ -17,8 +17,8 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& info, const 
 {
     switch (info.id)
     {
-    case RequestCode::LOGIN: return login(info, (LoginRequest&) request);
-    case RequestCode::SIGNUP: return signup(info, (SignupRequest&) request);
+    case RequestCode::LOGIN: return login(info, static_cast<const LoginRequest&>(request));
+    case RequestCode::SIGNUP: return signup(info, static_cast<const SignupRequest&>(request));
 
     default: throw std::runtime_error("Unexpected request ID");
     }

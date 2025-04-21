@@ -377,6 +377,9 @@ void SqliteDatabase::consumeSql(
 
     if (result != SQLITE_OK)
     {
-        throw std::runtime_error("Error in SQL: " + std::string(errMsg));
+        const std::string msg = std::string(errMsg);
+        sqlite3_free(errMsg);
+
+        throw std::runtime_error("Error in SQL: " + msg);
     }
 }
