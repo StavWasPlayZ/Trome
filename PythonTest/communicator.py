@@ -62,23 +62,6 @@ JSON_WRONG_ADDRESS = {
 }
 
 SERVER_INFO = ("127.0.0.1", 6942)
-
-def main():
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-        sock.connect(SERVER_INFO)
-
-        try:
-            sendAndRecv(SIGNUP, JSON_TEST_SIGNUP, sock) # shouldn't signup - already in DB
-
-            # all of those shouldn't signup
-            sendAndRecv(SIGNUP, JSON_WRONG_PASSWORD, sock)
-            sendAndRecv(SIGNUP, JSON_WRONG_EMAIL, sock)
-            sendAndRecv(SIGNUP, JSON_WRONG_PHONE, sock)
-            sendAndRecv(SIGNUP, JSON_WRONG_DATE, sock)
-            sendAndRecv(SIGNUP, JSON_WRONG_ADDRESS, sock)
-        except:
-            print("Something went wrong :(")
-            return
         
 def sendAndRecv(code: int, data: json, sock: socket.socket):
     """
@@ -123,7 +106,3 @@ def deserialzer(data: bytes) -> Tuple[int, int, Any]:
     data_json = json.loads(json_bytes.decode('utf-8'))
 
     return (code, json_len, data_json)
-
-
-if __name__ == "__main__":
-    main()
