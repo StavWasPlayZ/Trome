@@ -160,22 +160,21 @@ unsigned int SqliteDatabase::addNewUser(const std::string &username, const std::
     int id = 0;
 
     builderUsers << "INSERT INTO " << TABLE_USERS
-                 << " (username, password, email, phone, address, birthdate)"
-                    " VALUES "
-                    "('"
-                 << username << "','" << password << "','" << email << "','" << phone << "','"
-                 << (address.has_value() ? address.value() : "NULL") << "','" << birthdate
-                 << "')"
-                    " RETURNING id;";
+        << " (username, password, email, phone, address, birthdate)"
+        << " VALUES "
+        << "('"
+            << username << "','" << password << "','" << email << "','" << phone << "','"
+            << (address.has_value() ? address.value() : "NULL") << "','" << birthdate
+        << "')"
+        << " RETURNING id;";
 
     id = *queryIds(builderUsers.str()).begin();
 
     builderStats << "INSERT INTO " << TABLE_STATISTICS
-                 << "(user_id, total_time, correct_ans, total_ans, games_played, points)"
-                 << " VALUES "
-                 << "(" << id
-                 << ", 0, 0, 0, 0, 0)"
-                    ";";
+        << "(user_id, total_time, correct_ans, total_ans, games_played, points)"
+        << " VALUES "
+        << "(" << id << ", 0, 0, 0, 0, 0)"
+        << ";";
 
     execSql(builderStats.str());
 
