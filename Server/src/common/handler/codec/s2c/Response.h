@@ -125,7 +125,9 @@ struct JoinRoomResponse : ProtocolResponse<GenericRoomResponseStatus>
 
 struct CreateRoomResponse : ProtocolResponse<GenericRoomResponseStatus>
 {
-    explicit CreateRoomResponse(GenericRoomResponseStatus status);
+    explicit CreateRoomResponse(GenericRoomResponseStatus status, unsigned int roomId);
+
+    const unsigned int roomId;
 };
 
 struct GetRoomsResponse : ProtocolResponse<GenericRoomResponseStatus>
