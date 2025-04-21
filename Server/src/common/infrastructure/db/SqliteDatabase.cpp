@@ -233,11 +233,11 @@ void SqliteDatabase::addQuestions(std::vector<Question> questions) const
 
 
         builder << "("
-            << question.question;
+            << '\'' << question.question << '\'';
 
         for (const std::string &answer : question.answers)
         {
-            builder << ", " << answer;
+            builder << ", '" << answer << '\'';
         }
 
         builder << ")";
