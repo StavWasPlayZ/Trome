@@ -42,8 +42,8 @@ ProtocolRequest *ProtocolRequest::fromRequest(const RequestInfo &info) {
     case RequestCode::CREATE_ROOM: return new CreateRoomRequest(
         JsonRequestPacketDeserializer::deserializeCreateRoomRequest(info.data)
     );
-    case RequestCode::GET_ROOMS: return new GetRoomRequest(
-        JsonRequestPacketDeserializer::deserializeGetRoomRequest(info.data)
+    case RequestCode::GET_ROOMS: return new GetRoomsRequest(
+        JsonRequestPacketDeserializer::deserializeGetRoomsRequest(info.data)
     );
     case RequestCode::GET_PLAYER_IN_ROOM: return new GetPlayersInRoomRequest(
         JsonRequestPacketDeserializer::deserializeGetPlayersInRoomRequest(info.data)
@@ -52,7 +52,7 @@ ProtocolRequest *ProtocolRequest::fromRequest(const RequestInfo &info) {
         JsonRequestPacketDeserializer::deserializeGetHighScoresRequest(info.data)
     );
     case RequestCode::GET_PERSONAL_STATISTICS: return new GetPersonalStatisticsRequest(
-        JsonRequestPacketDeserializer::GetPersonalStatisticsRequest(info.data)
+        JsonRequestPacketDeserializer::deserializeGetPersonalStatisticsRequest(info.data)
     );
 
     default: throw std::invalid_argument("Invalid request ID");

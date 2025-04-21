@@ -25,26 +25,14 @@ GetRoomsRequest JsonRequestPacketDeserializer::deserializeGetRoomsRequest(const 
     return GetRoomsRequest();
 }
 
-GetRoomRequest JsonRequestPacketDeserializer::deserializeGetRoomRequest(const nlohmann::json &data)
-{
-    const int roomID = data.at("roomID");
-
-    if (roomID < 0)
-    {
-        throw std::runtime_error("Invalid room ID");
-    }
-
-    return GetRoomRequest(static_cast<unsigned int>(roomID));
-}
-
 GetPlayersInRoomRequest JsonRequestPacketDeserializer::deserializeGetPlayersInRoomRequest(const nlohmann::json &data)
 {
-    return GetPlayersInRoomRequest(data.at("roomID"));
+    return GetPlayersInRoomRequest(toUL(data.at("roomID")));
 }
 
 JoinRoomRequest JsonRequestPacketDeserializer::deserializeJoinRoomRequest(const nlohmann::json &data)
 {
-    return JoinRoomRequest(data.at("roomID"));
+    return JoinRoomRequest(toUL(data.at("roomID")));
 }
 
 GetHighScoresRequest JsonRequestPacketDeserializer::deserializeGetHighScoresRequest(const nlohmann::json &)
@@ -52,7 +40,7 @@ GetHighScoresRequest JsonRequestPacketDeserializer::deserializeGetHighScoresRequ
     return GetHighScoresRequest();
 }
 
-GetPersonalStatisticsRequest JsonRequestPacketDeserializer::GetPersonalStatisticsRequest(const nlohmann::json &)
+GetPersonalStatisticsRequest JsonRequestPacketDeserializer::deserializeGetPersonalStatisticsRequest(const nlohmann::json &)
 {
     return GetPersonalStatisticsRequest();
 }
@@ -79,4 +67,14 @@ nlohmann::json JsonRequestPacketDeserializer::readJson(const unsigned char *data
 	std::memcpy(jsonRaw, data, jsonLen * sizeof(char));
 
     return nlohmann::json::parse(std::string(jsonRaw, jsonLen));
+}
+
+unsigned int JsonRequestPacketDeserializer::toUL(const int n)
+{
+    if (n < 0)
+    {
+        throw std::runtime_error("Invalid room ID");
+    }
+
+    return static_cast<unsigned int>(n);
 }

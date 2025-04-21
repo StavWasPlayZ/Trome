@@ -35,11 +35,6 @@ public:
     /**
      * Returns: The deserialized object.
      */
-    static GetRoomRequest deserializeGetRoomRequest(const nlohmann::json &data);
-
-    /**
-     * Returns: The deserialized object.
-     */
     static GetPlayersInRoomRequest deserializeGetPlayersInRoomRequest(const nlohmann::json &data);
 
     /**
@@ -55,10 +50,16 @@ public:
     /**
      * Returns: The deserialized object.
      */
-    static GetPersonalStatisticsRequest GetPersonalStatisticsRequest(const nlohmann::json &data);
+    static GetPersonalStatisticsRequest deserializeGetPersonalStatisticsRequest(const nlohmann::json &data);
 
     /**
      * Returns: The deserialized object.
      */
     static CreateRoomRequest deserializeCreateRoomRequest(const nlohmann::json &data);
+
+private:
+    /**
+     * Parses the provided field from the data as an unsigned long.
+     */
+    static unsigned int toUL(int n);
 };

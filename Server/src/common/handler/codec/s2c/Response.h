@@ -130,9 +130,9 @@ struct CreateRoomResponse : ProtocolResponse<GeneralRoomStatus>
 
 struct GetRoomsResponse : ProtocolResponse<GeneralRoomStatus>
 {
-    GetRoomsResponse(GeneralRoomStatus status, const std::vector<RoomData> &rooms);
+    GetRoomsResponse(GeneralRoomStatus status, const std::vector<RoomData*> &rooms);
 
-	const std::vector<RoomData> rooms;
+	const std::vector<RoomData*> rooms;
 };
 
 enum class GetPlayersInRoomStatus : unsigned int

@@ -25,7 +25,7 @@ JoinRoomResponse::JoinRoomResponse(const GeneralRoomStatus status) : ProtocolRes
 CreateRoomResponse::CreateRoomResponse(const GeneralRoomStatus status) : ProtocolResponse(status)
 {}
 
-GetRoomsResponse::GetRoomsResponse(const GeneralRoomStatus status, const std::vector<RoomData> &rooms)
+GetRoomsResponse::GetRoomsResponse(const GeneralRoomStatus status, const std::vector<RoomData*> &rooms)
     : ProtocolResponse(status), rooms(rooms)
 {}
 

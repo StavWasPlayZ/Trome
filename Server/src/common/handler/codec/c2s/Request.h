@@ -69,13 +69,6 @@ struct JoinRoomRequest : ProtocolRequest
     const unsigned int roomID;
 };
 
-struct GetRoomRequest : ProtocolRequest
-{
-    explicit GetRoomRequest(unsigned int roomID);
-
-    const unsigned int roomID;
-};
-
 struct GetRoomsRequest : ProtocolRequest
 {
 };
