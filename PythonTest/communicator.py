@@ -5,6 +5,7 @@ from typing import *
 
 LOGIN = 1
 SIGNUP = 2
+GET_PERSONAL_STATISTICS = 8
 
 SEPARATOR =  "-----------------"
 
@@ -60,6 +61,7 @@ JSON_WRONG_ADDRESS = {
     "birthdate": "11/11/2011",
     "address": "some, 69" # no 3rd arg
 }
+JSON_GET_PERSONAL_STATS = {}
 
 SERVER_INFO = ("127.0.0.1", 6942)
         
