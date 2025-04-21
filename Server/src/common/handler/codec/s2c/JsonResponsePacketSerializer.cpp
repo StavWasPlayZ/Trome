@@ -66,20 +66,21 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetRoomsResponse &
 {
 
     nlohmann::json data;
-    std::list<nlohmann::json> rooms;
     serializeBaseResponseToJson<GenericRoomResponseStatus>(data, response);
+
+    nlohmann::json rooms = nlohmann::json::array();
 
 	for (const auto& room : response.rooms)
     {
-        nlohmann::json temp;
+        nlohmann::json roomObj;
 
-		temp["id"] = room->id;
-		temp["name"] = room->name;
-        temp["maxPlayers"] = room->maxPlayers;
-        temp["status"] = room->status;
-        temp["timePerQuestion"] = room->timePerQuestion;
+		roomObj["id"] = room->id;
+		roomObj["name"] = room->name;
+        roomObj["maxPlayers"] = room->maxPlayers;
+        roomObj["status"] = room->status;
+        roomObj["timePerQuestion"] = room->timePerQuestion;
 
-        rooms.push_back(temp);
+        rooms.push_back(roomObj);
 	}
 
 	data["rooms"] = rooms;
@@ -100,6 +101,17 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetHighScoresRespo
 {
     nlohmann::json data;
     serializeBaseResponseToJson<GeneralStatsStatus>(data, response);
+
+    nlohmann::json scoresArr = nlohmann::json::array();
+
+    for (const auto& [username, score] : response.stats)
+    {
+        scoresArr.push_back({
+            {"username", username},
+            {"score", score}
+        });
+    }
+
     data["highScores"] = response.stats;
 
     return serializeJsonToProtocol(ResponseCode::GET_HIGH_SCORES, data);

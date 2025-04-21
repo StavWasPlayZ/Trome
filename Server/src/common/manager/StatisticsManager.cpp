@@ -26,6 +26,8 @@ std::vector<std::pair<std::string, int>> StatisticsManager::getHighScores() cons
 
 std::vector<std::string> StatisticsManager::getUserStatistics(const std::string &username) const
 {
+    //TODO: Convert to KVP or object of results.
+
     std::vector<std::string> result;
 
     result.push_back(

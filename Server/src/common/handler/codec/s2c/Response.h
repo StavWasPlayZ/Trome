@@ -160,9 +160,9 @@ enum class GeneralStatsStatus : unsigned int
 
 struct GetHighScoresResponse : ProtocolResponse<GeneralStatsStatus>
 {
-    GetHighScoresResponse(GeneralStatsStatus status, const std::vector<std::string> &stats);
+    GetHighScoresResponse(GeneralStatsStatus status, const std::vector<std::pair<std::string, int>> &stats);
 
-    const std::vector<std::string> stats;
+    const std::vector<std::pair<std::string, int>> stats;
 };
 
 struct GetPersonalStatsResponse : ProtocolResponse<GeneralStatsStatus>

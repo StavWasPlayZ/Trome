@@ -31,15 +31,15 @@ GetRoomsResponse::GetRoomsResponse(const GenericRoomResponseStatus status, const
     : ProtocolResponse(status), rooms(rooms)
 {}
 
-GetPlayersInRoomResponse::GetPlayersInRoomResponse(GetPlayersInRoomStatus status,
+GetPlayersInRoomResponse::GetPlayersInRoomResponse(const GetPlayersInRoomStatus status,
                                                    const std::vector<std::string> &players)
     : ProtocolResponse(status), players(players)
 {}
 
-GetHighScoresResponse::GetHighScoresResponse(GeneralStatsStatus status, const std::vector<std::string> &stats)
+GetHighScoresResponse::GetHighScoresResponse(const GeneralStatsStatus status, const std::vector<std::pair<std::string, int>> &stats)
     : ProtocolResponse(status), stats(stats)
 {}
 
-GetPersonalStatsResponse::GetPersonalStatsResponse(GeneralStatsStatus status, const std::vector<std::string> &stats)
+GetPersonalStatsResponse::GetPersonalStatsResponse(const GeneralStatsStatus status, const std::vector<std::string> &stats)
     : ProtocolResponse(status), stats(stats)
 {}

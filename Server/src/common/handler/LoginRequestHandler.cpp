@@ -36,10 +36,11 @@ RequestResult LoginRequestHandler::login(const RequestInfo& context, const Login
         );
     }
 
+    //TODO: Change this later to a MenuRequestHandler
     return RequestResult(
         JsonResponsePacketSerializer::serializeResponse(response),
         new LoginRequestHandler(*this)
-    ); // change this later to have a MenuRequestHandler instead of this
+    );
 }
 
 RequestResult LoginRequestHandler::signup(const RequestInfo& context, const SignupRequest& request) const
@@ -54,8 +55,9 @@ RequestResult LoginRequestHandler::signup(const RequestInfo& context, const Sign
         );
     }
 
+    //TODO: Change this later to a MenuRequestHandler
     return RequestResult(
         JsonResponsePacketSerializer::serializeResponse(response),
         new LoginRequestHandler(*this)
-    ); // change this later to have a MenuRequestHandler instead of this
+    );
 }
