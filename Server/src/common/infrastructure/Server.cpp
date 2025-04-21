@@ -16,7 +16,7 @@ Server::Server() :
 
 void Server::populateQuestionsFromWeb(const int amount) const
 {
-    std::cout << "Populating DB with web questions...";
+    std::cout << "Populating DB with web questions..." << std::endl;
 
     if (m_database.queryQuestionsCount() > 0)
     {
@@ -45,7 +45,7 @@ void Server::populateQuestionsFromWeb(const int amount) const
 
     std::cout << "Fetching successful with status " << resStatus << std::endl;
 
-    m_database.addQuestions(deserializeWebQuestions(parsedResponse));
+    m_database.addQuestions(deserializeWebQuestions(parsedResponse), std::nullopt);
 
     std::cout << "Successfully populated web questions" << std::endl;
 }

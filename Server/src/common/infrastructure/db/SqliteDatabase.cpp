@@ -10,6 +10,7 @@ const std::string SqliteDatabase::TABLE_QUESTIONS = "questions";
 const std::string SqliteDatabase::CREATE_USERS_TBL_QUERY = 
 	"CREATE TABLE IF NOT EXISTS " + TABLE_USERS + " ("
 		"id INTEGER PRIMARY KEY AUTOINCREMENT, "
+
 		// Lengths below are as suggested by the internet
 		"username NVARCHAR(20) NOT NULL UNIQUE, "
 		"password NVARCHAR(64) NOT NULL, "
@@ -37,11 +38,14 @@ const std::string SqliteDatabase::CREATE_STATISTICS_TBL_QUERY =
 const std::string SqliteDatabase::CREATE_QUESTIONS_TBL_QUERY =
     "CREATE TABLE IF NOT EXISTS " + TABLE_QUESTIONS + " ("
         "id INTEGER PRIMARY KEY NOT NULL, "
+        "author_id INT, "
+
         "question NVARCHAR(120) UNIQUE NOT NULL, "
         "correct NVARCHAR(64) NOT NULL, "
         "wrong_1 NVARCHAR(64) NOT NULL, "
         "wrong_2 NVARCHAR(64) NOT NULL, "
-        "wrong_3 NVARCHAR(64) NOT NULL"
+        "wrong_3 NVARCHAR(64) NOT NULL, "
+        "FOREIGN KEY(author_id) REFERENCES " + TABLE_USERS + "(id)"
     ");";
 
 
@@ -214,11 +218,15 @@ std::list<Question> SqliteDatabase::queryQuestions(const int amount) const
     );
 }
 
-void SqliteDatabase::addQuestions(std::vector<Question> questions) const
+void SqliteDatabase::addQuestions(std::vector<Question> questions, const std::optional<std::string>& authorName) const
 {
+    const std::string authorId = authorName.has_value()
+        ? std::to_string(queryIdOfUser(*authorName))
+        : "NULL";
+
     std::ostringstream builder;
 
-    builder << "INSERT INTO " << TABLE_QUESTIONS << " (question, correct, wrong_1, wrong_2, wrong_3)"
+    builder << "INSERT INTO " << TABLE_QUESTIONS << " (author_id, question, correct, wrong_1, wrong_2, wrong_3)"
         " VALUES ";
 
     bool first = true;
@@ -233,6 +241,7 @@ void SqliteDatabase::addQuestions(std::vector<Question> questions) const
 
 
         builder << "("
+            << authorId << ", "
             << '\'' << question.question << '\'';
 
         for (const std::string &answer : question.answers)

@@ -37,9 +37,12 @@ public:
 		const std::optional<std::string>& address
 	) const override;
 
+
 	int queryQuestionsCount() const override;
 	std::list<Question> queryQuestions(int amount) const override;
-	void addQuestions(std::vector<Question> questions) const override;
+
+	void addQuestions(std::vector<Question> questions, const std::optional<std::string>& authorName) const override;
+
 
     void addTime(const std::string &username, int time) override;
     void addTotalAns(const std::string &username, int ans = 1) override;

@@ -52,7 +52,13 @@ public:
 
     virtual int queryQuestionsCount() const = 0;
     virtual std::list<Question> queryQuestions(int amount) const = 0;
-    virtual void addQuestions(std::vector<Question> questions) const = 0;
+
+    /**
+     * Add multiple questions to the DB.
+     *
+     * If no author name is provided, assuming server-instantiated.
+     */
+    virtual void addQuestions(std::vector<Question> questions, const std::optional<std::string>& authorName) const = 0;
 
 
     // Adding to statistics:
