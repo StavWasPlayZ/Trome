@@ -117,7 +117,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetHighScoresRespo
     return serializeJsonToProtocol(ResponseCode::GET_HIGH_SCORES, data);
 }
 
-OBuffer JsonResponsePacketSerializer::serializeResponse(const GetPersonalStatsResponse &response)
+OBuffer JsonResponsePacketSerializer::serializeResponse(const GetPersonalStatisticsResponse &response)
 {
 
     nlohmann::json data;

@@ -25,7 +25,7 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& info, const P
 {
     RoomManager &rManager = m_handlerFactory.getRoomManager();
     LoginManager &uManager = m_handlerFactory.getLoginManager();
-    StatisticsManager &sManager = m_handlerFactory.getStatisticsManager();
+    const StatisticsManager &sManager = m_handlerFactory.getStatisticsManager();
 
     switch (info.id)
     {
@@ -64,17 +64,25 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& info, const P
         );
     }
     case RequestCode::GET_HIGH_SCORES: {
-        sManager.getHighScore();
+        return RequestResult(
+            JsonResponsePacketSerializer::serializeResponse(
+                GetHighScoresResponse(GeneralStatsStatus::SUCCESS, sManager.getHighScores())
+            ),
 
-        // return RequestResult(
-        //     JsonResponsePacketSerializer::serializeResponse(
-        //         GetHighScoresResponse(GeneralStatsStatus::SUCCESS, sManager.getHighScore())
-        //     ),
-        //
-        //     new MenuRequestHandler(*this)
-        // );
+            new MenuRequestHandler(*this)
+        );
     }
-    case RequestCode::GET_PERSONAL_STATISTICS:
+    case RequestCode::GET_PERSONAL_STATISTICS: {
+        return RequestResult(
+            JsonResponsePacketSerializer::serializeResponse(
+                GetPersonalStatisticsResponse(GeneralStatsStatus::SUCCESS, sManager.getUserStatistics(
+                    uManager.getUserByClient(info.client).getUsername()
+                ))
+            ),
+
+            new MenuRequestHandler(*this)
+        );
+    }
     case RequestCode::LOGOUT: {
         uManager.logout(info, uManager.getUserByClient(info.client).getUsername());
 
