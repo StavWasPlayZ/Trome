@@ -103,9 +103,12 @@ void CommonCommunicator::commonSetup()
 
 void CommonCommunicator::registerClient(const SOCKET socket)
 {
-    this->m_clients[socket] = new Client(
+    Client* client = this->m_clients[socket] = new Client(
         socket,
-        this->m_handlerFactory.createLoginRequestHandler(),
+        this->m_handlerFactory.createLoginRequestHandler()
+    );
+
+    client->setAndStartThread(
         [this, socket]()
         {
             _clientThreadFunc(socket);
