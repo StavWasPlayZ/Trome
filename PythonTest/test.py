@@ -71,11 +71,11 @@ def main():
             sendAndRecv(SIGNUP, JSON_TEST_SIGNUP, sock) # shouldn't signup - already in DB
 
             # all of those shouldn't signup
-            sendAndRecv(SIGNUP, JSON_WRONG_PASSWORD, sock);
-            sendAndRecv(SIGNUP, JSON_WRONG_EMAIL, sock);
-            sendAndRecv(SIGNUP, JSON_WRONG_PHONE, sock);
-            sendAndRecv(SIGNUP, JSON_WRONG_DATE, sock);
-            sendAndRecv(SIGNUP, JSON_WRONG_ADDRESS, sock);
+            sendAndRecv(SIGNUP, JSON_WRONG_PASSWORD, sock)
+            sendAndRecv(SIGNUP, JSON_WRONG_EMAIL, sock)
+            sendAndRecv(SIGNUP, JSON_WRONG_PHONE, sock)
+            sendAndRecv(SIGNUP, JSON_WRONG_DATE, sock)
+            sendAndRecv(SIGNUP, JSON_WRONG_ADDRESS, sock)
         except:
             print("Something went wrong :(")
             return
