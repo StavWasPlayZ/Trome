@@ -10,7 +10,7 @@ class StatisticsManager
 public:
     explicit StatisticsManager(const IDatabase& db);
 
-    std::vector<std::pair<std::string, int>> getHighScore() const;
+    std::vector<std::pair<std::string, int>> getHighScores() const;
     std::vector<std::string> getUserStatistics(const std::string& username) const;
 
 private:
