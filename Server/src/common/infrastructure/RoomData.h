@@ -11,7 +11,7 @@ enum class RoomStatus : unsigned int
 
 struct RoomData
 {
-    RoomData::RoomData(
+    RoomData(
         const std::string &name,
         const RoomStatus &status,
         int maxPlayers,
