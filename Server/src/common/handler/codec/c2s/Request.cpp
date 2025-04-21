@@ -59,9 +59,6 @@ ProtocolRequest *ProtocolRequest::fromRequest(const RequestInfo &info) {
     }
 }
 
-GetRoomRequest::GetRoomRequest(const unsigned int roomID) : roomID(roomID)
-{}
-
 JoinRoomRequest::JoinRoomRequest(const unsigned int roomID) : roomID(roomID)
 {}
 
