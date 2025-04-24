@@ -136,7 +136,16 @@ target_link_libraries(Server PRIVATE httplib)
 # For HTTPS support
 
 target_compile_definitions(Server PRIVATE CPPHTTPLIB_OPENSSL_SUPPORT)
-target_link_libraries(Server PRIVATE ssl crypto)
+
+# In Windows, OpenSSL is not installed nor recognized by default.
+if (WIN32)
+  find_package(openssl REQUIRED)
+  set(OPENSSL_ROOT_DIR "C:\\OpenSSL-Win64")
+  set(OPENSSL_USE_STATIC_LIBS TRUE)
+  target_link_libraries(Server PRIVATE OpenSSL::SSL OpenSSL::Crypto)
+else ()
+  target_link_libraries(Server PRIVATE ssl crypto)
+endif ()
 
 # sqlite3
 add_library(sqlite3 STATIC lib/sqlite3/sqlite3.c)
