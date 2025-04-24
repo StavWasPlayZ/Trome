@@ -10,8 +10,8 @@ bool MenuRequestHandler::isRequestRelevant(const RequestInfo &info) const
 {
     switch (info.id)
     {
-    case RequestCode::GET_PLAYERS_IN_ROOM:
 	case RequestCode::JOIN_ROOM:
+    case RequestCode::GET_PLAYERS_IN_ROOM:
     case RequestCode::CREATE_ROOM:
     case RequestCode::GET_ROOMS:
     case RequestCode::GET_HIGH_SCORES:
@@ -27,8 +27,8 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo &info, const P
 {
     switch (info.id)
     {
-    case RequestCode::GET_PLAYERS_IN_ROOM: return getPlayersInRoom(info, request);
     case RequestCode::JOIN_ROOM: return joinRoom(info, request);
+    case RequestCode::GET_PLAYERS_IN_ROOM: return getPlayersInRoom(info, request);
     case RequestCode::CREATE_ROOM: return createRoom(info, request);
     case RequestCode::GET_ROOMS: return getRooms(info, request);
     case RequestCode::GET_HIGH_SCORES: return getHighScores(info, request);
