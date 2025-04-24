@@ -27,13 +27,13 @@ RoomStatus RoomManager::getRoomStatus(const int roomID) const
     return room.value()->getData().status;
 }
 
-std::vector<RoomData*> RoomManager::getRooms() const
+std::vector<Room*> RoomManager::getRooms() const
 {
-    std::vector<RoomData*> data;
+    std::vector<Room*> data;
 
     for (const auto& pair : this->m_rooms)
     {
-        data.push_back(&pair.second.getData());
+        data.push_back(&pair.second);
     }
 
     return data;

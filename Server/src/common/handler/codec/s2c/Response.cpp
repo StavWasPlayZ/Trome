@@ -19,20 +19,20 @@ ErrorResponse::ErrorResponse(const ErrorStatus status, const std::string &messag
     message(message)
 {}
 
-JoinRoomResponse::JoinRoomResponse(const GenericRoomResponseStatus status) : ProtocolResponse(status)
+JoinRoomResponse::JoinRoomResponse(const ConsumingResponseStatus status) : ProtocolResponse(status)
 {}
 
-CreateRoomResponse::CreateRoomResponse(const GenericRoomResponseStatus status, const unsigned int roomId) :
+CreateRoomResponse::CreateRoomResponse(const GenericResponseStatus status, const unsigned int roomId) :
     ProtocolResponse(status),
     roomId(roomId)
 {}
 
-GetRoomsResponse::GetRoomsResponse(const GenericRoomResponseStatus status, const std::vector<RoomData*> &rooms)
+GetRoomsResponse::GetRoomsResponse(const GenericResponseStatus status, const std::vector<Room*> &rooms)
     : ProtocolResponse(status), rooms(rooms)
 {}
 
-GetPlayersInRoomResponse::GetPlayersInRoomResponse(const GetPlayersInRoomStatus status,
-                                                   const std::vector<std::string> &players)
+GetPlayersInRoomResponse::GetPlayersInRoomResponse(const ConsumingResponseStatus status,
+                                                   const std::optional<std::vector<LoggedUser*>> &players)
     : ProtocolResponse(status), players(players)
 {}
 

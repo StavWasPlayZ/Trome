@@ -1,16 +1,6 @@
 #pragma once
 
-/**
- * DO NOT INCLUDE "infrastructure/RoomData.h".
- *
- * this file already includes manager/LoggedUser.h
- * ...that includes infrastructure/Client.h
- * ...that includes handler/IRequestHandler.h
- * ...that includes infrastructure/request/RequestInfo.h
- * ...which has enum class RequestCode : unsigned char;
- * ...which includes "infrastructure/RoomData.h".
- */
-
+#include "RoomData.h"
 #include "db/IDatabase.h"
 #include "manager/LoggedUser.h"
 

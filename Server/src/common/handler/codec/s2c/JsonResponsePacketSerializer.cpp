@@ -3,7 +3,8 @@
 // For platform-correct network include
 #include "Constants.h"
 #include "infrastructure/Communicator.h"
-#include <list>
+
+#include <infrastructure/RoomData.h>
 
 // fucking windows and their stupid ass macros cost me 1 hour 30
 #ifdef ERROR
@@ -47,7 +48,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const LogoutResponse &re
 OBuffer JsonResponsePacketSerializer::serializeResponse(const JoinRoomResponse &response)
 {
     nlohmann::json data;
-    serializeBaseResponseToJson<GenericRoomResponseStatus>(data, response);
+    serializeBaseResponseToJson<ConsumingResponseStatus>(data, response);
 
     return serializeJsonToProtocol(ResponseCode::JOIN_ROOM, data);
 }
@@ -55,7 +56,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const JoinRoomResponse &
 OBuffer JsonResponsePacketSerializer::serializeResponse(const CreateRoomResponse &response)
 {
     nlohmann::json data;
-    serializeBaseResponseToJson<GenericRoomResponseStatus>(data, response);
+    serializeBaseResponseToJson<GenericResponseStatus>(data, response);
 
     data["room_id"] = response.roomId;
 
@@ -66,19 +67,23 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetRoomsResponse &
 {
 
     nlohmann::json data;
-    serializeBaseResponseToJson<GenericRoomResponseStatus>(data, response);
+    serializeBaseResponseToJson<GenericResponseStatus>(data, response);
 
     nlohmann::json rooms = nlohmann::json::array();
 
 	for (const auto& room : response.rooms)
     {
         nlohmann::json roomObj;
+	    const RoomData& roomData = room->getData();
 
-		roomObj["id"] = room->id;
-		roomObj["name"] = room->name;
-        roomObj["max_players"] = room->maxPlayers;
-        roomObj["status"] = room->status;
-        roomObj["time_per_question"] = room->timePerQuestion;
+		roomObj["id"] = roomData.id;
+		roomObj["name"] = roomData.name;
+        roomObj["max_players"] = roomData.maxPlayers;
+        roomObj["status"] = roomData.status;
+        roomObj["time_per_question"] = roomData.timePerQuestion;
+
+	    // Also add the amount of players currently in the room.
+	    roomObj["players_count"] = room->getAllUsers().size();
 
         rooms.push_back(roomObj);
 	}
@@ -91,8 +96,24 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetRoomsResponse &
 OBuffer JsonResponsePacketSerializer::serializeResponse(const GetPlayersInRoomResponse &response)
 {
     nlohmann::json data;
-    serializeBaseResponseToJson<GetPlayersInRoomStatus>(data, response);
-    data["players"] = response.players;
+    serializeBaseResponseToJson<ConsumingResponseStatus>(data, response);
+
+    if (response.players.has_value())
+    {
+        nlohmann::json players = nlohmann::json::array();
+
+        for (const auto& player : response.players.value())
+        {
+            nlohmann::json playerObj;
+
+            playerObj["id"] = player->getId();
+            playerObj["username"] = player->getUsername();
+
+            players.push_back(playerObj);
+        }
+
+        data["players"] = players;
+    }
 
     return serializeJsonToProtocol(ResponseCode::GET_PLAYER_IN_ROOM, data);
 }
