@@ -18,6 +18,6 @@ RequestResult IRequestHandler::errorUnimplementedResult() const
                 "Unimplemented server-side"
             )
         ),
-        new T(*(T*)this)
+        new T(*static_cast<T *>(this))
     );
 }

@@ -1,14 +1,48 @@
 #pragma once
 
-#include <string>
+#include "infrastructure/UserStatistics.h"
 
+#include <optional>
+#include <string>
+#include <vector>
+
+class Room;
+class LoggedUser;
 
 enum class ResponseCode : unsigned char
 {
 	ERROR = 0,
-	LOGIN = 1,
-	SIGNUP = 2
+	LOGIN,
+	SIGNUP,
+	LOGOUT,
+	JOIN_ROOM,
+	CREATE_ROOM,
+	GET_ROOMS,
+	GET_PLAYER_IN_ROOM,
+	GET_HIGH_SCORES,
+	GET_PERSONAL_STATISTICS
 };
+
+// Generic statuses
+
+enum class GenericResponseStatus : unsigned int
+{
+    SUCCESS = 1,
+    ERROR_INTERNAL = 0
+};
+
+/**
+ * The status of a response that takes in a resource.
+ *
+ * May be of any type.
+ */
+enum class ConsumingResponseStatus : unsigned char
+{
+    SUCCESS = 1,
+    ERROR_UNKNOWN_RESOURCE,
+    ERROR_INTERNAL = 0,
+};
+
 
 /**
  * S - The enum Status type
@@ -102,6 +136,54 @@ struct ErrorResponse : ProtocolResponse<ErrorStatus>
 	ErrorResponse(ErrorStatus status, const std::string& message);
 	
 	const std::string message;
+};
+
+//TODO: Provide room metadata
+struct JoinRoomResponse : ProtocolResponse<ConsumingResponseStatus>
+{
+    explicit JoinRoomResponse(ConsumingResponseStatus status);
+};
+
+struct CreateRoomResponse : ProtocolResponse<GenericResponseStatus>
+{
+    explicit CreateRoomResponse(GenericResponseStatus status, unsigned int roomId);
+
+    const unsigned int roomId;
+};
+
+struct GetRoomsResponse : ProtocolResponse<GenericResponseStatus>
+{
+    GetRoomsResponse(GenericResponseStatus status, const std::vector<Room*> &rooms);
+
+	const std::vector<Room*> rooms;
+};
+
+struct GetPlayersInRoomResponse : ProtocolResponse<ConsumingResponseStatus>
+{
+    GetPlayersInRoomResponse(ConsumingResponseStatus status, const std::optional<std::vector<LoggedUser*>> &players);
+
+	const std::optional<std::vector<LoggedUser*>> players;
+};
+
+enum class GeneralStatsStatus : unsigned int
+{
+    SUCCESS = 1,
+    ERROR = 0,
+	NOT_CONNECTED_ERROR = 2
+};
+
+struct GetHighScoresResponse : ProtocolResponse<GeneralStatsStatus>
+{
+    GetHighScoresResponse(GeneralStatsStatus status, const std::vector<std::pair<std::string, int>> &stats);
+
+    const std::vector<std::pair<std::string, int>> stats;
+};
+
+struct GetPersonalStatisticsResponse : ProtocolResponse<GeneralStatsStatus>
+{
+    GetPersonalStatisticsResponse(GeneralStatsStatus status, const UserStatistics &stats);
+
+    const UserStatistics stats;
 };
 
 

@@ -17,8 +17,8 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& info, const 
 {
     switch (info.id)
     {
-    case RequestCode::LOGIN: return login(info, (LoginRequest&) request);
-    case RequestCode::SIGNUP: return signup(info, (SignupRequest&) request);
+    case RequestCode::LOGIN: return login(info, static_cast<const LoginRequest&>(request));
+    case RequestCode::SIGNUP: return signup(info, static_cast<const SignupRequest&>(request));
 
     default: throw std::runtime_error("Unexpected request ID");
     }
@@ -38,8 +38,8 @@ RequestResult LoginRequestHandler::login(const RequestInfo& context, const Login
 
     return RequestResult(
         JsonResponsePacketSerializer::serializeResponse(response),
-        new LoginRequestHandler(*this)
-    ); // change this later to have a MenuRequestHandler instead of this
+        new MenuRequestHandler(this->m_handlerFactory)
+    );
 }
 
 RequestResult LoginRequestHandler::signup(const RequestInfo& context, const SignupRequest& request) const
@@ -56,6 +56,6 @@ RequestResult LoginRequestHandler::signup(const RequestInfo& context, const Sign
 
     return RequestResult(
         JsonResponsePacketSerializer::serializeResponse(response),
-        new LoginRequestHandler(*this)
-    ); // change this later to have a MenuRequestHandler instead of this
+        new MenuRequestHandler(this->m_handlerFactory)
+    );
 }

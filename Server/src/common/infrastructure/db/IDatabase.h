@@ -1,7 +1,11 @@
 #pragma once
 
-#include <optional>
+#include "infrastructure/Question.h"
+
 #include <ctre.hpp>
+#include <list>
+#include <optional>
+#include <unordered_map>
 
 class IDatabase
 {
@@ -30,7 +34,7 @@ public:
 	/**
 	 * Returns: The ID of the user matching the provided credentials; -1 otherwise.
 	 */
-	virtual unsigned int getIdOfUser(const std::string& username, const std::string& password) const = 0;
+	virtual unsigned int queryIdOfUser(const std::string& username, const std::string& password) const = 0;
 	/**
 	 * Adds a new user.
 	 * 
@@ -45,8 +49,53 @@ public:
 		const std::optional<std::string>& address
 	) const = 0;
 
+
+    virtual int queryQuestionsCount() const = 0;
+    virtual std::list<Question> queryQuestions(int amount) const = 0;
+
+    /**
+     * Add multiple questions to the DB.
+     *
+     * If no author name is provided, assuming server-instantiated.
+     */
+    virtual void addQuestions(std::vector<Question> questions, const std::optional<std::string>& authorName) const = 0;
+
+
+    // Adding to statistics:
+
+	virtual void addTime(const std::string &username, int time) = 0;
+	virtual void addTotalAns(const std::string &username, int ans = 1) = 0;
+	virtual void addCorrectAns(const std::string &username, int ans = 1) = 0;
+	virtual void addGamesPlayed(const std::string &username, int games = 1) = 0;
+	virtual void addPoints(const std::string &username, int points) = 0;
+
+    // Retrieving statistics:
+
+	virtual int queryTime(const std::string &username) const = 0;
+	virtual int queryTotalAns(const std::string &username) const = 0;
+	virtual int queryCorrectAns(const std::string &username) const = 0;
+	virtual int queryGamesPlayed(const std::string &username) const = 0;
+	virtual int queryPoints(const std::string &username) const = 0;
+    virtual float queryPlayerAverageAnsTime(const std::string &username) const = 0;
+
+	virtual std::unordered_map<std::string, int> queryHighScores(int limit = 20) const = 0;
+
 protected:
     IDatabase() = default;
+
+	
+	/**
+     * Returns: The ID of the user connected user; -1 otherwise.
+     */
+    virtual unsigned int queryIdOfUser(const std::string &username) const = 0;
+
+	/**
+	* Adds `n` to the specified column for the given user.
+	*
+	* Said column must be numerable.
+	*/
+    virtual void addToColumn(const std::string &username, const std::string &column, int n,
+                             const std::string &table) = 0;
 
     // Regexes.
 

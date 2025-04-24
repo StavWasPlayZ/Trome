@@ -48,7 +48,7 @@ SignupResponse LoginManager::signup(const RequestInfo &context, const SignupRequ
 
 LoginResponse LoginManager::login(const RequestInfo &context, const LoginRequest &request)
 {
-	const unsigned int userId = this->m_database.getIdOfUser(request.username, request.password);
+	const unsigned int userId = this->m_database.queryIdOfUser(request.username, request.password);
 
 	if (userId == -1)
 	{
@@ -60,20 +60,32 @@ LoginResponse LoginManager::login(const RequestInfo &context, const LoginRequest
 		return LoginResponse(LoginStatus::FAILED_ALREADY_LOGGED_IN);
 	}
 
-	this->m_loggedUsers.insert({request.username, LoggedUser(userId, request.username, &context.client)});
+	const auto result = this->m_loggedUsers.emplace(
+	    request.username,
+        LoggedUser(userId, request.username, &context.client)
+	);
+
+    this->clientToLoggedUser.emplace(&context.client, &result.first->second);
 
 	return LoginResponse(LoginStatus::SUCCESS, userId);
 }
 
-LogoutResponse LoginManager::logout(const std::string& username)
+LogoutResponse LoginManager::logout(const RequestInfo& context, const std::string &username)
 {
-	const auto it = this->m_loggedUsers.find(username);
+    const auto it = this->m_loggedUsers.find(username);
 
-	if (it == m_loggedUsers.end()) // if found
-	{
-		return LogoutResponse(LogoutStatus::FAILED_NOT_LOGGED_IN);
-	}
+    if (it == m_loggedUsers.end()) // if found
+    {
+        return LogoutResponse(LogoutStatus::FAILED_NOT_LOGGED_IN);
+    }
 
-	m_loggedUsers.erase(it);
-	return LogoutResponse(LogoutStatus::SUCCESS);
+    this->m_loggedUsers.erase(it);
+    this->clientToLoggedUser.erase(&context.client);
+
+    return LogoutResponse(LogoutStatus::SUCCESS);
+}
+
+LoggedUser &LoginManager::getUserByClient(const Client &client) const
+{
+    return *this->clientToLoggedUser.at(&client);
 }

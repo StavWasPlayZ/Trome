@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdlib>
 
 #include "infrastructure/Server.h"
 
@@ -10,6 +11,8 @@ void cmdHandler();
 
 int main()
 {
+    std::srand(std::time(nullptr));
+
 	server.run();
 	cmdHandler();
 }

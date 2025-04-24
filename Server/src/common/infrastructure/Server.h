@@ -26,8 +26,17 @@ public:
 private:
     Server();
 
+    /**
+    * Populates the Questions table of the DB with questions from opentdb.com
+    */
+    void populateQuestionsFromWeb(int amount = 100) const;
+    static std::vector<Question> deserializeWebQuestions(const nlohmann::json& data);
+
 	IDatabase& m_database;
+
 	LoginManager m_loginManager;
+    RoomManager m_roomManager;
+    StatisticsManager m_statisticsManager;
 	
 	RequestHandlerFactory m_handlerFactory;
 	Communicator& m_communicator;

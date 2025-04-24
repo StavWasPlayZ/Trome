@@ -35,7 +35,6 @@ add_executable (Server
   "src/common/exception/RegexViolationException.cpp"
   "src/common/exception/RegexViolationException.h"
   "src/common/Constants.h"
-  "src/common/Constants.cpp"
 
   "src/common/handler/IRequestHandler.h"
   "src/common/handler/IRequestHandler.tpp"
@@ -73,6 +72,23 @@ add_executable (Server
   "src/common/manager/LoginManager.cpp"
   "src/common/manager/LoggedUser.cpp"
   "src/common/manager/LoggedUser.h"
+
+  "src/common/infrastructure/Room.h"
+  "src/common/infrastructure/Room.cpp"
+  "src/common/manager/RoomManager.h"
+  "src/common/manager/RoomManager.cpp"
+
+  "src/common/manager/StatisticsManager.h"
+  "src/common/manager/StatisticsManager.cpp"
+  "src/common/infrastructure/RoomData.cpp"
+
+  "src/common/infrastructure/UserStatistics.h"
+  "src/common/infrastructure/UserStatistics.cpp"
+
+  "src/common/infrastructure/Question.cpp"
+  "src/common/infrastructure/Question.h"
+  "src/common/infrastructure/Game.h"
+  "src/common/infrastructure/Game.cpp"
 )
 
 # Platform-specific sources
@@ -98,7 +114,7 @@ endif()
 # Libraries
 include(FetchContent)
 
-#nlohmann_json
+# nlohmann_json
 FetchContent_Declare(
   json
   URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz
@@ -106,6 +122,30 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(json)
 
 target_link_libraries(Server PRIVATE nlohmann_json::nlohmann_json)
+
+# cpp-httplib
+FetchContent_Declare(
+  httplib
+  GIT_REPOSITORY https://github.com/yhirose/cpp-httplib.git
+  GIT_TAG v0.20.0
+)
+FetchContent_MakeAvailable(httplib)
+
+target_link_libraries(Server PRIVATE httplib)
+
+# For HTTPS support
+
+target_compile_definitions(Server PRIVATE CPPHTTPLIB_OPENSSL_SUPPORT)
+
+# In Windows, OpenSSL is not installed nor recognized by default.
+if (WIN32)
+  find_package(openssl REQUIRED)
+  set(OPENSSL_ROOT_DIR "C:\\OpenSSL-Win64")
+  set(OPENSSL_USE_STATIC_LIBS TRUE)
+  target_link_libraries(Server PRIVATE OpenSSL::SSL OpenSSL::Crypto)
+else ()
+  target_link_libraries(Server PRIVATE ssl crypto)
+endif ()
 
 # sqlite3
 add_library(sqlite3 STATIC lib/sqlite3/sqlite3.c)

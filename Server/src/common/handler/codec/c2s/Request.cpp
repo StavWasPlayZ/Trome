@@ -21,12 +21,48 @@ SignupRequest::SignupRequest(
     birthdate(birthdate)
 {}
 
+GetPlayersInRoomRequest::GetPlayersInRoomRequest(const unsigned int roomID) : roomID(roomID)
+{
+}
+
+ProtocolRequest::~ProtocolRequest() = default;
+
 ProtocolRequest *ProtocolRequest::fromRequest(const RequestInfo &info) {
     switch (info.id)
     {
-    case RequestCode::LOGIN: return new LoginRequest(JsonRequestPacketDeserializer::deserializeLoginRequest(info.data));
-    case RequestCode::SIGNUP: return new SignupRequest(JsonRequestPacketDeserializer::deserializeSignupRequest(info.data));
+    case RequestCode::LOGIN: return new LoginRequest(
+        JsonRequestPacketDeserializer::deserializeLoginRequest(info.data)
+    );
+    case RequestCode::SIGNUP: return new SignupRequest(
+        JsonRequestPacketDeserializer::deserializeSignupRequest(info.data)
+    );
+    case RequestCode::GET_PLAYERS_IN_ROOM: return new GetPlayersInRoomRequest(
+        JsonRequestPacketDeserializer::deserializeGetPlayersInRoomRequest(info.data)
+    );
+    case RequestCode::JOIN_ROOM: return new JoinRoomRequest(
+        JsonRequestPacketDeserializer::deserializeJoinRoomRequest(info.data)
+    );
+    case RequestCode::CREATE_ROOM: return new CreateRoomRequest(
+        JsonRequestPacketDeserializer::deserializeCreateRoomRequest(info.data)
+    );
+    case RequestCode::GET_ROOMS: return new GetRoomsRequest(
+        JsonRequestPacketDeserializer::deserializeGetRoomsRequest(info.data)
+    );
+    case RequestCode::GET_HIGH_SCORES: return new GetHighScoresRequest(
+        JsonRequestPacketDeserializer::deserializeGetHighScoresRequest(info.data)
+    );
+    case RequestCode::GET_PERSONAL_STATISTICS: return new GetPersonalStatisticsRequest(
+        JsonRequestPacketDeserializer::deserializeGetPersonalStatisticsRequest(info.data)
+    );
 
     default: throw std::invalid_argument("Invalid request ID");
     }
 }
+
+JoinRoomRequest::JoinRoomRequest(const unsigned int roomID) : roomID(roomID)
+{}
+
+CreateRoomRequest::CreateRoomRequest(const std::string &roomName, const unsigned int maxPlayers,
+                                     const unsigned int questionCount, const unsigned int answerTimeout)
+    : roomName(roomName), maxPlayers(maxPlayers), questionCount(questionCount), answerTimeout(answerTimeout)
+{}
