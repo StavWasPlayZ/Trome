@@ -50,10 +50,9 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo &info, const Protoc
     {
         return RequestResult(
             JsonResponsePacketSerializer::serializeResponse(
-                JoinRoomResponse(JoinRoomStatus::ERROR_UNKNOWN_ROOM)
+                JoinRoomResponse(ConsumingResponseStatus::ERROR_UNKNOWN_RESOURCE)
             ),
 
-            //TODO: RoomHandler?
             new MenuRequestHandler(*this)
         );
     }
@@ -62,7 +61,7 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo &info, const Protoc
 
     return RequestResult(
         JsonResponsePacketSerializer::serializeResponse(
-            JoinRoomResponse(JoinRoomStatus::SUCCESS)
+            JoinRoomResponse(ConsumingResponseStatus::SUCCESS)
         ),
 
         //TODO: RoomHandler?
@@ -72,6 +71,29 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo &info, const Protoc
 
 RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo &info, const ProtocolRequest &request) const
 {
+    const GetPlayersInRoomRequest &req = static_cast<const GetPlayersInRoomRequest &>(request);
+    const RoomManager &rManager = m_handlerFactory.getRoomManager();
+
+    const std::optional<Room*> room = rManager.getRoom(req.roomID);
+
+    if (!room)
+    {
+        return RequestResult(
+            JsonResponsePacketSerializer::serializeResponse(
+                GetPlayersInRoomResponse(ConsumingResponseStatus::ERROR_UNKNOWN_RESOURCE, std::nullopt)
+            ),
+
+            new MenuRequestHandler(*this)
+        );
+    }
+
+    return RequestResult(
+        JsonResponsePacketSerializer::serializeResponse(
+            GetPlayersInRoomResponse(ConsumingResponseStatus::SUCCESS, room.value()->getAllUsers())
+        ),
+
+        new MenuRequestHandler(*this)
+    );
 }
 
 RequestResult MenuRequestHandler::createRoom(const RequestInfo& info, const ProtocolRequest& request) const

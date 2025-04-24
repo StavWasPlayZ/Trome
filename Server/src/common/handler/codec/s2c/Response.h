@@ -3,9 +3,11 @@
 #include "infrastructure/RoomData.h"
 #include "infrastructure/UserStatistics.h"
 
+#include <optional>
 #include <string>
 #include <vector>
 
+class LoggedUser;
 
 enum class ResponseCode : unsigned char
 {
@@ -21,10 +23,24 @@ enum class ResponseCode : unsigned char
 	GET_PERSONAL_STATISTICS
 };
 
+// Generic statuses
+
 enum class GenericResponseStatus : unsigned int
 {
     SUCCESS = 1,
     ERROR_INTERNAL = 0
+};
+
+/**
+ * The status of a response that takes in a resource.
+ *
+ * May be of any type.
+ */
+enum class ConsumingResponseStatus : unsigned char
+{
+    SUCCESS = 1,
+    ERROR_UNKNOWN_RESOURCE,
+    ERROR_INTERNAL = 0,
 };
 
 
@@ -122,17 +138,10 @@ struct ErrorResponse : ProtocolResponse<ErrorStatus>
 	const std::string message;
 };
 
-enum class JoinRoomStatus : unsigned char
-{
-    SUCCESS = 1,
-    ERROR_UNKNOWN_ROOM,
-    ERROR_INTERNAL = 0,
-};
-
 //TODO: Provide room metadata
-struct JoinRoomResponse : ProtocolResponse<JoinRoomStatus>
+struct JoinRoomResponse : ProtocolResponse<ConsumingResponseStatus>
 {
-    explicit JoinRoomResponse(JoinRoomStatus status);
+    explicit JoinRoomResponse(ConsumingResponseStatus status);
 };
 
 struct CreateRoomResponse : ProtocolResponse<GenericResponseStatus>
@@ -149,18 +158,11 @@ struct GetRoomsResponse : ProtocolResponse<GenericResponseStatus>
 	const std::vector<RoomData*> rooms;
 };
 
-enum class GetPlayersInRoomStatus : unsigned int
+struct GetPlayersInRoomResponse : ProtocolResponse<ConsumingResponseStatus>
 {
-    SUCCESS = 1,
-    ERROR = 0,
-	NOT_IN_ROOM_ERROR = 2
-};
+    GetPlayersInRoomResponse(ConsumingResponseStatus status, const std::optional<std::vector<LoggedUser*>> &players);
 
-struct GetPlayersInRoomResponse : ProtocolResponse<GetPlayersInRoomStatus>
-{
-    GetPlayersInRoomResponse(GetPlayersInRoomStatus status, const std::vector<std::string> &players);
-
-	const std::vector<std::string> players;
+	const std::optional<std::vector<LoggedUser*>> players;
 };
 
 enum class GeneralStatsStatus : unsigned int
