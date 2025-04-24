@@ -47,7 +47,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const LogoutResponse &re
 OBuffer JsonResponsePacketSerializer::serializeResponse(const JoinRoomResponse &response)
 {
     nlohmann::json data;
-    serializeBaseResponseToJson<GenericRoomResponseStatus>(data, response);
+    serializeBaseResponseToJson<GenericResponseStatus>(data, response);
 
     return serializeJsonToProtocol(ResponseCode::JOIN_ROOM, data);
 }
@@ -55,7 +55,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const JoinRoomResponse &
 OBuffer JsonResponsePacketSerializer::serializeResponse(const CreateRoomResponse &response)
 {
     nlohmann::json data;
-    serializeBaseResponseToJson<GenericRoomResponseStatus>(data, response);
+    serializeBaseResponseToJson<GenericResponseStatus>(data, response);
 
     data["room_id"] = response.roomId;
 
@@ -66,7 +66,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetRoomsResponse &
 {
 
     nlohmann::json data;
-    serializeBaseResponseToJson<GenericRoomResponseStatus>(data, response);
+    serializeBaseResponseToJson<GenericResponseStatus>(data, response);
 
     nlohmann::json rooms = nlohmann::json::array();
 

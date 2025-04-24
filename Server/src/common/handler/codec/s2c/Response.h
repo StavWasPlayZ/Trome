@@ -21,6 +21,13 @@ enum class ResponseCode : unsigned char
 	GET_PERSONAL_STATISTICS
 };
 
+enum class GenericResponseStatus : unsigned int
+{
+    SUCCESS = 1,
+    ERROR_INTERNAL = 0
+};
+
+
 /**
  * S - The enum Status type
  */
@@ -115,27 +122,29 @@ struct ErrorResponse : ProtocolResponse<ErrorStatus>
 	const std::string message;
 };
 
-enum class GenericRoomResponseStatus : unsigned int
+enum class JoinRoomStatus : unsigned char
 {
-	SUCCESS = 1,
-	ERROR = 0
+    SUCCESS = 1,
+    ERROR_UNKNOWN_ROOM,
+    ERROR_INTERNAL = 0,
 };
 
-struct JoinRoomResponse : ProtocolResponse<GenericRoomResponseStatus>
+//TODO: Provide room metadata
+struct JoinRoomResponse : ProtocolResponse<JoinRoomStatus>
 {
-    explicit JoinRoomResponse(GenericRoomResponseStatus status);
+    explicit JoinRoomResponse(JoinRoomStatus status);
 };
 
-struct CreateRoomResponse : ProtocolResponse<GenericRoomResponseStatus>
+struct CreateRoomResponse : ProtocolResponse<GenericResponseStatus>
 {
-    explicit CreateRoomResponse(GenericRoomResponseStatus status, unsigned int roomId);
+    explicit CreateRoomResponse(GenericResponseStatus status, unsigned int roomId);
 
     const unsigned int roomId;
 };
 
-struct GetRoomsResponse : ProtocolResponse<GenericRoomResponseStatus>
+struct GetRoomsResponse : ProtocolResponse<GenericResponseStatus>
 {
-    GetRoomsResponse(GenericRoomResponseStatus status, const std::vector<RoomData*> &rooms);
+    GetRoomsResponse(GenericResponseStatus status, const std::vector<RoomData*> &rooms);
 
 	const std::vector<RoomData*> rooms;
 };
