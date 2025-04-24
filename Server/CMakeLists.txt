@@ -136,7 +136,10 @@ target_link_libraries(Server PRIVATE httplib)
 # For HTTPS support
 
 target_compile_definitions(Server PRIVATE CPPHTTPLIB_OPENSSL_SUPPORT)
-target_link_libraries(Server PRIVATE ssl crypto)
+set(OPENSSL_ROOT_DIR "C:\\OpenSSL-Win64")
+set(OPENSSL_USE_STATIC_LIBS TRUE)
+find_package(openssl REQUIRED)
+target_link_libraries(Server PRIVATE OpenSSL::SSL OpenSSL::Crypto)
 
 # sqlite3
 add_library(sqlite3 STATIC lib/sqlite3/sqlite3.c)
