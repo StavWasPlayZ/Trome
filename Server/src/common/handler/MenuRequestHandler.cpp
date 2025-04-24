@@ -69,7 +69,7 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo &info, const Protoc
     );
 }
 
-RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo &info, const ProtocolRequest &request) const
+RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo &, const ProtocolRequest &request) const
 {
     const GetPlayersInRoomRequest &req = static_cast<const GetPlayersInRoomRequest &>(request);
     const RoomManager &rManager = m_handlerFactory.getRoomManager();

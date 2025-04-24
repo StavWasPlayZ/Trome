@@ -13,7 +13,7 @@ public:
     void deleteRoom(int roomID);
 
     RoomStatus getRoomStatus(int roomID) const;
-    std::vector<RoomData*> getRooms() const;
+    std::vector<Room*> getRooms() const;
     std::optional<Room*> getRoom(int roomID) const;
 
 private:

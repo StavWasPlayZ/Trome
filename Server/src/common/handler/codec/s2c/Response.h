@@ -1,12 +1,12 @@
 #pragma once
 
-#include "infrastructure/RoomData.h"
 #include "infrastructure/UserStatistics.h"
 
 #include <optional>
 #include <string>
 #include <vector>
 
+class Room;
 class LoggedUser;
 
 enum class ResponseCode : unsigned char
@@ -153,9 +153,9 @@ struct CreateRoomResponse : ProtocolResponse<GenericResponseStatus>
 
 struct GetRoomsResponse : ProtocolResponse<GenericResponseStatus>
 {
-    GetRoomsResponse(GenericResponseStatus status, const std::vector<RoomData*> &rooms);
+    GetRoomsResponse(GenericResponseStatus status, const std::vector<Room*> &rooms);
 
-	const std::vector<RoomData*> rooms;
+	const std::vector<Room*> rooms;
 };
 
 struct GetPlayersInRoomResponse : ProtocolResponse<ConsumingResponseStatus>

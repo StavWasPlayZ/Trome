@@ -27,7 +27,7 @@ CreateRoomResponse::CreateRoomResponse(const GenericResponseStatus status, const
     roomId(roomId)
 {}
 
-GetRoomsResponse::GetRoomsResponse(const GenericResponseStatus status, const std::vector<RoomData*> &rooms)
+GetRoomsResponse::GetRoomsResponse(const GenericResponseStatus status, const std::vector<Room*> &rooms)
     : ProtocolResponse(status), rooms(rooms)
 {}
 
