@@ -2,6 +2,7 @@
 
 #include "infrastructure/UserStatistics.h"
 
+#include <infrastructure/RoomData.h>
 #include <optional>
 #include <string>
 #include <vector>
@@ -20,7 +21,12 @@ enum class ResponseCode : unsigned char
 	GET_ROOMS,
 	GET_PLAYER_IN_ROOM,
 	GET_HIGH_SCORES,
-	GET_PERSONAL_STATISTICS
+	GET_PERSONAL_STATISTICS,
+	CLOSE_ROOM,
+	START_GAME,
+	GET_ROOM_STATE,
+	LEAVE_ROOM,
+	UPDATE_ROOM_DATA
 };
 
 // Generic statuses
@@ -184,6 +190,38 @@ struct GetPersonalStatisticsResponse : ProtocolResponse<GeneralStatsStatus>
     GetPersonalStatisticsResponse(GeneralStatsStatus status, const UserStatistics &stats);
 
     const UserStatistics stats;
+};
+
+struct CloseRoomResponse : ProtocolResponse<GenericResponseStatus>
+{
+    explicit CloseRoomResponse(GenericResponseStatus status);
+};
+
+struct StartGameResponse : ProtocolResponse<GenericResponseStatus>
+{
+    explicit StartGameResponse(GenericResponseStatus status);
+};
+
+struct LeaveRoomResponse : ProtocolResponse<GenericResponseStatus>
+{
+    explicit LeaveRoomResponse(GenericResponseStatus status);
+};
+
+struct GetRoomStateResponse : ProtocolResponse<GenericResponseStatus>
+{
+    GetRoomStateResponse(GenericResponseStatus protocolStatus, RoomStatus roomStatus, bool hasGameBegan,
+                         const std::vector<LoggedUser*>& players, int answerCount, int answerTimeOut);
+
+	RoomStatus roomStatus;
+    bool hasGameBegan;
+    std::vector<LoggedUser*> players;
+    int answerCount;
+    int answerTimeOut;
+};
+
+struct UpdateRoomDataResponse : ProtocolResponse<GenericResponseStatus>
+{
+    explicit UpdateRoomDataResponse(GenericResponseStatus status);
 };
 
 

@@ -86,6 +86,41 @@ public:
      */
     static OBuffer serializeResponse(const GetPersonalStatisticsResponse &response);
 
+    /**
+     * Returns: The serialized object.
+     *
+     * NOTE: The returned resource must be freed.
+     */
+    static OBuffer serializeResponse(const CloseRoomResponse &response);
+
+    /**
+     * Returns: The serialized object.
+     *
+     * NOTE: The returned resource must be freed.
+     */
+    static OBuffer serializeResponse(const StartGameResponse &response);
+
+    /**
+     * Returns: The serialized object.
+     *
+     * NOTE: The returned resource must be freed.
+     */
+    static OBuffer serializeResponse(const LeaveRoomResponse &response);
+
+    /**
+     * Returns: The serialized object.
+     *
+     * NOTE: The returned resource must be freed.
+     */
+    static OBuffer serializeResponse(const GetRoomStateResponse &response);
+
+    /**
+     * Returns: The serialized object.
+     *
+     * NOTE: The returned resource must be freed.
+     */
+    static OBuffer serializeResponse(const UpdateRoomDataResponse &response);
+
 private:
 	/**
 	 * Serializes the base response into the provided json.
@@ -98,6 +133,8 @@ private:
 	 */
 	template <typename S>
     static void serializeRegistrationResponseToJson(nlohmann::json &json, const RegistrationResponse<S> &response);
+
+    static nlohmann::json serializePlayersToJson(const std::vector<LoggedUser *> &players);
 
 	/**
 	 * Converts the provided json into a writable resource,
