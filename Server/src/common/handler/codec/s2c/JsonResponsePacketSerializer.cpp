@@ -100,19 +100,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetPlayersInRoomRe
 
     if (response.players.has_value())
     {
-        nlohmann::json players = nlohmann::json::array();
-
-        for (const auto& player : response.players.value())
-        {
-            nlohmann::json playerObj;
-
-            playerObj["id"] = player->getId();
-            playerObj["username"] = player->getUsername();
-
-            players.push_back(playerObj);
-        }
-
-        data["players"] = players;
+        data["players"] = serializePlayersToJson(response.players.value());
     }
 
     return serializeJsonToProtocol(ResponseCode::GET_PLAYER_IN_ROOM, data);
@@ -189,7 +177,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetRoomStateRespon
 
     data["answer_count"] = response.answerCount;
     data["answer_timeout"] = response.answerTimeOut;
-    data["players"] = response.players;
+    data["players"] = serializePlayersToJson(response.players);
     data["has_game_began"] = response.hasGameBegan;
     data["room_status"] = response.roomStatus;
 
@@ -202,6 +190,23 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const UpdateRoomDataResp
     serializeBaseResponseToJson<GenericResponseStatus>(data, response);
 
     return serializeJsonToProtocol(ResponseCode::UPDATE_ROOM_DATA, data);
+}
+
+nlohmann::json JsonResponsePacketSerializer::serializePlayersToJson(const std::vector<LoggedUser *> &players)
+{
+    nlohmann::json result = nlohmann::json::array();
+
+    for (const auto& player : players)
+    {
+        nlohmann::json playerObj;
+
+        playerObj["id"] = player->getId();
+        playerObj["username"] = player->getUsername();
+
+        result.push_back(playerObj);
+    }
+
+    return result;
 }
 
 OBuffer JsonResponsePacketSerializer::serializeJsonToProtocol(const ResponseCode msgCode, const nlohmann::json &data)

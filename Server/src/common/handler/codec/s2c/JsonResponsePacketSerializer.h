@@ -134,6 +134,8 @@ private:
 	template <typename S>
     static void serializeRegistrationResponseToJson(nlohmann::json &json, const RegistrationResponse<S> &response);
 
+    static nlohmann::json serializePlayersToJson(const std::vector<LoggedUser *> &players);
+
 	/**
 	 * Converts the provided json into a writable resource,
 	 * prepending the necessary binary headers.
