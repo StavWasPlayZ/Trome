@@ -197,9 +197,9 @@ struct CloseRoomResponse : ProtocolResponse<GenericResponseStatus>
     explicit CloseRoomResponse(GenericResponseStatus status);
 };
 
-struct StartRoomResponse : ProtocolResponse<GenericResponseStatus>
+struct StartGameResponse : ProtocolResponse<GenericResponseStatus>
 {
-    explicit StartRoomResponse(GenericResponseStatus status);
+    explicit StartGameResponse(GenericResponseStatus status);
 };
 
 struct LeaveRoomResponse : ProtocolResponse<GenericResponseStatus>

@@ -47,7 +47,7 @@ GetPersonalStatisticsResponse::GetPersonalStatisticsResponse(const GeneralStatsS
 CloseRoomResponse::CloseRoomResponse(const GenericResponseStatus status) : ProtocolResponse(status)
 {}
 
-StartRoomResponse::StartRoomResponse(const GenericResponseStatus status) : ProtocolResponse(status)
+StartGameResponse::StartGameResponse(const GenericResponseStatus status) : ProtocolResponse(status)
 {}
 
 LeaveRoomResponse::LeaveRoomResponse(const GenericResponseStatus status) : ProtocolResponse(status)

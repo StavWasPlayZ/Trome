@@ -158,6 +158,51 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetPersonalStatist
     return serializeJsonToProtocol(ResponseCode::GET_PERSONAL_STATISTICS, data);
 }
 
+OBuffer JsonResponsePacketSerializer::serializeResponse(const CloseRoomResponse &response)
+{
+    nlohmann::json data;
+    serializeBaseResponseToJson<GenericResponseStatus>(data, response);
+
+    return serializeJsonToProtocol(ResponseCode::CLOSE_ROOM, data);
+}
+
+OBuffer JsonResponsePacketSerializer::serializeResponse(const StartGameResponse &response)
+{
+    nlohmann::json data;
+    serializeBaseResponseToJson<GenericResponseStatus>(data, response);
+
+    return serializeJsonToProtocol(ResponseCode::START_GAME, data);
+}
+
+OBuffer JsonResponsePacketSerializer::serializeResponse(const LeaveRoomResponse &response)
+{
+    nlohmann::json data;
+    serializeBaseResponseToJson<GenericResponseStatus>(data, response);
+
+    return serializeJsonToProtocol(ResponseCode::LEAVE_ROOM, data);
+}
+
+OBuffer JsonResponsePacketSerializer::serializeResponse(const GetRoomStateResponse &response)
+{
+    nlohmann::json data;
+    serializeBaseResponseToJson<GenericResponseStatus>(data, response);
+    data["answer_count"] = response.answerCount;
+    data["answer_timeout"] = response.answerTimeOut;
+    data["players"] = response.players;
+    data["has_game_began"] = response.hasGameBegan;
+    data["room_status"] = response.roomStatus;
+
+    return serializeJsonToProtocol(ResponseCode::UPDATE_ROOM_DATA, data);
+}
+
+OBuffer JsonResponsePacketSerializer::serializeResponse(const UpdateRoomDataResponse &response)
+{
+    nlohmann::json data;
+    serializeBaseResponseToJson<GenericResponseStatus>(data, response);
+
+    return serializeJsonToProtocol(ResponseCode::UPDATE_ROOM_DATA, data);
+}
+
 OBuffer JsonResponsePacketSerializer::serializeJsonToProtocol(const ResponseCode msgCode, const nlohmann::json &data)
 {
 	const std::string dataStr = data.dump();
