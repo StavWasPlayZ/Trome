@@ -43,3 +43,22 @@ GetHighScoresResponse::GetHighScoresResponse(const GeneralStatsStatus status, co
 GetPersonalStatisticsResponse::GetPersonalStatisticsResponse(const GeneralStatsStatus status, const UserStatistics &stats)
     : ProtocolResponse(status), stats(stats)
 {}
+
+CloseRoomResponse::CloseRoomResponse(const GenericResponseStatus status) : ProtocolResponse(status)
+{}
+
+StartRoomResponse::StartRoomResponse(const GenericResponseStatus status) : ProtocolResponse(status)
+{}
+
+LeaveRoomResponse::LeaveRoomResponse(const GenericResponseStatus status) : ProtocolResponse(status)
+{}
+
+GetRoomStateResponse::GetRoomStateResponse(GenericResponseStatus protocolStatus, unsigned int roomStatus,
+                                           bool hasGameBegan, std::list<std::string> players, unsigned int answerCount,
+                                           unsigned int answerTimeOut)
+    : ProtocolResponse(protocolStatus), roomStatus(roomStatus), hasGameBegan(hasGameBegan), players(players),
+      answerCount(answerCount), answerTimeOut(answerTimeOut)
+{}
+
+UpdateRoomDataResponse::UpdateRoomDataResponse(const GenericResponseStatus status) : ProtocolResponse(status)
+{}
