@@ -55,22 +55,22 @@ CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(co
 	);
 }
 
-CloseRoomRequest JsonRequestPacketDeserializer::deserializeCloseRoomRequest(const nlohmann::json &data)
+CloseRoomRequest JsonRequestPacketDeserializer::deserializeCloseRoomRequest(const nlohmann::json &)
 {
     return CloseRoomRequest();
 }
 
-StartGameRequest JsonRequestPacketDeserializer::deserializeStartGameRequest(const nlohmann::json &data)
+StartGameRequest JsonRequestPacketDeserializer::deserializeStartGameRequest(const nlohmann::json &)
 {
     return StartGameRequest();
 }
 
-GetRoomStateRequest JsonRequestPacketDeserializer::deserializeGetRoomStateRequest(const nlohmann::json &data)
+GetRoomStateRequest JsonRequestPacketDeserializer::deserializeGetRoomStateRequest(const nlohmann::json &)
 {
     return GetRoomStateRequest();
 }
 
-LeaveRoomRequest JsonRequestPacketDeserializer::deserializeLeaveRoomRequest(const nlohmann::json &data)
+LeaveRoomRequest JsonRequestPacketDeserializer::deserializeLeaveRoomRequest(const nlohmann::json &)
 {
     return LeaveRoomRequest();
 }
@@ -78,9 +78,11 @@ LeaveRoomRequest JsonRequestPacketDeserializer::deserializeLeaveRoomRequest(cons
 UpdateRoomDataRequest JsonRequestPacketDeserializer::deserializeUpdateRoomDataRequest(const nlohmann::json &data)
 {
     return UpdateRoomDataRequest(
-        data.at("user_id"), data.at("roomName"), 
-        data.at("status"), data.at("maxPlayers"),
-        data.at("answerTime"), data.at("questionCount")
+        data.at("room_name"),
+        data.at("status"),
+        data.at("max_players"),
+        data.at("answer_time"),
+        data.at("question_count")
     );
 }
 
