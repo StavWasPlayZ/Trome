@@ -53,9 +53,9 @@ StartGameResponse::StartGameResponse(const GenericResponseStatus status) : Proto
 LeaveRoomResponse::LeaveRoomResponse(const GenericResponseStatus status) : ProtocolResponse(status)
 {}
 
-GetRoomStateResponse::GetRoomStateResponse(GenericResponseStatus protocolStatus, unsigned int roomStatus,
-                                           bool hasGameBegan, std::list<std::string> players, unsigned int answerCount,
-                                           unsigned int answerTimeOut)
+GetRoomStateResponse::GetRoomStateResponse(const GenericResponseStatus protocolStatus, const RoomStatus roomStatus,
+                                           const bool hasGameBegan, const std::vector<LoggedUser*>& players,
+                                           const int answerCount, const int answerTimeOut)
     : ProtocolResponse(protocolStatus), roomStatus(roomStatus), hasGameBegan(hasGameBegan), players(players),
       answerCount(answerCount), answerTimeOut(answerTimeOut)
 {}

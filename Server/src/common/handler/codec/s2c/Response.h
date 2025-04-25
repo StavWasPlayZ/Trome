@@ -2,10 +2,10 @@
 
 #include "infrastructure/UserStatistics.h"
 
+#include <infrastructure/RoomData.h>
 #include <optional>
 #include <string>
 #include <vector>
-#include <list>
 
 class Room;
 class LoggedUser;
@@ -209,14 +209,14 @@ struct LeaveRoomResponse : ProtocolResponse<GenericResponseStatus>
 
 struct GetRoomStateResponse : ProtocolResponse<GenericResponseStatus>
 {
-    GetRoomStateResponse(GenericResponseStatus protocolStatus, unsigned int roomStatus, bool hasGameBegan,
-                         std::list<std::string> players, unsigned int answerCount, unsigned int answerTimeOut);
+    GetRoomStateResponse(GenericResponseStatus protocolStatus, RoomStatus roomStatus, bool hasGameBegan,
+                         const std::vector<LoggedUser*>& players, int answerCount, int answerTimeOut);
 
-	unsigned int roomStatus;
+	RoomStatus roomStatus;
     bool hasGameBegan;
-    std::list<std::string> players;
-    unsigned int answerCount;
-    unsigned int answerTimeOut;
+    std::vector<LoggedUser*> players;
+    int answerCount;
+    int answerTimeOut;
 };
 
 struct UpdateRoomDataResponse : ProtocolResponse<GenericResponseStatus>
