@@ -4,7 +4,6 @@
 #include <optional>
 
 #include "infrastructure/request/RequestInfo.h"
-#include "infrastructure/RoomData.h"
 
 enum class RequestCode : unsigned char
 {
@@ -121,8 +120,14 @@ struct LeaveRoomRequest : ProtocolRequest
 
 struct UpdateRoomDataRequest : ProtocolRequest
 {
-    UpdateRoomDataRequest(const unsigned int userId, const RoomData& roomData);
+    UpdateRoomDataRequest(const unsigned int userId, const std::string &roomName,
+                          const unsigned int status, const int maxPlayers, const int timePerQuestion,
+                          const int questionsCount);
 
 	const unsigned int userId;
-    const RoomData roomData;
+    const std::string roomName;
+    const unsigned int status;
+    const int maxPlayers;
+    const int timePerQuestion;
+    const int questionsCount;
 };

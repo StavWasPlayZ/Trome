@@ -55,6 +55,35 @@ CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(co
 	);
 }
 
+CloseRoomRequest JsonRequestPacketDeserializer::deserializeCloseRoomRequest(const nlohmann::json &data)
+{
+    return CloseRoomRequest();
+}
+
+StartGameRequest JsonRequestPacketDeserializer::deserializeStartGameRequest(const nlohmann::json &data)
+{
+    return StartGameRequest();
+}
+
+GetRoomStateRequest JsonRequestPacketDeserializer::deserializeGetRoomStateRequest(const nlohmann::json &data)
+{
+    return GetRoomStateRequest();
+}
+
+LeaveRoomRequest JsonRequestPacketDeserializer::deserializeLeaveRoomRequest(const nlohmann::json &data)
+{
+    return LeaveRoomRequest();
+}
+
+UpdateRoomDataRequest JsonRequestPacketDeserializer::deserializeUpdateRoomDataRequest(const nlohmann::json &data)
+{
+    return UpdateRoomDataRequest(
+        data.at("user_id"), data.at("roomName"), 
+        data.at("status"), data.at("maxPlayers"),
+        data.at("answerTime"), data.at("questionCount")
+    );
+}
+
 nlohmann::json JsonRequestPacketDeserializer::readJson(const unsigned char *data, const int jsonLen)
 {
 	// Avoid naughty buffer overflows

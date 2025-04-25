@@ -54,6 +54,21 @@ ProtocolRequest *ProtocolRequest::fromRequest(const RequestInfo &info) {
     case RequestCode::GET_PERSONAL_STATISTICS: return new GetPersonalStatisticsRequest(
         JsonRequestPacketDeserializer::deserializeGetPersonalStatisticsRequest(info.data)
     );
+    case RequestCode::CLOSE_ROOM: return new CloseRoomRequest(
+            JsonRequestPacketDeserializer::deserializeCloseRoomRequest(info.data)
+    );
+    case RequestCode::START_GAME:return new StartGameRequest(
+            JsonRequestPacketDeserializer::deserializeStartGameRequest(info.data)
+    );
+    case RequestCode::GET_ROOM_STATE: return new GetRoomStateRequest(
+            JsonRequestPacketDeserializer::deserializeGetRoomStateRequest(info.data)
+    );
+    case RequestCode::LEAVE_ROOM: return new LeaveRoomRequest(
+            JsonRequestPacketDeserializer::deserializeLeaveRoomRequest(info.data)
+    );
+    case RequestCode::UPDATE_ROOM_DATA: return new UpdateRoomDataRequest(
+            JsonRequestPacketDeserializer::deserializeUpdateRoomDataRequest(info.data)
+    );
 
     default: throw std::invalid_argument("Invalid request ID");
     }
@@ -67,6 +82,10 @@ CreateRoomRequest::CreateRoomRequest(const std::string &roomName, const unsigned
     : roomName(roomName), maxPlayers(maxPlayers), questionCount(questionCount), answerTimeout(answerTimeout)
 {}
 
-UpdateRoomDataRequest::UpdateRoomDataRequest(const unsigned int userId, const RoomData &roomData)
-    : userId(userId), roomData(roomData)
+UpdateRoomDataRequest::UpdateRoomDataRequest(const unsigned int userId, const std::string &roomName,
+                                             const unsigned int status, const int maxPlayers, const int timePerQuestion,
+                                             const int questionsCount)
+    : userId(userId), roomName(roomName), status(status), maxPlayers(maxPlayers),
+      timePerQuestion(timePerQuestion),
+      questionsCount(questionsCount)
 {}
