@@ -120,7 +120,7 @@ struct LeaveRoomRequest : ProtocolRequest
 
 struct UpdateRoomDataRequest : ProtocolRequest
 {
-    UpdateRoomDataRequest(unsigned int userId, const std::string &roomName, int maxPlayers,
+    UpdateRoomDataRequest(const std::string &roomName, int maxPlayers,
                           int timePerQuestion, int questionsCount);
 
     const std::string roomName;

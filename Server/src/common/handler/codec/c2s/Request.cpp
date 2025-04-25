@@ -82,10 +82,11 @@ CreateRoomRequest::CreateRoomRequest(const std::string &roomName, const int maxP
     : roomName(roomName), maxPlayers(maxPlayers), questionCount(questionCount), answerTimeout(answerTimeout)
 {}
 
-UpdateRoomDataRequest::UpdateRoomDataRequest(const unsigned int userId, const std::string &roomName,
-                                             const RoomData &status, const int maxPlayers,
-                                             const int timePerQuestion, const int questionsCount)
-    : userId(userId), roomName(roomName), status(status), maxPlayers(maxPlayers),
+UpdateRoomDataRequest::UpdateRoomDataRequest(const std::string &roomName,
+                                             const int maxPlayers,
+                                             const int timePerQuestion,
+                                             const int questionsCount)
+    : roomName(roomName), maxPlayers(maxPlayers),
       timePerQuestion(timePerQuestion),
       questionsCount(questionsCount)
 {}

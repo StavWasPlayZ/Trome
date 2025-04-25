@@ -1,7 +1,6 @@
 #pragma once
 
 #include "IRequestHandler.h"
-#include "manager/LoggedUser.h"
 
 class MenuRequestHandler : public IRequestHandler
 {
@@ -20,6 +19,4 @@ private:
     RequestResult getHighScores(const RequestInfo& info, const ProtocolRequest& request) const;
     RequestResult getPersonalStatistics(const RequestInfo& info, const ProtocolRequest& request) const;
     RequestResult logout(const RequestInfo& info, const ProtocolRequest& request) const;
-
-    LoggedUser& getUserByInfo(const RequestInfo& info) const;
 };

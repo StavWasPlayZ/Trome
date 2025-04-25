@@ -178,8 +178,3 @@ RequestResult MenuRequestHandler::logout(const RequestInfo &info, const Protocol
         new LoginRequestHandler(this->m_handlerFactory)
     );
 }
-
-LoggedUser &MenuRequestHandler::getUserByInfo(const RequestInfo &info) const
-{
-    return m_handlerFactory.getLoginManager().getUserByClient(info.client);
-}

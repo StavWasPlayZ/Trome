@@ -79,7 +79,6 @@ UpdateRoomDataRequest JsonRequestPacketDeserializer::deserializeUpdateRoomDataRe
 {
     return UpdateRoomDataRequest(
         data.at("room_name"),
-        data.at("status"),
         data.at("max_players"),
         data.at("answer_time"),
         data.at("question_count")

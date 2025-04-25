@@ -2,6 +2,7 @@
 
 #include "infrastructure/request/RequestInfo.h"
 
+class LoggedUser;
 struct ProtocolRequest;
 struct RequestInfo;
 struct RequestResult;
@@ -27,6 +28,11 @@ public:
 
 protected:
     const RequestHandlerFactory& m_handlerFactory;
+
+    /**
+    * Utility method to get the current session user
+    */
+    LoggedUser & getUserByInfo(const RequestInfo& info) const;
 };
 
 
