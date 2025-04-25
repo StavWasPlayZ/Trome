@@ -5,6 +5,8 @@
 
 #include "infrastructure/request/RequestInfo.h"
 
+#include <infrastructure/RoomData.h>
+
 enum class RequestCode : unsigned char
 {
     LOGOUT = 0,
@@ -83,15 +85,15 @@ struct CreateRoomRequest : ProtocolRequest
 {
     CreateRoomRequest(
 		const std::string &roomName,
-		unsigned int maxPlayers,
-		unsigned int questionCount,
-		unsigned int answerTimeout
+		int maxPlayers,
+		int questionCount,
+		int answerTimeout
 	);
 
 	const std::string roomName;
-    const unsigned int maxPlayers;
-    const unsigned int questionCount;
-    const unsigned int answerTimeout;
+    const int maxPlayers;
+    const int questionCount;
+    const int answerTimeout;
 };
 
 struct GetHighScoresRequest : ProtocolRequest
@@ -120,13 +122,12 @@ struct LeaveRoomRequest : ProtocolRequest
 
 struct UpdateRoomDataRequest : ProtocolRequest
 {
-    UpdateRoomDataRequest(const unsigned int userId, const std::string &roomName,
-                          const unsigned int status, const int maxPlayers, const int timePerQuestion,
-                          const int questionsCount);
+    UpdateRoomDataRequest(unsigned int userId, const std::string &roomName, const RoomData &status, int maxPlayers,
+                          int timePerQuestion, int questionsCount);
 
 	const unsigned int userId;
     const std::string roomName;
-    const unsigned int status;
+    const RoomData status;
     const int maxPlayers;
     const int timePerQuestion;
     const int questionsCount;
