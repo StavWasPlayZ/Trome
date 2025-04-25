@@ -66,3 +66,7 @@ CreateRoomRequest::CreateRoomRequest(const std::string &roomName, const unsigned
                                      const unsigned int questionCount, const unsigned int answerTimeout)
     : roomName(roomName), maxPlayers(maxPlayers), questionCount(questionCount), answerTimeout(answerTimeout)
 {}
+
+UpdateRoomDataRequest::UpdateRoomDataRequest(const unsigned int userId, const RoomData &roomData)
+    : userId(userId), roomData(roomData)
+{}
