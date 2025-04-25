@@ -186,13 +186,14 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetRoomStateRespon
 {
     nlohmann::json data;
     serializeBaseResponseToJson<GenericResponseStatus>(data, response);
+
     data["answer_count"] = response.answerCount;
     data["answer_timeout"] = response.answerTimeOut;
     data["players"] = response.players;
     data["has_game_began"] = response.hasGameBegan;
     data["room_status"] = response.roomStatus;
 
-    return serializeJsonToProtocol(ResponseCode::UPDATE_ROOM_DATA, data);
+    return serializeJsonToProtocol(ResponseCode::GET_ROOM_STATE, data);
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const UpdateRoomDataResponse &response)
