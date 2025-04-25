@@ -43,9 +43,16 @@ std::vector<LoggedUser*> Room::getAllUsers() const
     return this->m_users;
 }
 
-RoomData &Room::getData()
+const RoomData &Room::getData() const
 {
     return this->m_metadata;
+}
+
+void Room::setData(const RoomData &newData)
+{
+    this->m_metadata = newData;
+
+    //TODO: Notify clients
 }
 
 LoggedUser &Room::getAdmin() const

@@ -1,8 +1,9 @@
 #include "JsonResponsePacketSerializer.h"
 
 // For platform-correct network include
-#include "Constants.h"
 #include "infrastructure/Communicator.h"
+
+#include "Constants.h"
 
 #include <infrastructure/RoomData.h>
 
@@ -16,7 +17,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const LoginResponse &res
 	nlohmann::json data;
 	serializeBaseResponseToJson<LoginStatus>(data, response);
 
-	return serializeJsonToProtocol(ResponseCode::LOGIN, data);
+	return serializeJsonToProtocol(response.id, data);
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const SignupResponse &response)
@@ -24,7 +25,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const SignupResponse &re
 	nlohmann::json data;
 	serializeBaseResponseToJson<SignupStatus>(data, response);
 
-	return serializeJsonToProtocol(ResponseCode::SIGNUP, data);
+	return serializeJsonToProtocol(response.id, data);
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const ErrorResponse &response)
@@ -34,7 +35,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const ErrorResponse &res
 
     data["message"] = response.message;
 
-    return serializeJsonToProtocol(ResponseCode::ERROR, data);
+    return serializeJsonToProtocol(response.id, data);
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const LogoutResponse &response)
@@ -42,7 +43,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const LogoutResponse &re
     nlohmann::json data;
     serializeBaseResponseToJson<LogoutStatus>(data, response);
 
-    return serializeJsonToProtocol(ResponseCode::LOGOUT, data);
+    return serializeJsonToProtocol(response.id, data);
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const JoinRoomResponse &response)
@@ -50,7 +51,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const JoinRoomResponse &
     nlohmann::json data;
     serializeBaseResponseToJson<ConsumingResponseStatus>(data, response);
 
-    return serializeJsonToProtocol(ResponseCode::JOIN_ROOM, data);
+    return serializeJsonToProtocol(response.id, data);
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const CreateRoomResponse &response)
@@ -60,7 +61,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const CreateRoomResponse
 
     data["room_id"] = response.roomId;
 
-    return serializeJsonToProtocol(ResponseCode::CREATE_ROOM, data);
+    return serializeJsonToProtocol(response.id, data);
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const GetRoomsResponse &response)
@@ -80,7 +81,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetRoomsResponse &
 		roomObj["name"] = roomData.name;
         roomObj["max_players"] = roomData.maxPlayers;
         roomObj["status"] = roomData.status;
-        roomObj["time_per_question"] = roomData.timePerQuestion;
+        roomObj["time_per_question"] = roomData.secsPerQuestion;
 
 	    // Also add the amount of players currently in the room.
 	    roomObj["players_count"] = room->getAllUsers().size();
@@ -90,7 +91,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetRoomsResponse &
 
 	data["rooms"] = rooms;
 
-    return serializeJsonToProtocol(ResponseCode::GET_ROOMS, data);
+    return serializeJsonToProtocol(response.id, data);
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const GetPlayersInRoomResponse &response)
@@ -103,7 +104,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetPlayersInRoomRe
         data["players"] = serializePlayersToJson(response.players.value());
     }
 
-    return serializeJsonToProtocol(ResponseCode::GET_PLAYER_IN_ROOM, data);
+    return serializeJsonToProtocol(response.id, data);
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const GetHighScoresResponse &response)
@@ -123,7 +124,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetHighScoresRespo
 
     data["highScores"] = response.stats;
 
-    return serializeJsonToProtocol(ResponseCode::GET_HIGH_SCORES, data);
+    return serializeJsonToProtocol(response.id, data);
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const GetPersonalStatisticsResponse &response)
@@ -143,7 +144,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetPersonalStatist
 
     data["personalStats"] = stats;
 
-    return serializeJsonToProtocol(ResponseCode::GET_PERSONAL_STATISTICS, data);
+    return serializeJsonToProtocol(response.id, data);
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const CloseRoomResponse &response)
@@ -151,7 +152,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const CloseRoomResponse 
     nlohmann::json data;
     serializeBaseResponseToJson<GenericResponseStatus>(data, response);
 
-    return serializeJsonToProtocol(ResponseCode::CLOSE_ROOM, data);
+    return serializeJsonToProtocol(response.id, data);
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const StartGameResponse &response)
@@ -159,7 +160,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const StartGameResponse 
     nlohmann::json data;
     serializeBaseResponseToJson<GenericResponseStatus>(data, response);
 
-    return serializeJsonToProtocol(ResponseCode::START_GAME, data);
+    return serializeJsonToProtocol(response.id, data);
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const LeaveRoomResponse &response)
@@ -167,7 +168,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const LeaveRoomResponse 
     nlohmann::json data;
     serializeBaseResponseToJson<GenericResponseStatus>(data, response);
 
-    return serializeJsonToProtocol(ResponseCode::LEAVE_ROOM, data);
+    return serializeJsonToProtocol(response.id, data);
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const GetRoomStateResponse &response)
@@ -175,13 +176,15 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetRoomStateRespon
     nlohmann::json data;
     serializeBaseResponseToJson<GenericResponseStatus>(data, response);
 
-    data["answer_count"] = response.answerCount;
-    data["answer_timeout"] = response.answerTimeOut;
-    data["players"] = serializePlayersToJson(response.players);
-    data["has_game_began"] = response.hasGameBegan;
-    data["room_status"] = response.roomStatus;
+    const Room& room = response.room;
+    const RoomData& roomData = room.getData();
 
-    return serializeJsonToProtocol(ResponseCode::GET_ROOM_STATE, data);
+    data["questions_count"] = roomData.questionsCount;
+    data["secs_per_question"] = roomData.secsPerQuestion;
+    data["players"] = serializePlayersToJson(room.getAllUsers());
+    data["is_game_running"] = roomData.status == RoomStatus::PLAYING;
+
+    return serializeJsonToProtocol(response.id, data);
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const UpdateRoomDataResponse &response)
@@ -189,7 +192,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const UpdateRoomDataResp
     nlohmann::json data;
     serializeBaseResponseToJson<GenericResponseStatus>(data, response);
 
-    return serializeJsonToProtocol(ResponseCode::UPDATE_ROOM_DATA, data);
+    return serializeJsonToProtocol(response.id, data);
 }
 
 nlohmann::json JsonResponsePacketSerializer::serializePlayersToJson(const std::vector<LoggedUser *> &players)
@@ -211,12 +214,12 @@ nlohmann::json JsonResponsePacketSerializer::serializePlayersToJson(const std::v
 
 OBuffer JsonResponsePacketSerializer::serializeJsonToProtocol(const ResponseCode msgCode, const nlohmann::json &data)
 {
-	const std::string dataStr = data.dump();
+    const std::string dataStr = data.dump();
 
-	const int len = SIZE_CODE + SIZE_JSON_LEN + dataStr.size();
-	unsigned char* const buffer = new unsigned char[len];
+    const int len = SIZE_CODE + SIZE_JSON_LEN + dataStr.size();
+    unsigned char* const buffer = new unsigned char[len];
 
-	unsigned char* writeBuffer = buffer;
+    unsigned char* writeBuffer = buffer;
 
 	// Serializing:
 	// Code
@@ -225,11 +228,11 @@ OBuffer JsonResponsePacketSerializer::serializeJsonToProtocol(const ResponseCode
 	// JSON length
 	writeInt(dataStr.size(), writeBuffer);
 	writeBuffer += SIZE_JSON_LEN;
-	
-	// Actual JSON
-	std::memcpy(writeBuffer, dataStr.c_str(), dataStr.size());
 
-	return OBuffer(buffer, len);
+    // Actual JSON
+    std::memcpy(writeBuffer, dataStr.c_str(), dataStr.size());
+
+    return OBuffer(buffer, len);
 }
 
 void JsonResponsePacketSerializer::writeInt(int num, unsigned char *const buffer)

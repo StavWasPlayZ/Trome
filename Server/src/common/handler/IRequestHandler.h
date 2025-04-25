@@ -29,9 +29,9 @@ public:
 protected:
     const RequestHandlerFactory& m_handlerFactory;
 
-    /**
-    * Utility method to get the current session user
-    */
+  /**
+   * Utility method to get the current session user
+   */
     LoggedUser & getUserByInfo(const RequestInfo& info) const;
 };
 

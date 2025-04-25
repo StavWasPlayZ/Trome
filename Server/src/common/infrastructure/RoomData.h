@@ -25,7 +25,7 @@ struct RoomData
     RoomStatus status;
 
     int maxPlayers;
-    int timePerQuestion;
+    int secsPerQuestion;
     int questionsCount;
 
 private:

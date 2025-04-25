@@ -2,6 +2,12 @@
 
 #include "JsonResponsePacketSerializer.h"
 
+template <typename S> OBuffer JsonResponsePacketSerializer::serializeResponse(const ProtocolResponse<S> &response)
+{
+    //TODO: Implement
+    return OBuffer();
+}
+
 template <typename S>
  void JsonResponsePacketSerializer::serializeBaseResponseToJson(nlohmann::json& json, const ProtocolResponse<S>& response)
 {
@@ -9,12 +15,13 @@ template <typename S>
 }
 
 template <typename S>
-void JsonResponsePacketSerializer::serializeRegistrationResponseToJson(nlohmann::json& json, const RegistrationResponse<S>& response)
+void JsonResponsePacketSerializer::serializeRegistrationResponseToJson(nlohmann::json &json,
+                                                                       const RegistrationResponse<S> &response)
 {
-	serializeBaseResponseToJson<S>(json, response);
+    serializeBaseResponseToJson<S>(json, response);
 
-	if (response.userId != -1)
-	{
-		json["user_id"] = response.userId;
-	}
+    if (response.userId != -1)
+    {
+        json["user_id"] = response.userId;
+    }
 }

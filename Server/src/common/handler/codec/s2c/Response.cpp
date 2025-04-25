@@ -1,64 +1,76 @@
 #include "Response.h"
 
-LoginResponse::LoginResponse(const LoginStatus status, const unsigned int userId) : RegistrationResponse(status, userId)
+LoginResponse::LoginResponse(const LoginStatus status, const unsigned int userId) :
+    RegistrationResponse(ResponseCode::LOGIN, status, userId)
 {}
 
-LoginResponse::LoginResponse(const LoginStatus status) : RegistrationResponse(status)
+LoginResponse::LoginResponse(const LoginStatus status) :
+    LoginResponse(status, -1)
 {}
 
-SignupResponse::SignupResponse(const SignupStatus status, const unsigned int userId) : RegistrationResponse(status, userId)
+SignupResponse::SignupResponse(const SignupStatus status, const unsigned int userId) :
+    RegistrationResponse(ResponseCode::SIGNUP, status, userId)
 {}
 
-SignupResponse::SignupResponse(const SignupStatus status) : RegistrationResponse(status)
+SignupResponse::SignupResponse(const SignupStatus status) :
+    SignupResponse(status, -1)
 {}
 
-LogoutResponse::LogoutResponse(const LogoutStatus status) : ProtocolResponse(status)
+LogoutResponse::LogoutResponse(const LogoutStatus status) :
+    ProtocolResponse(ResponseCode::LOGOUT, status)
 {}
 
-ErrorResponse::ErrorResponse(const ErrorStatus status, const std::string &message) : ProtocolResponse(status),
+ErrorResponse::ErrorResponse(const ErrorStatus status, const std::string &message) :
+    ProtocolResponse(ResponseCode::ERROR, status),
     message(message)
 {}
 
-JoinRoomResponse::JoinRoomResponse(const ConsumingResponseStatus status) : ProtocolResponse(status)
+JoinRoomResponse::JoinRoomResponse(const ConsumingResponseStatus status) :
+    ProtocolResponse(ResponseCode::JOIN_ROOM, status)
 {}
 
 CreateRoomResponse::CreateRoomResponse(const GenericResponseStatus status, const unsigned int roomId) :
-    ProtocolResponse(status),
+    ProtocolResponse(ResponseCode::CREATE_ROOM, status),
     roomId(roomId)
 {}
 
-GetRoomsResponse::GetRoomsResponse(const GenericResponseStatus status, const std::vector<Room*> &rooms)
-    : ProtocolResponse(status), rooms(rooms)
+GetRoomsResponse::GetRoomsResponse(const GenericResponseStatus status, const std::vector<Room*> &rooms) :
+    ProtocolResponse(ResponseCode::GET_ROOMS, status),
+    rooms(rooms)
 {}
 
 GetPlayersInRoomResponse::GetPlayersInRoomResponse(const ConsumingResponseStatus status,
-                                                   const std::optional<std::vector<LoggedUser*>> &players)
-    : ProtocolResponse(status), players(players)
+                                                   const std::optional<std::vector<LoggedUser*>> &players) :
+    ProtocolResponse(ResponseCode::GET_PLAYERS_IN_ROOM, status),
+    players(players)
 {}
 
-GetHighScoresResponse::GetHighScoresResponse(const GeneralStatsStatus status, const std::vector<std::pair<std::string, int>> &stats)
-    : ProtocolResponse(status), stats(stats)
+GetHighScoresResponse::GetHighScoresResponse(const GeneralStatsStatus status, const std::vector<std::pair<std::string, int>> &stats) :
+    ProtocolResponse(ResponseCode::GET_HIGH_SCORES, status),
+    stats(stats)
 {}
 
-GetPersonalStatisticsResponse::GetPersonalStatisticsResponse(const GeneralStatsStatus status, const UserStatistics &stats)
-    : ProtocolResponse(status), stats(stats)
+GetPersonalStatisticsResponse::GetPersonalStatisticsResponse(const GeneralStatsStatus status, const UserStatistics &stats) :
+    ProtocolResponse(ResponseCode::GET_PERSONAL_STATISTICS, status),
+    stats(stats)
 {}
 
-CloseRoomResponse::CloseRoomResponse(const GenericResponseStatus status) : ProtocolResponse(status)
+CloseRoomResponse::CloseRoomResponse(const GenericResponseStatus status) :
+    ProtocolResponse(ResponseCode::CLOSE_ROOM, status)
 {}
 
-StartGameResponse::StartGameResponse(const GenericResponseStatus status) : ProtocolResponse(status)
+StartGameResponse::StartGameResponse(const GenericResponseStatus status) :
+    ProtocolResponse(ResponseCode::START_GAME, status)
 {}
 
-LeaveRoomResponse::LeaveRoomResponse(const GenericResponseStatus status) : ProtocolResponse(status)
+LeaveRoomResponse::LeaveRoomResponse(const GenericResponseStatus status) :
+    ProtocolResponse(ResponseCode::LEAVE_ROOM, status)
 {}
 
-GetRoomStateResponse::GetRoomStateResponse(const GenericResponseStatus protocolStatus, const RoomStatus roomStatus,
-                                           const bool hasGameBegan, const std::vector<LoggedUser*>& players,
-                                           const int answerCount, const int answerTimeOut)
-    : ProtocolResponse(protocolStatus), roomStatus(roomStatus), hasGameBegan(hasGameBegan), players(players),
-      answerCount(answerCount), answerTimeOut(answerTimeOut)
+GetRoomStateResponse::GetRoomStateResponse(const GenericResponseStatus protocolStatus, const Room& room)
+    : ProtocolResponse(ResponseCode::GET_ROOM_STATE, protocolStatus), room(room)
 {}
 
-UpdateRoomDataResponse::UpdateRoomDataResponse(const GenericResponseStatus status) : ProtocolResponse(status)
+UpdateRoomDataResponse::UpdateRoomDataResponse(const GenericResponseStatus status) :
+    ProtocolResponse(ResponseCode::UPDATE_ROOM_DATA, status)
 {}

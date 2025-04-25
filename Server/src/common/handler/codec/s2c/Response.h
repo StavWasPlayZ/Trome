@@ -19,7 +19,7 @@ enum class ResponseCode : unsigned char
 	JOIN_ROOM,
 	CREATE_ROOM,
 	GET_ROOMS,
-	GET_PLAYER_IN_ROOM,
+	GET_PLAYERS_IN_ROOM,
 	GET_HIGH_SCORES,
 	GET_PERSONAL_STATISTICS,
 	CLOSE_ROOM,
@@ -56,8 +56,9 @@ enum class ConsumingResponseStatus : unsigned char
 template <typename S>
 struct ProtocolResponse
 {
-	explicit ProtocolResponse(S status);
+	ProtocolResponse(ResponseCode id, S status);
 
+    const ResponseCode id;
 	const S status;
 };
 
@@ -68,11 +69,11 @@ struct ProtocolResponse
 template <typename S>
 struct RegistrationResponse : ProtocolResponse<S>
 {
-	RegistrationResponse(S status, unsigned int userId);
+	RegistrationResponse(ResponseCode id, S status, unsigned int userId);
 	/**
 	 * A failed login response. Provided no user ID.
 	 */
-	explicit RegistrationResponse(S status);
+	RegistrationResponse(ResponseCode id, S status);
 
 	/**
 	 * For failure, equals -1 (4294967295).
@@ -209,14 +210,9 @@ struct LeaveRoomResponse : ProtocolResponse<GenericResponseStatus>
 
 struct GetRoomStateResponse : ProtocolResponse<GenericResponseStatus>
 {
-    GetRoomStateResponse(GenericResponseStatus protocolStatus, RoomStatus roomStatus, bool hasGameBegan,
-                         const std::vector<LoggedUser*>& players, int answerCount, int answerTimeOut);
+    GetRoomStateResponse(GenericResponseStatus protocolStatus, const Room& room);
 
-	RoomStatus roomStatus;
-    bool hasGameBegan;
-    std::vector<LoggedUser*> players;
-    int answerCount;
-    int answerTimeOut;
+	const Room& room;
 };
 
 struct UpdateRoomDataResponse : ProtocolResponse<GenericResponseStatus>

@@ -3,15 +3,18 @@
 #include "Response.h"
 
 template <typename S>
-ProtocolResponse<S>::ProtocolResponse(const S status) :
+ProtocolResponse<S>::ProtocolResponse(const ResponseCode id, const S status) :
+    id(id),
     status(status)
 {}
 
 template <typename S>
-RegistrationResponse<S>::RegistrationResponse(const S status, const unsigned int userId) : ProtocolResponse<S>(status),
+RegistrationResponse<S>::RegistrationResponse(const ResponseCode id, const S status, const unsigned int userId) :
+    ProtocolResponse<S>(id, status),
     userId(userId)
 {}
 
 template <typename S>
-RegistrationResponse<S>::RegistrationResponse(const S status) : RegistrationResponse(status, -1)
+RegistrationResponse<S>::RegistrationResponse(const ResponseCode id, const S status) :
+    RegistrationResponse(id, status, -1)
 {}

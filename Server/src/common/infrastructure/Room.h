@@ -26,7 +26,8 @@ public:
     void removeUser(const LoggedUser& user);
     std::vector<LoggedUser*> getAllUsers() const;
 
-    RoomData& getData();
+    const RoomData& getData() const;
+    void setData(const RoomData& newData);
 
     LoggedUser& getAdmin() const;
     void setAdmin(LoggedUser& admin);

@@ -14,6 +14,6 @@ RoomData::RoomData(
     // REVIEW: Perhaps could be initialized directly.
     status(status),
     maxPlayers(maxPlayers),
-    timePerQuestion(timePerQuestion),
+    secsPerQuestion(timePerQuestion),
     questionsCount(questionsCount)
 {}
