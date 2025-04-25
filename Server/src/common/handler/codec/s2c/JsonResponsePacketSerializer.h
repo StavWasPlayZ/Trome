@@ -17,10 +17,6 @@ public:
     JsonResponsePacketSerializer& operator=(JsonResponsePacketSerializer&&) = delete;
 
 
-    template <typename S>
-    static OBuffer serializeResponse(const ProtocolResponse<S> &response);
-
-
 	/**
 	 * Returns: The serialized object.
 	 * 

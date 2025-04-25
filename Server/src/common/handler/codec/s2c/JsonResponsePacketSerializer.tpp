@@ -2,12 +2,6 @@
 
 #include "JsonResponsePacketSerializer.h"
 
-template <typename S> OBuffer JsonResponsePacketSerializer::serializeResponse(const ProtocolResponse<S> &response)
-{
-    //TODO: Implement
-    return OBuffer();
-}
-
 template <typename S>
  void JsonResponsePacketSerializer::serializeBaseResponseToJson(nlohmann::json& json, const ProtocolResponse<S>& response)
 {
