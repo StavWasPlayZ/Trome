@@ -1,6 +1,7 @@
 #include "MenuRequestHandler.h"
 
 #include "RequestHandlerFactory.h"
+#include "RoomMemberRequestHandler.h"
 #include "codec/c2s/Request.h"
 
 MenuRequestHandler::MenuRequestHandler(const RequestHandlerFactory &handlerFactory) : IRequestHandler(handlerFactory)
@@ -58,14 +59,13 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo &info, const Protoc
     }
 
     room.value()->addUser(getUserByInfo(info));
+    auto temp = &room.value();
 
     return RequestResult(
         JsonResponsePacketSerializer::serializeResponse(
             JoinRoomResponse(ConsumingResponseStatus::SUCCESS)
         ),
-
-        //TODO: RoomHandler?
-        new MenuRequestHandler(*this)
+        new RoomMemberRequestHandler(this->m_handlerFactory, *room.value())
     );
 }
 
@@ -117,6 +117,7 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& info, const Prot
             CreateRoomResponse(GenericResponseStatus::SUCCESS, roomData.id)
         ),
 
+        // TODO : make it RoomAdminRequestHandler when its implemented
         new MenuRequestHandler(*this)
     );
 }
