@@ -89,8 +89,8 @@ add_executable (Server
   "src/common/infrastructure/Question.h"
   "src/common/infrastructure/Game.h"
   "src/common/infrastructure/Game.cpp"
- "src/common/handler/RoomMemberRequestHandler.h" 
- "src/common/handler/RoomMemberRequestHandler.cpp"
+  "src/common/handler/RoomMemberRequestHandler.h" 
+  "src/common/handler/RoomMemberRequestHandler.cpp"
 )
 
 # Platform-specific sources
