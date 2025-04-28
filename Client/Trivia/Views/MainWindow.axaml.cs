@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace Trivia;
+namespace Trivia.Views;
 
 public partial class MainWindow : Window
 {

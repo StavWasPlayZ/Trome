@@ -2,6 +2,8 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 
+using Trivia.Views;
+
 namespace Trivia;
 
 public partial class App : Application
