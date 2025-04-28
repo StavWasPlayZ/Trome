@@ -1,10 +1,26 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="Trivia.App"
+             xmlns:local="using:Trivia"
              RequestedThemeVariant="Light">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
+    <Application.DataTemplates>
+        <local:ViewLocator/>
+    </Application.DataTemplates>
+             
+    <Application.Resources>
+        <FontFamily x:Key="Sixtyfour">avares://Trivia/Assets/Fonts#Sixtyfour</FontFamily>
+    </Application.Resources>
+             
     <Application.Styles>
         <FluentTheme />
+        <StyleInclude Source="avares://Trivia/Controls/TriviaButton.axaml"/>
+        
+        <Style Selector=":is(TextBlock)">
+            <Setter Property="FontFamily" Value="{StaticResource Sixtyfour}"/>
+            <Setter Property="FontWeight" Value="900"/>
+        </Style>
     </Application.Styles>
+             
 </Application>

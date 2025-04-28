@@ -1,16 +1,79 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Trivia.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="485"
+        xmlns:converters="clr-namespace:Trivia.Converters"
+        xmlns:controls="clr-namespace:Trivia.Controls"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="484"
         x:Class="Trivia.Views.MainWindow"
-        Title="Trivia"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Width="850" Height="500"
+        x:Name="Window"
         CanResize="False"
-        Width="800" Height="485">
+        Title="Trivia">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
     
+    <Window.Resources>
+        <converters:MultiplicationConverter x:Key="MultiplicationConverter"/>
+    </Window.Resources>
+
+    <Panel>
+        <Image Source="avares://Trivia/Assets/blobs-l-b49caff1a7941d98b60902da64956ad85dfbe4f9.png"
+               Stretch="UniformToFill"></Image>
     
-        <StackPanel>
-                <Image Source="avares://Trivia/Assets/blobs-l-b49caff1a7941d98b60902da64956ad85dfbe4f9.png"></Image>
-        </StackPanel>
-        
+        <Grid
+            VerticalAlignment="Center"
+            ColumnDefinitions="*, *"
+            Height="{
+                Binding Height, ElementName=Window,
+                Converter={StaticResource MultiplicationConverter},
+                ConverterParameter=0.55
+            }">
+    
+            <Border Grid.Column="0"
+                    CornerRadius="0 25 25 0"
+                    Background="rgba(0, 0, 0, 190)"
+                    Padding="50 20 30 20">
+    
+                <Grid
+                    RowDefinitions="*, Auto">
+    
+                    <StackPanel Grid.Row="0"
+                                Spacing="7">
+    
+                        <controls:TriviaButton Text="PLAY"/>
+                        <controls:TriviaButton Text="STATISTICS"/>
+                        <controls:TriviaButton Text="ABOUT"/>
+    
+                    </StackPanel>
+    
+                    <Grid Grid.Row="1"
+                                ColumnDefinitions="*, 7, Auto">
+                        <controls:TriviaButton Grid.Column="0" Text="EXIT" VerticalAlignment="Stretch"/>
+                        
+                        <Panel Grid.Column="1"></Panel>
+                        
+                        <controls:TriviaButton Grid.Column="2" Text="A"/>
+                    </Grid>
+    
+                </Grid>
+    
+            </Border>
+    
+            <Border Grid.Column="1">
+                <Image
+                       Source="avares://Trivia/Assets/logo.png"
+                />
+            </Border>
+    
+        </Grid>
+    </Panel>
+
 </Window>
