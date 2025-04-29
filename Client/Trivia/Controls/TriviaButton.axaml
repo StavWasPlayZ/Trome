@@ -12,19 +12,21 @@
         
         <Setter Property="Template">
             <ControlTemplate>
+                <!-- Bottom padding is due to font itself. -->
                 <Border
                     BorderBrush="White"
                     BorderThickness="2"
                     CornerRadius="5"
                     Background="#211c2c"
-                    Padding="22 0 22 0"
+                    Padding="22 0 22 5"
                     Height="{TemplateBinding Height}">
                 
                     <TextBlock
                         Foreground="White"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Text="{TemplateBinding Text}"/>
+                        Text="{TemplateBinding Text}"
+                        TextAlignment="Center"/>
                 
                 </Border>
             </ControlTemplate>

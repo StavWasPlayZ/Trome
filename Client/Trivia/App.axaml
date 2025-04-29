@@ -10,7 +10,8 @@
     </Application.DataTemplates>
              
     <Application.Resources>
-        <FontFamily x:Key="Sixtyfour">avares://Trivia/Assets/Fonts#Sixtyfour</FontFamily>
+        <FontFamily x:Key="Sixtyfour">avares://Trivia/Assets/Fonts/Sixtyfour.ttf#Sixtyfour</FontFamily>
+        <FontFamily x:Key="Born2bSportyFS">avares://Trivia/Assets/Fonts/Born2bSportyFS.otf#Born2bSporty FS Regular</FontFamily>
     </Application.Resources>
              
     <Application.Styles>
@@ -18,8 +19,9 @@
         <StyleInclude Source="avares://Trivia/Controls/TriviaButton.axaml"/>
         
         <Style Selector=":is(TextBlock)">
-            <Setter Property="FontFamily" Value="{StaticResource Sixtyfour}"/>
-            <Setter Property="FontWeight" Value="900"/>
+            <Setter Property="FontFamily" Value="{StaticResource Born2bSportyFS}"/>
+            <Setter Property="FontSize" Value="30"/>
+            <!-- <Setter Property="FontWeight" Value="472997"/> -->
         </Style>
     </Application.Styles>
              

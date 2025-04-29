@@ -68,9 +68,7 @@
             </Border>
     
             <Border Grid.Column="1">
-                <Image
-                       Source="avares://Trivia/Assets/logo.png"
-                />
+                <Image Source="avares://Trivia/Assets/logo.png"/>
             </Border>
     
         </Grid>
