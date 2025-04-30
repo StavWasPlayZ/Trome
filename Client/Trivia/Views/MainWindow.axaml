@@ -51,9 +51,13 @@
                         <controls:TriviaButton Text="PLAY"
                                                Background="#362034"
                                                BorderBrush="#b92e2b"
-                                               BorderThickness="3"/>
-                        <controls:TriviaButton Text="STATISTICS"/>
-                        <controls:TriviaButton Text="ABOUT"/>
+                                               BorderThickness="3"
+                                               IconSvgPath="avares://Trivia/Assets/Icons/play_arrow.svg"
+                                               IconMargin="-5 5 -10 5"/>
+                        <controls:TriviaButton Text="STATISTICS"
+                                               IconSvgPath="avares://Trivia/Assets/Icons/leaderboard.svg"/>
+                        <controls:TriviaButton Text="ABOUT"
+                                               IconSvgPath="avares://Trivia/Assets/Icons/info.svg"/>
     
                     </StackPanel>
     

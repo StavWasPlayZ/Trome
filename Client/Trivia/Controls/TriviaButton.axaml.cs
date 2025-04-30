@@ -13,4 +13,22 @@ public class TriviaButton : TemplatedControl
         get => GetValue(TextProperty);
         set => SetValue(TextProperty, value);
     }
+
+    public static readonly StyledProperty<string?> IconSvgPathProperty = AvaloniaProperty.Register<TriviaButton, string?>(
+        nameof(IconSvgPath));
+
+    public string? IconSvgPath
+    {
+        get => GetValue(IconSvgPathProperty);
+        set => SetValue(IconSvgPathProperty, value);
+    }
+
+    public static readonly StyledProperty<Thickness> IconMarginProperty = AvaloniaProperty.Register<TriviaButton, Thickness>(
+        nameof(IconMargin));
+
+    public Thickness IconMargin
+    {
+        get => GetValue(IconMarginProperty);
+        set => SetValue(IconMarginProperty, value);
+    }
 }

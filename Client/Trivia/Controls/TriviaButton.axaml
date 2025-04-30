@@ -2,34 +2,44 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="using:Trivia.Controls">
     <Design.PreviewWith>
-        <controls:TriviaButton />
+        <controls:TriviaButton
+            IconSvgPath="avares://Trivia/Assets/Icons/play_arrow.svg"/>
     </Design.PreviewWith>
 
     <Style Selector="controls|TriviaButton">
         <!-- Set Defaults -->
         <Setter Property="Text" Value="TEXT"></Setter>
-        <Setter Property="Height" Value="47"></Setter>
+        <Setter Property="Height" Value="50"></Setter>
         <Setter Property="BorderBrush" Value="White"></Setter>
         <Setter Property="BorderThickness" Value="2"></Setter>
         <Setter Property="Background" Value="#211c2c"></Setter>
+        <Setter Property="IconMargin" Value="0 10 0 10"></Setter>
         
         <Setter Property="Template">
             <ControlTemplate>
-                <!-- Bottom padding is due to font itself. -->
                 <Border
                     BorderBrush="{TemplateBinding BorderBrush}"
                     BorderThickness="{TemplateBinding BorderThickness}"
                     CornerRadius="5"
                     Background="{TemplateBinding Background}"
-                    Padding="22 0 22 5"
+                    Padding="15 0 22 0"
                     Height="{TemplateBinding Height}">
+                    
+                    <Grid ColumnDefinitions="Auto, *">
+                        <Svg Grid.Column="0"
+                             Path="{TemplateBinding IconSvgPath}"
+                             Margin="{TemplateBinding IconMargin}"/>
+                        
+                        <!-- Bottom padding is due to font itself. -->
+                        <TextBlock Grid.Column="1"
+                            Foreground="White"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Text="{TemplateBinding Text}"
+                            TextAlignment="Center"
+                            Margin="0 0 0 5"/>
+                    </Grid>
                 
-                    <TextBlock
-                        Foreground="White"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Text="{TemplateBinding Text}"
-                        TextAlignment="Center"/>
                 
                 </Border>
             </ControlTemplate>
