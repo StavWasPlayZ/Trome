@@ -9,15 +9,18 @@
         <!-- Set Defaults -->
         <Setter Property="Text" Value="TEXT"></Setter>
         <Setter Property="Height" Value="47"></Setter>
+        <Setter Property="BorderBrush" Value="White"></Setter>
+        <Setter Property="BorderThickness" Value="2"></Setter>
+        <Setter Property="Background" Value="#211c2c"></Setter>
         
         <Setter Property="Template">
             <ControlTemplate>
                 <!-- Bottom padding is due to font itself. -->
                 <Border
-                    BorderBrush="White"
-                    BorderThickness="2"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
                     CornerRadius="5"
-                    Background="#211c2c"
+                    Background="{TemplateBinding Background}"
                     Padding="22 0 22 5"
                     Height="{TemplateBinding Height}">
                 

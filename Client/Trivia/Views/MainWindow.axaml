@@ -48,7 +48,10 @@
                     <StackPanel Grid.Row="0"
                                 Spacing="7">
     
-                        <controls:TriviaButton Text="PLAY"/>
+                        <controls:TriviaButton Text="PLAY"
+                                               Background="#362034"
+                                               BorderBrush="#b92e2b"
+                                               BorderThickness="3"/>
                         <controls:TriviaButton Text="STATISTICS"/>
                         <controls:TriviaButton Text="ABOUT"/>
     
