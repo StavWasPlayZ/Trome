@@ -48,12 +48,12 @@
         <!-- <Setter Property="BorderThicknessSelected" Value="6"></Setter> -->
         
         
-        <Style Selector="^ /template/ Border">
+        <Style Selector="^ /template/ Button:pointerover">
             
-            <Style Selector="^:pointerover">
-                <Setter Property="Background" Value="{TemplateBinding BackgroundSelected}"/>
-                <Setter Property="BorderBrush" Value="{TemplateBinding BorderBrushSelected}"/>
-                <Setter Property="BorderThickness" Value="{TemplateBinding BorderThicknessSelected}"/>
+            <Style Selector="^ /template/ ContentPresenter">
+                <Setter Property="Background" Value="{Binding $parent[controls:TriviaButton].BackgroundSelected}"/>
+                <Setter Property="BorderBrush" Value="{Binding $parent[controls:TriviaButton].BorderBrushSelected}"/>
+                <Setter Property="BorderThickness" Value="{Binding $parent[controls:TriviaButton].BorderThicknessSelected}"/>
                 <Setter Property="BoxShadow" Value="0 6 7 0 #5f000000"/>
             </Style>
             
@@ -64,20 +64,21 @@
         
         <Setter Property="Template">
             <ControlTemplate>
-                <Border
+                <Button
                     BorderBrush="{TemplateBinding BorderBrush}"
                     BorderThickness="{TemplateBinding BorderThickness}"
                     CornerRadius="5"
                     Background="{TemplateBinding Background}"
                     Padding="{TemplateBinding Padding}"
                     Height="{TemplateBinding Height}"
+                    HorizontalAlignment="Stretch"
                     ClipToBounds="False">
-                
+
                     <Grid ColumnDefinitions="Auto, *">
                         <Svg Grid.Column="0"
                              Path="{TemplateBinding IconSvgPath}"
                              Margin="{TemplateBinding IconMargin}">
-                                
+                                        
                             <Svg.Css>
                                 <MultiBinding StringFormat="* {{ fill: {0}; }}">
                                     <Binding Path="IconColor"
@@ -85,7 +86,7 @@
                                              Converter="{StaticResource SolidColorBrushToHexStrConverter}"/>
                                 </MultiBinding>
                             </Svg.Css>
-                                
+                                        
                         </Svg>
 
                         <!-- Bottom padding is due to font itself. -->
@@ -94,14 +95,14 @@
                                    VerticalAlignment="Center"
                                    Text="{TemplateBinding Text}"
                                    TextAlignment="Center"
-                                   
+                                           
                                    IsVisible="{
-                                       TemplateBinding IsIconButton,
-                                       Converter={x:Static BoolConverters.Not}
-                                   }"/>
+                                               TemplateBinding IsIconButton,
+                                               Converter={x:Static BoolConverters.Not}
+                                           }"/>
                     </Grid>
-                    
-                </Border>
+
+                </Button>
             </ControlTemplate>
         </Setter>
     </Style>
