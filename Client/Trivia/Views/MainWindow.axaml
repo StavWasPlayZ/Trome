@@ -98,7 +98,7 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Orientation="Horizontal"
-            Spacing="10"
+            Spacing="7"
             Margin="20 10">
             
             <!-- TODO: Maybe add SVG border -->
