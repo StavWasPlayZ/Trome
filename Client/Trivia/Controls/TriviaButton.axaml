@@ -21,12 +21,12 @@
         <Setter Property="ClipToBounds" Value="False"></Setter>
         
         <Setter Property="Text" Value="TEXT"></Setter>
-        <Setter Property="Height" Value="55"></Setter>
+        <Setter Property="Height" Value="60"></Setter>
         <Setter Property="BorderBrush" Value="White"></Setter>
         <Setter Property="BorderThickness" Value="2"></Setter>
         <Setter Property="Background" Value="#211c2c"></Setter>
         
-        <Setter Property="IconMargin" Value="0 10 0 10"></Setter>
+        <Setter Property="IconMargin" Value="0 13 0 13"></Setter>
         <Setter Property="IsIconButton" Value="False"></Setter>
         <Setter Property="IconColor" Value="White"></Setter>
         
@@ -34,7 +34,7 @@
             <Setter Property="Padding" Value="15 0 15 0"></Setter>
         </Style>
         <Style Selector="^[IsIconButton=True]">
-            <Setter Property="Padding" Value="10 0 10 0"></Setter>
+            <Setter Property="Padding" Value="13 0 13 0"></Setter>
         </Style>
         
         
@@ -53,7 +53,7 @@
                 <Setter Property="Background" Value="{TemplateBinding BackgroundSelected}"/>
                 <Setter Property="BorderBrush" Value="{TemplateBinding BorderBrushSelected}"/>
                 <Setter Property="BorderThickness" Value="{TemplateBinding BorderThicknessSelected}"/>
-                <Setter Property="BoxShadow" Value="0 6 6 0 #3f000000"/>
+                <Setter Property="BoxShadow" Value="0 6 7 0 #5f000000"/>
             </Style>
             
         </Style>
@@ -76,7 +76,7 @@
                         <Svg Grid.Column="0"
                              Path="{TemplateBinding IconSvgPath}"
                              Margin="{TemplateBinding IconMargin}">
-                            
+                                
                             <Svg.Css>
                                 <MultiBinding StringFormat="* {{ fill: {0}; }}">
                                     <Binding Path="IconColor"
@@ -84,9 +84,9 @@
                                              Converter="{StaticResource SolidColorBrushToHexStrConverter}"/>
                                 </MultiBinding>
                             </Svg.Css>
-                            
+                                
                         </Svg>
-                
+
                         <!-- Bottom padding is due to font itself. -->
                         <TextBlock Grid.Column="1"
                                    Foreground="White"

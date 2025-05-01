@@ -4,11 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:Trivia.Controls"
-        mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="550"
+        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
         x:Class="Trivia.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
-        Width="900" Height="550"
+        Width="1000" Height="600"
         x:Name="Window"
         CanResize="False"
         Title="Trivia">
@@ -40,35 +40,38 @@
                 <Grid
                     RowDefinitions="*, Auto">
     
-                    <StackPanel Grid.Row="0">
+                    <StackPanel Grid.Row="0"
+                                Spacing="7">
     
                         <controls:TriviaButton Text="PLAY"
-                                               Margin="0 5 0 0"
                                                Background="#362034"
                                                BorderBrush="#b92e2b"
                                                IconColor="#ffbbbb"
                                                BorderBrushSelected="#D93040"
                                                BorderThickness="3"
                                                IconSvgPath="avares://Trivia/Assets/Icons/play_arrow.svg"
-                                               IconMargin="-5 5 -10 5"/>
+                                               IconMargin="-7 7 -10 7"/>
                         <controls:TriviaButton Text="STATISTICS"
-                                               Margin="0 5 0 0"
+                                               BorderBrushSelected="#6154A3"
                                                IconSvgPath="avares://Trivia/Assets/Icons/leaderboard.svg"/>
                         <controls:TriviaButton Text="ABOUT"
-                                               Margin="0 5 0 0"
                                                IconSvgPath="avares://Trivia/Assets/Icons/info.svg"/>
     
                     </StackPanel>
     
                     <Grid Grid.Row="1"
                                 ColumnDefinitions="*, 7, Auto">
-                        <controls:TriviaButton Grid.Column="0" Text="EXIT" VerticalAlignment="Stretch"/>
+                        <controls:TriviaButton Grid.Column="0"
+                                               Text="EXIT"
+                                               BorderBrush="#F2B2B8"
+                                               BorderBrushSelected="Crimson"/>
                         
                         <Panel Grid.Column="1"></Panel>
                         
                         <controls:TriviaButton Grid.Column="2"
                                                IsIconButton="True"
-                                               IconSvgPath="avares://Trivia/Assets/Icons/settings.svg"/>
+                                               IconSvgPath="avares://Trivia/Assets/Icons/settings.svg"
+                                               BorderBrushSelected="LightGray"/>
                     </Grid>
     
                 </Grid>
