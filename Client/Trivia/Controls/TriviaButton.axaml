@@ -6,12 +6,9 @@
             <controls:TriviaButton
                 IconSvgPath="avares://Trivia/Assets/Icons/play_arrow.svg"/>
             
-            <Grid ColumnDefinitions="Auto, *">
-                <controls:TriviaButton Grid.Column="0"
-                                       IsIconButton="True"
-                                       IconSvgPath="avares://Trivia/Assets/Icons/settings.svg"/>
-                <Panel Grid.Column="0"></Panel>
-            </Grid>
+            <controls:TriviaButton HorizontalAlignment="Left"
+                                   IsIconButton="True"
+                                   IconSvgPath="avares://Trivia/Assets/Icons/settings.svg"/>
         </StackPanel>
     </Design.PreviewWith>
 
