@@ -21,8 +21,8 @@
 
     <Panel>
         <Image Source="avares://Trivia/Assets/blobs-l-b49caff1a7941d98b60902da64956ad85dfbe4f9.png"
-               Stretch="UniformToFill"></Image>
-    
+               Stretch="UniformToFill" />
+
         <Grid
             VerticalAlignment="Center"
             ColumnDefinitions="*, *"
@@ -68,8 +68,8 @@
                                                BorderBrush="#F2B2B8"
                                                BorderBrushSelected="Crimson"/>
                         
-                        <Panel Grid.Column="1"></Panel>
-                        
+                        <Panel Grid.Column="1" />
+
                         <controls:TriviaButton Grid.Column="2"
                                                IsIconButton="True"
                                                IconSvgPath="avares://Trivia/Assets/Icons/settings.svg"
@@ -102,16 +102,16 @@
                 
                 <Svg.Styles>
                     <Style Selector="Svg:pointerover">
-                        <Setter Property="Css" Value="* { fill: #b92e2b; }"></Setter>
-                        
+                        <Setter Property="Css" Value="* { fill: #b92e2b; }" />
+
                         <Setter Property="RenderTransform">
                             <TransformGroup>
-                                <ScaleTransform ScaleX="1.1" ScaleY="1.1"/>
+                                <ScaleTransform ScaleX="0.95" ScaleY="0.95"/>
                             </TransformGroup>                            
                         </Setter>
                     </Style>
                     <Style Selector="Svg:not(:pointerover)">
-                        <Setter Property="Css" Value="* { fill: #d74351; }"></Setter>
+                        <Setter Property="Css" Value="* { fill: #d74351; }" />
                     </Style>
                 </Svg.Styles>
                 
