@@ -32,11 +32,13 @@
                 ConverterParameter=0.55
             }">
     
+            <!-- Left Panel -->
+            
             <Border Grid.Column="0"
                     CornerRadius="0 25 25 0"
                     Background="rgba(0, 0, 0, 190)"
                     Padding="50 20 30 20">
-    
+        
                 <Grid
                     RowDefinitions="*, Auto">
     
@@ -83,6 +85,42 @@
             </Border>
     
         </Grid>
+        
+        <!-- Username & Logout -->
+        
+        <StackPanel
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Orientation="Horizontal"
+            Spacing="10"
+            Margin="20 10">
+            
+            <!-- TODO: Maybe add SVG border -->
+            
+            <Svg Path="avares://Trivia/Assets/Icons/logout.svg"
+                 Height="35">
+                
+                <Svg.Styles>
+                    <Style Selector="Svg:pointerover">
+                        <Setter Property="Css" Value="* { fill: #b92e2b; }"></Setter>
+                        
+                        <Setter Property="RenderTransform">
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="1.1" ScaleY="1.1"/>
+                            </TransformGroup>                            
+                        </Setter>
+                    </Style>
+                    <Style Selector="Svg:not(:pointerover)">
+                        <Setter Property="Css" Value="* { fill: #d74351; }"></Setter>
+                    </Style>
+                </Svg.Styles>
+                
+            </Svg>
+            
+            <TextBlock FontSize="30"
+                       VerticalAlignment="Center">Username</TextBlock>
+            
+        </StackPanel>
     </Panel>
 
 </Window>

@@ -89,12 +89,10 @@
 
                         <!-- Bottom padding is due to font itself. -->
                         <TextBlock Grid.Column="1"
-                                   Foreground="White"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    Text="{TemplateBinding Text}"
                                    TextAlignment="Center"
-                                   Margin="0 0 0 5"
                                    
                                    IsVisible="{
                                        TemplateBinding IsIconButton,

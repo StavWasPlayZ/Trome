@@ -12,6 +12,7 @@
              
     <Application.Resources>
         <FontFamily x:Key="Sixtyfour">avares://Trivia/Assets/Fonts/Sixtyfour.ttf#Sixtyfour</FontFamily>
+        <!-- ReSharper disable once InconsistentNaming -->
         <FontFamily x:Key="Born2bSportyFS">avares://Trivia/Assets/Fonts/Born2bSportyFS.otf#Born2bSporty FS Regular</FontFamily>
         
         <converters:MultiplicationConverter x:Key="MultiplicationConverter"/>
@@ -24,8 +25,11 @@
         
         <Style Selector=":is(TextBlock)">
             <Setter Property="FontFamily" Value="{StaticResource Born2bSportyFS}"/>
-            <Setter Property="FontSize" Value="30"/>
-            <!-- <Setter Property="FontWeight" Value="472997"/> -->
+            <Setter Property="FontSize" Value="35"/>
+            <Setter Property="Foreground" Value="White"/>
+            
+            <!-- For some reason, the font is offset by 5 pixels top. -->
+            <Setter Property="Margin" Value="0 -5 0 0"/>
         </Style>
     </Application.Styles>
              
