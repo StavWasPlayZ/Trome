@@ -89,7 +89,6 @@
                                         
                         </Svg>
 
-                        <!-- Bottom padding is due to font itself. -->
                         <TextBlock Grid.Column="1"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
