@@ -54,4 +54,32 @@ public class TriviaButton : TemplatedControl
         get => GetValue(IconColorProperty);
         set => SetValue(IconColorProperty, value);
     }
+    
+
+    public static readonly StyledProperty<IBrush> BorderBrushSelectedProperty = AvaloniaProperty.Register<TriviaButton, IBrush>(
+        nameof(BorderBrushSelected));
+
+    public IBrush BorderBrushSelected
+    {
+        get => GetValue(BorderBrushSelectedProperty);
+        set => SetValue(BorderBrushSelectedProperty, value);
+    }
+
+    public static readonly StyledProperty<Thickness> BorderThicknessSelectedProperty = AvaloniaProperty.Register<TriviaButton, Thickness>(
+        nameof(BorderThicknessSelected));
+
+    public Thickness BorderThicknessSelected
+    {
+        get => GetValue(BorderThicknessSelectedProperty);
+        set => SetValue(BorderThicknessSelectedProperty, value);
+    }
+
+    public static readonly StyledProperty<IBrush> BackgroundSelectedProperty = AvaloniaProperty.Register<TriviaButton, IBrush>(
+        nameof(BackgroundSelected));
+
+    public IBrush BackgroundSelected
+    {
+        get => GetValue(BackgroundSelectedProperty);
+        set => SetValue(BackgroundSelectedProperty, value);
+    }
 }

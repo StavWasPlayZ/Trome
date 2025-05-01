@@ -40,19 +40,22 @@
                 <Grid
                     RowDefinitions="*, Auto">
     
-                    <StackPanel Grid.Row="0"
-                                Spacing="7">
+                    <StackPanel Grid.Row="0">
     
                         <controls:TriviaButton Text="PLAY"
+                                               Margin="0 5 0 0"
                                                Background="#362034"
                                                BorderBrush="#b92e2b"
                                                IconColor="#ffbbbb"
+                                               BorderBrushSelected="#D93040"
                                                BorderThickness="3"
                                                IconSvgPath="avares://Trivia/Assets/Icons/play_arrow.svg"
                                                IconMargin="-5 5 -10 5"/>
                         <controls:TriviaButton Text="STATISTICS"
+                                               Margin="0 5 0 0"
                                                IconSvgPath="avares://Trivia/Assets/Icons/leaderboard.svg"/>
                         <controls:TriviaButton Text="ABOUT"
+                                               Margin="0 5 0 0"
                                                IconSvgPath="avares://Trivia/Assets/Icons/info.svg"/>
     
                     </StackPanel>
