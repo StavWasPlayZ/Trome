@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:converters="clr-namespace:Trivia.Converters"
         xmlns:controls="clr-namespace:Trivia.Controls"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="484"
+        mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="550"
         x:Class="Trivia.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
-        Width="850" Height="500"
+        Width="900" Height="550"
         x:Name="Window"
         CanResize="False"
         Title="Trivia">
@@ -67,7 +67,9 @@
                         
                         <Panel Grid.Column="1"></Panel>
                         
-                        <controls:TriviaButton Grid.Column="2" Text="A"/>
+                        <controls:TriviaButton Grid.Column="2"
+                                               IsIconButton="True"
+                                               IconSvgPath="avares://Trivia/Assets/Icons/settings.svg"/>
                     </Grid>
     
                 </Grid>

@@ -2,18 +2,35 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="using:Trivia.Controls">
     <Design.PreviewWith>
-        <controls:TriviaButton
-            IconSvgPath="avares://Trivia/Assets/Icons/play_arrow.svg"/>
+        <StackPanel>
+            <controls:TriviaButton
+                IconSvgPath="avares://Trivia/Assets/Icons/play_arrow.svg"/>
+            
+            <Grid ColumnDefinitions="Auto, *">
+                <controls:TriviaButton Grid.Column="0"
+                                       IsIconButton="True"
+                                       IconSvgPath="avares://Trivia/Assets/Icons/settings.svg"/>
+                <Panel Grid.Column="0"></Panel>
+            </Grid>
+        </StackPanel>
     </Design.PreviewWith>
 
     <Style Selector="controls|TriviaButton">
         <!-- Set Defaults -->
         <Setter Property="Text" Value="TEXT"></Setter>
-        <Setter Property="Height" Value="50"></Setter>
+        <Setter Property="Height" Value="55"></Setter>
         <Setter Property="BorderBrush" Value="White"></Setter>
         <Setter Property="BorderThickness" Value="2"></Setter>
         <Setter Property="Background" Value="#211c2c"></Setter>
         <Setter Property="IconMargin" Value="0 10 0 10"></Setter>
+        <Setter Property="IsIconButton" Value="False"></Setter>
+        
+        <Style Selector="^[IsIconButton=False]">
+            <Setter Property="Padding" Value="15 0 15 0"></Setter>
+        </Style>
+        <Style Selector="^[IsIconButton=True]">
+            <Setter Property="Padding" Value="10 0 10 0"></Setter>
+        </Style>
         
         <Setter Property="Template">
             <ControlTemplate>
@@ -22,25 +39,29 @@
                     BorderThickness="{TemplateBinding BorderThickness}"
                     CornerRadius="5"
                     Background="{TemplateBinding Background}"
-                    Padding="15 0 22 0"
+                    Padding="{TemplateBinding Padding}"
                     Height="{TemplateBinding Height}">
-                    
+                
                     <Grid ColumnDefinitions="Auto, *">
                         <Svg Grid.Column="0"
                              Path="{TemplateBinding IconSvgPath}"
                              Margin="{TemplateBinding IconMargin}"/>
-                        
+                
                         <!-- Bottom padding is due to font itself. -->
                         <TextBlock Grid.Column="1"
-                            Foreground="White"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Text="{TemplateBinding Text}"
-                            TextAlignment="Center"
-                            Margin="0 0 0 5"/>
+                                   Foreground="White"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Text="{TemplateBinding Text}"
+                                   TextAlignment="Center"
+                                   Margin="0 0 0 5"
+                                   
+                                   IsVisible="{
+                                       TemplateBinding IsIconButton,
+                                       Converter={x:Static BoolConverters.Not}
+                                   }"/>
                     </Grid>
-                
-                
+                    
                 </Border>
             </ControlTemplate>
         </Setter>

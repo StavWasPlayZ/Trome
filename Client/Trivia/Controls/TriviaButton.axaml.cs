@@ -31,4 +31,17 @@ public class TriviaButton : TemplatedControl
         get => GetValue(IconMarginProperty);
         set => SetValue(IconMarginProperty, value);
     }
+
+    public static readonly StyledProperty<bool> IsIconButtonProperty = AvaloniaProperty.Register<TriviaButton, bool>(
+        nameof(IsIconButton));
+
+    /// <summary>
+    /// Determines whether this button will not display text, but rather only
+    /// the icon button.
+    /// </summary>
+    public bool IsIconButton
+    {
+        get => GetValue(IsIconButtonProperty);
+        set => SetValue(IsIconButtonProperty, value);
+    }
 }
