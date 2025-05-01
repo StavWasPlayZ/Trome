@@ -45,7 +45,8 @@
                     <StackPanel Grid.Row="0"
                                 Spacing="7">
     
-                        <controls:TriviaButton Text="PLAY"
+                        <controls:TriviaButton x:Name="PlayButton"
+                                               Text="PLAY"
                                                Background="#362034"
                                                BorderBrush="#b92e2b"
                                                IconColor="#ffbbbb"
@@ -53,10 +54,12 @@
                                                BorderThickness="3"
                                                IconSvgPath="avares://Trivia/Assets/Icons/play_arrow.svg"
                                                IconMargin="-7 7 -10 7"/>
-                        <controls:TriviaButton Text="STATISTICS"
+                        <controls:TriviaButton x:Name="StatsButton"
+                                               Text="STATISTICS"
                                                BorderBrushSelected="#6154A3"
                                                IconSvgPath="avares://Trivia/Assets/Icons/leaderboard.svg"/>
-                        <controls:TriviaButton Text="ABOUT"
+                        <controls:TriviaButton x:Name="AboutButton"
+                                               Text="ABOUT"
                                                IconSvgPath="avares://Trivia/Assets/Icons/info.svg"/>
     
                     </StackPanel>
@@ -64,6 +67,7 @@
                     <Grid Grid.Row="1"
                                 ColumnDefinitions="*, 7, Auto">
                         <controls:TriviaButton Grid.Column="0"
+                                               x:Name="ExitButton"
                                                Text="EXIT"
                                                BorderBrush="#F2B2B8"
                                                BorderBrushSelected="Crimson"/>
@@ -71,6 +75,7 @@
                         <Panel Grid.Column="1" />
 
                         <controls:TriviaButton Grid.Column="2"
+                                               x:Name="SettingsButton"
                                                IsIconButton="True"
                                                IconSvgPath="avares://Trivia/Assets/Icons/settings.svg"
                                                BorderBrushSelected="LightGray"
@@ -98,9 +103,10 @@
             
             <!-- TODO: Maybe add SVG border -->
             
-            <Button
-                Padding="0"
-                Background="Transparent">
+            <Button x:Name="LogoutButton"
+                    Padding="0"
+                    Background="Transparent">
+                
                 <Svg Path="avares://Trivia/Assets/Icons/logout.svg"
                      Height="40"/>
                 
@@ -119,7 +125,7 @@
                                 <Setter Property="Css" Value="* { fill: #b92e2b; }" />
                                 
                                 <Setter Property="RenderTransform">
-                                    <ScaleTransform ScaleX="0.95" ScaleY="0.95"/>                            
+                                    <ScaleTransform ScaleX="0.96" ScaleY="0.96"/>                            
                                 </Setter>
                             </Style>
                         </Style>
@@ -129,7 +135,7 @@
                             
                             <Style Selector="^ > Svg">
                                 <Setter Property="RenderTransform">
-                                    <ScaleTransform ScaleX="0.87" ScaleY="0.87"/>                            
+                                    <ScaleTransform ScaleX="0.9" ScaleY="0.9"/>                            
                                 </Setter>
                             </Style>
                         </Style>
