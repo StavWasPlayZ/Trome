@@ -58,6 +58,12 @@
                 <Setter Property="BoxShadow" Value="0 6 7 0 #5f000000"/>
             </Style>
             
+            <!-- Remove Buttons' transitions, make it choppy on purpose. -->
+            
+            <Setter Property="Transitions">
+                <Transitions/>
+            </Setter>
+            
         </Style>
         
         
