@@ -25,6 +25,7 @@
         <Setter Property="BorderBrush" Value="White" />
         <Setter Property="BorderThickness" Value="2" />
         <Setter Property="Background" Value="#211c2c" />
+        <Setter Property="CornerRadius" Value="5" />
 
         <Setter Property="IsIconButton" Value="False" />
         <Setter Property="IconColor" Value="White" />
@@ -67,7 +68,7 @@
                 <Button
                     BorderBrush="{TemplateBinding BorderBrush}"
                     BorderThickness="{TemplateBinding BorderThickness}"
-                    CornerRadius="5"
+                    CornerRadius="{TemplateBinding CornerRadius}"
                     Background="{TemplateBinding Background}"
                     Padding="{TemplateBinding Padding}"
                     Height="{TemplateBinding Height}"

@@ -73,7 +73,8 @@
                         <controls:TriviaButton Grid.Column="2"
                                                IsIconButton="True"
                                                IconSvgPath="avares://Trivia/Assets/Icons/settings.svg"
-                                               BorderBrushSelected="LightGray"/>
+                                               BorderBrushSelected="LightGray"
+                                               CornerRadius="5 5 0 5"/>
                     </Grid>
     
                 </Grid>
