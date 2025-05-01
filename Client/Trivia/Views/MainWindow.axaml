@@ -98,25 +98,50 @@
             
             <!-- TODO: Maybe add SVG border -->
             
-            <Svg Path="avares://Trivia/Assets/Icons/logout.svg"
-                 Height="35">
+            <Button
+                Padding="0"
+                Background="Transparent">
+                <Svg Path="avares://Trivia/Assets/Icons/logout.svg"
+                     Height="40"/>
                 
-                <Svg.Styles>
-                    <Style Selector="Svg:pointerover">
-                        <Setter Property="Css" Value="* { fill: #b92e2b; }" />
-
-                        <Setter Property="RenderTransform">
-                            <TransformGroup>
-                                <ScaleTransform ScaleX="0.95" ScaleY="0.95"/>
-                            </TransformGroup>                            
+                <Button.Styles>
+                    <Style Selector="Button">
+                        <Setter Property="Transitions">
+                            <Transitions/>
                         </Setter>
+                        
+                        <Style Selector="^:pointerover">
+                            <Style Selector="^ /template/ ContentPresenter">
+                                <Setter Property="Background" Value="Transparent"/>
+                            </Style>
+                        
+                            <Style Selector="^ > Svg">
+                                <Setter Property="Css" Value="* { fill: #b92e2b; }" />
+                                
+                                <Setter Property="RenderTransform">
+                                    <ScaleTransform ScaleX="0.95" ScaleY="0.95"/>                            
+                                </Setter>
+                            </Style>
+                        </Style>
+                        
+                        <Style Selector="^:pressed">
+                            <Setter Property="RenderTransform" Value="none"/>
+                            
+                            <Style Selector="^ > Svg">
+                                <Setter Property="RenderTransform">
+                                    <ScaleTransform ScaleX="0.87" ScaleY="0.87"/>                            
+                                </Setter>
+                            </Style>
+                        </Style>
+                        
+                        <Style Selector="^:not(:pointerover) > Svg">
+                            <Setter Property="Css" Value="* { fill: #d74351; }" />
+                        </Style>
                     </Style>
-                    <Style Selector="Svg:not(:pointerover)">
-                        <Setter Property="Css" Value="* { fill: #d74351; }" />
-                    </Style>
-                </Svg.Styles>
+                    
+                </Button.Styles>
+            </Button>
                 
-            </Svg>
             
             <TextBlock FontSize="30"
                        VerticalAlignment="Center">Username</TextBlock>
