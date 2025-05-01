@@ -18,30 +18,31 @@
 
     <Style Selector="controls|TriviaButton">
         <!-- Set Defaults -->
-        <Setter Property="ClipToBounds" Value="False"></Setter>
-        
-        <Setter Property="Text" Value="TEXT"></Setter>
-        <Setter Property="Height" Value="60"></Setter>
-        <Setter Property="BorderBrush" Value="White"></Setter>
-        <Setter Property="BorderThickness" Value="2"></Setter>
-        <Setter Property="Background" Value="#211c2c"></Setter>
-        
-        <Setter Property="IconMargin" Value="0 13 0 13"></Setter>
-        <Setter Property="IsIconButton" Value="False"></Setter>
-        <Setter Property="IconColor" Value="White"></Setter>
-        
+        <Setter Property="ClipToBounds" Value="False" />
+
+        <Setter Property="Text" Value="TEXT" />
+        <Setter Property="Height" Value="60" />
+        <Setter Property="BorderBrush" Value="White" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="Background" Value="#211c2c" />
+
+        <Setter Property="IsIconButton" Value="False" />
+        <Setter Property="IconColor" Value="White" />
+
         <Style Selector="^[IsIconButton=False]">
-            <Setter Property="Padding" Value="15 0 15 0"></Setter>
+            <Setter Property="IconMargin" Value="0 13 0 13" />
+            <Setter Property="Padding" Value="15 0 15 0" />
         </Style>
         <Style Selector="^[IsIconButton=True]">
-            <Setter Property="Padding" Value="13 0 13 0"></Setter>
+            <Setter Property="IconMargin" Value="0 10 0 10" />
+            <Setter Property="Padding" Value="10 0 10 0" />
         </Style>
         
         
-        <Setter Property="BorderBrushSelected" Value="#A33E75"></Setter>
-        <Setter Property="BackgroundSelected" Value="#1E132C"></Setter>
-        <Setter Property="BorderThicknessSelected" Value="4"></Setter>
-        
+        <Setter Property="BorderBrushSelected" Value="#A33E75" />
+        <Setter Property="BackgroundSelected" Value="#1E132C" />
+        <Setter Property="BorderThicknessSelected" Value="4" />
+
         <!-- <Setter Property="BorderBrushSelected" Value="#1E132C"></Setter> -->
         <!-- <Setter Property="BackgroundSelected" Value="#ae2c4d"></Setter> -->
         <!-- <Setter Property="BorderThicknessSelected" Value="6"></Setter> -->
