@@ -6,6 +6,10 @@
             <controls:TriviaButton
                 IconSvgPath="avares://Trivia/Assets/Icons/play_arrow.svg"/>
             
+            <controls:TriviaButton
+                IconSvgPath="avares://Trivia/Assets/Icons/play_arrow.svg"
+                IconColor="#ffb0b0"/>
+            
             <controls:TriviaButton HorizontalAlignment="Left"
                                    IsIconButton="True"
                                    IconSvgPath="avares://Trivia/Assets/Icons/settings.svg"/>
@@ -19,8 +23,10 @@
         <Setter Property="BorderBrush" Value="White"></Setter>
         <Setter Property="BorderThickness" Value="2"></Setter>
         <Setter Property="Background" Value="#211c2c"></Setter>
+        
         <Setter Property="IconMargin" Value="0 10 0 10"></Setter>
         <Setter Property="IsIconButton" Value="False"></Setter>
+        <Setter Property="IconColor" Value="White"></Setter>
         
         <Style Selector="^[IsIconButton=False]">
             <Setter Property="Padding" Value="15 0 15 0"></Setter>
@@ -42,7 +48,17 @@
                     <Grid ColumnDefinitions="Auto, *">
                         <Svg Grid.Column="0"
                              Path="{TemplateBinding IconSvgPath}"
-                             Margin="{TemplateBinding IconMargin}"/>
+                             Margin="{TemplateBinding IconMargin}">
+                            
+                            <Svg.Css>
+                                <MultiBinding StringFormat="* {{ fill: {0}; }}">
+                                    <Binding Path="IconColor"
+                                             RelativeSource="{RelativeSource TemplatedParent}"
+                                             Converter="{StaticResource SolidColorBrushToHexStrConverter}"/>
+                                </MultiBinding>
+                            </Svg.Css>
+                            
+                        </Svg>
                 
                         <!-- Bottom padding is due to font itself. -->
                         <TextBlock Grid.Column="1"

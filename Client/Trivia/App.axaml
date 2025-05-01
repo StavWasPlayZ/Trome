@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="Trivia.App"
              xmlns:local="using:Trivia"
+             xmlns:converters="clr-namespace:Trivia.Converters"
              RequestedThemeVariant="Light">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
@@ -12,6 +13,9 @@
     <Application.Resources>
         <FontFamily x:Key="Sixtyfour">avares://Trivia/Assets/Fonts/Sixtyfour.ttf#Sixtyfour</FontFamily>
         <FontFamily x:Key="Born2bSportyFS">avares://Trivia/Assets/Fonts/Born2bSportyFS.otf#Born2bSporty FS Regular</FontFamily>
+        
+        <converters:MultiplicationConverter x:Key="MultiplicationConverter"/>
+        <converters:SolidColorBrushToHexStrConverter x:Key="SolidColorBrushToHexStrConverter"/>
     </Application.Resources>
              
     <Application.Styles>

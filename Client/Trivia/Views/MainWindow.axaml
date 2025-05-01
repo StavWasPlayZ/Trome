@@ -3,7 +3,6 @@
         xmlns:vm="using:Trivia.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:converters="clr-namespace:Trivia.Converters"
         xmlns:controls="clr-namespace:Trivia.Controls"
         mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="550"
         x:Class="Trivia.Views.MainWindow"
@@ -19,10 +18,6 @@
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel/>
     </Design.DataContext>
-    
-    <Window.Resources>
-        <converters:MultiplicationConverter x:Key="MultiplicationConverter"/>
-    </Window.Resources>
 
     <Panel>
         <Image Source="avares://Trivia/Assets/blobs-l-b49caff1a7941d98b60902da64956ad85dfbe4f9.png"
@@ -51,6 +46,7 @@
                         <controls:TriviaButton Text="PLAY"
                                                Background="#362034"
                                                BorderBrush="#b92e2b"
+                                               IconColor="#ffbbbb"
                                                BorderThickness="3"
                                                IconSvgPath="avares://Trivia/Assets/Icons/play_arrow.svg"
                                                IconMargin="-5 5 -10 5"/>

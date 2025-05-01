@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls.Primitives;
+using Avalonia.Media;
 
 namespace Trivia.Controls;
 
@@ -43,5 +44,14 @@ public class TriviaButton : TemplatedControl
     {
         get => GetValue(IsIconButtonProperty);
         set => SetValue(IsIconButtonProperty, value);
+    }
+
+    public static readonly StyledProperty<ISolidColorBrush> IconColorProperty = AvaloniaProperty.Register<TriviaButton, ISolidColorBrush>(
+        nameof(IconColor));
+
+    public ISolidColorBrush IconColor
+    {
+        get => GetValue(IconColorProperty);
+        set => SetValue(IconColorProperty, value);
     }
 }
