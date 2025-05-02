@@ -29,6 +29,7 @@
     <Application.Styles>
         <FluentTheme />
         <StyleInclude Source="avares://Trivia/Controls/TriviaButton.axaml"/>
+        <StyleInclude Source="avares://Trivia/Controls/Underlined.axaml"/>
         
         <Style Selector=":is(TextBlock)">
             <Setter Property="FontFamily" Value="{StaticResource Born2bSportyFS}"/>

@@ -98,7 +98,7 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Orientation="Horizontal"
-            Spacing="7"
+            Spacing="8"
             Margin="20 10">
             
             <!-- TODO: Maybe add SVG border -->
@@ -125,13 +125,15 @@
                     
                 </Button.Styles>
             </Button>
-                
             
             <Button
                 Theme="{StaticResource EmptyButton}">
                 
-                <TextBlock FontSize="30"
-                           VerticalAlignment="Center">Username</TextBlock>
+                <controls:Underlined>
+                    <TextBlock
+                        FontSize="30">Username</TextBlock>
+                </controls:Underlined>
+                
             </Button>
             
         </StackPanel>
