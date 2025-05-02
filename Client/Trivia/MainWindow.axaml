@@ -9,9 +9,7 @@
         Icon="/Assets/avalonia-logo.ico"
         Width="1000" Height="600"
         CanResize="False"
-        Title="Trivia"
-        
-        Background="Black">
+        Title="Trivia">
     
     <Design.DataContext>
         <vm:MainWindowViewModel />

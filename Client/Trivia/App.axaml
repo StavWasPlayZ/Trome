@@ -3,7 +3,7 @@
              x:Class="Trivia.App"
              xmlns:local="using:Trivia"
              xmlns:converters="clr-namespace:Trivia.Converters"
-             RequestedThemeVariant="Light">
+             RequestedThemeVariant="Dark">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
     <Application.DataTemplates>
