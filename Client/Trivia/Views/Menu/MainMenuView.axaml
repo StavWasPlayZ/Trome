@@ -1,22 +1,18 @@
-<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:Trivia.ViewModels"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:controls="clr-namespace:Trivia.Controls"
-        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
-        x:Class="Trivia.Views.MainWindow"
-        x:DataType="vm:MainWindowViewModel"
-        Icon="/Assets/avalonia-logo.ico"
-        Width="1000" Height="600"
-        x:Name="Window"
-        CanResize="False"
-        Title="Trivia">
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:Trivia.Controls"
+             xmlns:vmmenu="clr-namespace:Trivia.ViewModels.Menu"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
+             x:CompileBindings="True"
+             x:Class="Trivia.Views.Menu.MainMenuView"
+             x:DataType="vmmenu:MainMenuViewModel">
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainWindowViewModel/>
+        <vmmenu:MainMenuViewModel/>
     </Design.DataContext>
 
     <Panel>
@@ -27,7 +23,7 @@
             VerticalAlignment="Center"
             ColumnDefinitions="*, *"
             Height="{
-                Binding Height, ElementName=Window,
+                Binding $parent[Window].Bounds.Height,
                 Converter={StaticResource MultiplicationConverter},
                 ConverterParameter=0.55
             }">
@@ -139,4 +135,4 @@
         </StackPanel>
     </Panel>
 
-</Window>
+</UserControl>
