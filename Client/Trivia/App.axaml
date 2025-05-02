@@ -11,12 +11,19 @@
     </Application.DataTemplates>
              
     <Application.Resources>
-        <FontFamily x:Key="Sixtyfour">avares://Trivia/Assets/Fonts/Sixtyfour.ttf#Sixtyfour</FontFamily>
-        <!-- ReSharper disable once InconsistentNaming -->
-        <FontFamily x:Key="Born2bSportyFS">avares://Trivia/Assets/Fonts/Born2bSportyFS.otf#Born2bSporty FS Regular</FontFamily>
+        <ResourceDictionary>
+            <FontFamily x:Key="Sixtyfour">avares://Trivia/Assets/Fonts/Sixtyfour.ttf#Sixtyfour</FontFamily>
+            <!-- ReSharper disable once InconsistentNaming -->
+            <FontFamily x:Key="Born2bSportyFS">avares://Trivia/Assets/Fonts/Born2bSportyFS.otf#Born2bSporty FS Regular</FontFamily>
+            
+            <converters:MultiplicationConverter x:Key="MultiplicationConverter"/>
+            <converters:SolidColorBrushToHexStrConverter x:Key="SolidColorBrushToHexStrConverter"/>
         
-        <converters:MultiplicationConverter x:Key="MultiplicationConverter"/>
-        <converters:SolidColorBrushToHexStrConverter x:Key="SolidColorBrushToHexStrConverter"/>
+        
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="avares://Trivia/Controls/Themes/EmptyButton.axaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
              
     <Application.Styles>

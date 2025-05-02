@@ -105,38 +105,16 @@
             
             <Button x:Name="LogoutButton"
                     Padding="0"
-                    Background="Transparent">
+                    Theme="{StaticResource EmptyButton}">
                 
                 <Svg Path="avares://Trivia/Assets/Icons/logout.svg"
                      Height="40"/>
                 
                 <Button.Styles>
                     <Style Selector="Button">
-                        <Setter Property="Transitions">
-                            <Transitions/>
-                        </Setter>
-                        
                         <Style Selector="^:pointerover">
-                            <Style Selector="^ /template/ ContentPresenter">
-                                <Setter Property="Background" Value="Transparent"/>
-                            </Style>
-                        
                             <Style Selector="^ > Svg">
                                 <Setter Property="Css" Value="* { fill: #b92e2b; }" />
-                                
-                                <Setter Property="RenderTransform">
-                                    <ScaleTransform ScaleX="0.96" ScaleY="0.96"/>                            
-                                </Setter>
-                            </Style>
-                        </Style>
-                        
-                        <Style Selector="^:pressed">
-                            <Setter Property="RenderTransform" Value="none"/>
-                            
-                            <Style Selector="^ > Svg">
-                                <Setter Property="RenderTransform">
-                                    <ScaleTransform ScaleX="0.9" ScaleY="0.9"/>                            
-                                </Setter>
                             </Style>
                         </Style>
                         
@@ -149,8 +127,12 @@
             </Button>
                 
             
-            <TextBlock FontSize="30"
-                       VerticalAlignment="Center">Username</TextBlock>
+            <Button
+                Theme="{StaticResource EmptyButton}">
+                
+                <TextBlock FontSize="30"
+                           VerticalAlignment="Center">Username</TextBlock>
+            </Button>
             
         </StackPanel>
     </Panel>
