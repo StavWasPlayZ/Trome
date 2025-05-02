@@ -47,12 +47,14 @@
                                                BorderBrush="#b92e2b"
                                                IconColor="#ffbbbb"
                                                BorderBrushSelected="#D93040"
+                                               BorderBrushPressed="#AA2C2F"
                                                BorderThickness="3"
                                                IconSvgPath="avares://Trivia/Assets/Icons/play_arrow.svg"
                                                IconMargin="-7 7 -10 7"/>
                         <controls:TriviaButton x:Name="StatsButton"
                                                Text="STATISTICS"
                                                BorderBrushSelected="#6154A3"
+                                               BorderBrushPressed="#3D366D"
                                                IconSvgPath="avares://Trivia/Assets/Icons/leaderboard.svg"/>
                         <controls:TriviaButton x:Name="AboutButton"
                                                Text="ABOUT"
@@ -66,7 +68,8 @@
                                                x:Name="ExitButton"
                                                Text="EXIT"
                                                BorderBrush="#F2B2B8"
-                                               BorderBrushSelected="Crimson"/>
+                                               BorderBrushSelected="Crimson"
+                                               BorderBrushPressed="#AF183A"/>
                         
                         <Panel Grid.Column="1" />
 
@@ -75,6 +78,7 @@
                                                IsIconButton="True"
                                                IconSvgPath="avares://Trivia/Assets/Icons/settings.svg"
                                                BorderBrushSelected="LightGray"
+                                               BorderBrushPressed="#ADADAD"
                                                CornerRadius="5 5 0 5"/>
                     </Grid>
     

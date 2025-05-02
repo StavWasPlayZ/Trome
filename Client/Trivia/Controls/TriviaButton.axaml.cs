@@ -68,6 +68,15 @@ public class TriviaButton : TemplatedControl
         set => SetValue(BorderBrushSelectedProperty, value);
     }
 
+    public static readonly StyledProperty<IBrush> BorderBrushPressedProperty = AvaloniaProperty.Register<TriviaButton, IBrush>(
+        nameof(BorderBrushPressed));
+
+    public IBrush BorderBrushPressed
+    {
+        get => GetValue(BorderBrushPressedProperty);
+        set => SetValue(BorderBrushPressedProperty, value);
+    }
+
     public static readonly StyledProperty<Thickness> BorderThicknessSelectedProperty = AvaloniaProperty.Register<TriviaButton, Thickness>(
         nameof(BorderThicknessSelected));
 
