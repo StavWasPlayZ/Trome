@@ -72,6 +72,7 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Button
+                    x:Name="PART_btn"
                     BorderBrush="{TemplateBinding BorderBrush}"
                     BorderThickness="{TemplateBinding BorderThickness}"
                     CornerRadius="{TemplateBinding CornerRadius}"
