@@ -78,10 +78,10 @@ LeaveRoomRequest JsonRequestPacketDeserializer::deserializeLeaveRoomRequest(cons
 UpdateRoomDataRequest JsonRequestPacketDeserializer::deserializeUpdateRoomDataRequest(const nlohmann::json &data)
 {
     return UpdateRoomDataRequest(
-        data.at("room_name"),
-        data.at("max_players"),
-        data.at("answer_time"),
-        data.at("question_count")
+        data.at("roomName"),
+        data.at("maxPlayers"),
+        data.at("answerTime"),
+        data.at("questionCount")
     );
 }
 
