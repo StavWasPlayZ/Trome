@@ -1,8 +1,6 @@
-using Avalonia.Controls;
-
 namespace Trivia.Views.Menu;
 
-public partial class JoinMenuView : UserControl
+public partial class JoinMenuView : ViewControl
 {
     public JoinMenuView()
     {
