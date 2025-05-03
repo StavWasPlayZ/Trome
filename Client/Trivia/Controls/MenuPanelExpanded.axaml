@@ -7,7 +7,10 @@
                Height="400">
             
             <controls:MenuPanelExpanded>
-                <TextBlock>asdf</TextBlock>
+                <Panel
+                    Background="Black"
+                    Opacity=".3"
+                    />
             </controls:MenuPanelExpanded>            
         </Panel>
     </Design.PreviewWith>
