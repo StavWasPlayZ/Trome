@@ -9,12 +9,6 @@
              x:Class="Trivia.Views.Menu.MainMenuView"
              x:DataType="vmmenu:MainMenuViewModel">
 
-    <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vmmenu:MainMenuViewModel/>
-    </Design.DataContext>
-
     <Panel>
         <Image Source="avares://Trivia/Assets/blobs-l-b49caff1a7941d98b60902da64956ad85dfbe4f9.png"
                Stretch="UniformToFill" />
@@ -41,7 +35,7 @@
                     <StackPanel Grid.Row="0"
                                 Spacing="7">
     
-                        <controls:TriviaButton x:Name="PlayButton"
+                        <controls:TriviaButton Command="{Binding PlayCommand}"
                                                Text="PLAY"
                                                Background="#362034"
                                                BorderBrush="#b92e2b"

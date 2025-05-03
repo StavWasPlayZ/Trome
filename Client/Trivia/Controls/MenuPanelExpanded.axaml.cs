@@ -1,3 +1,4 @@
+using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
 
@@ -12,5 +13,15 @@ public class MenuPanelExpanded : ContentControl
     {
         get => GetValue(TitleProperty);
         set => SetValue(TitleProperty, value);
+    }
+    
+    
+    public static readonly StyledProperty<ICommand> CommandProperty = AvaloniaProperty.Register<MenuPanelExpanded, ICommand>(
+        nameof(Command));
+
+    public ICommand Command
+    {
+        get => GetValue(CommandProperty);
+        set => SetValue(CommandProperty, value);
     }
 }

@@ -1,8 +1,6 @@
-using System;
+using System.Windows.Input;
 using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.Interactivity;
 using Avalonia.Media;
 
 namespace Trivia.Controls;
@@ -96,23 +94,12 @@ public class TriviaButton : TemplatedControl
     }
 
 
-    public static readonly RoutedEvent<RoutedEventArgs> ClickEvent =
-        RoutedEvent.Register<Button, RoutedEventArgs>(nameof(Click), RoutingStrategies.Bubble);
-    
-    public event EventHandler<RoutedEventArgs>? Click
-    {
-        add => AddHandler(ClickEvent, value);
-        remove => RemoveHandler(ClickEvent, value);
-    }
+    public static readonly StyledProperty<ICommand> CommandProperty = AvaloniaProperty.Register<TriviaButton, ICommand>(
+        nameof(Command));
 
-    protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+    public ICommand Command
     {
-        base.OnApplyTemplate(e);
-        
-        var button = e.NameScope.Find<Button>("PART_btn");
-        if (button == null)
-            return;
-        
-        button.Click += (_, _) => RaiseEvent(new RoutedEventArgs(ClickEvent, this));
+        get => GetValue(CommandProperty);
+        set => SetValue(CommandProperty, value);
     }
 }

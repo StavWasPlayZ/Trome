@@ -1,6 +1,8 @@
-﻿namespace Trivia.ViewModels.Menu;
+﻿using ReactiveUI;
 
-public class JoinMenuViewModel : PageViewModel
+namespace Trivia.ViewModels.Menu;
+
+public class JoinMenuViewModel(IScreen hostScreen) : PageViewModel(hostScreen)
 {
     
 }

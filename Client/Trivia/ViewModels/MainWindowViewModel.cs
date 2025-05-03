@@ -1,15 +1,8 @@
 ﻿using ReactiveUI;
-using Trivia.ViewModels.Menu;
 
 namespace Trivia.ViewModels;
 
-public class MainWindowViewModel : ViewModelBase
+public class MainWindowViewModel : ViewModelBase, IScreen
 {
-    private PageViewModel _currentPage = new MainMenuViewModel();
-
-    public PageViewModel CurrentPage
-    {
-        get => _currentPage;
-        set => this.RaiseAndSetIfChanged(ref _currentPage, value);
-    }
+    public RoutingState Router { get; } = new();
 }
