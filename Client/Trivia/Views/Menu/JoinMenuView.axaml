@@ -26,7 +26,27 @@
                     
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding}"/>
+                            <StackPanel Orientation="Horizontal">
+                                
+                                <Border Background="#ffb0a1"
+                                        Height="50"
+                                        Width="50"
+                                        Padding="12"
+                                        CornerRadius="15"
+                                        Margin="15 0">
+                                    
+                                    <Svg Path="avares://Trivia/Assets/Icons/sports_kabaddi.svg"
+                                         Css="* { fill: #2f223b; }"/>
+                                </Border>
+                                
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock FontSize="30">ROOM</TextBlock>
+                                    
+                                    <TextBlock FontSize="15"
+                                               Foreground="rgba(255, 255, 255, .4)">1/6 PLAYERS</TextBlock>
+                                </StackPanel>
+                                
+                            </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                     
@@ -34,13 +54,14 @@
                         <Style Selector="ListBox > ListBoxItem">
                             <Setter Property="Background" Value="#A52151"/>
                             <Setter Property="Margin" Value="0 2"/>
+                            <Setter Property="Padding" Value="10 7"/>
                             
                             <Style Selector="^:nth-child(1)">
                                 <Setter Property="Margin" Value="0 40 0 2"/>
                                 <Setter Property="CornerRadius" Value="15 15 0 0"/>
                             </Style>
                             <Style Selector="^:nth-last-child(1)">
-                                <Setter Property="Margin" Value="0 2 0 200"/>
+                                <Setter Property="Margin" Value="0 2 0 250"/>
                             </Style>
 
                             <Style Selector="^:pointerover /template/ ContentPresenter">
