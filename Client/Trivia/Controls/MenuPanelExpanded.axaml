@@ -64,7 +64,8 @@
                             <!-- ReSharper disable once InconsistentNaming -->
                             <ContentPresenter x:Name="PART_ContentPresenter"
                                               Content="{TemplateBinding Content}"
-                                              ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              ClipToBounds="True"/>
                         </Panel>
                 
                     </Border>

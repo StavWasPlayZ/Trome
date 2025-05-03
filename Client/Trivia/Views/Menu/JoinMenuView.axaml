@@ -14,7 +14,60 @@
                Stretch="UniformToFill" />
 
         <controls:MenuPanelExpanded Title="JOIN">
-            <TextBlock>asdf</TextBlock>
+            
+            <Button
+                VerticalAlignment="Bottom"
+                HorizontalAlignment="Left"
+                Background="#ffcaca"
+                CornerRadius="15 15 0 0"
+                Padding="15 7">
+                
+                <Button.Transitions>
+                    <Transitions/>
+                </Button.Transitions>
+                
+                <Button.Styles>
+                    <!-- <Style Selector="Button"> -->
+                    <!--     <Setter Property="RenderTransform" Value="none"/> -->
+                    <!-- </Style> -->
+                    
+                    <Style Selector="Button:pointerover">
+                        <Setter Property="RenderTransform" Value="translateY(3px)"/>
+                        
+                        <Style Selector="^ /template/ ContentPresenter">
+                            <Setter Property="Background" Value="#EAB2B2"/>
+                        </Style>
+                    </Style>
+                    
+                    <Style Selector="Button:pressed">
+                        <Setter Property="RenderTransform" Value="translateY(7px)"/>
+                        
+                        <Style Selector="^ /template/ ContentPresenter">
+                            <Setter Property="Background" Value="#D9A1A1"/>
+                        </Style>
+                    </Style>
+                </Button.Styles>
+                
+                <StackPanel
+                    Orientation="Horizontal"
+                    Spacing="7">
+                    
+                    <TextBlock
+                        Foreground="#4d264a"
+                        FontWeight="Light"
+                        Padding="3 0">
+                        +
+                    </TextBlock>
+                    
+                    <TextBlock
+                        Foreground="#4d264a"
+                        FontWeight="Light">
+                        NEW ROOM
+                    </TextBlock>
+                </StackPanel>
+                
+            </Button>
+            
         </controls:MenuPanelExpanded>
     </Panel>
 
