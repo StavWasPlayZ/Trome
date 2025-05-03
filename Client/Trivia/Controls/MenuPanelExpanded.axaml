@@ -1,0 +1,61 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:Trivia.Controls">
+    <Design.PreviewWith>
+        <Panel Background="Red"
+               Width="500"
+               Height="400">
+            
+            <controls:MenuPanelExpanded>
+                <TextBlock>asdf</TextBlock>
+            </controls:MenuPanelExpanded>            
+        </Panel>
+    </Design.PreviewWith>
+
+    <Style Selector="controls|MenuPanelExpanded">
+        <!-- Set Defaults -->
+        <Setter Property="Template">
+            <ControlTemplate>
+            
+                <Border
+                    Background="rgba(0, 0, 0, .3)"
+                    Margin="20 60 20 25"
+                    CornerRadius="25 25 25 0"
+                    BoxShadow="0 5 0 0 #1f000000">
+            
+                    <Panel>
+                        <TextBlock
+                            ZIndex="1"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Top"
+                            FontSize="80">
+                
+                            <TextBlock.RenderTransform>
+                                <TranslateTransform Y="-45" />
+                            </TextBlock.RenderTransform>
+                    
+                            <TextBlock.Effect>
+                                <DropShadowEffect
+                                    Color="Black"
+                                    Opacity="0.25"
+                                    BlurRadius="2"
+                                    OffsetY="3"
+                                    OffsetX="2"/>
+                            </TextBlock.Effect>
+                
+                            JOIN
+                        </TextBlock>
+                
+                
+                        <!-- ReSharper disable once InconsistentNaming -->
+                        <ContentPresenter x:Name="PART_ContentPresenter"
+                                          Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                    </Panel>
+            
+                </Border>
+                
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

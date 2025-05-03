@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vmmenu="clr-namespace:Trivia.ViewModels.Menu"
+             xmlns:controls="clr-namespace:Trivia.Controls"
              mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
              x:CompileBindings="True"
              x:Class="Trivia.Views.Menu.JoinMenuView"
@@ -18,6 +19,9 @@
         <Image Source="avares://Trivia/Assets/blobs-l-b49caff1a7941d98b60902da64956ad85dfbe4f9.png"
                Stretch="UniformToFill" />
 
+        <controls:MenuPanelExpanded>
+            <TextBlock>asdf</TextBlock>
+        </controls:MenuPanelExpanded>
     </Panel>
 
 </UserControl>
