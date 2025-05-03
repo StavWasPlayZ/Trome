@@ -59,7 +59,7 @@
                     <Grid Grid.Row="1"
                                 ColumnDefinitions="*, 7, Auto">
                         <controls:TriviaButton Grid.Column="0"
-                                               x:Name="ExitButton"
+                                               Command="{Binding ExitCommand}"
                                                Text="EXIT"
                                                BorderBrush="#F2B2B8"
                                                BorderBrushSelected="Crimson"
