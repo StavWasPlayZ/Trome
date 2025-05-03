@@ -24,7 +24,7 @@
             
                 <Panel>
                     <Button
-                        Command="{TemplateBinding Command}"
+                        Command="{TemplateBinding BackButtonCommand}"
                         Theme="{StaticResource EmptyButton}"
                         VerticalAlignment="Top"
                         HorizontalAlignment="Left"

@@ -16,12 +16,12 @@ public class MenuPanelExpanded : ContentControl
     }
     
     
-    public static readonly StyledProperty<ICommand> CommandProperty = AvaloniaProperty.Register<MenuPanelExpanded, ICommand>(
-        nameof(Command));
+    public static readonly StyledProperty<ICommand> BackButtonCommandProperty = AvaloniaProperty.Register<MenuPanelExpanded, ICommand>(
+        nameof(BackButtonCommand));
 
-    public ICommand Command
+    public ICommand BackButtonCommand
     {
-        get => GetValue(CommandProperty);
-        set => SetValue(CommandProperty, value);
+        get => GetValue(BackButtonCommandProperty);
+        set => SetValue(BackButtonCommandProperty, value);
     }
 }

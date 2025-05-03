@@ -1,8 +1,10 @@
-﻿using ReactiveUI;
+﻿using System.Reactive;
+using ReactiveUI;
 
 namespace Trivia.ViewModels.Menu;
 
 public class JoinMenuViewModel(IScreen hostScreen) : PageViewModel(hostScreen)
 {
-    
+    public ReactiveCommand<Unit, IRoutableViewModel>? BackButtonCommand { get; } =
+        GetMainWindowViewModel()?.Router.NavigateBack;
 }

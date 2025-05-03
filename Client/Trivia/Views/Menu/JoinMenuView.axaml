@@ -13,7 +13,8 @@
         <Image Source="avares://Trivia/Assets/blobs-l-b49caff1a7941d98b60902da64956ad85dfbe4f9.png"
                Stretch="UniformToFill" />
 
-        <controls:MenuPanelExpanded Title="JOIN">
+        <controls:MenuPanelExpanded Title="JOIN"
+                                    BackButtonCommand="{Binding BackButtonCommand}">
             
             <Panel>
                 <ListBox SelectionMode="Single, Toggle"
