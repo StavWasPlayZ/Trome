@@ -3,7 +3,7 @@
         xmlns:controls="clr-namespace:Trivia.Controls">
     <Design.PreviewWith>
         <Panel Background="Red"
-               Width="500"
+               Width="600"
                Height="400">
             
             <controls:MenuPanelExpanded>
@@ -14,6 +14,8 @@
 
     <Style Selector="controls|MenuPanelExpanded">
         <!-- Set Defaults -->
+        <Setter Property="Title" Value="TITLE"/>
+        
         <Setter Property="Template">
             <ControlTemplate>
             
@@ -28,7 +30,8 @@
                             ZIndex="1"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Top"
-                            FontSize="80">
+                            FontSize="80"
+                            Text="{TemplateBinding Title}">
                 
                             <TextBlock.RenderTransform>
                                 <TranslateTransform Y="-45" />
@@ -42,8 +45,6 @@
                                     OffsetY="3"
                                     OffsetX="2"/>
                             </TextBlock.Effect>
-                
-                            JOIN
                         </TextBlock>
                 
                 
