@@ -1,0 +1,204 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vmmenu="clr-namespace:Trivia.ViewModels.Menu"
+             xmlns:controls="clr-namespace:Trivia.Controls"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
+             x:CompileBindings="True"
+             x:Class="Trivia.Views.Menu.CreateRoomView"
+             x:DataType="vmmenu:CreateRoomViewModel">
+    <Panel>
+        <Image Source="avares://Trivia/Assets/drool-d-b1608556d649b5b943136ecc0df0fe1bc7ff644f.png"
+               Stretch="UniformToFill" />
+
+        <Grid ColumnDefinitions="Auto, *"
+              Margin="35,10">
+
+            <Border Grid.Column="0"
+                    Background="#673362"
+                    CornerRadius="30">
+                <Panel>
+                    <ListBox SelectionMode="Single, Toggle"
+                             Margin="10 0"
+                             Background="Transparent">
+
+                        <ListBox.ItemsSource>
+                            fgpsjglgjdsf
+                        </ListBox.ItemsSource>
+
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,75,0">
+
+                                    <Border Background="#FFBCF8"
+                                            Height="50"
+                                            Width="50"
+                                            Padding="7"
+                                            CornerRadius="15"
+                                            Margin="15 0">
+
+                                        <Svg Path="avares://Trivia/Assets/Icons/person.svg"
+                                             Css="* { fill: #813E7A; }" />
+                                    </Border>
+
+                                    <TextBlock FontSize="30" VerticalAlignment="Center">USERNAME</TextBlock>
+
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+
+                        <ListBox.Styles>
+                            <Style Selector="ListBox > ListBoxItem">
+                                <Setter Property="Background" Value="#A52151" />
+                                <Setter Property="Margin" Value="0 2" />
+                                <Setter Property="Padding" Value="10 7" />
+
+                                <Style Selector="^:nth-child(1)">
+                                    <Setter Property="Margin" Value="0 40 0 2" />
+                                    <Setter Property="CornerRadius" Value="15 15 0 0" />
+                                </Style>
+                                <Style Selector="^:nth-last-child(1)">
+                                    <Setter Property="Margin" Value="0 2 0 250" />
+                                </Style>
+
+                                <Style Selector="^:pointerover /template/ ContentPresenter">
+                                    <Setter Property="Background" Value="#921E48" />
+                                </Style>
+                                <Style Selector="^:selected /template/ ContentPresenter">
+                                    <Setter Property="Background" Value="#8A2464" />
+                                </Style>
+                                <Style Selector="^:selected:pointerover /template/ ContentPresenter">
+                                    <Setter Property="Background" Value="#93256C" />
+                                </Style>
+                                <Style Selector="^:pressed /template/ ContentPresenter">
+                                    <Setter Property="Background" Value="#9B2772" />
+                                </Style>
+                            </Style>
+                        </ListBox.Styles>
+                    </ListBox>
+                </Panel>
+            </Border>
+
+            <Border Grid.Column="1" Background="#FFCACA" CornerRadius="25" Margin="20,0">
+                <Grid RowDefinitions="Auto, *, Auto">
+
+                    <Border Grid.Row="0"
+                            Background="#FFF2EB"
+                            Margin="75,30">
+
+                        <TextBlock Foreground="#4D264A" 
+                                   HorizontalAlignment="Center"
+                                   FontSize="50">ROOM NAME</TextBlock>
+                    </Border>
+
+                    <StackPanel Grid.Row="1"
+                                Spacing="5"
+                                Margin="75,50,0,0">
+
+                        <Grid ColumnDefinitions="150, *"
+                              HorizontalAlignment="Left">
+                            <TextBlock Grid.Column="0"
+                                       FontSize="40"
+                                       Foreground="#813E7A">
+                                QUESTIONS
+                            </TextBlock>
+                            <TextBlock Grid.Column="1"
+                                       Foreground="#BE64B7"
+                                       Background="Red"
+                                       Margin="150,0,0,0">
+                                TO DO
+                            </TextBlock>
+                        </Grid>
+
+                        <Grid ColumnDefinitions="150, *"
+                              HorizontalAlignment="Left">
+                            <TextBlock Grid.Column="0"
+                                       FontSize="40"
+                                       Foreground="#813E7A">
+                                SEC/Q
+                            </TextBlock>
+                            <TextBlock Grid.Column="1"
+                                       Foreground="#BE64B7"
+                                       Background="Red"
+                                       Margin="150,0,0,0">
+                                TO DO
+                            </TextBlock>
+                        </Grid>
+
+                        <Grid ColumnDefinitions="150, *"
+                              HorizontalAlignment="Left">
+                            <TextBlock Grid.Column="0"
+                                       FontSize="40"
+                                       Foreground="#813E7A">
+                                PLAYERS
+                            </TextBlock>
+                            <TextBlock Grid.Column="1"
+                                       Foreground="#BE64B7"
+                                       Background="Red"
+                                       Margin="150,0,0,0">
+                                TO DO
+                            </TextBlock>
+                        </Grid>
+
+                    </StackPanel>
+
+                    <Panel Grid.Row="2">
+                        <Grid ColumnDefinitions="Auto, *"
+                              HorizontalAlignment="Center">
+                            
+                            <Button Grid.Column="0" HorizontalAlignment="Center"
+                                    Margin="0 40"
+                                    Width="150"
+                                    CornerRadius="5"
+                                    Background="#4D264A"
+                                    ClipToBounds="False">
+                                
+                                <Button.Styles>
+                                    <Style Selector="Button /template/ ContentPresenter">
+                                        <Setter Property="BoxShadow" Value="0 3 4 #3f000000"></Setter>
+                                    </Style>
+
+                                    <Style Selector="Button:pointerover /template/ ContentPresenter">
+                                        <Setter Property="Background" Value="#5A2757"></Setter>
+                                    </Style>
+
+                                    <Style Selector="Button:pressed /template/ ContentPresenter">
+                                        <Setter Property="Background" Value="#50214E"></Setter>
+                                    </Style>
+                                </Button.Styles>
+                                
+                                <TextBlock TextAlignment="Center">X</TextBlock>
+                                
+                            </Button>
+                            <Button Grid.Column="1" HorizontalAlignment="Center"
+                                    Margin="0 40"
+                                    Width="150"
+                                    CornerRadius="5"
+                                    Background="#4D264A"
+                                    ClipToBounds="False">
+
+                                <Button.Styles>
+                                    <Style Selector="Button /template/ ContentPresenter">
+                                        <Setter Property="BoxShadow" Value="0 3 4 #3f000000"></Setter>
+                                    </Style>
+
+                                    <Style Selector="Button:pointerover /template/ ContentPresenter">
+                                        <Setter Property="Background" Value="#5A2757"></Setter>
+                                    </Style>
+
+                                    <Style Selector="Button:pressed /template/ ContentPresenter">
+                                        <Setter Property="Background" Value="#50214E"></Setter>
+                                    </Style>
+                                </Button.Styles>
+                                
+                                <TextBlock TextAlignment="Center">CLOSE</TextBlock>
+                            </Button>
+                        </Grid>
+                    </Panel>
+
+                </Grid>
+            </Border>
+        </Grid>
+    </Panel>
+</UserControl>
