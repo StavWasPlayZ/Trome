@@ -62,7 +62,7 @@
                                 <Setter Property="CornerRadius" Value="15 15 0 0"/>
                             </Style>
                             <Style Selector="^:nth-last-child(1)">
-                                <Setter Property="Margin" Value="0 2 0 250"/>
+                                <Setter Property="Margin" Value="0 2 0 275"/>
                             </Style>
 
                             <Style Selector="^:pointerover /template/ ContentPresenter">
@@ -78,14 +78,15 @@
                                 <Setter Property="Background" Value="#9B2772"/>
                             </Style>
                         </Style>
-                    </ListBox.Styles>       
+                    </ListBox.Styles>
                 </ListBox>
                 
-                <Button VerticalAlignment="Bottom"
+                <Button Command="{Binding NewRoomButtonCommand}"
+                        VerticalAlignment="Bottom"
                         HorizontalAlignment="Left"
                         Background="#ffcaca"
                         CornerRadius="15 15 0 0"
-                        Padding="15 7">
+                        Padding="15 7 15 15">
                     
                     <Button.Transitions>
                         <Transitions/>
@@ -93,23 +94,22 @@
                     
                     <Button.Styles>
                         <Style Selector="Button">
-                            <!-- Because theres a 1px offset for some reason -->
-                            <Setter Property="RenderTransform" Value="translateY(1px)"/>
+                            <Setter Property="RenderTransform" Value="translateY(8px)"/>
                         </Style>
                         
                         <Style Selector="Button:pointerover">
-                            <Setter Property="RenderTransform" Value="translateY(3px)"/>
+                            <Setter Property="RenderTransform" Value="translateY(5px)"/>
                             
                             <Style Selector="^ /template/ ContentPresenter">
-                                <Setter Property="Background" Value="#EAB2B2"/>
+                                <Setter Property="Background" Value="#F2B8B8"/>
                             </Style>
                         </Style>
                         
                         <Style Selector="Button:pressed">
-                            <Setter Property="RenderTransform" Value="translateY(7px)"/>
+                            <Setter Property="RenderTransform" Value="translateY(10px)"/>
                             
                             <Style Selector="^ /template/ ContentPresenter">
-                                <Setter Property="Background" Value="#D9A1A1"/>
+                                <Setter Property="Background" Value="#E8A6A9"/>
                             </Style>
                         </Style>
                     </Button.Styles>
