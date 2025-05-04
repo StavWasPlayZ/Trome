@@ -12,12 +12,13 @@
         <Image Source="avares://Trivia/Assets/drool-d-b1608556d649b5b943136ecc0df0fe1bc7ff644f.png"
                Stretch="UniformToFill" />
 
-        <Grid ColumnDefinitions="Auto, *"
+        <Grid ColumnDefinitions="320, 15, *"
               Margin="35,10">
 
             <Border Grid.Column="0"
                     Background="#673362"
-                    CornerRadius="30">
+                    CornerRadius="30"
+                    ClipToBounds="True">
                 <Panel>
                     <ListBox SelectionMode="Single, Toggle"
                              Margin="10 0"
@@ -29,7 +30,7 @@
 
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,75,0">
+                                <StackPanel Orientation="Horizontal">
 
                                     <Border Background="#FFBCF8"
                                             Height="50"
@@ -55,11 +56,11 @@
                                 <Setter Property="Padding" Value="10 7" />
 
                                 <Style Selector="^:nth-child(1)">
-                                    <Setter Property="Margin" Value="0 40 0 2" />
-                                    <Setter Property="CornerRadius" Value="15 15 0 0" />
+                                    <Setter Property="Margin" Value="0 10 0 2" />
+                                    <Setter Property="CornerRadius" Value="20 20 0 0" />
                                 </Style>
                                 <Style Selector="^:nth-last-child(1)">
-                                    <Setter Property="Margin" Value="0 2 0 250" />
+                                    <Setter Property="Margin" Value="0 2 0 275" />
                                 </Style>
 
                                 <Style Selector="^:pointerover /template/ ContentPresenter">
@@ -79,123 +80,138 @@
                     </ListBox>
                 </Panel>
             </Border>
+            
+            <Panel Grid.Column="1"/>
 
-            <Border Grid.Column="1" Background="#FFCACA" CornerRadius="25" Margin="20,0">
+            <Border Grid.Column="2"
+                    Background="#FFCACA"
+                    CornerRadius="25"
+                    Padding="40 40">
                 <Grid RowDefinitions="Auto, *, Auto">
 
                     <Border Grid.Row="0"
                             Background="#FFF2EB"
-                            Margin="75,30">
+                            CornerRadius="15"
+                            BoxShadow="0 5 4 #2f000000"
+                            Padding="20 -5 20 7">
 
-                        <TextBlock Foreground="#4D264A" 
-                                   HorizontalAlignment="Center"
-                                   FontSize="50">ROOM NAME</TextBlock>
+                        
+                        <controls:Underlined Foreground="#7f000000">
+                            <TextBlock Foreground="#4D264A"
+                                       HorizontalAlignment="Center"
+                                       FontSize="65">ROOM NAME</TextBlock>
+                        </controls:Underlined>
+                        
                     </Border>
 
                     <StackPanel Grid.Row="1"
-                                Spacing="5"
-                                Margin="75,50,0,0">
+                                Spacing="20"
+                                Margin="35 40">
 
-                        <Grid ColumnDefinitions="150, *"
-                              HorizontalAlignment="Left">
+                        <Grid ColumnDefinitions="150, *">
                             <TextBlock Grid.Column="0"
-                                       FontSize="40"
+                                       FontSize="35"
                                        Foreground="#813E7A">
                                 QUESTIONS
                             </TextBlock>
                             <TextBlock Grid.Column="1"
+                                       FontSize="35"
                                        Foreground="#BE64B7"
-                                       Background="Red"
-                                       Margin="150,0,0,0">
-                                TO DO
+                                       TextAlignment="End">
+                                TODO
                             </TextBlock>
                         </Grid>
 
-                        <Grid ColumnDefinitions="150, *"
-                              HorizontalAlignment="Left">
+                        <Grid ColumnDefinitions="150, *">
                             <TextBlock Grid.Column="0"
-                                       FontSize="40"
+                                       FontSize="35"
                                        Foreground="#813E7A">
                                 SEC/Q
                             </TextBlock>
                             <TextBlock Grid.Column="1"
+                                       FontSize="35"
                                        Foreground="#BE64B7"
-                                       Background="Red"
-                                       Margin="150,0,0,0">
-                                TO DO
+                                       TextAlignment="End">
+                                TODO
                             </TextBlock>
                         </Grid>
 
-                        <Grid ColumnDefinitions="150, *"
-                              HorizontalAlignment="Left">
+                        <Grid ColumnDefinitions="150, *">
                             <TextBlock Grid.Column="0"
-                                       FontSize="40"
+                                       FontSize="35"
                                        Foreground="#813E7A">
                                 PLAYERS
                             </TextBlock>
                             <TextBlock Grid.Column="1"
+                                       FontSize="35"
                                        Foreground="#BE64B7"
-                                       Background="Red"
-                                       Margin="150,0,0,0">
-                                TO DO
+                                       TextAlignment="End">
+                                TODO
                             </TextBlock>
                         </Grid>
 
                     </StackPanel>
 
-                    <Panel Grid.Row="2">
-                        <Grid ColumnDefinitions="Auto, *"
-                              HorizontalAlignment="Center">
+                    <Grid Grid.Row="2"
+                          ColumnDefinitions="Auto, 5 *"
+                          Margin="50 0"
+                          Height="65">
                             
-                            <Button Grid.Column="0" HorizontalAlignment="Center"
-                                    Margin="0 40"
-                                    Width="150"
-                                    CornerRadius="5"
-                                    Background="#4D264A"
-                                    ClipToBounds="False">
+                        <Button Grid.Column="0"
+                                VerticalAlignment="Stretch"
+                                Width="90"
+                                CornerRadius="5"
+                                Background="#4D264A"
+                                ClipToBounds="False">
                                 
-                                <Button.Styles>
-                                    <Style Selector="Button /template/ ContentPresenter">
-                                        <Setter Property="BoxShadow" Value="0 3 4 #3f000000"></Setter>
-                                    </Style>
+                            <Button.Styles>
+                                <Style Selector="Button /template/ ContentPresenter">
+                                    <Setter Property="BoxShadow" Value="0 3 4 #3f000000" />
+                                </Style>
 
-                                    <Style Selector="Button:pointerover /template/ ContentPresenter">
-                                        <Setter Property="Background" Value="#5A2757"></Setter>
-                                    </Style>
+                                <Style Selector="Button:pointerover /template/ ContentPresenter">
+                                    <Setter Property="Background" Value="#5A2757" />
+                                </Style>
 
-                                    <Style Selector="Button:pressed /template/ ContentPresenter">
-                                        <Setter Property="Background" Value="#50214E"></Setter>
-                                    </Style>
-                                </Button.Styles>
+                                <Style Selector="Button:pressed /template/ ContentPresenter">
+                                    <Setter Property="Background" Value="#50214E" />
+                                </Style>
+                            </Button.Styles>
                                 
-                                <TextBlock TextAlignment="Center">X</TextBlock>
+                            <TextBlock TextAlignment="Center"
+                                       FontSize="40"
+                                       VerticalAlignment="Center">X</TextBlock>
                                 
-                            </Button>
-                            <Button Grid.Column="1" HorizontalAlignment="Center"
-                                    Margin="0 40"
-                                    Width="150"
-                                    CornerRadius="5"
-                                    Background="#4D264A"
-                                    ClipToBounds="False">
+                        </Button>
+                        
+                        <Panel Grid.Column="1"/>
+                        
+                        <Button Grid.Column="2"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                CornerRadius="5"
+                                Background="#4D264A"
+                                ClipToBounds="False">
 
-                                <Button.Styles>
-                                    <Style Selector="Button /template/ ContentPresenter">
-                                        <Setter Property="BoxShadow" Value="0 3 4 #3f000000"></Setter>
-                                    </Style>
+                            <Button.Styles>
+                                <Style Selector="Button /template/ ContentPresenter">
+                                    <Setter Property="BoxShadow" Value="0 3 4 #3f000000" />
+                                </Style>
 
-                                    <Style Selector="Button:pointerover /template/ ContentPresenter">
-                                        <Setter Property="Background" Value="#5A2757"></Setter>
-                                    </Style>
+                                <Style Selector="Button:pointerover /template/ ContentPresenter">
+                                    <Setter Property="Background" Value="#5A2757" />
+                                </Style>
 
-                                    <Style Selector="Button:pressed /template/ ContentPresenter">
-                                        <Setter Property="Background" Value="#50214E"></Setter>
-                                    </Style>
-                                </Button.Styles>
+                                <Style Selector="Button:pressed /template/ ContentPresenter">
+                                    <Setter Property="Background" Value="#50214E" />
+                                </Style>
+                            </Button.Styles>
                                 
-                                <TextBlock TextAlignment="Center">CLOSE</TextBlock>
-                            </Button>
-                        </Grid>
-                    </Panel>
+                            <TextBlock TextAlignment="Center"
+                                       FontSize="40"
+                                       VerticalAlignment="Center">START</TextBlock>
+                        </Button>
+                    </Grid>
 
                 </Grid>
             </Border>

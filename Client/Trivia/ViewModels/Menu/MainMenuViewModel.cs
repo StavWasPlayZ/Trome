@@ -16,6 +16,8 @@ public class MainMenuViewModel : PageViewModel
     
     public MainMenuViewModel(IScreen hostScreen) : base(hostScreen)
     {
-        PlayCommand = ReactiveCommand.CreateFromObservable(() => NavigateTo(new JoinMenuViewModel(HostScreen))!);
+        PlayCommand = ReactiveCommand.CreateFromObservable(() => NavigateTo(
+            new JoinMenuViewModel(HostScreen))!
+        );
     }
 }
