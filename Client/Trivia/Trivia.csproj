@@ -42,5 +42,9 @@
         <DependentUpon>MenuPanelExpanded.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Views\Menu\TestView.axaml.cs">
+        <DependentUpon>TestViewModel.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
 </Project>
