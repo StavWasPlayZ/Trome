@@ -46,5 +46,9 @@
         <DependentUpon>TestViewModel.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Views\Menu\LoginView.axaml.cs">
+        <DependentUpon>LoginView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
 </Project>
