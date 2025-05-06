@@ -50,5 +50,9 @@
         <DependentUpon>LoginView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Views\Menu\SignupView.axaml.cs">
+        <DependentUpon>SignupView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
 </Project>
