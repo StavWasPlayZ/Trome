@@ -17,69 +17,96 @@
                                     BackButtonCommand="{Binding BackButtonCommand}">
             
             <Panel>
-                <ListBox SelectionMode="Single, Toggle"
-                         Margin="20 0"
-                         Background="Transparent">
+                
+                <Grid ColumnDefinitions="*, 20, Auto"
+                      Margin="20 0">
+                    <ListBox Grid.Column="0"
+                             SelectionMode="Single, Toggle"
+                             Background="Transparent"
+                             ClipToBounds="False">
                     
-                    <ListBox.ItemsSource>
-                        naorsdsadasdasdasd
-                    </ListBox.ItemsSource>
-                    
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                
-                                <Border Background="#ffb0a1"
-                                        Height="50"
-                                        Width="50"
-                                        Padding="12"
-                                        CornerRadius="15"
-                                        Margin="15 0">
+                        <ListBox.ItemsSource>
+                            naorsdsadasdasdasdjtffjghfgjhfghjfghj
+                        </ListBox.ItemsSource>
+                        
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
                                     
-                                    <Svg Path="avares://Trivia/Assets/Icons/sports_kabaddi.svg"
-                                         Css="* { fill: #2f223b; }"/>
-                                </Border>
-                                
-                                <StackPanel VerticalAlignment="Center">
-                                    <TextBlock FontSize="30">ROOM</TextBlock>
+                                    <Border Background="#ffb0a1"
+                                            Height="50"
+                                            Width="50"
+                                            Padding="12"
+                                            CornerRadius="15"
+                                            Margin="15 0">
+                                        
+                                        <Svg Path="avares://Trivia/Assets/Icons/sports_kabaddi.svg"
+                                             Css="* { fill: #2f223b; }"/>
+                                    </Border>
                                     
-                                    <TextBlock FontSize="15"
-                                               Foreground="rgba(255, 255, 255, .4)">1/6 PLAYERS</TextBlock>
+                                    <StackPanel VerticalAlignment="Center">
+                                        <TextBlock FontSize="30">ROOM</TextBlock>
+                                        
+                                        <TextBlock FontSize="15"
+                                                   Foreground="rgba(255, 255, 255, .4)">1/6 PLAYERS</TextBlock>
+                                    </StackPanel>
+                                    
                                 </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        
+                        <ListBox.Styles>
+                            <Style Selector="ListBox > ListBoxItem">
+                                <Setter Property="Background" Value="#A52151"/>
+                                <Setter Property="Margin" Value="0 2"/>
+                                <Setter Property="Padding" Value="10 7"/>
                                 
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                    
-                    <ListBox.Styles>
-                        <Style Selector="ListBox > ListBoxItem">
-                            <Setter Property="Background" Value="#A52151"/>
-                            <Setter Property="Margin" Value="0 2"/>
-                            <Setter Property="Padding" Value="10 7"/>
-                            
-                            <Style Selector="^:nth-child(1)">
-                                <Setter Property="Margin" Value="0 40 0 2"/>
-                                <Setter Property="CornerRadius" Value="15 15 0 0"/>
-                            </Style>
-                            <Style Selector="^:nth-last-child(1)">
-                                <Setter Property="Margin" Value="0 2 0 275"/>
-                            </Style>
+                                <Style Selector="^:nth-child(1)">
+                                    <Setter Property="CornerRadius" Value="15 15 0 0"/>
+                                </Style>
+                                <Style Selector="^:nth-last-child(1)">
+                                    <Setter Property="CornerRadius" Value="0 0 5 5"/>
+                                </Style>
 
-                            <Style Selector="^:pointerover /template/ ContentPresenter">
-                                <Setter Property="Background" Value="#921E48"/>
+                                <Style Selector="^:pointerover /template/ ContentPresenter">
+                                    <Setter Property="Background" Value="#921E48"/>
+                                </Style>
+                                <Style Selector="^:selected /template/ ContentPresenter">
+                                    <Setter Property="Background" Value="#8A2464"/>
+                                </Style>
+                                <Style Selector="^:selected:pointerover /template/ ContentPresenter">
+                                    <Setter Property="Background" Value="#93256C"/>
+                                </Style>
+                                <Style Selector="^:pressed /template/ ContentPresenter">
+                                    <Setter Property="Background" Value="#9B2772"/>
+                                </Style>
                             </Style>
-                            <Style Selector="^:selected /template/ ContentPresenter">
-                                <Setter Property="Background" Value="#8A2464"/>
+                            
+                            <!-- Bring the scrollbar a bit right -->
+                            <Style Selector="ListBox /template/ ScrollViewer">
+                                <Setter Property="ClipToBounds" Value="False"/>
+                                
+                                <Style Selector="^ /template/ ScrollBar:vertical">
+                                    <Setter Property="RenderTransform" Value="translateX(18px)"/>
+                                </Style>
+                                
+                                <!-- Pad the top and bottom of the list -->
+                                <Style Selector="^ VirtualizingStackPanel">
+                                    <Setter Property="Margin" Value="0 20 0 275"/>
+                                </Style>
                             </Style>
-                            <Style Selector="^:selected:pointerover /template/ ContentPresenter">
-                                <Setter Property="Background" Value="#93256C"/>
-                            </Style>
-                            <Style Selector="^:pressed /template/ ContentPresenter">
-                                <Setter Property="Background" Value="#9B2772"/>
-                            </Style>
-                        </Style>
-                    </ListBox.Styles>
-                </ListBox>
+                            
+                        </ListBox.Styles>
+                    </ListBox>
+                    
+                    <Panel Grid.Column="1"/>
+                    
+                    <Border Grid.Column="2"
+                            Width="350"
+                            Background="#8a2464"
+                            Margin="0 20 0 20"
+                            CornerRadius="40" />
+                </Grid>
                 
                 <Button Command="{Binding NewRoomButtonCommand}"
                         VerticalAlignment="Bottom"
