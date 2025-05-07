@@ -30,7 +30,11 @@ public partial class JoinMenuView : PageViewControl<JoinMenuViewModel>
     private void OnAttachedToVisualTree(object? sender, VisualTreeAttachmentEventArgs e)
     {
         _roomInfoPanelWidth = RoomInfoPanel.Width;
-        CloseRoomPanel();
+
+        if (!Design.IsDesignMode)
+        {    
+           CloseRoomPanel();
+        }
     }
 
     private void RoomListBoxOnSelectionChanged(object? sender, SelectionChangedEventArgs e)
