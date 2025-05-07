@@ -7,7 +7,8 @@
              mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
              x:CompileBindings="True"
              x:Class="Trivia.Views.Menu.JoinMenuView"
-             x:DataType="vmmenu:JoinMenuViewModel">
+             x:DataType="vmmenu:JoinMenuViewModel"
+             x:Name="JoinMenuViewControl">
 
     <Panel>
         <Image Source="avares://Trivia/Assets/blobs-l-b49caff1a7941d98b60902da64956ad85dfbe4f9.png"
@@ -18,9 +19,10 @@
             
             <Panel>
                 
-                <Grid ColumnDefinitions="*, 20, Auto"
+                <Grid ColumnDefinitions="*, Auto"
                       Margin="20 0">
-                    <ListBox Grid.Column="0"
+                    <ListBox x:Name="RoomListBox"
+                             Grid.Column="0"
                              SelectionMode="Single, Toggle"
                              Background="Transparent"
                              ClipToBounds="False">
@@ -99,13 +101,25 @@
                         </ListBox.Styles>
                     </ListBox>
                     
-                    <Panel Grid.Column="1"/>
-                    
-                    <Border Grid.Column="2"
-                            Width="350"
-                            Background="#8a2464"
-                            Margin="0 20 0 20"
-                            CornerRadius="40" />
+                    <Grid Grid.Column="1"
+                          x:Name="RoomInfoPanel"
+                          ColumnDefinitions="Auto, *"
+                          Width="350">
+                        <Panel Grid.Column="0" Width="20"/>
+                        
+                        <Grid.Transitions>
+                            <Transitions>
+                                <DoubleTransition Property="Width"
+                                                  Duration="{Binding #JoinMenuViewControl.RoomInfoPanelAnimationTime}"
+                                                  Easing="CubicEaseOut"/>
+                            </Transitions>
+                        </Grid.Transitions>
+                        
+                        <Border Grid.Column="1"
+                                Background="#8a2464"
+                                Margin="10 20 0 20"
+                                CornerRadius="40" />
+                    </Grid>
                 </Grid>
                 
                 <Button Command="{Binding NewRoomButtonCommand}"
@@ -113,19 +127,22 @@
                         HorizontalAlignment="Left"
                         Background="#ffcaca"
                         CornerRadius="15 15 0 0"
-                        Padding="15 7 15 15">
+                        Padding="15 7">
                     
                     <Button.Transitions>
-                        <Transitions/>
+                        <Transitions>
+                            <TransformOperationsTransition Property="RenderTransform" Duration="0:0:.025"/>
+                        </Transitions>
                     </Button.Transitions>
                     
                     <Button.Styles>
+                        <!-- Because for some reason it's 1px offset -->
                         <Style Selector="Button">
-                            <Setter Property="RenderTransform" Value="translateY(8px)"/>
+                            <Setter Property="RenderTransform" Value="translateY(1px)"/>
                         </Style>
                         
                         <Style Selector="Button:pointerover">
-                            <Setter Property="RenderTransform" Value="translateY(5px)"/>
+                            <Setter Property="RenderTransform" Value="translateY(4px)"/>
                             
                             <Style Selector="^ /template/ ContentPresenter">
                                 <Setter Property="Background" Value="#F2B8B8"/>
@@ -133,7 +150,7 @@
                         </Style>
                         
                         <Style Selector="Button:pressed">
-                            <Setter Property="RenderTransform" Value="translateY(10px)"/>
+                            <Setter Property="RenderTransform" Value="translateY(8px)"/>
                             
                             <Style Selector="^ /template/ ContentPresenter">
                                 <Setter Property="Background" Value="#E8A6A9"/>
@@ -141,9 +158,8 @@
                         </Style>
                     </Button.Styles>
                     
-                    <StackPanel
-                        Orientation="Horizontal"
-                        Spacing="7">
+                    <StackPanel Orientation="Horizontal"
+                                Spacing="7">
                         
                         <TextBlock
                             Foreground="#4d264a"
