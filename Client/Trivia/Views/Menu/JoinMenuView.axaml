@@ -33,9 +33,9 @@
                         
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
+                                <Grid ColumnDefinitions="Auto, Auto, *">
                                     
-                                    <Border Background="#ffb0a1"
+                                    <Border Grid.Column="0" Background="#ffb0a1"
                                             Height="50"
                                             Width="50"
                                             Padding="12"
@@ -46,7 +46,7 @@
                                              Css="* { fill: #2f223b; }"/>
                                     </Border>
                                     
-                                    <StackPanel VerticalAlignment="Center">
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock FontSize="30">ROOM</TextBlock>
                                             <TextBlock FontSize="22"
@@ -61,7 +61,35 @@
                                         </TextBlock>
                                     </StackPanel>
                                     
-                                </StackPanel>
+                                    <Button Grid.Column="2"
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Stretch"
+                                            Background="#f9be82"
+                                            CornerRadius="5"
+                                            Width="80"
+                                            Height="40"
+                                            ClipToBounds="False">
+                                        
+                                        <Button.Styles>
+                                            <Style Selector="Button /template/ ContentPresenter">
+                                                <Setter Property="BoxShadow" Value="0 3 3 #7f0000"/>
+                                            </Style>
+                                            
+                                            <Style Selector="Button:pointerover /template/ ContentPresenter">
+                                                <Setter Property="Background" Value="#F3B87D"/>
+                                            </Style>
+                        
+                                            <Style Selector="Button:pressed /template/ ContentPresenter">
+                                                <Setter Property="Background" Value="#DFA871"/>
+                                            </Style>
+                                        </Button.Styles>
+                                        
+                                        <Svg Path="avares://Trivia/Assets/Icons/login.svg"
+                                             Stretch="Uniform"
+                                             Css="* { fill: #2f223b; } " />
+                                    </Button>
+                                    
+                                </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                         
