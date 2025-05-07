@@ -47,10 +47,18 @@
                                     </Border>
                                     
                                     <StackPanel VerticalAlignment="Center">
-                                        <TextBlock FontSize="30">ROOM</TextBlock>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock FontSize="30">ROOM</TextBlock>
+                                            <TextBlock FontSize="22"
+                                                       VerticalAlignment="Center"
+                                                       Opacity=".7"
+                                                       Text=" • USERNAME"/>
+                                        </StackPanel>
                                         
                                         <TextBlock FontSize="15"
-                                                   Foreground="rgba(255, 255, 255, .4)">1/6 PLAYERS</TextBlock>
+                                                   Opacity=".4">
+                                            1/6 PLAYERS • 25 QUESTIONS
+                                        </TextBlock>
                                     </StackPanel>
                                     
                                 </StackPanel>
