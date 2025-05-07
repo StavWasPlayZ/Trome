@@ -1,9 +1,7 @@
 using System;
 using System.Reactive.Disposables;
-using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Threading;
 using ReactiveUI;
 using Trivia.ViewModels.Menu;
 
@@ -32,7 +30,7 @@ public partial class JoinMenuView : PageViewControl<JoinMenuViewModel>
     private void OnAttachedToVisualTree(object? sender, VisualTreeAttachmentEventArgs e)
     {
         _roomInfoPanelWidth = RoomInfoPanel.Width;
-        RoomInfoPanel.Width = 0;
+        CloseRoomPanel();
     }
 
     private void RoomListBoxOnSelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -41,28 +39,31 @@ public partial class JoinMenuView : PageViewControl<JoinMenuViewModel>
         
         if (e.AddedItems.Count == 0)
         {
-            RoomInfoPanel.Width = 0;
+            CloseRoomPanel();
             return;
         }
 
-        // If we not only removed, but also added, we swapped.
-        // Animate the animation in and out.
-        if (e.RemovedItems.Count == 1)
-        {
-            RoomInfoPanel.Width = 0;
+        // // If we not only removed, but also added, we swapped.
+        // // Animate the animation in and out.
+        // if (e.RemovedItems.Count == 1)
+        // {
+        //     CloseRoomPanel();
+        //
+        //     Task.Run(async () =>
+        //     {
+        //         RoomInfoPanelAnimationTime /= 1.5;
+        //         await Task.Delay(RoomInfoPanelAnimationTime);
+        //         RoomInfoPanelAnimationTime *= 1.5;
+        //
+        //         Dispatcher.UIThread.Post(ExpandRoomPanel);
+        //     });
+        //     
+        //     return;
+        // }
 
-            Task.Run(async () =>
-            {
-                RoomInfoPanelAnimationTime /= 1.5;
-                await Task.Delay(RoomInfoPanelAnimationTime);
-                RoomInfoPanelAnimationTime *= 1.5;
-
-                Dispatcher.UIThread.Post(() => RoomInfoPanel.Width = _roomInfoPanelWidth);
-            });
-        }
-        else
-        {
-            RoomInfoPanel.Width = _roomInfoPanelWidth;
-        }
+        ExpandRoomPanel();
     }
+    
+    private void ExpandRoomPanel() => RoomInfoPanel.Width = _roomInfoPanelWidth;
+    private void CloseRoomPanel() => RoomInfoPanel.Width = 0;
 }
