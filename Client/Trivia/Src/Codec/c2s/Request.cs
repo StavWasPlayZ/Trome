@@ -18,5 +18,17 @@ namespace Trivia.Codec.c2s
             GetHighScores,
             GetPersonalStatistics
         }
+
+        /// <summary>
+        /// S - The enum Status type
+        /// </summary>
+        public class ProtocolRequest<S>
+        {
+            public ProtocolRequest(S status)
+            {
+                this.Status = status;
+            }
+            public readonly S Status;
+        }
     }
 }
