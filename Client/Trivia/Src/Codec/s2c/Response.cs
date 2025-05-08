@@ -101,5 +101,18 @@ namespace Trivia.Codec.s2c
             public SignupResponse(SignupStatus status) : base(status)
             {}
         }
+
+        public enum LogoutStatus : uint
+        {
+            Success = 1,
+            FailedNotLoggedIn = 2,
+            FailedInternalError = 0
+        }
+
+        public class LogoutResponse : ProtocolResponse<LogoutStatus>
+        {
+            public LogoutResponse(LogoutStatus status) : base(status)
+            {}
+        }
     }
 }
