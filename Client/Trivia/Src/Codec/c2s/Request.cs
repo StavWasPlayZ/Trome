@@ -39,5 +39,25 @@ namespace Trivia.Codec.c2s
             public readonly string Username;
             public readonly string Password;
         }
+
+        public class SignupRequest : ProtocolRequest
+        {
+            public SignupRequest(string username, string password, string email, string phone, string? address, string birthday) : base(RequestCode.Signup)
+            {
+                this.Username = username;
+                this.Password = password;
+                this.Email = email;
+                this.Phone = phone;
+                this.Address = address;
+                this.Birthday = birthday;
+            }
+            
+            public readonly string Username;
+            public readonly string Password;
+            public readonly string Email;
+            public readonly string Phone;
+            public readonly string? Address;
+            public readonly string Birthday;
+        }
     }
 }
