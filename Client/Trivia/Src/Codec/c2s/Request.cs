@@ -27,5 +27,17 @@ namespace Trivia.Codec.c2s
             }
             public readonly RequestCode Code;
         }
+
+        public class LoginRequest : ProtocolRequest
+        {
+            public LoginRequest(string username, string password) : base(RequestCode.Login)
+            {
+                this.Username = username;
+                this.Password = password;
+            }
+            
+            public readonly string Username;
+            public readonly string Password;
+        }
     }
 }
