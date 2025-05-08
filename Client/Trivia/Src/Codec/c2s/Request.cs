@@ -19,16 +19,13 @@ namespace Trivia.Codec.c2s
             GetPersonalStatistics
         }
 
-        /// <summary>
-        /// S - The enum Status type
-        /// </summary>
-        public class ProtocolRequest<S>
+        public class ProtocolRequest
         {
-            public ProtocolRequest(S status)
+            public ProtocolRequest(RequestCode code)
             {
-                this.Status = status;
+                this.Code = code;
             }
-            public readonly S Status;
+            public readonly RequestCode Code;
         }
     }
 }
