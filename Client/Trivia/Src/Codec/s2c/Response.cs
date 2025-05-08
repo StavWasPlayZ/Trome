@@ -114,5 +114,22 @@ namespace Trivia.Codec.s2c
             public LogoutResponse(LogoutStatus status) : base(status)
             {}
         }
+
+        public enum ErrorStatus : uint
+        {
+            Generic = 0,
+            ServerUnimplemented,
+            IllegalRequest
+        }
+
+        public class ErrorResponse : ProtocolResponse<ErrorStatus>
+        {
+            public ErrorResponse(ErrorStatus status, string message) : base(status)
+            {
+                this.Message = message;
+            }
+            
+            public readonly string Message;
+        }
     }
 }
