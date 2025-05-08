@@ -32,5 +32,34 @@ namespace Trivia.Codec.s2c
             ErrorUnknownResource,
             ErrorInternal = 0
         }
+
+        /// <summary>
+        /// S - The enum Status type
+        /// </summary>
+        public class ProtocolResponse<S>
+        {
+            protected ProtocolResponse(S status)
+            {
+                this.Status = status;
+            }
+            public readonly S Status;
+        }
+
+        /// <summary>
+        /// S - The enum Status type
+        /// </summary>
+        public class RegistrationResponse<S> : ProtocolResponse<S>
+        {
+            protected RegistrationResponse(S status, uint userId) : base(status)
+            {
+                this.UserId = userId;
+            }
+            protected RegistrationResponse(S status) : base(status)
+            {
+                this.UserId = uint.MaxValue;
+            }
+            
+            public readonly uint UserId;
+        }
     }
 }
