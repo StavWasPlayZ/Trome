@@ -83,6 +83,23 @@ namespace Trivia.Codec.c2s
             GetRoomsRequest() : base(RequestCode.GetRooms)
             { }
         }
+
+        public class CreateRoomRequest : ProtocolRequest
+        {
+            CreateRoomRequest(string roomName, string maxPlayers, string questionCount, string answerTimeout) 
+                : base(RequestCode.CreateRoom)
+            {
+                this.RoomName = roomName;
+                this.MaxPlayers = maxPlayers;
+                this.QuestionCount = questionCount;
+                this.AnswerTimeout = answerTimeout;
+            }
+            
+            public readonly string RoomName;
+            public readonly string MaxPlayers;
+            public readonly string QuestionCount;
+            public readonly string AnswerTimeout;
+        }
         
         public class GetHighScoresRequest : ProtocolRequest
         {
