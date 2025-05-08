@@ -21,7 +21,7 @@ namespace Trivia.Codec.c2s
 
         public class ProtocolRequest
         {
-            public ProtocolRequest(RequestCode code)
+            protected ProtocolRequest(RequestCode code)
             {
                 this.Code = code;
             }
