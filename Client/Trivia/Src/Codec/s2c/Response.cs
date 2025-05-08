@@ -81,5 +81,25 @@ namespace Trivia.Codec.s2c
             public LoginResponse(LoginStatus status) : base(status)
             {}
         }
+
+        public enum SignupStatus : uint
+        {
+            Success = 1,
+            FailedUsernameTaken = 2,
+            FailedInvalidArgument = 3,
+            FailedInternalError = 0
+        }
+
+        public class SignupResponse : RegistrationResponse<SignupStatus>
+        {
+            public SignupResponse(SignupStatus status, uint userId) : base(status, userId)
+            {}
+            
+            /**
+             * A failed login response. Provided no user ID.
+             */
+            public SignupResponse(SignupStatus status) : base(status)
+            {}
+        }
     }
 }
