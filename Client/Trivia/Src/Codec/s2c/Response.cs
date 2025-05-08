@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Text.Json;
+using System.Collections.Generic;
 
 namespace Trivia.Codec.s2c
 {
@@ -147,6 +148,37 @@ namespace Trivia.Codec.s2c
             }
 
             public readonly int roomId;
+        }
+
+        /*
+         I have no idea how to do it, help
+        public class GetRoomsResponse : ProtocolResponse<GenericResponseStatus>
+        {
+            
+        }
+        
+        public class GetPlayersInRoomResponse : ProtocolResponse<GenericResponseStatus>
+        {
+            
+        }
+        */
+
+        public enum GenericStatsStatus : uint
+        {
+            Success = 1,
+            Error = 0,
+            NotConnectedError = 2
+        }
+
+        public class GetHighScoreResponse : ProtocolResponse<GenericStatsStatus>
+        {
+            public GetHighScoreResponse(GenericStatsStatus status, IReadOnlyList<KeyValuePair<string, int>> stats)
+                : base(status)
+            {
+                this.Stats = stats;
+            }
+
+            public readonly IReadOnlyList<KeyValuePair<string, int>> Stats;
         }
     }
 }
