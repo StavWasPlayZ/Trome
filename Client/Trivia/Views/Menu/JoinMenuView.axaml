@@ -165,7 +165,7 @@
                                         
                                         <Style Selector="^#PART_LineUpButton, ^#PART_LineDownButton">
                                             <Style Selector="^ TextBlock">
-                                                <Setter Property="Foreground" Value="#E57281"/>
+                                                <Setter Property="Foreground" Value="#D9555A"/>
                                                 <Setter Property="FontSize" Value="18"/>
                                                 <Setter Property="HorizontalAlignment" Value="Center"/>
                                             </Style>
@@ -173,13 +173,13 @@
                                         
                                         <Style Selector="^:pointerover#PART_LineUpButton, ^:pointerover#PART_LineDownButton">
                                             <Style Selector="^ TextBlock">
-                                                <Setter Property="Foreground" Value="#C7646F"/>
+                                                <Setter Property="Foreground" Value="#C74D52"/>
                                             </Style>
                                         </Style>
                                         
                                         <Style Selector="^:pressed#PART_LineUpButton, ^:pressed#PART_LineDownButton">
                                             <Style Selector="^ TextBlock">
-                                                <Setter Property="Foreground" Value="#B85C67"/>
+                                                <Setter Property="Foreground" Value="#B7474C"/>
                                             </Style>
                                         </Style>
                                         
