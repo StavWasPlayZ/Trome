@@ -131,5 +131,12 @@ namespace Trivia.Codec.s2c
             
             public readonly string Message;
         }
+        
+        // TODO - Get room metadata
+        public class JoinRoomResponse : ProtocolResponse<ConsumingResponseStatus>
+        {
+            public JoinRoomResponse(ConsumingResponseStatus status) : base(status)
+            {}
+        }
     }
 }
