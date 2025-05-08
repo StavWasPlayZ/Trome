@@ -59,5 +59,41 @@ namespace Trivia.Codec.c2s
             public readonly string? Address;
             public readonly string Birthday;
         }
+
+        public class GetPlayersInRoomRequest : ProtocolRequest
+        {
+            GetPlayersInRoomRequest(uint roomId) : base(RequestCode.GetPlayersInRoom)
+            {
+                this.RoomID = roomId;
+            }
+            public readonly uint RoomID;
+        }
+        
+        public class JoinRoomRequest : ProtocolRequest
+        {
+            JoinRoomRequest(uint roomId) : base(RequestCode.JoinRoom)
+            {
+                this.RoomID = roomId;
+            }
+            public readonly uint RoomID;
+        }
+        
+        public class GetRoomsRequest : ProtocolRequest
+        {
+            GetRoomsRequest() : base(RequestCode.GetRooms)
+            { }
+        }
+        
+        public class GetHighScoresRequest : ProtocolRequest
+        {
+            GetHighScoresRequest() : base(RequestCode.GetHighScores)
+            { }
+        }
+        
+        public class GetPersonalStatisticsRequest : ProtocolRequest
+        {
+            GetPersonalStatisticsRequest() : base(RequestCode.GetPersonalStatistics)
+            { }
+        }
     }
 }
