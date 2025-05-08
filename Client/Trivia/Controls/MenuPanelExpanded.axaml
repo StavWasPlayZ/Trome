@@ -1,0 +1,80 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:Trivia.Controls">
+    <Design.PreviewWith>
+        <Panel Background="Red"
+               Width="600"
+               Height="400">
+            
+            <controls:MenuPanelExpanded>
+                <Panel
+                    Background="Black"
+                    Opacity=".3"
+                    />
+            </controls:MenuPanelExpanded>            
+        </Panel>
+    </Design.PreviewWith>
+
+    <Style Selector="controls|MenuPanelExpanded">
+        <!-- Set Defaults -->
+        <Setter Property="Title" Value="TITLE"/>
+        
+        <Setter Property="Template">
+            <ControlTemplate>
+            
+                <Panel>
+                    <Button
+                        Command="{TemplateBinding BackButtonCommand}"
+                        Theme="{StaticResource EmptyButton}"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Left"
+                        Padding="5"
+                        Margin="15 5">
+                        
+                        <TextBlock
+                            FontSize="50">&lt;</TextBlock>
+                    </Button>
+                    
+                    <Border
+                        Background="rgba(0, 0, 0, .3)"
+                        Margin="20 70 20 25"
+                        CornerRadius="25 25 25 0"
+                        BoxShadow="0 5 0 0 #1f000000">
+                
+                        <Panel>
+                            <TextBlock
+                                ZIndex="1"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Top"
+                                FontSize="80"
+                                Text="{TemplateBinding Title}">
+                    
+                                <TextBlock.RenderTransform>
+                                    <TranslateTransform Y="-45" />
+                                </TextBlock.RenderTransform>
+                        
+                                <TextBlock.Effect>
+                                    <DropShadowEffect
+                                        Color="Black"
+                                        Opacity="0.4"
+                                        BlurRadius="10"
+                                        OffsetY="3"
+                                        OffsetX="2"/>
+                                </TextBlock.Effect>
+                            </TextBlock>
+                    
+                    
+                            <!-- ReSharper disable once InconsistentNaming -->
+                            <ContentPresenter x:Name="PART_ContentPresenter"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              ClipToBounds="True"/>
+                        </Panel>
+                
+                    </Border>
+                </Panel>
+                
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

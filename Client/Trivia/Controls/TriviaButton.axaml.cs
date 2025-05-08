@@ -1,3 +1,4 @@
+using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls.Primitives;
 using Avalonia.Media;
@@ -65,6 +66,15 @@ public class TriviaButton : TemplatedControl
         set => SetValue(BorderBrushSelectedProperty, value);
     }
 
+    public static readonly StyledProperty<IBrush> BorderBrushPressedProperty = AvaloniaProperty.Register<TriviaButton, IBrush>(
+        nameof(BorderBrushPressed));
+
+    public IBrush BorderBrushPressed
+    {
+        get => GetValue(BorderBrushPressedProperty);
+        set => SetValue(BorderBrushPressedProperty, value);
+    }
+
     public static readonly StyledProperty<Thickness> BorderThicknessSelectedProperty = AvaloniaProperty.Register<TriviaButton, Thickness>(
         nameof(BorderThicknessSelected));
 
@@ -81,5 +91,15 @@ public class TriviaButton : TemplatedControl
     {
         get => GetValue(BackgroundSelectedProperty);
         set => SetValue(BackgroundSelectedProperty, value);
+    }
+
+
+    public static readonly StyledProperty<ICommand> CommandProperty = AvaloniaProperty.Register<TriviaButton, ICommand>(
+        nameof(Command));
+
+    public ICommand Command
+    {
+        get => GetValue(CommandProperty);
+        set => SetValue(CommandProperty, value);
     }
 }

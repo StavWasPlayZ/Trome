@@ -1,23 +1,13 @@
-<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:Trivia.ViewModels"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:controls="clr-namespace:Trivia.Controls"
-        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
-        x:Class="Trivia.Views.MainWindow"
-        x:DataType="vm:MainWindowViewModel"
-        Icon="/Assets/avalonia-logo.ico"
-        Width="1000" Height="600"
-        x:Name="Window"
-        CanResize="False"
-        Title="Trivia">
-
-    <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:Trivia.Controls"
+             xmlns:vmmenu="clr-namespace:Trivia.ViewModels.Menu"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
+             x:CompileBindings="True"
+             x:Class="Trivia.Views.Menu.MainMenuView"
+             x:DataType="vmmenu:MainMenuViewModel">
 
     <Panel>
         <Image Source="avares://Trivia/Assets/blobs-l-b49caff1a7941d98b60902da64956ad85dfbe4f9.png"
@@ -27,7 +17,7 @@
             VerticalAlignment="Center"
             ColumnDefinitions="*, *"
             Height="{
-                Binding Height, ElementName=Window,
+                Binding $parent[Window].Bounds.Height,
                 Converter={StaticResource MultiplicationConverter},
                 ConverterParameter=0.55
             }">
@@ -39,24 +29,25 @@
                     Background="rgba(0, 0, 0, 190)"
                     Padding="50 20 30 20">
         
-                <Grid
-                    RowDefinitions="*, Auto">
+                <Grid RowDefinitions="*, Auto">
     
                     <StackPanel Grid.Row="0"
                                 Spacing="7">
     
-                        <controls:TriviaButton x:Name="PlayButton"
+                        <controls:TriviaButton Command="{Binding PlayCommand}"
                                                Text="PLAY"
                                                Background="#362034"
                                                BorderBrush="#b92e2b"
                                                IconColor="#ffbbbb"
                                                BorderBrushSelected="#D93040"
+                                               BorderBrushPressed="#AA2C2F"
                                                BorderThickness="3"
                                                IconSvgPath="avares://Trivia/Assets/Icons/play_arrow.svg"
                                                IconMargin="-7 7 -10 7"/>
                         <controls:TriviaButton x:Name="StatsButton"
                                                Text="STATISTICS"
                                                BorderBrushSelected="#6154A3"
+                                               BorderBrushPressed="#3D366D"
                                                IconSvgPath="avares://Trivia/Assets/Icons/leaderboard.svg"/>
                         <controls:TriviaButton x:Name="AboutButton"
                                                Text="ABOUT"
@@ -67,10 +58,11 @@
                     <Grid Grid.Row="1"
                                 ColumnDefinitions="*, 7, Auto">
                         <controls:TriviaButton Grid.Column="0"
-                                               x:Name="ExitButton"
+                                               Command="{Binding ExitCommand}"
                                                Text="EXIT"
                                                BorderBrush="#F2B2B8"
-                                               BorderBrushSelected="Crimson"/>
+                                               BorderBrushSelected="Crimson"
+                                               BorderBrushPressed="#AF183A"/>
                         
                         <Panel Grid.Column="1" />
 
@@ -79,6 +71,7 @@
                                                IsIconButton="True"
                                                IconSvgPath="avares://Trivia/Assets/Icons/settings.svg"
                                                BorderBrushSelected="LightGray"
+                                               BorderBrushPressed="#ADADAD"
                                                CornerRadius="5 5 0 5"/>
                     </Grid>
     
@@ -111,6 +104,7 @@
                      Height="40"/>
                 
                 <Button.Styles>
+                    
                     <Style Selector="Button">
                         <Style Selector="^:pointerover">
                             <Style Selector="^ > Svg">
@@ -139,4 +133,4 @@
         </StackPanel>
     </Panel>
 
-</Window>
+</UserControl>

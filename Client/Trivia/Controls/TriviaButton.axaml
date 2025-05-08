@@ -43,6 +43,8 @@
         <Setter Property="BorderBrushSelected" Value="#A33E75" />
         <Setter Property="BackgroundSelected" Value="#1E132C" />
         <Setter Property="BorderThicknessSelected" Value="4" />
+        
+        <Setter Property="BorderBrushPressed" Value="#682B49" />
 
         <!-- <Setter Property="BorderBrushSelected" Value="#1E132C"></Setter> -->
         <!-- <Setter Property="BackgroundSelected" Value="#ae2c4d"></Setter> -->
@@ -66,12 +68,21 @@
             
         </Style>
         
+        <Style Selector="^ /template/ Button:pressed">
+            
+            <Style Selector="^ /template/ ContentPresenter">
+                <Setter Property="BorderBrush" Value="{Binding $parent[controls:TriviaButton].BorderBrushPressed}"/>
+            </Style>
+            
+        </Style>
+        
         
         <!-- Actual button -->
         
         <Setter Property="Template">
             <ControlTemplate>
                 <Button
+                    Command="{TemplateBinding Command}"
                     BorderBrush="{TemplateBinding BorderBrush}"
                     BorderThickness="{TemplateBinding BorderThickness}"
                     CornerRadius="{TemplateBinding CornerRadius}"

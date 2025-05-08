@@ -1,6 +1,8 @@
-﻿namespace Trivia.ViewModels;
+﻿using ReactiveUI;
 
-public class MainWindowViewModel : ViewModelBase
+namespace Trivia.ViewModels;
+
+public class MainWindowViewModel : ViewModelBase, IScreen
 {
-    
+    public RoutingState Router { get; } = new();
 }

@@ -430,6 +430,7 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+*.sln.DotSettings
 
 # CLion
 .idea

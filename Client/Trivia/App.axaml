@@ -3,7 +3,7 @@
              x:Class="Trivia.App"
              xmlns:local="using:Trivia"
              xmlns:converters="clr-namespace:Trivia.Converters"
-             RequestedThemeVariant="Light">
+             RequestedThemeVariant="Dark">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
     <Application.DataTemplates>
@@ -28,8 +28,6 @@
              
     <Application.Styles>
         <FluentTheme />
-        <StyleInclude Source="avares://Trivia/Controls/TriviaButton.axaml"/>
-        <StyleInclude Source="avares://Trivia/Controls/Underlined.axaml"/>
         
         <Style Selector=":is(TextBlock)">
             <Setter Property="FontFamily" Value="{StaticResource Born2bSportyFS}"/>
@@ -39,6 +37,13 @@
             <!-- For some reason, the font is offset by 5 pixels top. -->
             <Setter Property="Margin" Value="0 -5 0 0"/>
         </Style>
+
+        <StyleInclude Source="avares://Trivia/Controls/TriviaButton.axaml"/>
+        <StyleInclude Source="avares://Trivia/Controls/Underlined.axaml"/>
+        <StyleInclude Source="avares://Trivia/Controls/MenuPanelExpanded.axaml"/>
+        
+        <StyleInclude Source="avares://Trivia/Controls/Styles/TriviaListStyle.axaml"/>
+
     </Application.Styles>
              
 </Application>
