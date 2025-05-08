@@ -138,5 +138,15 @@ namespace Trivia.Codec.s2c
             public JoinRoomResponse(ConsumingResponseStatus status) : base(status)
             {}
         }
+
+        public class CreateRoomResponse : ProtocolResponse<GenericResponseStatus>
+        {
+            public CreateRoomResponse(GenericResponseStatus status, int roomId) : base(status)
+            {
+                this.roomId = roomId;
+            }
+
+            public readonly int roomId;
+        }
     }
 }
