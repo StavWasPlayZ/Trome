@@ -180,5 +180,15 @@ namespace Trivia.Codec.s2c
 
             public readonly IReadOnlyList<KeyValuePair<string, int>> Stats;
         }
+
+        public class GetPersonalStatisticsResponse : ProtocolResponse<GenericStatsStatus>
+        {
+            public GetPersonalStatisticsResponse(GenericStatsStatus status, UserStatistics stats) : base(status)
+            {
+                this.Stats = stats;
+            }
+
+            public readonly UserStatistics Stats;
+        }
     }
 }
