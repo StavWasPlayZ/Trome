@@ -1,6 +1,5 @@
 ﻿using System.Text.Json.Nodes;
 using Trivia.Codec.c2s.Request;
-using Trivia.Codec.s2c.Response;
 
 namespace Trivia.Codec.c2s;
 using System;
@@ -12,11 +11,43 @@ public class JsonRequestPacketSerializer
 {
     private const uint SizeCode = 1;
     private const uint SizeJsonLen = 4;
-    public static string serializeJsonToProtocol(ResponseCode code, JsonObject data)
+
+    public string serializeRequest(LoginRequest request)
     {
-        string dataStr = JsonConvert.SerializeObject(data);
+        return serializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
+    }
+    public string serializeRequest(SignupRequest request)
+    {
+        return serializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
+    }
+    public string serializeRequest(GetPlayersInRoomRequest request)
+    {
+        return serializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
+    }
+    public string serializeRequest(JoinRoomRequest request)
+    {
+        return serializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
+    }
+    public string serializeRequest(GetRoomsRequest request)
+    {
+        return serializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
+    }
+    public string serializeRequest(CreateRoomRequest request)
+    {
+        return serializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
+    }
+    public string serializeRequest(GetHighScoresRequest request)
+    {
+        return serializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
+    }
+    public string serializeRequest(GetPersonalStatisticsRequest request)
+    {
+        return serializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
+    }
+    public static string serializeJsonToProtocol(RequestCode code, string data)
+    {
         byte codeByte = (byte)code;
-        byte[] strBytes = Encoding.UTF8.GetBytes(dataStr);
+        byte[] strBytes = Encoding.UTF8.GetBytes(data);
         byte[] lenBytes = BitConverter.GetBytes(strBytes.Length);
 
         if (!BitConverter.IsLittleEndian)
