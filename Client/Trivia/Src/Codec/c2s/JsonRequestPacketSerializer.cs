@@ -12,39 +12,39 @@ public class JsonRequestPacketSerializer
     private const uint SizeCode = 1;
     private const uint SizeJsonLen = 4;
 
-    public string serializeRequest(LoginRequest request)
+    public byte[] serializeRequest(LoginRequest request)
     {
         return serializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
     }
-    public string serializeRequest(SignupRequest request)
+    public byte[] serializeRequest(SignupRequest request)
     {
         return serializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
     }
-    public string serializeRequest(GetPlayersInRoomRequest request)
+    public byte[] serializeRequest(GetPlayersInRoomRequest request)
     {
         return serializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
     }
-    public string serializeRequest(JoinRoomRequest request)
+    public byte[] serializeRequest(JoinRoomRequest request)
     {
         return serializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
     }
-    public string serializeRequest(GetRoomsRequest request)
+    public byte[] serializeRequest(GetRoomsRequest request)
     {
         return serializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
     }
-    public string serializeRequest(CreateRoomRequest request)
+    public byte[] serializeRequest(CreateRoomRequest request)
     {
         return serializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
     }
-    public string serializeRequest(GetHighScoresRequest request)
+    public byte[] serializeRequest(GetHighScoresRequest request)
     {
         return serializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
     }
-    public string serializeRequest(GetPersonalStatisticsRequest request)
+    public byte[] serializeRequest(GetPersonalStatisticsRequest request)
     {
         return serializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
     }
-    public static string serializeJsonToProtocol(RequestCode code, string data)
+    public static byte[] serializeJsonToProtocol(RequestCode code, string data)
     {
         byte codeByte = (byte)code;
         byte[] strBytes = Encoding.UTF8.GetBytes(data);
@@ -58,6 +58,6 @@ public class JsonRequestPacketSerializer
         Array.Copy(lenBytes, 0, result, SizeCode, SizeJsonLen);
         Array.Copy(strBytes, 0, result, SizeCode + SizeJsonLen, strBytes.Length);
 
-        return Encoding.Latin1.GetString(result);
+        return result;
     }
 }
