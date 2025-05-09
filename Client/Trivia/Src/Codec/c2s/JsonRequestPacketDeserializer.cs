@@ -9,8 +9,7 @@ using Newtonsoft.Json;
 
 public class JsonRequestPacketDeserializer
 {
-
-    public LoginRequest deserializeLoginRequest(string data)
+    public static LoginRequest deserializeLoginRequest(string data)
     {
 	    return JsonConvert.DeserializeObject<LoginRequest>(data);
     }
