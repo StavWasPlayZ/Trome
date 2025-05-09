@@ -12,39 +12,39 @@ public class JsonRequestPacketSerializer
     private const uint SizeCode = 1;
     private const uint SizeJsonLen = 4;
 
-    public byte[] serializeRequest(LoginRequest request)
+    public byte[] SerializeRequest(LoginRequest request)
     {
-        return serializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
+        return SerializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
     }
-    public byte[] serializeRequest(SignupRequest request)
+    public byte[] SerializeRequest(SignupRequest request)
     {
-        return serializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
+        return SerializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
     }
-    public byte[] serializeRequest(GetPlayersInRoomRequest request)
+    public byte[] SerializeRequest(GetPlayersInRoomRequest request)
     {
-        return serializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
+        return SerializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
     }
-    public byte[] serializeRequest(JoinRoomRequest request)
+    public byte[] SerializeRequest(JoinRoomRequest request)
     {
-        return serializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
+        return SerializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
     }
-    public byte[] serializeRequest(GetRoomsRequest request)
+    public byte[] SerializeRequest(GetRoomsRequest request)
     {
-        return serializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
+        return SerializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
     }
-    public byte[] serializeRequest(CreateRoomRequest request)
+    public byte[] SerializeRequest(CreateRoomRequest request)
     {
-        return serializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
+        return SerializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
     }
-    public byte[] serializeRequest(GetHighScoresRequest request)
+    public byte[] SerializeRequest(GetHighScoresRequest request)
     {
-        return serializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
+        return SerializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
     }
-    public byte[] serializeRequest(GetPersonalStatisticsRequest request)
+    public byte[] SerializeRequest(GetPersonalStatisticsRequest request)
     {
-        return serializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
+        return SerializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
     }
-    public static byte[] serializeJsonToProtocol(RequestCode code, string data)
+    public static byte[] SerializeJsonToProtocol(RequestCode code, string data)
     {
         byte codeByte = (byte)code;
         byte[] strBytes = Encoding.UTF8.GetBytes(data);
