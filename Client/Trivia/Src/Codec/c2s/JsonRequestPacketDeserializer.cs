@@ -1,5 +1,6 @@
 ﻿using System.Text.Json.Nodes;
 using Trivia.Codec.c2s.Request;
+using Trivia.Codec.s2c.Response;
 
 namespace Trivia.Codec.c2s;
 using System;
@@ -9,8 +10,5 @@ using Newtonsoft.Json;
 
 public class JsonRequestPacketDeserializer
 {
-    public static LoginRequest deserializeLoginRequest(string data)
-    {
-	    return JsonConvert.DeserializeObject<LoginRequest>(data);
-    }
+    
 }
