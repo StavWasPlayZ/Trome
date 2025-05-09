@@ -8,7 +8,7 @@ using System.Text;
 using System.Text.Json;
 using Newtonsoft.Json;
 
-public class JsonRequestPacketDeserializer
+public class JsonRequestPacketSerializer
 {
     
 }
