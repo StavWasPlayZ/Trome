@@ -167,9 +167,9 @@ namespace Trivia.Codec.s2c
             NotConnectedError = 2
         }
 
-        public class GetHighScoreResponse : ProtocolResponse<GenericStatsStatus>
+        public class GetHighScoresResponse : ProtocolResponse<GenericStatsStatus>
         {
-            public GetHighScoreResponse(GenericStatsStatus status, IReadOnlyList<KeyValuePair<string, int>> stats)
+            public GetHighScoresResponse(GenericStatsStatus status, IReadOnlyList<KeyValuePair<string, int>> stats)
                 : base(status)
             {
                 this.Stats = stats;
