@@ -12,7 +12,7 @@ public class JsonRequestPacketDeserializer
     {
 	    if (jsonLen <= 0 || data == null || data.Length < jsonLen)
 	    {
-		    throw new ArgumentException("Invalid JSON length or data buffer.");
+		    throw new ArgumentException("Invalid JSON length or data buffer");
 	    }
 	    
 	    string jsonString = Encoding.UTF8.GetString(data, 0, jsonLen);
@@ -23,6 +23,16 @@ public class JsonRequestPacketDeserializer
 		    return obj;
 	    }
 
-	    throw new InvalidOperationException("Parsed JSON is not an object.");
+	    throw new InvalidOperationException("Parsed JSON is not an object");
+    }
+    
+    public uint toUL(int n)
+    {
+	    if (n < 0)
+	    {
+		    throw new ArgumentException("Invalid room ID");
+	    }
+	    
+	    return (uint)n;
     }
 }
