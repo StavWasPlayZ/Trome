@@ -5,53 +5,61 @@ using Trivia.Codec.C2S.Request;
 
 namespace Trivia.Codec.C2S;
 
-public class JsonRequestPacketSerializer
+public static class JsonRequestPacketSerializer
 {
     private const uint SizeCode = 1;
     private const uint SizeJsonLen = 4;
 
-    public byte[] SerializeRequest(LoginRequest request)
+    //TODO: Check if may reduce to just the method below.
+    // This may be problematic for per-object serialization.
+    public static byte[] SerializeRequest(ProtocolRequest request)
     {
-        return SerializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
+        return SerializeJsonToProtocol(request.Code, JsonConvert.SerializeObject(request));
     }
-    public byte[] SerializeRequest(SignupRequest request)
+    
+    public static byte[] SerializeRequest(LoginRequest request)
     {
-        return SerializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
+        return SerializeJsonToProtocol(request.Code, JsonConvert.SerializeObject(request));
     }
-    public byte[] SerializeRequest(GetPlayersInRoomRequest request)
+    public static byte[] SerializeRequest(SignupRequest request)
     {
-        return SerializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
+        return SerializeJsonToProtocol(request.Code, JsonConvert.SerializeObject(request));
     }
-    public byte[] SerializeRequest(JoinRoomRequest request)
+    public static byte[] SerializeRequest(GetPlayersInRoomRequest request)
     {
-        return SerializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
+        return SerializeJsonToProtocol(request.Code, JsonConvert.SerializeObject(request));
     }
-    public byte[] SerializeRequest(GetRoomsRequest request)
+    public static byte[] SerializeRequest(JoinRoomRequest request)
     {
-        return SerializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
+        return SerializeJsonToProtocol(request.Code, JsonConvert.SerializeObject(request));
     }
-    public byte[] SerializeRequest(CreateRoomRequest request)
+    public static byte[] SerializeRequest(GetRoomsRequest request)
     {
-        return SerializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
+        return SerializeJsonToProtocol(request.Code, JsonConvert.SerializeObject(request));
     }
-    public byte[] SerializeRequest(GetHighScoresRequest request)
+    public static byte[] SerializeRequest(CreateRoomRequest request)
     {
-        return SerializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
+        return SerializeJsonToProtocol(request.Code, JsonConvert.SerializeObject(request));
     }
-    public byte[] SerializeRequest(GetPersonalStatisticsRequest request)
+    public static byte[] SerializeRequest(GetHighScoresRequest request)
     {
-        return SerializeJsonToProtocol(RequestCode.Login, JsonConvert.SerializeObject(request));
+        return SerializeJsonToProtocol(request.Code, JsonConvert.SerializeObject(request));
     }
-    public static byte[] SerializeJsonToProtocol(RequestCode code, string data)
+    public static byte[] SerializeRequest(GetPersonalStatisticsRequest request)
     {
-        byte codeByte = (byte)code;
-        byte[] strBytes = Encoding.UTF8.GetBytes(data);
-        byte[] lenBytes = BitConverter.GetBytes(strBytes.Length);
+        return SerializeJsonToProtocol(request.Code, JsonConvert.SerializeObject(request));
+    }
+
+    private static byte[] SerializeJsonToProtocol(RequestCode code, string data)
+    {
+        var codeByte = (byte)code;
+        var strBytes = Encoding.UTF8.GetBytes(data);
+        var lenBytes = BitConverter.GetBytes(strBytes.Length);
 
         if (!BitConverter.IsLittleEndian)
             Array.Reverse(lenBytes); // Makes sure that little-endian if needed
 
-        byte[] result = new byte[1 + 4 + strBytes.Length];
+        var result = new byte[1 + 4 + strBytes.Length];
         result[0] = codeByte;
         Array.Copy(lenBytes, 0, result, SizeCode, SizeJsonLen);
         Array.Copy(strBytes, 0, result, SizeCode + SizeJsonLen, strBytes.Length);
