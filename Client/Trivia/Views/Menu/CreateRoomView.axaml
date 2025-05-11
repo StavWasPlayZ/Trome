@@ -36,9 +36,9 @@
                                     <Border Grid.Column="0" Background="#ffbcf8"
                                             Height="50"
                                             Width="50"
-                                            Padding="8"
-                                            CornerRadius="15"
-                                            Margin="15 0">
+                                            Padding="6"
+                                            CornerRadius="10"
+                                            Margin="10 0 15 0">
                                         
                                         <Svg Path="avares://Trivia/Assets/Icons/person.svg"
                                              Css="* { fill: #813e7a; }"/>
@@ -173,8 +173,9 @@
                                 VerticalAlignment="Stretch"
                                 Width="90"
                                 CornerRadius="5"
-                                Background="#4D264A"
-                                ClipToBounds="False">
+                                Background="#b5253d"
+                                ClipToBounds="False"
+                                Padding="5">
                                 
                             <Button.Styles>
                                 <Style Selector="Button /template/ ContentPresenter">
@@ -182,21 +183,23 @@
                                 </Style>
 
                                 <Style Selector="Button:pointerover /template/ ContentPresenter">
-                                    <Setter Property="Background" Value="#5A2757" />
+                                    <Setter Property="Background" Value="#C52843" />
                                 </Style>
 
                                 <Style Selector="Button:pressed /template/ ContentPresenter">
-                                    <Setter Property="Background" Value="#50214E" />
+                                    <Setter Property="Background" Value="#b5253d" />
                                 </Style>
                             </Button.Styles>
                                 
-                            <TextBlock TextAlignment="Center"
-                                       FontSize="40"
-                                       VerticalAlignment="Center">X</TextBlock>
+                            <Border BorderBrush="White"
+                                    BorderThickness="5"
+                                    CornerRadius="2">
+                                <TextBlock TextAlignment="Center"
+                                           FontSize="40"
+                                           VerticalAlignment="Center">X</TextBlock>
+                            </Border>
                                 
                         </Button>
-                        
-                        <Panel Grid.Column="1"/>
                         
                         <Button Grid.Column="2"
                                 HorizontalAlignment="Stretch"
@@ -218,10 +221,23 @@
                                     <Setter Property="Background" Value="#50214E" />
                                 </Style>
                             </Button.Styles>
+                            
+                            <StackPanel Orientation="Horizontal"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Spacing="10">
                                 
-                            <TextBlock TextAlignment="Center"
-                                       FontSize="40"
-                                       VerticalAlignment="Center">START</TextBlock>
+                                <Svg Path="avares://Trivia/Assets/Icons/flag.svg"
+                                     Css="* { fill: #FFFFFF; }"
+                                     Height="40"/>
+                                
+                                <TextBlock TextAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           FontSize="40">
+                                    START
+                                </TextBlock>
+                            </StackPanel>
+                                
                         </Button>
                     </Grid>
 
