@@ -1,4 +1,4 @@
-namespace Trivia.Codec.C2S.Request;
+namespace Trivia.Codec.C2S;
 
 public enum RequestCode : byte
 {
