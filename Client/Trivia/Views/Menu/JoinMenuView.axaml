@@ -120,6 +120,13 @@
                                 </Style>
                             </Style>
                             
+                            <Style Selector="ListBox /template/ ScrollViewer">
+                                <!-- Pad the top and bottom of the list -->
+                                <Style Selector="^ VirtualizingStackPanel">
+                                    <Setter Property="Margin" Value="0 20 0 275"/>
+                                </Style>
+                            </Style>
+                            
                         </ListBox.Styles>
                     </ListBox>
                     

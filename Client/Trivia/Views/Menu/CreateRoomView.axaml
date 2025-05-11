@@ -13,69 +13,81 @@
                Stretch="UniformToFill" />
 
         <Grid ColumnDefinitions="320, 15, *"
-              Margin="35,10">
+              Margin="35,35">
 
             <Border Grid.Column="0"
                     Background="#673362"
                     CornerRadius="30"
-                    ClipToBounds="True">
+                    ClipToBounds="True"
+                    Padding="10 0">
                 <Panel>
-                    <ListBox SelectionMode="Single, Toggle"
-                             Margin="10 0"
+                    <ListBox x:Name="RoomListBox"
+                             SelectionMode="Single"
                              Background="Transparent">
-
+                    
                         <ListBox.ItemsSource>
-                            fgpsjglgjdsf
+                            gfgfgfgfgf
                         </ListBox.ItemsSource>
-
+                        
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-
-                                    <Border Background="#FFBCF8"
+                                <Grid ColumnDefinitions="Auto, Auto, *">
+                                    
+                                    <Border Grid.Column="0" Background="#ffbcf8"
                                             Height="50"
                                             Width="50"
-                                            Padding="7"
+                                            Padding="8"
                                             CornerRadius="15"
                                             Margin="15 0">
-
+                                        
                                         <Svg Path="avares://Trivia/Assets/Icons/person.svg"
-                                             Css="* { fill: #813E7A; }" />
+                                             Css="* { fill: #813e7a; }"/>
                                     </Border>
-
-                                    <TextBlock FontSize="30" VerticalAlignment="Center">USERNAME</TextBlock>
-
-                                </StackPanel>
+                                    
+                                    <TextBlock Grid.Column="1"
+                                               VerticalAlignment="Center"
+                                               FontSize="30">
+                                        USERNAME
+                                    </TextBlock>
+                                    
+                                </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
-
+                        
                         <ListBox.Styles>
                             <Style Selector="ListBox > ListBoxItem">
-                                <Setter Property="Background" Value="#A52151" />
-                                <Setter Property="Margin" Value="0 2" />
-                                <Setter Property="Padding" Value="10 7" />
-
+                                <Setter Property="Background" Value="#9d4d95"/>
+                                <Setter Property="Margin" Value="0 2"/>
+                                <Setter Property="Padding" Value="10 9"/>
+                                
                                 <Style Selector="^:nth-child(1)">
-                                    <Setter Property="Margin" Value="0 10 0 2" />
-                                    <Setter Property="CornerRadius" Value="20 20 0 0" />
+                                    <Setter Property="CornerRadius" Value="25 25 0 0"/>
                                 </Style>
                                 <Style Selector="^:nth-last-child(1)">
-                                    <Setter Property="Margin" Value="0 2 0 275" />
+                                    <Setter Property="CornerRadius" Value="0 0 5 5"/>
                                 </Style>
 
-                                <Style Selector="^:pointerover /template/ ContentPresenter">
-                                    <Setter Property="Background" Value="#921E48" />
-                                </Style>
+                                
+                                <!-- "Disable" selection; color it the exact same. -->
                                 <Style Selector="^:selected /template/ ContentPresenter">
-                                    <Setter Property="Background" Value="#8A2464" />
+                                    <Setter Property="Background" Value="#9d4d95"/>
                                 </Style>
-                                <Style Selector="^:selected:pointerover /template/ ContentPresenter">
-                                    <Setter Property="Background" Value="#93256C" />
+                                
+                                <Style Selector="^:pointerover /template/ ContentPresenter">
+                                    <Setter Property="Background" Value="#B456AB"/>
                                 </Style>
                                 <Style Selector="^:pressed /template/ ContentPresenter">
-                                    <Setter Property="Background" Value="#9B2772" />
+                                    <Setter Property="Background" Value="#85437D"/>
                                 </Style>
                             </Style>
+                            
+                            <Style Selector="ListBox /template/ ScrollViewer">
+                                <!-- Pad the top and bottom of the list -->
+                                <Style Selector="^ VirtualizingStackPanel">
+                                    <Setter Property="Margin" Value="0 10 0 275"/>
+                                </Style>
+                            </Style>
+                            
                         </ListBox.Styles>
                     </ListBox>
                 </Panel>
