@@ -13,7 +13,9 @@ public abstract record ProtocolRequest(
     
     public byte[] SerializeRequest()
     {
-        return SerializeJsonToProtocol(JsonConvert.SerializeObject(this));
+        return SerializeJsonToProtocol(
+            JsonConvert.SerializeObject(this, CodecConstants.JsonSerializerSettings)
+        );
     }
     
     private byte[] SerializeJsonToProtocol(string data)
