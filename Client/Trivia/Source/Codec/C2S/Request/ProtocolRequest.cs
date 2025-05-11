@@ -26,7 +26,7 @@ public abstract record ProtocolRequest(
             Array.Reverse(lenBytes); // Makes sure that little-endian, if needed
         }
 
-        var result = new byte[1 + 4 + strBytes.Length];
+        var result = new byte[SizeCode + SizeJsonLen + strBytes.Length];
         result[0] = (byte) Code;
         Array.Copy(lenBytes, 0, result, SizeCode, SizeJsonLen);
         Array.Copy(strBytes, 0, result, SizeCode + SizeJsonLen, strBytes.Length);
