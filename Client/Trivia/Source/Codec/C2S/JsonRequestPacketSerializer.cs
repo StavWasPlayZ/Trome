@@ -1,11 +1,9 @@
-﻿using System.Text.Json.Nodes;
-using Trivia.Codec.c2s.Request;
-
-namespace Trivia.Codec.c2s;
-using System;
+﻿using System;
 using System.Text;
-using System.Text.Json;
 using Newtonsoft.Json;
+using Trivia.Codec.C2S.Request;
+
+namespace Trivia.Codec.C2S;
 
 public class JsonRequestPacketSerializer
 {

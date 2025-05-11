@@ -1,5 +1,4 @@
-﻿
-namespace Trivia.Codec.c2s
+﻿namespace Trivia.Codec.C2S
 {
     namespace Request
     {

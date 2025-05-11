@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Trivia.Codec.s2c
+namespace Trivia.Codec.S2C
 {
     namespace Response
     {

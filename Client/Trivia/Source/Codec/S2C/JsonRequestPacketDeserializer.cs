@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
-using Trivia.Codec.s2c.Response;
 
-namespace Trivia.Codec.s2c;
+namespace Trivia.Codec.S2C;
 
 public class JsonRequestPacketDeserializer
 {
