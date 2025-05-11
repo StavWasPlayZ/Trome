@@ -13,10 +13,7 @@ public class JoinMenuViewModel : PageViewModel
     public JoinMenuViewModel(IScreen hostScreen) : base(hostScreen)
     {
         NewRoomButtonCommand = ReactiveCommand.CreateFromObservable(() => NavigateTo(
-            //TODO: Have this:
-            // new CreateRoomViewModel(HostScreen))!
-            
-            new MainMenuViewModel(HostScreen))!
+            new CreateRoomViewModel(HostScreen))!
         );
     }
 }
