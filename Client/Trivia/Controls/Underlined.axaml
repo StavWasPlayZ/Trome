@@ -6,7 +6,7 @@ Added because the default underline for the native font is broken.
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="using:Trivia.Controls">
     <Design.PreviewWith>
-        <controls:Underlined>
+        <controls:Underlined Padding="0 0 0 10">
             <TextBlock
                 FontSize="30"
                 Foreground="Black">Username</TextBlock>
