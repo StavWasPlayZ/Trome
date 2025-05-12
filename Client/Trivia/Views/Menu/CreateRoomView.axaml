@@ -99,13 +99,28 @@
 
                     <controls:TriviaTextBox Grid.Row="0"
                                             ClipToBounds="False">
-                        <TextBox>ROOM NAME</TextBox>
+                        <TextBox FontSize="65">
+                            ROOM NAME
+                        </TextBox>
                     </controls:TriviaTextBox>
                     
                     <Grid Grid.Row="1"
                           RowDefinitions="Auto, 10, Auto, 10, Auto"
                           ColumnDefinitions="150, *"
                           Margin="35 40">
+                        
+                        <Grid.Styles>
+                            <Style Selector="TextBlock">
+                                <Setter Property="Foreground" Value="#BE64B7"/>
+                                <Setter Property="FontSize" Value="35"/>
+                            </Style>
+                            
+                            <Style Selector="controls|TriviaTextBox">
+                                <Setter Property="HorizontalAlignment" Value="Right"/>
+                                <Setter Property="FontSize" Value="35"/>
+                            </Style>
+                        </Grid.Styles>
+                        
                         <TextBlock Grid.Row="0"
                                    Grid.Column="0"
                                    FontSize="35"
@@ -126,13 +141,11 @@
                                    Foreground="#813E7A">
                             SEC/Q
                         </TextBlock>
-                        <TextBlock Grid.Row="2"
-                                   Grid.Column="1"
-                                   FontSize="35"
-                                   Foreground="#BE64B7"
-                                   TextAlignment="End">
-                            TODO
-                        </TextBlock>
+                        <controls:TriviaTextBox Grid.Row="2"
+                                                Grid.Column="1"
+                                                ClipToBounds="False">
+                            <TextBox>10</TextBox>
+                        </controls:TriviaTextBox>
                         
                         <TextBlock Grid.Row="4"
                                    Grid.Column="0"
@@ -140,13 +153,10 @@
                                    Foreground="#813E7A">
                             PLAYERS
                         </TextBlock>
-                        <TextBlock Grid.Row="4"
-                                   Grid.Column="1"
-                                   FontSize="35"
-                                   Foreground="#BE64B7"
-                                   TextAlignment="End">
-                            TODO
-                        </TextBlock>
+                        <controls:TriviaTextBox Grid.Row="4"
+                                                Grid.Column="1">
+                            <TextBox>10</TextBox>
+                        </controls:TriviaTextBox>
                     </Grid>
                     
 
