@@ -9,8 +9,10 @@
              x:Class="Trivia.Views.Menu.CreateRoomView"
              x:DataType="vmmenu:CreateRoomViewModel">
     <Panel>
-        <Image Source="avares://Trivia/Assets/drool-d-b1608556d649b5b943136ecc0df0fe1bc7ff644f.png"
-               Stretch="UniformToFill" />
+        <Panel.Background>
+            <ImageBrush Source="avares://Trivia/Assets/drool-d-b1608556d649b5b943136ecc0df0fe1bc7ff644f.png"
+                        Stretch="UniformToFill" />
+        </Panel.Background>
 
         <Grid ColumnDefinitions="320, 15, *"
               Margin="35,35">
