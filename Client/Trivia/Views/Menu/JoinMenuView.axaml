@@ -15,7 +15,7 @@
                Stretch="UniformToFill" />
 
         <controls:MenuPanelExpanded Title="JOIN"
-                                    BackButtonCommand="{Binding BackButtonCommand}">
+                                    BackButtonCommand="{Binding NavigateBackCommand}">
             
             <Panel>
                 

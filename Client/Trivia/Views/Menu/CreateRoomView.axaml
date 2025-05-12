@@ -164,6 +164,8 @@
                           Height="65">
                             
                         <Button Grid.Column="0"
+                                Command="{Binding NavigateBackCommand}"
+                                
                                 VerticalAlignment="Stretch"
                                 Width="90"
                                 CornerRadius="5"
@@ -190,7 +192,9 @@
                                     CornerRadius="2">
                                 <TextBlock TextAlignment="Center"
                                            FontSize="40"
-                                           VerticalAlignment="Center">X</TextBlock>
+                                           VerticalAlignment="Center">
+                                    X
+                                </TextBlock>
                             </Border>
                                 
                         </Button>
