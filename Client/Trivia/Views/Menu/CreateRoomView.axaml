@@ -16,6 +16,8 @@
 
         <Grid ColumnDefinitions="320, 15, *"
               Margin="35,35">
+            
+            <!-- Users panel -->
 
             <Border Grid.Column="0"
                     Background="#673362"
@@ -89,7 +91,7 @@
                 </Panel>
             </Border>
             
-            <Panel Grid.Column="1"/>
+            <!-- Main panel -->
 
             <Border Grid.Column="2"
                     Background="#FFCACA"
@@ -105,8 +107,8 @@
                     </controls:TriviaTextBox>
                     
                     <Grid Grid.Row="1"
-                          RowDefinitions="Auto, 10, Auto, 10, Auto"
-                          ColumnDefinitions="150, *"
+                          RowDefinitions="50, 20, 50, 20, 50"
+                          ColumnDefinitions="150, 20, *"
                           Margin="35 40">
                         
                         <Grid.Styles>
@@ -119,6 +121,7 @@
                             <Style Selector="controls|TriviaTextBox">
                                 <Setter Property="HorizontalAlignment" Value="Right"/>
                                 <Setter Property="FontSize" Value="35"/>
+                                <Setter Property="Margin" Value="0 5" />
                             </Style>
                         </Grid.Styles>
                         
@@ -130,7 +133,7 @@
                         </TextBlock>
                         
                         <StackPanel Grid.Row="0"
-                                    Grid.Column="1">
+                                    Grid.Column="2">
                             
                             <StackPanel.Styles>
                                 <Style Selector="TextBlock">
@@ -158,7 +161,42 @@
                             <Slider x:Name="QuestionsSlider"
                                     Maximum="50"
                                     TickFrequency="1"
-                                    IsSnapToTickEnabled="True"/>
+                                    IsSnapToTickEnabled="True"
+                                    Foreground="#e87dd3">
+                                
+                                <Slider.Resources>
+                                    <!-- ReSharper disable once Xaml.RedundantResource -->
+                                    <x:Double x:Key="SliderHorizontalThumbWidth">40</x:Double>
+                                    <!-- ReSharper disable once Xaml.RedundantResource -->
+                                    <x:Double x:Key="SliderHorizontalThumbHeight">20</x:Double>
+                                    
+                                    <!-- ReSharper disable once Xaml.RedundantResource -->
+                                    <SolidColorBrush x:Key="SliderThumbBackground">#B150AA</SolidColorBrush>
+                                    
+                                    <!-- ReSharper disable once Xaml.RedundantResource -->
+                                    <x:Double x:Key="SliderTrackThemeHeight">7</x:Double>
+                                </Slider.Resources>
+                                
+                                <Slider.Styles>
+                                    <Style Selector="Slider /template/ RepeatButton Border">
+                                        <Setter Property="Height" Value="10" />
+                                    </Style>
+                                    
+                                    <Style Selector="Slider:pointerover /template/ Thumb">
+                                        <Setter Property="Background" Value="#C552BE"/>
+                                    </Style>
+                                    
+                                    <Style Selector="Slider:pressed /template/ Thumb">
+                                        <Setter Property="Background" Value="#9C4796"/>
+                                    </Style>
+                                    
+                                    <Style Selector="Slider:pointerover /template/ RepeatButton#PART_DecreaseButton,
+                                            Slider:pressed /template/ RepeatButton#PART_DecreaseButton">
+                                        <Setter Property="Background" Value="#e87dd3"/>
+                                    </Style>
+                                </Slider.Styles>
+                                
+                            </Slider>
                         </StackPanel>
                         
                         <TextBlock Grid.Row="2"
@@ -168,7 +206,7 @@
                             SEC/Q
                         </TextBlock>
                         <controls:TriviaTextBox Grid.Row="2"
-                                                Grid.Column="1"
+                                                Grid.Column="2"
                                                 ClipToBounds="False">
                             <TextBox>10</TextBox>
                         </controls:TriviaTextBox>
@@ -180,7 +218,7 @@
                             PLAYERS
                         </TextBlock>
                         <controls:TriviaTextBox Grid.Row="4"
-                                                Grid.Column="1">
+                                                Grid.Column="2">
                             <TextBox>10</TextBox>
                         </controls:TriviaTextBox>
                     </Grid>
