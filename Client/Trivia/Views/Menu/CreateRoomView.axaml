@@ -97,68 +97,12 @@
                     Padding="40 40">
                 <Grid RowDefinitions="Auto, *, Auto">
 
-                    <!-- <Border Grid.Row="0" -->
-                    <!--         Background="#FFF2EB" -->
-                    <!--         CornerRadius="15" -->
-                    <!--         BoxShadow="0 5 4 #2f000000" -->
-                    <!--         Padding="20 -5 20 7"> -->
-                    <!-- -->
-                    <!--      -->
-                    <!--     <controls:Underlined Foreground="#7f000000"> -->
-                    <!--         <TextBlock Foreground="#4D264A" -->
-                    <!--                    HorizontalAlignment="Center" -->
-                    <!--                    FontSize="65">ROOM NAME</TextBlock> -->
-                    <!--     </controls:Underlined> -->
-                    <!--      -->
-                    <!-- </Border> -->
-                    <Border Grid.Row="0"
-                            CornerRadius="15"
-                            BoxShadow="0 5 4 #2f000000"
-                            x:Name="RoomNameBorder">
-                        <Border CornerRadius="15"
-                                Padding="15 -5 15 7"
-                                ClipToBounds="True">
-                            
-                            <controls:Underlined Foreground="#7f000000"
-                                                 Padding="0 0 0 0"
-                                                 Background="Transparent">
-                                <TextBox 
-                                         Foreground="#4D264A"
-                                         TextAlignment="Center"
-                                         FontSize="65"
-                                         FontFamily="{StaticResource Born2bSportyFS}"
-                                         Padding="0 0 0 0"
-                                         CaretBrush="Black"
-                                         
-                                         Background="Transparent"
-                                         BorderThickness="0">
-                                        ROOM NAME
-                                        
-                                        <TextBox.Styles>
-                                            <Style Selector="TextBox:pointerover /template/ Border">
-                                                <Setter Property="Background" Value="Transparent"/>
-                                                <Setter Property="BorderBrush" Value="Transparent"/>
-                                            </Style>
-                                            <Style Selector="TextBox:focus-within /template/ Border">
-                                                <Setter Property="Background" Value="Transparent"/>
-                                                <Setter Property="BorderBrush" Value="Transparent"/>
-                                            </Style>
-                                        </TextBox.Styles>
-                                </TextBox>
-                            </controls:Underlined>
-                        </Border>
+                    <controls:TriviaTextBox Grid.Row="0"
+                                            ClipToBounds="False">
                         
-                        <Border.Styles>
-                            <!--TODO: Add some color -->
-                            <Style Selector="Border#RoomNameBorder:pointerover">
-                                <Setter Property="Background" Value="#FFF0E8"/>
-                            </Style>
-                            <Style Selector="Border#RoomNameBorder">
-                                <Setter Property="Background" Value="#FFF2EB"/>
-                            </Style>
-                        </Border.Styles>
-                        
-                    </Border>
+                        <TextBox>ROOM NAME</TextBox>
+
+                    </controls:TriviaTextBox>
 
                     <StackPanel Grid.Row="1"
                                 Spacing="20"
