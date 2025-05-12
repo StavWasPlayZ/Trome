@@ -41,6 +41,7 @@
         <StyleInclude Source="avares://Trivia/Controls/TriviaButton.axaml"/>
         <StyleInclude Source="avares://Trivia/Controls/Underlined.axaml"/>
         <StyleInclude Source="avares://Trivia/Controls/MenuPanelExpanded.axaml"/>
+        <StyleInclude Source="avares://Trivia/Controls/TriviaTextBox.axaml"/>
         
         <StyleInclude Source="avares://Trivia/Controls/Styles/TriviaListStyle.axaml"/>
 

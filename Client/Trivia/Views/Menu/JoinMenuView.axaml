@@ -11,11 +11,13 @@
              x:Name="JoinMenuViewControl">
 
     <Panel>
-        <Image Source="avares://Trivia/Assets/blobs-l-b49caff1a7941d98b60902da64956ad85dfbe4f9.png"
-               Stretch="UniformToFill" />
+        <Panel.Background>
+            <ImageBrush Source="avares://Trivia/Assets/blobs-l-b49caff1a7941d98b60902da64956ad85dfbe4f9.png"
+                        Stretch="UniformToFill" />
+        </Panel.Background>
 
         <controls:MenuPanelExpanded Title="JOIN"
-                                    BackButtonCommand="{Binding BackButtonCommand}">
+                                    BackButtonCommand="{Binding NavigateBackCommand}">
             
             <Panel>
                 
@@ -25,7 +27,8 @@
                              Grid.Column="0"
                              SelectionMode="Single, Toggle"
                              Background="Transparent"
-                             Classes="t-list">
+                             Classes="t-list"
+                             Padding="0 20 0 275">
                     
                         <ListBox.ItemsSource>
                             naorsdsadasdasdasdjtffjghfgjhfghjfghj
