@@ -16,6 +16,16 @@ public class MenuPanelExpanded : ContentControl
     }
     
     
+    public static readonly StyledProperty<bool> DisplayBackButtonProperty = AvaloniaProperty.Register<MenuPanelExpanded, bool>(
+        nameof(DisplayBackButton));
+
+    public bool DisplayBackButton
+    {
+        get => GetValue(DisplayBackButtonProperty);
+        set => SetValue(DisplayBackButtonProperty, value);
+    }
+    
+    
     public static readonly StyledProperty<ICommand> BackButtonCommandProperty = AvaloniaProperty.Register<MenuPanelExpanded, ICommand>(
         nameof(BackButtonCommand));
 

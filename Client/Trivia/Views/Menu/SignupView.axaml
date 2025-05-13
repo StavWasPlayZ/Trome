@@ -9,15 +9,19 @@
              x:Class="Trivia.Views.Menu.SignupView"
              x:DataType="vmmenu:SignupViewModel">
     <Panel>
-        <Image Source="avares://Trivia/Assets/blobs-l-b49caff1a7941d98b60902da64956ad85dfbe4f9.png"
-               Stretch="UniformToFill" />
+        <Panel.Background>
+            <ImageBrush Source="avares://Trivia/Assets/blobs-l-b49caff1a7941d98b60902da64956ad85dfbe4f9.png"
+                   Stretch="UniformToFill" />            
+        </Panel.Background>
         
-        <!-- TODO- make this w/o back btn-->
         <controls:MenuPanelExpanded Title="SIGNUP"
-                                    Margin="150,0">
+                                    DisplayBackButton="False"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center">
             
             <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, *"
                   Margin="0,30,0,25">
+                
                 <Panel Grid.Row="0" >
                     <Grid ColumnDefinitions="Auto, *">
                         <TextBlock Grid.Column="0" HorizontalAlignment="Center"
@@ -100,6 +104,7 @@
                         
                     </Grid>
                 </Panel>
+                
             </Grid>
             
         </controls:MenuPanelExpanded>
