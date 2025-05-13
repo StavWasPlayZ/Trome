@@ -9,62 +9,103 @@
              x:Class="Trivia.Views.Menu.LoginView"
              x:DataType="vmmenu:LoginViewModel">
     <Panel>
-        <Image Source="avares://Trivia/Assets/blobs-l-b49caff1a7941d98b60902da64956ad85dfbe4f9.png"
-               Stretch="UniformToFill" />
+        <Panel.Background>
+            <ImageBrush Source="avares://Trivia/Assets/blobs-l-b49caff1a7941d98b60902da64956ad85dfbe4f9.png"
+                   Stretch="UniformToFill" />            
+        </Panel.Background>
         
-        <!-- TODO- make this w/o back btn-->
         <controls:TriviaMenuPanel Title="LOGIN"
-                                    Margin="150,50">
+                                  DisplayBackButton="False"
+                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="Center">
             
-            <Grid RowDefinitions="Auto, Auto, *"
-                  Margin="0,50,0,25">
-                <Panel Grid.Row="0" >
-                    <Grid ColumnDefinitions="Auto, *">
-                        <TextBlock Grid.Column="0" HorizontalAlignment="Center"
-                                   Margin="100,0,0,0">USERNAME</TextBlock>
-                        <TextBlock Grid.Column="1" HorizontalAlignment="Right"
-                                   Margin="0,0,100,0">TODO</TextBlock>
-                    </Grid>
-                </Panel>
-                <Panel Grid.Row="1" >
-                    <Grid ColumnDefinitions="Auto, *"
-                          Margin="0, 20">
-                        <TextBlock Grid.Column="0" HorizontalAlignment="Center"
-                                   Margin="100,0,0,0">PASSWORD</TextBlock>
-                        <TextBlock Grid.Column="1" HorizontalAlignment="Right"
-                                   Margin="0,0,100,0">TODO</TextBlock>
-                    </Grid>
-                </Panel>
-                <Panel Grid.Row="2" >
-                    <Grid RowDefinitions="*, Auto"
-                          Margin="0, 20">
-                        <Button Grid.Row="0" HorizontalAlignment="Center">
-                            <!-- TODO-Add command(s) here -->
-                            <controls:TriviaButton 
-                                                   Text="LOGIN"
-                                                   Background="#362034"
-                                                   BorderBrush="#b92e2b"
-                                                   IconColor="#ffbbbb"
-                                                   BorderBrushSelected="#D93040"
-                                                   BorderBrushPressed="#AA2C2F"
-                                                   BorderThickness="3"
-                                                   Padding="100,0"/>
-                        </Button>
-                        <Grid Grid.Row="1" 
-                              HorizontalAlignment="Center" 
-                              ColumnDefinitions="Auto,Auto">
-                            <TextBlock Grid.Column="0" Margin="5,0">OR</TextBlock>
-                            <controls:Underlined Grid.Column="1" 
-                                                 Margin="5,0"
-                                                 Foreground="#FF627C">
-                                <TextBlock
-                                    Foreground="#FF627C">SIGN UP</TextBlock>
-                            </controls:Underlined>
-                        </Grid>
+            <StackPanel Margin="40,40,40,10"
+                        HorizontalAlignment="Center"
+                        Spacing="20">
+                
+                <Grid RowDefinitions="55, 55"
+                      ColumnDefinitions="Auto, *"
+                      HorizontalAlignment="Center"
+                      Margin="10">
+                    
+                    <Grid.Resources>
+                        <!-- ReSharper disable once Xaml.RedundantResource -->
+                        <SolidColorBrush x:Key="TriviaTextBoxForeground">White</SolidColorBrush>
+                    </Grid.Resources>
+                    
+                    <Grid.Styles>
+                        <Style Selector="controls|TriviaTextBox[(Grid.Column)=1]">
+                            <Setter Property="Width" Value="250"/>
+                            <Setter Property="Height" Value="45"/>
+                            <Setter Property="Margin" Value="100 0 0 0"/>
+                            <Setter Property="Background" Value="#33EF657C"/>
+                            
+                            <Style Selector="^ TextBox">
+                                <Setter Property="TextAlignment" Value="Start"/>
+                                <Setter Property="Margin" Value="10 5"/>
+                            </Style>
+                        </Style>
+                    </Grid.Styles>
+                    
+                    <TextBlock Grid.Row="0"
+                               Grid.Column="0">
+                        USERNAME
+                    </TextBlock>
+                    <controls:TriviaTextBox Grid.Row="0"
+                                            Grid.Column="1">
+                        <TextBox>TODO</TextBox>
+                    </controls:TriviaTextBox>
+                    
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="0">
+                        PASSWORD
+                    </TextBlock>
+                    <controls:TriviaTextBox Grid.Row="1"
+                               Grid.Column="1">
+                        <TextBox PasswordChar="*">
+                            TODO
+                        </TextBox>
+                    </controls:TriviaTextBox>
+                    
+                </Grid>
+
+                <StackPanel Spacing="5">
+                    <!-- TODO-Add command(s) here -->
+                    <controls:TriviaButton
+                        HorizontalAlignment="Center"
+                        Text="LOGIN"
+                        Background="#362034"
+                        BorderBrush="#b92e2b"
+                        IconColor="#ffbbbb"
+                        BorderBrushSelected="#D93040"
+                        BorderBrushPressed="#AA2C2F"
+                        BorderThickness="3"
+                        Padding="100,0"/>
+                    
+                    <StackPanel HorizontalAlignment="Center"
+                                Orientation="Horizontal">
                         
-                    </Grid>
-                </Panel>
-            </Grid>
+                        <StackPanel.Styles>
+                            <Style Selector="TextBlock">
+                                <Setter Property="FontSize" Value="20"/>
+                            </Style>
+                        </StackPanel.Styles>
+                        
+                        <TextBlock Margin="5,0">
+                            OR
+                        </TextBlock>
+                        
+                        <controls:Underlined Margin="5,0"
+                                             Foreground="#FF627C">
+                            <TextBlock Foreground="#FF627C">
+                                SIGN UP
+                            </TextBlock>
+                        </controls:Underlined>
+                        
+                    </StackPanel>
+                </StackPanel>
+
+            </StackPanel>
             
         </controls:TriviaMenuPanel>
     </Panel>
