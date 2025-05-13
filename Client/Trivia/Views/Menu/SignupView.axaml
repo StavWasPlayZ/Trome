@@ -15,97 +15,107 @@
         </Panel.Background>
         
         <controls:TriviaMenuPanel Title="SIGNUP"
-                                    DisplayBackButton="False"
-                                    VerticalAlignment="Center"
-                                    HorizontalAlignment="Center">
+                                  DisplayBackButton="False"
+                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="Center">
             
-            <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, *"
-                  Margin="0,30,0,25">
+            <StackPanel Margin="40,40,40,25"
+                        HorizontalAlignment="Center">
                 
-                <Panel Grid.Row="0" >
-                    <Grid ColumnDefinitions="Auto, *">
-                        <TextBlock Grid.Column="0" HorizontalAlignment="Center"
-                                   Margin="100,0,0,0">USERNAME</TextBlock>
-                        <TextBlock Grid.Column="1" HorizontalAlignment="Right"
-                                   Margin="0,0,100,0">TODO</TextBlock>
+                <Grid RowDefinitions="50, 50, 50, 50, 50, 50"
+                      ColumnDefinitions="Auto, *"
+                      HorizontalAlignment="Center"
+                      Margin="10">
+                    
+                    <Grid.Styles>
+                        <Style Selector="TextBlock[(Grid.Column)=1]">
+                            <Setter Property="Width" Value="250"/>
+                            <Setter Property="TextAlignment" Value="End"/>
+                        </Style>
+                    </Grid.Styles>
+                    
+                    <TextBlock Grid.Row="0"
+                               Grid.Column="0">
+                        USERNAME
+                    </TextBlock>
+                    <TextBlock Grid.Row="0"
+                               Grid.Column="1">
+                        TODO
+                    </TextBlock>
+                    
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="0">
+                        EMAIL
+                    </TextBlock>
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="1">
+                        TODO
+                    </TextBlock>
+                    <TextBlock Grid.Row="2"
+                               Grid.Column="0">
+                        PASSWORD
+                    </TextBlock>
+                    <TextBlock Grid.Row="2"
+                               Grid.Column="1">
+                        TODO
+                    </TextBlock>
+                    <TextBlock Grid.Row="3"
+                               Grid.Column="0">
+                        REPEAT
+                    </TextBlock>
+                    <TextBlock Grid.Row="3"
+                               Grid.Column="1">
+                        TODO
+                    </TextBlock>
+                    <TextBlock Grid.Row="4"
+                               Grid.Column="0">
+                        PHONE
+                    </TextBlock>
+                    <TextBlock Grid.Row="4"
+                               Grid.Column="1">
+                        TODO
+                    </TextBlock>
+                    <TextBlock Grid.Row="5"
+                               Grid.Column="0">
+                        ADDRESS
+                    </TextBlock>
+                    <TextBlock Grid.Row="5"
+                               Grid.Column="1">
+                        TODO
+                    </TextBlock>
+                    
+                </Grid>
+
+
+                <Grid RowDefinitions="*, Auto"
+                      Margin="0, 10">
+                    <Button Grid.Row="0" HorizontalAlignment="Center">
+                        <!-- TODO-Add command(s) here -->
+                        <controls:TriviaButton 
+                            Text="SIGNUP"
+                            Background="#362034"
+                            BorderBrush="#b92e2b"
+                            IconColor="#ffbbbb"
+                            BorderBrushSelected="#D93040"
+                            BorderBrushPressed="#AA2C2F"
+                            BorderThickness="3"
+                            Padding="100,0"/>
+                    </Button>
+                    <Grid Grid.Row="1" 
+                          HorizontalAlignment="Center" 
+                          ColumnDefinitions="Auto,Auto">
+                        <TextBlock Grid.Column="0" Margin="5,0">OR</TextBlock>
+                        <controls:Underlined Grid.Column="1" 
+                                             Margin="5,0"
+                                             Foreground="#FF627C">
+                            <TextBlock
+                                Foreground="#FF627C">LOG IN</TextBlock>
+                        </controls:Underlined>
                     </Grid>
-                </Panel>
-                <Panel Grid.Row="1" >
-                    <Grid ColumnDefinitions="Auto, *"
-                          Margin="0, 10">
-                        <TextBlock Grid.Column="0" HorizontalAlignment="Center"
-                                   Margin="100,0,0,0">EMAIL</TextBlock>
-                        <TextBlock Grid.Column="1" HorizontalAlignment="Right"
-                                   Margin="0,0,100,0">TODO</TextBlock>
-                    </Grid>
-                </Panel>
-                <Panel Grid.Row="2" >
-                    <Grid ColumnDefinitions="Auto, *"
-                          Margin="0, 10">
-                        <TextBlock Grid.Column="0" HorizontalAlignment="Center"
-                                   Margin="100,0,0,0">PASSWORD</TextBlock>
-                        <TextBlock Grid.Column="1" HorizontalAlignment="Right"
-                                   Margin="0,0,100,0">TODO</TextBlock>
-                    </Grid>
-                </Panel>
-                <Panel Grid.Row="3" >
-                    <Grid ColumnDefinitions="Auto, *"
-                          Margin="0, 10">
-                        <TextBlock Grid.Column="0" HorizontalAlignment="Center"
-                                   Margin="100,0,0,0">REPEAT PASSWORD</TextBlock>
-                        <TextBlock Grid.Column="1" HorizontalAlignment="Right"
-                                   Margin="0,0,100,0">TODO</TextBlock>
-                    </Grid>
-                </Panel>
-                <Panel Grid.Row="4" >
-                    <Grid ColumnDefinitions="Auto, *"
-                          Margin="0, 10">
-                        <TextBlock Grid.Column="0" HorizontalAlignment="Center"
-                                   Margin="100,0,0,0">PHONE NUMBER</TextBlock>
-                        <TextBlock Grid.Column="1" HorizontalAlignment="Right"
-                                   Margin="0,0,100,0">TODO</TextBlock>
-                    </Grid>
-                </Panel>
-                <Panel Grid.Row="5" >
-                    <Grid ColumnDefinitions="Auto, *"
-                          Margin="0, 10">
-                        <TextBlock Grid.Column="0" HorizontalAlignment="Center"
-                                   Margin="100,0,0,0">ADDRESS</TextBlock>
-                        <TextBlock Grid.Column="1" HorizontalAlignment="Right"
-                                   Margin="0,0,100,0">TODO</TextBlock>
-                    </Grid>
-                </Panel>
-                <Panel Grid.Row="6" >
-                    <Grid RowDefinitions="*, Auto"
-                          Margin="0, 10">
-                        <Button Grid.Row="0" HorizontalAlignment="Center">
-                            <!-- TODO-Add command(s) here -->
-                            <controls:TriviaButton 
-                                                   Text="SIGNUP"
-                                                   Background="#362034"
-                                                   BorderBrush="#b92e2b"
-                                                   IconColor="#ffbbbb"
-                                                   BorderBrushSelected="#D93040"
-                                                   BorderBrushPressed="#AA2C2F"
-                                                   BorderThickness="3"
-                                                   Padding="100,0"/>
-                        </Button>
-                        <Grid Grid.Row="1" 
-                              HorizontalAlignment="Center" 
-                              ColumnDefinitions="Auto,Auto">
-                            <TextBlock Grid.Column="0" Margin="5,0">OR</TextBlock>
-                            <controls:Underlined Grid.Column="1" 
-                                                 Margin="5,0"
-                                                 Foreground="#FF627C">
-                                <TextBlock
-                                    Foreground="#FF627C">LOG IN</TextBlock>
-                            </controls:Underlined>
-                        </Grid>
                         
-                    </Grid>
-                </Panel>
-                
-            </Grid>
+                </Grid>
+
+            </StackPanel>
             
         </controls:TriviaMenuPanel>
     </Panel>
