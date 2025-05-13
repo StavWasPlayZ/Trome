@@ -28,9 +28,6 @@
              
     <Application.Styles>
         <FluentTheme />
-        <StyleInclude Source="avares://Trivia/Controls/TriviaButton.axaml"/>
-        <StyleInclude Source="avares://Trivia/Controls/Underlined.axaml"/>
-        <StyleInclude Source="avares://Trivia/Controls/MenuPanelExpanded.axaml"/>
         
         <Style Selector=":is(TextBlock)">
             <Setter Property="FontFamily" Value="{StaticResource Born2bSportyFS}"/>
@@ -40,6 +37,14 @@
             <!-- For some reason, the font is offset by 5 pixels top. -->
             <Setter Property="Margin" Value="0 -5 0 0"/>
         </Style>
+
+        <StyleInclude Source="avares://Trivia/Controls/TriviaButton.axaml"/>
+        <StyleInclude Source="avares://Trivia/Controls/Underlined.axaml"/>
+        <StyleInclude Source="avares://Trivia/Controls/MenuPanelExpanded.axaml"/>
+        <StyleInclude Source="avares://Trivia/Controls/TriviaTextBox.axaml"/>
+        
+        <StyleInclude Source="avares://Trivia/Controls/Styles/TriviaListStyle.axaml"/>
+
     </Application.Styles>
              
 </Application>

@@ -1,0 +1,75 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:Trivia.Controls">
+    <Design.PreviewWith>
+        <Panel Background="Aqua">
+            <Border Margin="100">
+                <controls:TriviaTextBox>
+                    <TextBox>TEST</TextBox>
+                </controls:TriviaTextBox>
+            </Border>
+        </Panel>
+    </Design.PreviewWith>
+
+    <Style Selector="controls|TriviaTextBox">
+        <!-- Set Defaults -->
+        <Setter Property="ClipToBounds" Value="False"/>
+        <Setter Property="FontSize" Value="30"/>
+        
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border CornerRadius="15"
+                        BoxShadow="0 5 4 #2f000000"
+                        x:Name="RoomNameBorder">
+                    
+                    <Border CornerRadius="15"
+                            Padding="15 -5 15 7"
+                            ClipToBounds="True">
+                        
+                        <controls:Underlined Foreground="#7f000000"
+                                             Padding="0 0 0 0"
+                                             Background="Transparent">
+                            <!-- ReSharper disable once InconsistentNaming -->
+                            <ContentPresenter x:Name="PART_ContentPresenter"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                        </controls:Underlined>
+                    </Border>
+                    
+                    <Border.Styles>
+                        <!--TODO: Add some color -->
+                        <Style Selector="Border#RoomNameBorder:pointerover">
+                            <Setter Property="Background" Value="#FFF0E8"/>
+                        </Style>
+                        <Style Selector="Border#RoomNameBorder">
+                            <Setter Property="Background" Value="#FFF2EB"/>
+                        </Style>
+                    </Border.Styles>
+                    
+                </Border>
+            </ControlTemplate>
+        </Setter>
+        
+        <Style Selector="^ TextBox">
+            <Setter Property="Foreground" Value="#4D264A"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="FontFamily" Value="{StaticResource Born2bSportyFS}"/>
+            <Setter Property="Padding" Value="0 0 0 0"/>
+            <Setter Property="CaretBrush" Value="Black"/>
+                            
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+                            
+            <Style Selector="^:pointerover, ^:focus-within">
+                <Setter Property="Foreground" Value="#4D264A"/>
+                                
+                <Style Selector="^ /template/ Border">    
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                </Style>
+            </Style>
+        </Style>
+        
+    </Style>
+    
+</Styles>

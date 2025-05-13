@@ -10,8 +10,10 @@
              x:DataType="vmmenu:MainMenuViewModel">
 
     <Panel>
-        <Image Source="avares://Trivia/Assets/blobs-l-b49caff1a7941d98b60902da64956ad85dfbe4f9.png"
-               Stretch="UniformToFill" />
+        <Panel.Background>
+            <ImageBrush Source="avares://Trivia/Assets/blobs-l-b49caff1a7941d98b60902da64956ad85dfbe4f9.png"
+                        Stretch="UniformToFill" />
+        </Panel.Background>
 
         <Grid
             VerticalAlignment="Center"
