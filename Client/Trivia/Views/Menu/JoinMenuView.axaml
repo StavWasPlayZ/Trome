@@ -16,7 +16,7 @@
                         Stretch="UniformToFill" />
         </Panel.Background>
 
-        <controls:MenuPanelExpanded Title="JOIN"
+        <controls:TriviaMenuPanel Title="JOIN"
                                     BackButtonCommand="{Binding NavigateBackCommand}">
             
             <Panel>
@@ -335,7 +335,7 @@
                 </Button>
             </Panel>
             
-        </controls:MenuPanelExpanded>
+        </controls:TriviaMenuPanel>
     </Panel>
 
 </UserControl>

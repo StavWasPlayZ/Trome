@@ -6,16 +6,16 @@
                Width="600"
                Height="400">
             
-            <controls:MenuPanelExpanded>
+            <controls:TriviaMenuPanel>
                 <Panel
                     Background="Black"
                     Opacity=".3"
                     />
-            </controls:MenuPanelExpanded>            
+            </controls:TriviaMenuPanel>            
         </Panel>
     </Design.PreviewWith>
 
-    <Style Selector="controls|MenuPanelExpanded">
+    <Style Selector="controls|TriviaMenuPanel">
         <!-- Set Defaults -->
         <Setter Property="Title" Value="TITLE"/>
         <Setter Property="DisplayBackButton" Value="True"/>

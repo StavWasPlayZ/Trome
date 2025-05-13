@@ -14,7 +14,7 @@
                    Stretch="UniformToFill" />            
         </Panel.Background>
         
-        <controls:MenuPanelExpanded Title="SIGNUP"
+        <controls:TriviaMenuPanel Title="SIGNUP"
                                     DisplayBackButton="False"
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Center">
@@ -107,6 +107,6 @@
                 
             </Grid>
             
-        </controls:MenuPanelExpanded>
+        </controls:TriviaMenuPanel>
     </Panel>
 </UserControl>
