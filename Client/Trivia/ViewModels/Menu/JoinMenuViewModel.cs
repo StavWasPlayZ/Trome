@@ -9,6 +9,6 @@ public class JoinMenuViewModel : PageViewModel
     
     public JoinMenuViewModel(IScreen hostScreen) : base(hostScreen)
     {
-        NewRoomButtonCommand = NavigationReactiveCommand(new CreateRoomViewModel(HostScreen));
+        NewRoomButtonCommand = NavigateReactiveCommand(() => new CreateRoomViewModel(HostScreen));
     }
 }

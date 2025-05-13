@@ -8,7 +8,7 @@ namespace Trivia.ViewModels.Menu;
 public class MainMenuViewModel : PageViewModel
 {
     public ReactiveCommand<Unit, IRoutableViewModel> PlayCommand { get; }
-    public ReactiveCommand<Unit, IRoutableViewModel> UsernameCommand { get; }
+    public ReactiveCommand<Unit, IRoutableViewModel> SignOutCommand { get; }
     
     public ReactiveCommand<Unit, Unit> ExitCommand { get; } = ReactiveCommand.Create(() =>
     {
@@ -18,7 +18,8 @@ public class MainMenuViewModel : PageViewModel
     
     public MainMenuViewModel(IScreen hostScreen) : base(hostScreen)
     {
-        PlayCommand = NavigationReactiveCommand(new JoinMenuViewModel(HostScreen));
-        UsernameCommand = NavigationReactiveCommand(new SignupViewModel(HostScreen));
+        PlayCommand = NavigateReactiveCommand(() => new JoinMenuViewModel(HostScreen));
+
+        SignOutCommand = NavigateAndResetReactiveCommand(() => new LoginViewModel(hostScreen));
     }
 }

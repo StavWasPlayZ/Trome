@@ -108,17 +108,16 @@
                 </Grid>
 
                 <StackPanel Spacing="5">
-                    <!-- TODO-Add command(s) here -->
-                    <controls:TriviaButton
-                        HorizontalAlignment="Center"
-                        Text="SIGNUP"
-                        Background="#362034"
-                        BorderBrush="#b92e2b"
-                        IconColor="#ffbbbb"
-                        BorderBrushSelected="#D93040"
-                        BorderBrushPressed="#AA2C2F"
-                        BorderThickness="3"
-                        Padding="100,0"/>
+                    <controls:TriviaButton Command="{Binding AuthenticateCommand}"
+                                           HorizontalAlignment="Center"
+                                           Text="SIGNUP"
+                                           Background="#362034"
+                                           BorderBrush="#b92e2b"
+                                           IconColor="#ffbbbb"
+                                           BorderBrushSelected="#D93040"
+                                           BorderBrushPressed="#AA2C2F"
+                                           BorderThickness="3"
+                                           Padding="100,0"/>
                     
                     <StackPanel HorizontalAlignment="Center"
                                 Orientation="Horizontal">

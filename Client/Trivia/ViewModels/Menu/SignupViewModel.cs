@@ -2,7 +2,6 @@
 
 namespace Trivia.ViewModels.Menu;
 
-public class SignupViewModel(IScreen hostScreen) : PageViewModel(hostScreen)
+public class SignupViewModel(IScreen hostScreen) : AuthViewModel(hostScreen)
 {
-    
 }
