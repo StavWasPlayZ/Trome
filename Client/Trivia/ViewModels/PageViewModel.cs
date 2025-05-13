@@ -26,4 +26,9 @@ public abstract class PageViewModel(IScreen hostScreen) : ViewModelBase, IRoutab
     {
         return GetMainWindowViewModel()?.Router.Navigate.Execute(pageViewModel);
     }
+
+    protected static ReactiveCommand<Unit, IRoutableViewModel> NavigationReactiveCommand(PageViewModel pageViewModel)
+    {
+        return ReactiveCommand.CreateFromObservable(() => NavigateTo(pageViewModel)!);
+    }
 }

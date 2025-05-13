@@ -122,8 +122,8 @@
                 </Button.Styles>
             </Button>
             
-            <Button
-                Theme="{StaticResource EmptyButton}">
+            <Button Theme="{StaticResource EmptyButton}"
+                    Command="{Binding UsernameCommand}">
                 
                 <controls:Underlined>
                     <TextBlock

@@ -8,6 +8,8 @@ namespace Trivia.ViewModels.Menu;
 public class MainMenuViewModel : PageViewModel
 {
     public ReactiveCommand<Unit, IRoutableViewModel> PlayCommand { get; }
+    public ReactiveCommand<Unit, IRoutableViewModel> UsernameCommand { get; }
+    
     public ReactiveCommand<Unit, Unit> ExitCommand { get; } = ReactiveCommand.Create(() =>
     {
         (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)
@@ -16,8 +18,7 @@ public class MainMenuViewModel : PageViewModel
     
     public MainMenuViewModel(IScreen hostScreen) : base(hostScreen)
     {
-        PlayCommand = ReactiveCommand.CreateFromObservable(() => NavigateTo(
-            new JoinMenuViewModel(HostScreen))!
-        );
+        PlayCommand = NavigationReactiveCommand(new JoinMenuViewModel(HostScreen));
+        UsernameCommand = NavigationReactiveCommand(new SignupViewModel(HostScreen));
     }
 }
