@@ -71,7 +71,9 @@
                     </TextBlock>
                     <controls:TriviaTextBox Grid.Row="2"
                                Grid.Column="1">
-                        <TextBox>TODO</TextBox>
+                        <TextBox PasswordChar="*">
+                            TODO
+                        </TextBox>
                     </controls:TriviaTextBox>
                     
                     <TextBlock Grid.Row="3"
@@ -80,7 +82,9 @@
                     </TextBlock>
                     <controls:TriviaTextBox Grid.Row="3"
                                Grid.Column="1">
-                        <TextBox>TODO</TextBox>
+                        <TextBox PasswordChar="*">
+                            TODO
+                        </TextBox>
                     </controls:TriviaTextBox>
                     
                     <TextBlock Grid.Row="4"
