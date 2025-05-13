@@ -19,19 +19,31 @@
                                   VerticalAlignment="Center"
                                   HorizontalAlignment="Center">
             
-            <StackPanel Margin="40,40,40,25"
+            <StackPanel Margin="40,40,40,10"
                         HorizontalAlignment="Center"
                         Spacing="20">
                 
-                <Grid RowDefinitions="50, 50, 50, 50, 50, 50"
+                <Grid RowDefinitions="55, 55, 55, 55, 55, 55"
                       ColumnDefinitions="Auto, *"
                       HorizontalAlignment="Center"
                       Margin="10">
                     
+                    <Grid.Resources>
+                        <!-- ReSharper disable once Xaml.RedundantResource -->
+                        <SolidColorBrush x:Key="TriviaTextBoxForeground">White</SolidColorBrush>
+                    </Grid.Resources>
+                    
                     <Grid.Styles>
-                        <Style Selector="TextBlock[(Grid.Column)=1]">
-                            <Setter Property="Width" Value="300"/>
-                            <Setter Property="TextAlignment" Value="End"/>
+                        <Style Selector="controls|TriviaTextBox[(Grid.Column)=1]">
+                            <Setter Property="Width" Value="250"/>
+                            <Setter Property="Height" Value="45"/>
+                            <Setter Property="Margin" Value="100 0 0 0"/>
+                            <Setter Property="Background" Value="#33EF657C"/>
+                            
+                            <Style Selector="^ TextBox">
+                                <Setter Property="TextAlignment" Value="Start"/>
+                                <Setter Property="Margin" Value="10 5"/>
+                            </Style>
                         </Style>
                     </Grid.Styles>
                     
@@ -39,55 +51,55 @@
                                Grid.Column="0">
                         USERNAME
                     </TextBlock>
-                    <TextBlock Grid.Row="0"
-                               Grid.Column="1">
-                        TODO
-                    </TextBlock>
+                    <controls:TriviaTextBox Grid.Row="0"
+                                            Grid.Column="1">
+                        <TextBox>TODO</TextBox>
+                    </controls:TriviaTextBox>
                     
                     <TextBlock Grid.Row="1"
                                Grid.Column="0">
                         EMAIL
                     </TextBlock>
-                    <TextBlock Grid.Row="1"
+                    <controls:TriviaTextBox Grid.Row="1"
                                Grid.Column="1">
-                        TODO
-                    </TextBlock>
+                        <TextBox>TODO</TextBox>
+                    </controls:TriviaTextBox>
                     
                     <TextBlock Grid.Row="2"
                                Grid.Column="0">
                         PASSWORD
                     </TextBlock>
-                    <TextBlock Grid.Row="2"
+                    <controls:TriviaTextBox Grid.Row="2"
                                Grid.Column="1">
-                        TODO
-                    </TextBlock>
+                        <TextBox>TODO</TextBox>
+                    </controls:TriviaTextBox>
                     
                     <TextBlock Grid.Row="3"
                                Grid.Column="0">
                         REPEAT PASSWORD
                     </TextBlock>
-                    <TextBlock Grid.Row="3"
+                    <controls:TriviaTextBox Grid.Row="3"
                                Grid.Column="1">
-                        TODO
-                    </TextBlock>
+                        <TextBox>TODO</TextBox>
+                    </controls:TriviaTextBox>
                     
                     <TextBlock Grid.Row="4"
                                Grid.Column="0">
                         PHONE
                     </TextBlock>
-                    <TextBlock Grid.Row="4"
+                    <controls:TriviaTextBox Grid.Row="4"
                                Grid.Column="1">
-                        TODO
-                    </TextBlock>
+                        <TextBox>TODO</TextBox>
+                    </controls:TriviaTextBox>
                     
                     <TextBlock Grid.Row="5"
                                Grid.Column="0">
                         ADDRESS
                     </TextBlock>
-                    <TextBlock Grid.Row="5"
+                    <controls:TriviaTextBox Grid.Row="5"
                                Grid.Column="1">
-                        TODO
-                    </TextBlock>
+                        <TextBox>TODO</TextBox>
+                    </controls:TriviaTextBox>
                     
                 </Grid>
 
@@ -109,7 +121,7 @@
                         
                         <StackPanel.Styles>
                             <Style Selector="TextBlock">
-                                <Setter Property="FontSize" Value="30"/>
+                                <Setter Property="FontSize" Value="20"/>
                             </Style>
                         </StackPanel.Styles>
                         

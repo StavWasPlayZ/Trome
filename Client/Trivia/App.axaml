@@ -18,8 +18,11 @@
             
             <converters:MultiplicationConverter x:Key="MultiplicationConverter"/>
             <converters:SolidColorBrushToHexStrConverter x:Key="SolidColorBrushToHexStrConverter"/>
-        
-        
+            
+            
+            <SolidColorBrush x:Key="TriviaTextBoxForeground">#4D264A</SolidColorBrush>
+
+
             <ResourceDictionary.MergedDictionaries>
                 <ResourceInclude Source="avares://Trivia/Controls/Themes/EmptyButton.axaml"/>
             </ResourceDictionary.MergedDictionaries>
