@@ -26,26 +26,13 @@
                 <Grid RowDefinitions="55, 55, 55, 55, 55, 55"
                       ColumnDefinitions="Auto, *"
                       HorizontalAlignment="Center"
-                      Margin="10">
+                      Margin="10"
+                      Classes="t-input-fields-container">
                     
                     <Grid.Resources>
                         <!-- ReSharper disable once Xaml.RedundantResource -->
                         <SolidColorBrush x:Key="TriviaTextBoxForeground">White</SolidColorBrush>
                     </Grid.Resources>
-                    
-                    <Grid.Styles>
-                        <Style Selector="controls|TriviaTextBox[(Grid.Column)=1]">
-                            <Setter Property="Width" Value="250"/>
-                            <Setter Property="Height" Value="45"/>
-                            <Setter Property="Margin" Value="100 0 0 0"/>
-                            <Setter Property="Background" Value="#33EF657C"/>
-                            
-                            <Style Selector="^ TextBox">
-                                <Setter Property="TextAlignment" Value="Start"/>
-                                <Setter Property="Margin" Value="10 5"/>
-                            </Style>
-                        </Style>
-                    </Grid.Styles>
                     
                     <TextBlock Grid.Row="0"
                                Grid.Column="0">
@@ -53,7 +40,7 @@
                     </TextBlock>
                     <controls:TriviaTextBox Grid.Row="0"
                                             Grid.Column="1">
-                        <TextBox>TODO</TextBox>
+                        <TextBox/>
                     </controls:TriviaTextBox>
                     
                     <TextBlock Grid.Row="1"
@@ -62,7 +49,7 @@
                     </TextBlock>
                     <controls:TriviaTextBox Grid.Row="1"
                                Grid.Column="1">
-                        <TextBox>TODO</TextBox>
+                        <TextBox/>
                     </controls:TriviaTextBox>
                     
                     <TextBlock Grid.Row="2"
@@ -71,9 +58,7 @@
                     </TextBlock>
                     <controls:TriviaTextBox Grid.Row="2"
                                Grid.Column="1">
-                        <TextBox PasswordChar="*">
-                            TODO
-                        </TextBox>
+                        <TextBox PasswordChar="*"/>
                     </controls:TriviaTextBox>
                     
                     <TextBlock Grid.Row="3"
@@ -82,9 +67,7 @@
                     </TextBlock>
                     <controls:TriviaTextBox Grid.Row="3"
                                Grid.Column="1">
-                        <TextBox PasswordChar="*">
-                            TODO
-                        </TextBox>
+                        <TextBox PasswordChar="*"/>
                     </controls:TriviaTextBox>
                     
                     <TextBlock Grid.Row="4"
@@ -93,7 +76,7 @@
                     </TextBlock>
                     <controls:TriviaTextBox Grid.Row="4"
                                Grid.Column="1">
-                        <TextBox>TODO</TextBox>
+                        <TextBox/>
                     </controls:TriviaTextBox>
                     
                     <TextBlock Grid.Row="5"
@@ -102,7 +85,7 @@
                     </TextBlock>
                     <controls:TriviaTextBox Grid.Row="5"
                                Grid.Column="1">
-                        <TextBox>TODO</TextBox>
+                        <TextBox/>
                     </controls:TriviaTextBox>
                     
                 </Grid>
