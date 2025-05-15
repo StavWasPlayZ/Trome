@@ -7,8 +7,8 @@ public partial class LoginView : PageViewControl<LoginViewModel>
 {
     public LoginView()
     {
-        this.WhenActivated(_ => { });
-        
         InitializeComponent();
+        
+        this.WhenActivated(_ => { });
     }
 }

@@ -7,8 +7,8 @@ public partial class TestView : PageViewControl<TestViewModel>
 {
     public TestView()
     {
-        this.WhenActivated(_ => { });
-        
         InitializeComponent();
+        
+        this.WhenActivated(_ => { });
     }
 }
