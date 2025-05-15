@@ -30,14 +30,25 @@ public class SignupViewModel : AuthViewModel
 
     protected override void UpdateMayAuthenticate()
     {
+        DoPasswordsMatch = Password == RepPassword;
+        
         MayAuthenticate =
             !string.IsNullOrEmpty(Username)
             && !string.IsNullOrEmpty(Email)
             && !string.IsNullOrEmpty(Password)
             && !string.IsNullOrEmpty(RepPassword)
-            && Password == RepPassword
+            && DoPasswordsMatch
             && !string.IsNullOrEmpty(Phone)
         ;
+    }
+
+
+    private bool _doPasswordsMatch;
+
+    public bool DoPasswordsMatch
+    {
+        get => _doPasswordsMatch;
+        private set => this.RaiseAndSetIfChanged(ref _doPasswordsMatch, value);
     }
     
     

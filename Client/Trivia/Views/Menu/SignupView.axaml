@@ -34,6 +34,12 @@
                         <SolidColorBrush x:Key="TriviaTextBoxForeground">White</SolidColorBrush>
                     </Grid.Resources>
                     
+                    <Grid.Styles>
+                        <Style Selector="TextBlock.passwords-mismatch">
+                            <Setter Property="Foreground" Value="OrangeRed" />
+                        </Style>
+                    </Grid.Styles>
+                    
                     <TextBlock Grid.Row="0"
                                Grid.Column="0">
                         USERNAME
@@ -53,7 +59,8 @@
                     </controls:TriviaTextBox>
                     
                     <TextBlock Grid.Row="2"
-                               Grid.Column="0">
+                               Grid.Column="0"
+                               Classes.passwords-mismatch="{Binding !DoPasswordsMatch}">
                         PASSWORD
                     </TextBlock>
                     
@@ -64,7 +71,8 @@
                     </controls:TriviaTextBox>
                     
                     <TextBlock Grid.Row="3"
-                               Grid.Column="0">
+                               Grid.Column="0"
+                               Classes.passwords-mismatch="{Binding !DoPasswordsMatch}">
                         REPEAT PASSWORD
                     </TextBlock>
                     <controls:TriviaTextBox Grid.Row="3"
