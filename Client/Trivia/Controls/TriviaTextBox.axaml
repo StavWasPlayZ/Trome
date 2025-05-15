@@ -15,20 +15,23 @@
         <!-- Set Defaults -->
         <Setter Property="ClipToBounds" Value="False"/>
         <Setter Property="FontSize" Value="30"/>
+        <Setter Property="Foreground" Value="{DynamicResource TriviaTextBoxForeground}"/>
+        <Setter Property="Background" Value="#FFF0E8"/>
+        
+        <Setter Property="UnderlineBrush" Value="{DynamicResource TriviaTextBoxForeground}"/>
         
         <Setter Property="Template">
             <ControlTemplate>
                 <Border CornerRadius="15"
                         BoxShadow="0 5 4 #2f000000"
-                        x:Name="RoomNameBorder">
+                        x:Name="PART_RoomNameBorder">
                     
                     <Border CornerRadius="15"
                             Padding="15 -5 15 7"
                             ClipToBounds="True">
                         
-                        <controls:Underlined Foreground="#7f000000"
-                                             Padding="0 0 0 0"
-                                             Background="Transparent">
+                        <controls:Underlined Foreground="{TemplateBinding UnderlineBrush}"
+                                             Padding="0 0 0 0">
                             <!-- ReSharper disable once InconsistentNaming -->
                             <ContentPresenter x:Name="PART_ContentPresenter"
                                               Content="{TemplateBinding Content}"
@@ -38,11 +41,11 @@
                     
                     <Border.Styles>
                         <!--TODO: Add some color -->
-                        <Style Selector="Border#RoomNameBorder:pointerover">
-                            <Setter Property="Background" Value="#FFF0E8"/>
+                        <Style Selector="Border#PART_RoomNameBorder:pointerover">
+                            <Setter Property="Background" Value="{TemplateBinding Background}"/>
                         </Style>
-                        <Style Selector="Border#RoomNameBorder">
-                            <Setter Property="Background" Value="#FFF2EB"/>
+                        <Style Selector="Border#PART_RoomNameBorder">
+                            <Setter Property="Background" Value="{TemplateBinding Background}"/>
                         </Style>
                     </Border.Styles>
                     
@@ -50,8 +53,8 @@
             </ControlTemplate>
         </Setter>
         
-        <Style Selector="^ TextBox">
-            <Setter Property="Foreground" Value="#4D264A"/>
+        <Style Selector="^ :is(TextBox)">
+            <Setter Property="Foreground" Value="{DynamicResource TriviaTextBoxForeground}"/>
             <Setter Property="TextAlignment" Value="Center"/>
             <Setter Property="FontFamily" Value="{StaticResource Born2bSportyFS}"/>
             <Setter Property="Padding" Value="0 0 0 0"/>
@@ -61,7 +64,7 @@
             <Setter Property="BorderThickness" Value="0"/>
                             
             <Style Selector="^:pointerover, ^:focus-within">
-                <Setter Property="Foreground" Value="#4D264A"/>
+                <Setter Property="Foreground" Value="{DynamicResource TriviaTextBoxForeground}"/>
                                 
                 <Style Selector="^ /template/ Border">    
                     <Setter Property="Background" Value="Transparent"/>

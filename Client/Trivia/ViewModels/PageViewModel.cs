@@ -26,4 +26,17 @@ public abstract class PageViewModel(IScreen hostScreen) : ViewModelBase, IRoutab
     {
         return GetMainWindowViewModel()?.Router.Navigate.Execute(pageViewModel);
     }
+    protected static IObservable<IRoutableViewModel>? NavigateAndReset(PageViewModel pageViewModel)
+    {
+        return GetMainWindowViewModel()?.Router.Navigate.Execute(pageViewModel);
+    }
+
+    protected static ReactiveCommand<Unit, IRoutableViewModel> NavigateReactiveCommand(Func<PageViewModel> pageViewModel)
+    {
+        return ReactiveCommand.CreateFromObservable(() => NavigateTo(pageViewModel())!);
+    }
+    protected static ReactiveCommand<Unit, IRoutableViewModel> NavigateAndResetReactiveCommand(Func<PageViewModel> pageViewModel)
+    {
+        return ReactiveCommand.CreateFromObservable(() => NavigateTo(pageViewModel())!);
+    }
 }

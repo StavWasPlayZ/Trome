@@ -3,14 +3,9 @@ using ReactiveUI;
 
 namespace Trivia.ViewModels.Menu;
 
-public class JoinMenuViewModel : PageViewModel
+public class JoinMenuViewModel(IScreen hostScreen) : PageViewModel(hostScreen)
 {
-    public ReactiveCommand<Unit, IRoutableViewModel> NewRoomButtonCommand { get; }
-    
-    public JoinMenuViewModel(IScreen hostScreen) : base(hostScreen)
-    {
-        NewRoomButtonCommand = ReactiveCommand.CreateFromObservable(() => NavigateTo(
-            new CreateRoomViewModel(HostScreen))!
-        );
-    }
+    public ReactiveCommand<Unit, IRoutableViewModel> NewRoomButtonCommand { get; } = NavigateReactiveCommand(
+        () => new CreateRoomViewModel(hostScreen)
+    );
 }

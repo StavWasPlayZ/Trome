@@ -1,11 +1,11 @@
-using ReactiveUI;
+﻿using ReactiveUI;
 using Trivia.ViewModels.Menu;
 
 namespace Trivia.Views.Menu;
 
-public partial class TestView : PageViewControl<TestViewModel>
+public partial class LoginView : PageViewControl<LoginViewModel>
 {
-    public TestView()
+    public LoginView()
     {
         InitializeComponent();
         

@@ -9,7 +9,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="Models\" />
         <AvaloniaResource Include="Assets\**" />
     </ItemGroup>
 
@@ -39,12 +38,20 @@
         <DependentUpon>MainMenuView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Controls\MenuPanelExpanded.axaml.cs">
+      <Compile Update="Controls\TriviaMenuPanel.axaml.cs">
         <DependentUpon>MenuPanelExpanded.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
       <Compile Update="Views\Menu\TestView.axaml.cs">
         <DependentUpon>TestViewModel.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Menu\LoginView.axaml.cs">
+        <DependentUpon>LoginView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Menu\SignupView.axaml.cs">
+        <DependentUpon>SignupView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
     </ItemGroup>

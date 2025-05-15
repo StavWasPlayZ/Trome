@@ -7,8 +7,8 @@ public partial class MainMenuView : PageViewControl<MainMenuViewModel>
 {
     public MainMenuView()
     {
-        this.WhenActivated(_ => { });
-        
         InitializeComponent();
+        
+        this.WhenActivated(_ => { });
     }
 }

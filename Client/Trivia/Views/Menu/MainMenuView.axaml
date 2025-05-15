@@ -98,7 +98,7 @@
             
             <!-- TODO: Maybe add SVG border -->
             
-            <Button x:Name="LogoutButton"
+            <Button Command="{Binding SignOutCommand}"
                     Padding="0"
                     Theme="{StaticResource EmptyButton}">
                 
@@ -122,8 +122,7 @@
                 </Button.Styles>
             </Button>
             
-            <Button
-                Theme="{StaticResource EmptyButton}">
+            <Button Theme="{StaticResource EmptyButton}">
                 
                 <controls:Underlined>
                     <TextBlock

@@ -7,8 +7,8 @@ public partial class CreateRoomView : PageViewControl<CreateRoomViewModel>
 {
     public CreateRoomView()
     {
-        this.WhenActivated(_ => { });
-        
         InitializeComponent();
+        
+        this.WhenActivated(_ => { });
     }
 }

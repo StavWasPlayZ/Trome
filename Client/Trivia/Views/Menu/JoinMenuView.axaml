@@ -8,7 +8,9 @@
              x:CompileBindings="True"
              x:Class="Trivia.Views.Menu.JoinMenuView"
              x:DataType="vmmenu:JoinMenuViewModel"
-             x:Name="JoinMenuViewControl">
+             x:Name="JoinMenuViewControl"
+             
+             AttachedToVisualTree="OnAttachedToVisualTree">
 
     <Panel>
         <Panel.Background>
@@ -16,14 +18,14 @@
                         Stretch="UniformToFill" />
         </Panel.Background>
 
-        <controls:MenuPanelExpanded Title="JOIN"
+        <controls:TriviaMenuPanel Title="JOIN"
                                     BackButtonCommand="{Binding NavigateBackCommand}">
             
             <Panel>
                 
                 <Grid ColumnDefinitions="*, Auto"
                       Margin="20 0">
-                    <ListBox x:Name="RoomListBox"
+                    <ListBox SelectionChanged="RoomListBoxOnSelectionChanged"
                              Grid.Column="0"
                              SelectionMode="Single, Toggle"
                              Background="Transparent"
@@ -335,7 +337,7 @@
                 </Button>
             </Panel>
             
-        </controls:MenuPanelExpanded>
+        </controls:TriviaMenuPanel>
     </Panel>
 
 </UserControl>

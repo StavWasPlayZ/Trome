@@ -1,5 +1,4 @@
 using System;
-using System.Reactive.Disposables;
 using Avalonia;
 using Avalonia.Controls;
 using ReactiveUI;
@@ -14,17 +13,9 @@ public partial class JoinMenuView : PageViewControl<JoinMenuViewModel>
     
     public JoinMenuView()
     {
-        this.WhenActivated(disposables =>
-        {
-            Disposable
-                .Create(() => RoomListBox.SelectionChanged -= RoomListBoxOnSelectionChanged)
-                .DisposeWith(disposables);
-        });
         InitializeComponent();
         
-        AttachedToVisualTree += OnAttachedToVisualTree;
-        
-        RoomListBox.SelectionChanged += RoomListBoxOnSelectionChanged;
+        this.WhenActivated(_ => { });
     }
 
     private void OnAttachedToVisualTree(object? sender, VisualTreeAttachmentEventArgs e)
@@ -33,7 +24,7 @@ public partial class JoinMenuView : PageViewControl<JoinMenuViewModel>
 
         if (!Design.IsDesignMode)
         {    
-           CloseRoomPanel();
+            CloseRoomPanel();
         }
     }
 

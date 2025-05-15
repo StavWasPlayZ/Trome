@@ -12,7 +12,7 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         this.WhenActivated(_ =>
         {
             var vm = DataContext as MainWindowViewModel;
-            vm?.Router.Navigate.Execute(new MainMenuViewModel(vm));
+            vm?.Router.Navigate.Execute(new LoginViewModel(vm));
         });
         
         InitializeComponent();

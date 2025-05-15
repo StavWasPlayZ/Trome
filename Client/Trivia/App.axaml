@@ -18,8 +18,11 @@
             
             <converters:MultiplicationConverter x:Key="MultiplicationConverter"/>
             <converters:SolidColorBrushToHexStrConverter x:Key="SolidColorBrushToHexStrConverter"/>
-        
-        
+            
+            
+            <SolidColorBrush x:Key="TriviaTextBoxForeground">#4D264A</SolidColorBrush>
+
+
             <ResourceDictionary.MergedDictionaries>
                 <ResourceInclude Source="avares://Trivia/Controls/Themes/EmptyButton.axaml"/>
             </ResourceDictionary.MergedDictionaries>
@@ -40,10 +43,11 @@
 
         <StyleInclude Source="avares://Trivia/Controls/TriviaButton.axaml"/>
         <StyleInclude Source="avares://Trivia/Controls/Underlined.axaml"/>
-        <StyleInclude Source="avares://Trivia/Controls/MenuPanelExpanded.axaml"/>
+        <StyleInclude Source="avares://Trivia/Controls/TriviaMenuPanel.axaml"/>
         <StyleInclude Source="avares://Trivia/Controls/TriviaTextBox.axaml"/>
         
         <StyleInclude Source="avares://Trivia/Controls/Styles/TriviaListStyle.axaml"/>
+        <StyleInclude Source="avares://Trivia/Controls/Styles/TriviaInputFieldsContainer.axaml"/>
 
     </Application.Styles>
              
