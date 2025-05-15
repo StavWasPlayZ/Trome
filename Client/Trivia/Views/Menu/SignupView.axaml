@@ -132,12 +132,17 @@
                             OR
                         </TextBlock>
                         
-                        <controls:Underlined Margin="5,0"
-                                             Foreground="#FF627C">
-                            <TextBlock Foreground="#FF627C">
-                                LOG IN
-                            </TextBlock>
-                        </controls:Underlined>
+                        <Button Theme="{StaticResource EmptyButton}"
+                                Command="{Binding ToLoginCommand}">
+                            
+                            <controls:Underlined Margin="5,0"
+                                                 Foreground="#FF627C">
+                                <TextBlock Foreground="#FF627C">
+                                    LOG IN
+                                </TextBlock>
+                            </controls:Underlined>
+                            
+                        </Button>
                         
                     </StackPanel>
                 </StackPanel>
