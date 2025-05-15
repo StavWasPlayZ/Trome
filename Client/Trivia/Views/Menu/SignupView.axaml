@@ -56,8 +56,9 @@
                                Grid.Column="0">
                         PASSWORD
                     </TextBlock>
+                    
                     <controls:TriviaTextBox Grid.Row="2"
-                               Grid.Column="1">
+                                            Grid.Column="1">
                         <TextBox PasswordChar="*"/>
                     </controls:TriviaTextBox>
                     
@@ -75,9 +76,13 @@
                         PHONE
                     </TextBlock>
                     <controls:TriviaTextBox Grid.Row="4"
-                               Grid.Column="1">
+                                            Grid.Column="1"
+                                            UnderlineBrush="Transparent">
+                        
                         <MaskedTextBox Mask="000 000 0000"
-                                       AsciiOnly="True"/>
+                                       AsciiOnly="True"
+                                       Margin="0 0 0 -7"/>
+                        
                     </controls:TriviaTextBox>
                     
                     <TextBlock Grid.Row="5"

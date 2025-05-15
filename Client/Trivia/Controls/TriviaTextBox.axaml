@@ -18,17 +18,19 @@
         <Setter Property="Foreground" Value="{DynamicResource TriviaTextBoxForeground}"/>
         <Setter Property="Background" Value="#FFF0E8"/>
         
+        <Setter Property="UnderlineBrush" Value="{DynamicResource TriviaTextBoxForeground}"/>
+        
         <Setter Property="Template">
             <ControlTemplate>
                 <Border CornerRadius="15"
                         BoxShadow="0 5 4 #2f000000"
-                        x:Name="RoomNameBorder">
+                        x:Name="PART_RoomNameBorder">
                     
                     <Border CornerRadius="15"
                             Padding="15 -5 15 7"
                             ClipToBounds="True">
                         
-                        <controls:Underlined Foreground="{TemplateBinding Foreground}"
+                        <controls:Underlined Foreground="{TemplateBinding UnderlineBrush}"
                                              Padding="0 0 0 0">
                             <!-- ReSharper disable once InconsistentNaming -->
                             <ContentPresenter x:Name="PART_ContentPresenter"
@@ -39,10 +41,10 @@
                     
                     <Border.Styles>
                         <!--TODO: Add some color -->
-                        <Style Selector="Border#RoomNameBorder:pointerover">
+                        <Style Selector="Border#PART_RoomNameBorder:pointerover">
                             <Setter Property="Background" Value="{TemplateBinding Background}"/>
                         </Style>
-                        <Style Selector="Border#RoomNameBorder">
+                        <Style Selector="Border#PART_RoomNameBorder">
                             <Setter Property="Background" Value="{TemplateBinding Background}"/>
                         </Style>
                     </Border.Styles>
