@@ -40,29 +40,44 @@
                         </Style>
                     </Grid.Styles>
                     
-                    <TextBlock Grid.Row="0"
-                               Grid.Column="0">
-                        USERNAME
-                    </TextBlock>
+                    
+                    <StackPanel Grid.Row="0"
+                                Grid.Column="0"
+                                Classes="required-field">
+                        <TextBlock>
+                            USERNAME
+                        </TextBlock>
+                        <TextBlock/>
+                    </StackPanel>
+                    
                     <controls:TriviaTextBox Grid.Row="0"
                                             Grid.Column="1">
                         <TextBox Text="{Binding Username}"/>
                     </controls:TriviaTextBox>
                     
-                    <TextBlock Grid.Row="1"
-                               Grid.Column="0">
-                        EMAIL
-                    </TextBlock>
+                    <StackPanel Grid.Row="1"
+                                Grid.Column="0"
+                                Classes="required-field">
+                        <TextBlock>
+                            EMAIL
+                        </TextBlock>
+                        <TextBlock/>
+                    </StackPanel>
+                    
                     <controls:TriviaTextBox Grid.Row="1"
                                Grid.Column="1">
                         <TextBox Text="{Binding Email}"/>
                     </controls:TriviaTextBox>
                     
-                    <TextBlock Grid.Row="2"
-                               Grid.Column="0"
-                               Classes.passwords-mismatch="{Binding !DoPasswordsMatch}">
-                        PASSWORD
-                    </TextBlock>
+                    <StackPanel Grid.Row="2"
+                                Grid.Column="0"
+                                Classes.passwords-mismatch="{Binding !DoPasswordsMatch}"
+                                Classes="required-field">
+                        <TextBlock>
+                            PASSWORD
+                        </TextBlock>
+                        <TextBlock/>
+                    </StackPanel>
                     
                     <controls:TriviaTextBox Grid.Row="2"
                                             Grid.Column="1">
@@ -70,21 +85,31 @@
                                  Text="{Binding Password}"/>
                     </controls:TriviaTextBox>
                     
-                    <TextBlock Grid.Row="3"
-                               Grid.Column="0"
-                               Classes.passwords-mismatch="{Binding !DoPasswordsMatch}">
-                        REPEAT PASSWORD
-                    </TextBlock>
+                    <StackPanel Grid.Row="3"
+                                Grid.Column="0"
+                                Classes.passwords-mismatch="{Binding !DoPasswordsMatch}"
+                                Classes="required-field">
+                        <TextBlock>
+                            REPEAT PASSWORD
+                        </TextBlock>
+                        <TextBlock/>
+                    </StackPanel>
+                    
                     <controls:TriviaTextBox Grid.Row="3"
                                Grid.Column="1">
                         <TextBox PasswordChar="*"
                                  Text="{Binding RepPassword}"/>
                     </controls:TriviaTextBox>
                     
-                    <TextBlock Grid.Row="4"
-                               Grid.Column="0">
-                        PHONE
-                    </TextBlock>
+                    <StackPanel Grid.Row="4"
+                                Grid.Column="0"
+                                Classes="required-field">
+                        <TextBlock>
+                            PHONE
+                        </TextBlock>
+                        <TextBlock/>
+                    </StackPanel>
+                    
                     <controls:TriviaTextBox Grid.Row="4"
                                             Grid.Column="1"
                                             UnderlineBrush="Transparent">
