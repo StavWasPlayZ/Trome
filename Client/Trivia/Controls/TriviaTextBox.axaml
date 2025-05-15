@@ -51,7 +51,7 @@
             </ControlTemplate>
         </Setter>
         
-        <Style Selector="^ TextBox">
+        <Style Selector="^ :is(TextBox)">
             <Setter Property="Foreground" Value="{DynamicResource TriviaTextBoxForeground}"/>
             <Setter Property="TextAlignment" Value="Center"/>
             <Setter Property="FontFamily" Value="{StaticResource Born2bSportyFS}"/>

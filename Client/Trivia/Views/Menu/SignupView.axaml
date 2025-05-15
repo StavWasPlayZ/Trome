@@ -76,7 +76,8 @@
                     </TextBlock>
                     <controls:TriviaTextBox Grid.Row="4"
                                Grid.Column="1">
-                        <TextBox/>
+                        <MaskedTextBox Mask="000 000 0000"
+                                       AsciiOnly="True"/>
                     </controls:TriviaTextBox>
                     
                     <TextBlock Grid.Row="5"
