@@ -34,22 +34,33 @@
                         <SolidColorBrush x:Key="TriviaTextBoxForeground">White</SolidColorBrush>
                     </Grid.Resources>
                     
-                    <TextBlock Grid.Row="0"
-                               Grid.Column="0">
-                        USERNAME
-                    </TextBlock>
+                    <StackPanel Grid.Row="0"
+                                Grid.Column="0"
+                                Classes="required-field">
+                        <TextBlock>
+                            USERNAME
+                        </TextBlock>
+                        <TextBlock/>
+                    </StackPanel>
+                    
                     <controls:TriviaTextBox Grid.Row="0"
                                             Grid.Column="1">
-                        <TextBox/>
+                        <TextBox Text="{Binding Username}"/>
                     </controls:TriviaTextBox>
                     
-                    <TextBlock Grid.Row="1"
-                               Grid.Column="0">
-                        PASSWORD
-                    </TextBlock>
+                    <StackPanel Grid.Row="1"
+                                Grid.Column="0"
+                                Classes="required-field">
+                        <TextBlock>
+                            PASSWORD
+                        </TextBlock>
+                        <TextBlock/>
+                    </StackPanel>
+                    
                     <controls:TriviaTextBox Grid.Row="1"
                                Grid.Column="1">
-                        <TextBox PasswordChar="*"/>
+                        <TextBox PasswordChar="*"
+                                 Text="{Binding Password}"/>
                     </controls:TriviaTextBox>
                     
                 </Grid>
