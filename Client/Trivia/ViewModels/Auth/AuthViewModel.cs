@@ -2,7 +2,7 @@ using System.Reactive;
 using ReactiveUI;
 using Trivia.ViewModels.Menu;
 
-namespace Trivia.ViewModels;
+namespace Trivia.ViewModels.Auth;
 
 public abstract class AuthViewModel : PageViewModel
 {

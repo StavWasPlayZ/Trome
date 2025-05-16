@@ -2,12 +2,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vmmenu="clr-namespace:Trivia.ViewModels.Menu"
              xmlns:controls="clr-namespace:Trivia.Controls"
+             xmlns:game="clr-namespace:Trivia.ViewModels.Game"
              mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
              x:CompileBindings="True"
-             x:Class="Trivia.Views.Menu.CreateRoomView"
-             x:DataType="vmmenu:CreateRoomViewModel">
+             x:Class="Trivia.Views.Game.CreateRoomView"
+             x:DataType="game:CreateRoomViewModel">
     <Panel>
         <Panel.Background>
             <ImageBrush Source="avares://Trivia/Assets/drool-d-b1608556d649b5b943136ecc0df0fe1bc7ff644f.png"

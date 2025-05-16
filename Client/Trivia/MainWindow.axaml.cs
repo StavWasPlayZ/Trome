@@ -1,7 +1,7 @@
 using Avalonia.ReactiveUI;
 using ReactiveUI;
 using Trivia.ViewModels;
-using Trivia.ViewModels.Menu;
+using Trivia.ViewModels.Auth;
 
 namespace Trivia;
 

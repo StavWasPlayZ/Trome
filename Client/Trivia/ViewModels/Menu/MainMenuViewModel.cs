@@ -2,6 +2,7 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using ReactiveUI;
+using Trivia.ViewModels.Auth;
 
 namespace Trivia.ViewModels.Menu;
 
