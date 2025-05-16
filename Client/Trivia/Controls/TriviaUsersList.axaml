@@ -13,7 +13,6 @@
     <Style Selector="controls|TriviaUsersList">
         <!-- Set Defaults -->
         <Setter Property="Background" Value="#673362"/>
-        <Setter Property="Foreground" Value="#9d4d95"/>
         <Setter Property="PointerOverBrush" Value="#B456AB"/>
         <Setter Property="PressedBrush" Value="#85437D"/>
         
@@ -25,8 +24,7 @@
                 
                 <Border Background="{TemplateBinding Background}"
                         CornerRadius="{TemplateBinding CornerRadius}"
-                        ClipToBounds="True"
-                        Padding="10 0">
+                        ClipToBounds="True">
 
                     <!-- ReSharper disable once InconsistentNaming -->
                     <ContentPresenter x:Name="PART_ContentPresenter"
@@ -38,6 +36,9 @@
             </ControlTemplate>
         </Setter>
         
+        <Style Selector="^ > Border">
+            <Setter Property="Padding" Value="10 0"/>
+        </Style>
         
         <Style Selector="^ ListBox">
             <Setter Property="SelectionMode" Value="Single"/>
@@ -71,7 +72,7 @@
             </Setter>
             
             <Style Selector="^ > ListBoxItem">
-                <Setter Property="Background" Value="{Binding $parent[controls:TriviaUsersList].Foreground}"/>
+                <Setter Property="Background" Value="#9d4d95"/>
                 <Setter Property="Margin" Value="0 2"/>
                 <Setter Property="Padding" Value="10 9"/>
     
@@ -85,7 +86,7 @@
     
                 <!-- "Disable" selection; color it the exact same. -->
                 <Style Selector="^:selected /template/ ContentPresenter">
-                    <Setter Property="Background" Value="{Binding  $parent[controls:TriviaUsersList].Foreground}"/>
+                    <Setter Property="Background" Value="{Binding $parent[ListBoxItem].Background}"/>
                 </Style>
     
                 <Style Selector="^:pointerover /template/ ContentPresenter">

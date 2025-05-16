@@ -114,9 +114,9 @@
                                    TextAlignment="Center"
                                            
                                    IsVisible="{
-                                               TemplateBinding IsIconButton,
-                                               Converter={x:Static BoolConverters.Not}
-                                           }"/>
+                                       TemplateBinding IsIconButton,
+                                       Converter={x:Static BoolConverters.Not}
+                                   }"/>
                     </Grid>
 
                 </Button>
