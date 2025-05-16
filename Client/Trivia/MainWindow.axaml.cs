@@ -1,4 +1,5 @@
 using Avalonia;
+using Avalonia.Input;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
 using Trivia.ViewModels;
@@ -12,8 +13,7 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
     {
         this.WhenActivated(_ =>
         {
-            var vm = DataContext as MainWindowViewModel;
-            vm?.Router.Navigate.Execute(new LoginViewModel(vm));
+            ViewModel?.Router.Navigate.Execute(new LoginViewModel(ViewModel));
         });
         
         InitializeComponent();
@@ -25,5 +25,10 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
             return;
 
         ScreenDarkener.IsVisible = e.NewValue != null;
+    }
+
+    private void ScreenDarkener_OnPointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        ViewModel!.PopupContents = null;
     }
 }

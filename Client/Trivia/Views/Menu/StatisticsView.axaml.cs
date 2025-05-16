@@ -20,6 +20,8 @@ public partial class StatisticsView : ReactiveUserControl<StatisticsViewModel>
         if (e.AddedItems.Count != 1)
             return;
         
-        (DataContext as StatisticsViewModel)!.ShowStatsPopup?.Execute().Subscribe();
+        ViewModel!.ShowStatsPopup?.Execute().Subscribe();
+        
+        (sender as ListBox)!.SelectedItem = null;
     }
 }

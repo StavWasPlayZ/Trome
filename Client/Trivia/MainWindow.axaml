@@ -35,7 +35,8 @@
         <Panel x:Name="ScreenDarkener"
                Background="Black"
                Opacity=".4"
-               IsVisible="False"/>
+               IsVisible="False"
+               PointerPressed="ScreenDarkener_OnPointerPressed"/>
         
         <ContentControl Content="{Binding PopupContents}"
                         PropertyChanged="PopupControl_OnPropertyChanged"/>
