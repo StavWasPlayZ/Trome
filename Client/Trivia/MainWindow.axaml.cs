@@ -1,3 +1,4 @@
+using Avalonia;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
 using Trivia.ViewModels;
@@ -16,5 +17,13 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         });
         
         InitializeComponent();
+    }
+
+    private void PopupControl_OnPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        if (e.Property != ContentProperty)
+            return;
+
+        ScreenDarkener.IsVisible = e.NewValue != null;
     }
 }

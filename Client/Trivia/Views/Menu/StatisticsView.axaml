@@ -52,7 +52,7 @@
                             
                             <controls:TriviaUsersList Grid.Column="0"
                                                       Background="#ffddbe">
-                                <ListBox>
+                                <ListBox SelectionChanged="SelectingItemsControl_OnSelectionChanged">
                                     <ListBox.Items>
                                         <x:Int32>1</x:Int32>
                                         <x:Int32>2</x:Int32>
@@ -133,7 +133,7 @@
                             
                             <controls:TriviaUsersList Grid.Column="2"
                                                       Background="#9d665f">
-                                <ListBox>
+                                <ListBox SelectionChanged="SelectingItemsControl_OnSelectionChanged">
                                     <ListBox.Items>
                                         <x:Int32>3</x:Int32>
                                         <x:Int32>4</x:Int32>
@@ -215,7 +215,7 @@
                     <controls:TriviaUsersList Grid.Row="2"
                                               Margin="160 0"
                                               CornerRadius="30 30 0 0">
-                        <ListBox>
+                        <ListBox SelectionChanged="SelectingItemsControl_OnSelectionChanged">
                             <ListBox.Items>
                                 <x:Int32>6</x:Int32>
                                 <x:Int32>7</x:Int32>
@@ -273,7 +273,8 @@
                     
                 </Grid>
                 
-                <Button Classes="action-button">
+                <Button Classes="action-button"
+                        Command="{Binding ShowStatsPopup}">
                     
                     <StackPanel Orientation="Horizontal"
                                 Spacing="7">

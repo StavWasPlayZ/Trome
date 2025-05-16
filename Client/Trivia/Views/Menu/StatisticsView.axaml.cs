@@ -1,3 +1,5 @@
+using System;
+using Avalonia.Controls;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
 using Trivia.ViewModels.Menu;
@@ -11,5 +13,13 @@ public partial class StatisticsView : ReactiveUserControl<StatisticsViewModel>
         InitializeComponent();
 
         this.WhenActivated(_ => { });
+    }
+
+    private void SelectingItemsControl_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (e.AddedItems.Count != 1)
+            return;
+        
+        (DataContext as StatisticsViewModel)!.ShowStatsPopup?.Execute().Subscribe();
     }
 }

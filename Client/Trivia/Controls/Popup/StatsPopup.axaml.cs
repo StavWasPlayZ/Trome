@@ -1,9 +1,8 @@
-using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 
 namespace Trivia.Controls.Popup;
 
+//TODO: Make Reactive
 public partial class StatsPopup : UserControl
 {
     public StatsPopup()
