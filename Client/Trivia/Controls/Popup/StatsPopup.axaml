@@ -103,10 +103,6 @@
                     </Style>
                 </Button.Styles>
                     
-                <Button.Transitions>
-                    <Transitions/>
-                </Button.Transitions>
-                    
                 <Grid ColumnDefinitions="Auto, *">
                     <TextBlock Grid.Column="0"
                                Padding="13 0"
