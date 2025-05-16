@@ -18,261 +18,280 @@
 
         <controls:TriviaMenuPanel Title="STATISTICS"
                                     BackButtonCommand="{Binding NavigateBackCommand}">
-            
-            <Grid RowDefinitions="Auto, 14, *"
-                  Margin="50 50 50 0">
+            <Panel>
                 
-                <Grid.Styles>
-                    <Style Selector="controls|TriviaUsersList">
-                        
-                        <Style Selector="^ /template/ Border">
-                            <Setter Property="Padding" Value="7 0"/>
-                        </Style>
-                        
-                        <Style Selector="^ ListBox">
-                            <Setter Property="Padding" Value="0 7 0 7"/>
-                        </Style>
-                        
-                    </Style>
-                </Grid.Styles>
-                
-                <Border Grid.Row="0"
-                        Background="#4DFFA6A6"
-                        CornerRadius="30">
-                    <Grid ColumnDefinitions="*, 5, *"
-                          Margin="7"
-                          Height="184">
-                        
-                        <!-- <Grid.Styles> -->
-                        <!--     <Style Selector="controls|TriviaUsersList"> -->
-                        <!--         <Setter Property="Margin" Value="3"></Setter> -->
-                        <!--     </Style> -->
-                        <!-- </Grid.Styles> -->
-                        
-                        <controls:TriviaUsersList Grid.Column="0"
-                                                  Background="#ffddbe">
-                            <ListBox>
-                                <ListBox.Items>
-                                    <x:Int32>1</x:Int32>
-                                    <x:Int32>2</x:Int32>
-                                </ListBox.Items>
-                                
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <listEntries:ScoredUserListEntry NumberedPlace="{Binding}"/>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
+                <Grid RowDefinitions="Auto, 14, *"
+                      Margin="50 50 50 0">
+                    
+                    <Grid.Styles>
+                        <Style Selector="controls|TriviaUsersList">
                             
-                            <controls:TriviaUsersList.Styles>
-                                
-                                <Style Selector="ListBoxItem">
-                                    <Setter Property="Margin" Value="0 3"/>
+                            <Style Selector="^ /template/ Border">
+                                <Setter Property="Padding" Value="7 0"/>
+                            </Style>
+                            
+                            <Style Selector="^ ListBox">
+                                <Setter Property="Padding" Value="0 7 0 7"/>
+                            </Style>
+                            
+                        </Style>
+                    </Grid.Styles>
+                    
+                    <Border Grid.Row="0"
+                            Background="#4DFFA6A6"
+                            CornerRadius="30">
+                        <Grid ColumnDefinitions="*, 5, *"
+                              Margin="7"
+                              Height="184">
+                            
+                            <!-- <Grid.Styles> -->
+                            <!--     <Style Selector="controls|TriviaUsersList"> -->
+                            <!--         <Setter Property="Margin" Value="3"></Setter> -->
+                            <!--     </Style> -->
+                            <!-- </Grid.Styles> -->
+                            
+                            <controls:TriviaUsersList Grid.Column="0"
+                                                      Background="#ffddbe">
+                                <ListBox>
+                                    <ListBox.Items>
+                                        <x:Int32>1</x:Int32>
+                                        <x:Int32>2</x:Int32>
+                                    </ListBox.Items>
                                     
-                                    <Style Selector="^ Border">
-                                        <Setter Property="Width" Value="61"/>
-                                        <Setter Property="Height" Value="61"/>
-                                    </Style>
-                                </Style>
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <listEntries:ScoredUserListEntry NumberedPlace="{Binding}"/>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
                                 
-                                <Style Selector="ListBoxItem:nth-child(1)">
-                                    <Setter Property="Background" Value="#fdb33a"/>
+                                <controls:TriviaUsersList.Styles>
                                     
-                                    <Style Selector="^ Border">
-                                        <Setter Property="Background" Value="#ffdbb8"/>
-                                            
-                                        <Style Selector="^ > Svg">
-                                            <Setter Property="Css" Value="* { fill: #c9731e; }"/>
+                                    <Style Selector="ListBoxItem">
+                                        <Setter Property="Margin" Value="0 3"/>
+                                        
+                                        <Style Selector="^ Border">
+                                            <Setter Property="Width" Value="61"/>
+                                            <Setter Property="Height" Value="61"/>
                                         </Style>
                                     </Style>
+                                    
+                                    <Style Selector="ListBoxItem:nth-child(1)">
+                                        <Setter Property="Background" Value="#fdb33a"/>
                                         
-                                    <Style Selector="^ TextBlock.primary-text">
-                                        <Setter Property="Foreground" Value="#ac631b"/>
-                                    </Style>
-                                    <Style Selector="^ TextBlock.secondary-text">
-                                        <Setter Property="Foreground" Value="#b7722d"/>
-                                    </Style>
-                                    
-                                    <Style Selector="^:pointerover /template/ ContentPresenter">
-                                        <Setter Property="Background" Value="#FFC258"/>
-                                    </Style>
-                                    <Style Selector="^:pressed /template/ ContentPresenter">
-                                        <Setter Property="Background" Value="#EDA73C"/>
-                                    </Style>
-                                </Style>
-                                
-                                <Style Selector="ListBoxItem:nth-child(2)">
-                                    <Setter Property="Background" Value="#b4483a"/>
-                                    
-                                    <Style Selector="^ Border">
-                                        <Setter Property="Background" Value="#ffa69a"/>
+                                        <Style Selector="^ Border">
+                                            <Setter Property="Background" Value="#ffdbb8"/>
+                                                
+                                            <Style Selector="^ > Svg">
+                                                <Setter Property="Css" Value="* { fill: #c9731e; }"/>
+                                            </Style>
+                                        </Style>
                                             
-                                        <Style Selector="^ > Svg">
-                                            <Setter Property="Css" Value="* { fill: #9d4236; }"/>
+                                        <Style Selector="^ TextBlock.primary-text">
+                                            <Setter Property="Foreground" Value="#ac631b"/>
+                                        </Style>
+                                        <Style Selector="^ TextBlock.secondary-text">
+                                            <Setter Property="Foreground" Value="#b7722d"/>
+                                        </Style>
+                                        
+                                        <Style Selector="^:pointerover /template/ ContentPresenter">
+                                            <Setter Property="Background" Value="#FFC258"/>
+                                        </Style>
+                                        <Style Selector="^:pressed /template/ ContentPresenter">
+                                            <Setter Property="Background" Value="#EDA73C"/>
                                         </Style>
                                     </Style>
+                                    
+                                    <Style Selector="ListBoxItem:nth-child(2)">
+                                        <Setter Property="Background" Value="#b4483a"/>
                                         
-                                    <Style Selector="^ TextBlock.primary-text">
-                                        <Setter Property="Foreground" Value="#ffa69a"/>
+                                        <Style Selector="^ Border">
+                                            <Setter Property="Background" Value="#ffa69a"/>
+                                                
+                                            <Style Selector="^ > Svg">
+                                                <Setter Property="Css" Value="* { fill: #9d4236; }"/>
+                                            </Style>
+                                        </Style>
+                                            
+                                        <Style Selector="^ TextBlock.primary-text">
+                                            <Setter Property="Foreground" Value="#ffa69a"/>
+                                        </Style>
+                                        <Style Selector="^ TextBlock.secondary-text">
+                                            <Setter Property="Foreground" Value="#712e25"/>
+                                        </Style>
+                                        
+                                        <Style Selector="^:pointerover /template/ ContentPresenter">
+                                            <Setter Property="Background" Value="#B45C46"/>
+                                        </Style>
+                                        <Style Selector="^:pressed /template/ ContentPresenter">
+                                            <Setter Property="Background" Value="#A74336"/>
+                                        </Style>
                                     </Style>
-                                    <Style Selector="^ TextBlock.secondary-text">
-                                        <Setter Property="Foreground" Value="#712e25"/>
+                                </controls:TriviaUsersList.Styles>
+                                
+                            </controls:TriviaUsersList>
+                            
+                            <controls:TriviaUsersList Grid.Column="2"
+                                                      Background="#9d665f">
+                                <ListBox>
+                                    <ListBox.Items>
+                                        <x:Int32>3</x:Int32>
+                                        <x:Int32>4</x:Int32>
+                                        <x:Int32>5</x:Int32>
+                                    </ListBox.Items>
+                                    
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <listEntries:ScoredUserListEntry NumberedPlace="{Binding}"/>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                                
+                                <controls:TriviaUsersList.Styles>
+                                    <Style Selector="ListBoxItem Border">
+                                        <Setter Property="Width" Value="34"/>
+                                        <Setter Property="Height" Value="34"/>
+                                        <Setter Property="Padding" Value="3"/>
                                     </Style>
                                     
-                                    <Style Selector="^:pointerover /template/ ContentPresenter">
-                                        <Setter Property="Background" Value="#B45C46"/>
+                                    <Style Selector="ListBoxItem:nth-child(1)">
+                                        <Setter Property="Background" Value="#d29188"/>
+                                        
+                                        <Style Selector="^ Border">
+                                            <Setter Property="Background" Value="#ffcdc7"/>
+                                                
+                                            <Style Selector="^ > Svg">
+                                                <Setter Property="Css" Value="* { fill: #ae6e65; }"/>
+                                            </Style>
+                                        </Style>
+                                            
+                                        <Style Selector="^ TextBlock.primary-text">
+                                            <Setter Property="Foreground" Value="White"/>
+                                        </Style>
+                                        <Style Selector="^ TextBlock.secondary-text">
+                                            <Setter Property="Foreground" Value="#975f58"/>
+                                        </Style>
+                                        
+                                        <Style Selector="^:pointerover /template/ ContentPresenter">
+                                            <Setter Property="Background" Value="#D29C97"/>
+                                        </Style>
+                                        <Style Selector="^:pressed /template/ ContentPresenter">
+                                            <Setter Property="Background" Value="#C3867E"/>
+                                        </Style>
                                     </Style>
-                                    <Style Selector="^:pressed /template/ ContentPresenter">
-                                        <Setter Property="Background" Value="#A74336"/>
+                                    
+                                    <Style Selector="ListBoxItem:not(:nth-child(1))">
+                                        <Setter Property="Background" Value="#fac8c2"/>
+                                        
+                                        <Style Selector="^ Border">
+                                            <Setter Property="Background" Value="#fff1ef"/>
+                                                
+                                            <Style Selector="^ > Svg">
+                                                <Setter Property="Css" Value="* { fill: #c98f87; }"/>
+                                            </Style>
+                                        </Style>
+                                            
+                                        <Style Selector="^ TextBlock.primary-text">
+                                            <Setter Property="Foreground" Value="#af8079"/>
+                                        </Style>
+                                        <Style Selector="^ TextBlock.secondary-text">
+                                            <Setter Property="Foreground" Value="#b57d76"/>
+                                        </Style>
+                                        
+                                        <Style Selector="^:pointerover /template/ ContentPresenter">
+                                            <Setter Property="Background" Value="#FAD4D2"/>
+                                        </Style>
+                                        <Style Selector="^:pressed /template/ ContentPresenter">
+                                            <Setter Property="Background" Value="#ECBEB9"/>
+                                        </Style>
                                     </Style>
-                                </Style>
-                            </controls:TriviaUsersList.Styles>
-                            
-                        </controls:TriviaUsersList>
-                        
-                        <controls:TriviaUsersList Grid.Column="2"
-                                                  Background="#9d665f">
-                            <ListBox>
-                                <ListBox.Items>
-                                    <x:Int32>3</x:Int32>
-                                    <x:Int32>4</x:Int32>
-                                    <x:Int32>5</x:Int32>
-                                </ListBox.Items>
+                                </controls:TriviaUsersList.Styles>
                                 
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <listEntries:ScoredUserListEntry NumberedPlace="{Binding}"/>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
+                            </controls:TriviaUsersList>
                             
-                            <controls:TriviaUsersList.Styles>
-                                <Style Selector="ListBoxItem Border">
-                                    <Setter Property="Width" Value="34"/>
-                                    <Setter Property="Height" Value="34"/>
+                        </Grid>
+                    </Border>
+                    
+                    <controls:TriviaUsersList Grid.Row="2"
+                                              Margin="160 0"
+                                              CornerRadius="30 30 0 0">
+                        <ListBox>
+                            <ListBox.Items>
+                                <x:Int32>6</x:Int32>
+                                <x:Int32>7</x:Int32>
+                                <x:Int32>8</x:Int32>
+                                <x:Int32>9</x:Int32>
+                                <x:Int32>9</x:Int32>
+                                <x:Int32>9</x:Int32>
+                                <x:Int32>9</x:Int32>
+                                <x:Int32>9</x:Int32>
+                                <x:Int32>9</x:Int32>
+                                <x:Int32>9</x:Int32>
+                                <x:Int32>9</x:Int32>
+                                <x:Int32>9</x:Int32>
+                                <x:Int32>9</x:Int32>
+                                <x:Int32>9</x:Int32>
+                                <x:Int32>9</x:Int32>
+                                <x:Int32>9</x:Int32>
+                                <x:Int32>9</x:Int32>
+                                <x:Int32>9</x:Int32>
+                                <x:Int32>9</x:Int32>
+                                <x:Int32>9</x:Int32>
+                                <x:Int32>9</x:Int32>
+                                <x:Int32>9</x:Int32>
+                                <x:Int32>9</x:Int32>
+                                <x:Int32>9</x:Int32>
+                                <x:Int32>9</x:Int32>
+                                <x:Int32>9</x:Int32>
+                                <x:Int32>9</x:Int32>
+                                <x:Int32>9</x:Int32>
+                                <x:Int32>9</x:Int32>
+                            </ListBox.Items>
+                                    
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <listEntries:ScoredUserListEntry NumberedPlace="{Binding}"/>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        
+                        <controls:TriviaUsersList.Styles>
+                            <Style Selector="ListBoxItem">
+                                <Style Selector="^ Border">
+                                    <Setter Property="Width" Value="30"/>
+                                    <Setter Property="Height" Value="30"/>
                                     <Setter Property="Padding" Value="3"/>
                                 </Style>
                                 
-                                <Style Selector="ListBoxItem:nth-child(1)">
-                                    <Setter Property="Background" Value="#d29188"/>
-                                    
-                                    <Style Selector="^ Border">
-                                        <Setter Property="Background" Value="#ffcdc7"/>
-                                            
-                                        <Style Selector="^ > Svg">
-                                            <Setter Property="Css" Value="* { fill: #ae6e65; }"/>
-                                        </Style>
-                                    </Style>
-                                        
-                                    <Style Selector="^ TextBlock.primary-text">
-                                        <Setter Property="Foreground" Value="White"/>
-                                    </Style>
-                                    <Style Selector="^ TextBlock.secondary-text">
-                                        <Setter Property="Foreground" Value="#975f58"/>
-                                    </Style>
-                                    
-                                    <Style Selector="^:pointerover /template/ ContentPresenter">
-                                        <Setter Property="Background" Value="#D29C97"/>
-                                    </Style>
-                                    <Style Selector="^:pressed /template/ ContentPresenter">
-                                        <Setter Property="Background" Value="#C3867E"/>
-                                    </Style>
+                                <Style Selector="^:nth-last-child(1)">
+                                    <Setter Property="CornerRadius" Value="0 0 5 5"/>
                                 </Style>
-                                
-                                <Style Selector="ListBoxItem:not(:nth-child(1))">
-                                    <Setter Property="Background" Value="#fac8c2"/>
-                                    
-                                    <Style Selector="^ Border">
-                                        <Setter Property="Background" Value="#fff1ef"/>
-                                            
-                                        <Style Selector="^ > Svg">
-                                            <Setter Property="Css" Value="* { fill: #c98f87; }"/>
-                                        </Style>
-                                    </Style>
-                                        
-                                    <Style Selector="^ TextBlock.primary-text">
-                                        <Setter Property="Foreground" Value="#af8079"/>
-                                    </Style>
-                                    <Style Selector="^ TextBlock.secondary-text">
-                                        <Setter Property="Foreground" Value="#b57d76"/>
-                                    </Style>
-                                    
-                                    <Style Selector="^:pointerover /template/ ContentPresenter">
-                                        <Setter Property="Background" Value="#FAD4D2"/>
-                                    </Style>
-                                    <Style Selector="^:pressed /template/ ContentPresenter">
-                                        <Setter Property="Background" Value="#ECBEB9"/>
-                                    </Style>
-                                </Style>
-                            </controls:TriviaUsersList.Styles>
-                            
-                        </controls:TriviaUsersList>
+                            </Style>
+                        </controls:TriviaUsersList.Styles>
                         
-                    </Grid>
-                </Border>
-                
-                <controls:TriviaUsersList Grid.Row="2"
-                                          Margin="125 0"
-                                          CornerRadius="30 30 0 0">
-                    <ListBox>
-                        <ListBox.Items>
-                            <x:Int32>6</x:Int32>
-                            <x:Int32>7</x:Int32>
-                            <x:Int32>8</x:Int32>
-                            <x:Int32>9</x:Int32>
-                            <x:Int32>9</x:Int32>
-                            <x:Int32>9</x:Int32>
-                            <x:Int32>9</x:Int32>
-                            <x:Int32>9</x:Int32>
-                            <x:Int32>9</x:Int32>
-                            <x:Int32>9</x:Int32>
-                            <x:Int32>9</x:Int32>
-                            <x:Int32>9</x:Int32>
-                            <x:Int32>9</x:Int32>
-                            <x:Int32>9</x:Int32>
-                            <x:Int32>9</x:Int32>
-                            <x:Int32>9</x:Int32>
-                            <x:Int32>9</x:Int32>
-                            <x:Int32>9</x:Int32>
-                            <x:Int32>9</x:Int32>
-                            <x:Int32>9</x:Int32>
-                            <x:Int32>9</x:Int32>
-                            <x:Int32>9</x:Int32>
-                            <x:Int32>9</x:Int32>
-                            <x:Int32>9</x:Int32>
-                            <x:Int32>9</x:Int32>
-                            <x:Int32>9</x:Int32>
-                            <x:Int32>9</x:Int32>
-                            <x:Int32>9</x:Int32>
-                            <x:Int32>9</x:Int32>
-                        </ListBox.Items>
-                                
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <listEntries:ScoredUserListEntry NumberedPlace="{Binding}"/>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
+                    </controls:TriviaUsersList>
                     
-                    <controls:TriviaUsersList.Styles>
-                        <Style Selector="ListBoxItem">
-                            <Style Selector="^ Border">
-                                <Setter Property="Width" Value="30"/>
-                                <Setter Property="Height" Value="30"/>
-                                <Setter Property="Padding" Value="3"/>
-                            </Style>
-                            
-                            <Style Selector="^:nth-last-child(1)">
-                                <Setter Property="CornerRadius" Value="0 0 5 5"/>
-                            </Style>
-                        </Style>
-                    </controls:TriviaUsersList.Styles>
-                    
-                </controls:TriviaUsersList>
+                </Grid>
                 
-            </Grid>
-            
-            
+                <Button Classes="action-button">
+                    
+                    <StackPanel Orientation="Horizontal"
+                                Spacing="7">
+                        
+                        <Svg Path="avares://Trivia/Assets/Icons/person.svg"
+                             Css="* { fill: #4d264a }"
+                             Height="40"/>
+                        
+                        <TextBlock
+                            Foreground="#4d264a"
+                            VerticalAlignment="Center">
+                            MY STATS
+                        </TextBlock>
+                    </StackPanel>
+                    
+                </Button>
+                
+            </Panel>
         </controls:TriviaMenuPanel>
 
     </Panel>
