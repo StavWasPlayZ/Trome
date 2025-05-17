@@ -10,13 +10,11 @@ LoginResponse::LoginResponse(const LoginStatus status) :
 
 SignupResponse::SignupResponse(const SignupStatus status, const unsigned int userId) :
     RegistrationResponse(ResponseCode::SIGNUP, status, userId),
-    succeed(true),
     context("")
 {}
 
 SignupResponse::SignupResponse(const SignupStatus status, const std::string &context) :
     RegistrationResponse(ResponseCode::SIGNUP, status, -1),
-    succeed(false),
     context(context)
 {}
 

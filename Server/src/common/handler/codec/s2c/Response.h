@@ -114,10 +114,9 @@ struct SignupResponse : RegistrationResponse<SignupStatus>
     /**
      * A failed login response. Provided no user ID.
      */
-	SignupResponse(SignupStatus status, const std::string& context = "");
+    explicit SignupResponse(SignupStatus status, const std::string& context = "");
 
-    //TODO: Move succeed & context to general response
-    const bool succeed;
+    //NOTE: If you find yourself needing more than one context, please consider moving to ProtocolResponse.
     const std::string& context;
 };
 
