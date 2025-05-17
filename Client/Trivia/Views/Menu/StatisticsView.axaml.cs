@@ -1,5 +1,6 @@
 using System;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
 using Trivia.ViewModels.Menu;
@@ -15,13 +16,15 @@ public partial class StatisticsView : ReactiveUserControl<StatisticsViewModel>
         this.WhenActivated(_ => { });
     }
 
-    private void SelectingItemsControl_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    private void SelectingItemsControl_OnPointerReleased(object? sender, PointerReleasedEventArgs pointerReleasedEventArgs)
     {
-        if (e.AddedItems.Count != 1)
+        var listbox = (sender as ListBox)!;
+        
+        if (listbox.SelectedItem == null)
             return;
         
         ViewModel?.ShowStatsPopup?.Execute().Subscribe();
         
-        (sender as ListBox)!.SelectedItem = null;
+        listbox.SelectedItem = null;
     }
 }

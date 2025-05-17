@@ -27,7 +27,7 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         ScreenDarkener.IsVisible = e.NewValue != null;
     }
 
-    private void ScreenDarkener_OnPointerPressed(object? sender, PointerPressedEventArgs e)
+    private void ScreenDarkener_OnPointerReleased(object? sender, PointerReleasedEventArgs pointerReleasedEventArgs)
     {
         ViewModel!.PopupContents = null;
     }

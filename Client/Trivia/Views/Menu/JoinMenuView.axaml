@@ -25,7 +25,7 @@
                 
                 <Grid ColumnDefinitions="*, Auto"
                       Margin="20 0">
-                    <ListBox SelectionChanged="RoomListBoxOnSelectionChanged"
+                    <ListBox PointerReleased="RoomListBox_OnPointerReleased"
                              Grid.Column="0"
                              SelectionMode="Single, Toggle"
                              Background="Transparent"

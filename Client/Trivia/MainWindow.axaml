@@ -36,7 +36,7 @@
                Background="Black"
                Opacity=".4"
                IsVisible="False"
-               PointerPressed="ScreenDarkener_OnPointerPressed"/>
+               PointerReleased="ScreenDarkener_OnPointerReleased"/>
         
         <TransitioningContentControl Content="{Binding PopupContents}"
                                      PropertyChanged="PopupControl_OnPropertyChanged">
