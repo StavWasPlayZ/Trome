@@ -25,7 +25,7 @@
                 
                 <Grid ColumnDefinitions="*, Auto"
                       Margin="20 0">
-                    <ListBox SelectionChanged="RoomListBoxOnSelectionChanged"
+                    <ListBox PointerReleased="RoomListBox_OnPointerReleased"
                              Grid.Column="0"
                              SelectionMode="Single, Toggle"
                              Background="Transparent"
@@ -281,55 +281,20 @@
                 
                 <!-- New Room button -->
                 
-                <Button Command="{Binding NewRoomButtonCommand}"
-                        VerticalAlignment="Bottom"
-                        HorizontalAlignment="Left"
-                        Background="#ffcaca"
-                        CornerRadius="15 15 0 0"
-                        Padding="15 7">
-                    
-                    <Button.Transitions>
-                        <Transitions>
-                            <TransformOperationsTransition Property="RenderTransform" Duration="0:0:.025"/>
-                        </Transitions>
-                    </Button.Transitions>
-                    
-                    <Button.Styles>
-                        <!-- Because for some reason it's 1px offset -->
-                        <Style Selector="Button">
-                            <Setter Property="RenderTransform" Value="translateY(1px)"/>
-                        </Style>
-                        
-                        <Style Selector="Button:pointerover">
-                            <Setter Property="RenderTransform" Value="translateY(4px)"/>
-                            
-                            <Style Selector="^ /template/ ContentPresenter">
-                                <Setter Property="Background" Value="#F2B8B8"/>
-                            </Style>
-                        </Style>
-                        
-                        <Style Selector="Button:pressed">
-                            <Setter Property="RenderTransform" Value="translateY(8px)"/>
-                            
-                            <Style Selector="^ /template/ ContentPresenter">
-                                <Setter Property="Background" Value="#E8A6A9"/>
-                            </Style>
-                        </Style>
-                    </Button.Styles>
+                <Button Classes="action-button"
+                        Command="{Binding NewRoomButtonCommand}">
                     
                     <StackPanel Orientation="Horizontal"
                                 Spacing="7">
                         
                         <TextBlock
                             Foreground="#4d264a"
-                            FontWeight="Light"
                             Padding="3 0">
                             +
                         </TextBlock>
                         
                         <TextBlock
-                            Foreground="#4d264a"
-                            FontWeight="Light">
+                            Foreground="#4d264a">
                             NEW ROOM
                         </TextBlock>
                     </StackPanel>

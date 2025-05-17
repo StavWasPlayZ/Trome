@@ -46,7 +46,7 @@
                                                BorderThickness="3"
                                                IconSvgPath="avares://Trivia/Assets/Icons/play_arrow.svg"
                                                IconMargin="-7 7 -10 7"/>
-                        <controls:TriviaButton x:Name="StatsButton"
+                        <controls:TriviaButton Command="{Binding StatisticsCommand}"
                                                Text="STATISTICS"
                                                BorderBrushSelected="#6154A3"
                                                BorderBrushPressed="#3D366D"

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Reactive;
 using ReactiveUI;
 
-namespace Trivia.ViewModels.Menu;
+namespace Trivia.ViewModels.Auth;
 
 public class SignupViewModel : AuthViewModel
 {

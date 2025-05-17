@@ -30,10 +30,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Views\Menu\JoinMenuView.axaml.cs">
-        <DependentUpon>JoinMenuView.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
       <Compile Update="Views\Menu\MainMenuView.axaml.cs">
         <DependentUpon>MainMenuView.axaml</DependentUpon>
         <SubType>Code</SubType>
@@ -46,13 +42,29 @@
         <DependentUpon>TestViewModel.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\Menu\LoginView.axaml.cs">
+      <Compile Update="Views\Auth\LoginView.axaml.cs">
         <DependentUpon>LoginView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\Menu\SignupView.axaml.cs">
+      <Compile Update="Views\Auth\SignupView.axaml.cs">
         <DependentUpon>SignupView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Views\Menu\JoinMenuView.axaml.cs">
+        <DependentUpon>JoinMenuView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Game\CreateRoomView.axaml.cs">
+        <DependentUpon>CreateRoomView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Menu\StatisticsView.axaml.cs">
+        <DependentUpon>StatisticsView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Controls\Popups\StatsPopup.axaml" />
     </ItemGroup>
 </Project>

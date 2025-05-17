@@ -1,7 +1,7 @@
 ﻿using ReactiveUI;
-using Trivia.ViewModels.Menu;
+using Trivia.ViewModels.Auth;
 
-namespace Trivia.Views.Menu;
+namespace Trivia.Views.Auth;
 
 public partial class LoginView : PageViewControl<LoginViewModel>
 {

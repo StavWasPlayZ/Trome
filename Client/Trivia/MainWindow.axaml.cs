@@ -1,7 +1,9 @@
+using Avalonia;
+using Avalonia.Input;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
 using Trivia.ViewModels;
-using Trivia.ViewModels.Menu;
+using Trivia.ViewModels.Auth;
 
 namespace Trivia;
 
@@ -11,10 +13,22 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
     {
         this.WhenActivated(_ =>
         {
-            var vm = DataContext as MainWindowViewModel;
-            vm?.Router.Navigate.Execute(new LoginViewModel(vm));
+            ViewModel?.Router.Navigate.Execute(new LoginViewModel(ViewModel));
         });
         
         InitializeComponent();
+    }
+
+    private void PopupControl_OnPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        if (e.Property != ContentProperty)
+            return;
+
+        ScreenDarkener.IsVisible = e.NewValue != null;
+    }
+
+    private void ScreenDarkener_OnPointerReleased(object? sender, PointerReleasedEventArgs pointerReleasedEventArgs)
+    {
+        ViewModel!.PopupContents = null;
     }
 }

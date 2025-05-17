@@ -7,10 +7,27 @@
                Height="400">
             
             <controls:TriviaMenuPanel>
-                <Panel
-                    Background="Black"
-                    Opacity=".3"
-                    />
+
+                <Button Classes="action-button">
+                    
+                    <StackPanel Orientation="Horizontal"
+                                Spacing="7">
+                        
+                        <TextBlock
+                            Foreground="#4d264a"
+                            FontWeight="Light"
+                            Padding="3 0">
+                            +
+                        </TextBlock>
+                        
+                        <TextBlock
+                            Foreground="#4d264a"
+                            FontWeight="Light">
+                            NEW ROOM
+                        </TextBlock>
+                    </StackPanel>
+                    
+                </Button>
             </controls:TriviaMenuPanel>            
         </Panel>
     </Design.PreviewWith>
@@ -78,5 +95,43 @@
                 
             </ControlTemplate>
         </Setter>
+        
+        
+        <Style Selector="^ Button.action-button">
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Background" Value="#ffcaca"/>
+            <Setter Property="CornerRadius" Value="15 15 0 0"/>
+            <Setter Property="Padding" Value="15 7"/>
+            
+            <Setter Property="Transitions">
+                <Transitions>
+                    <TransformOperationsTransition Property="RenderTransform" Duration="0:0:.025"/>
+                </Transitions>
+            </Setter>
+            
+            
+            <!-- Because for some reason it's 1px offset -->
+            <Style Selector="^">
+                <Setter Property="RenderTransform" Value="translateY(1px)"/>
+            </Style>
+                        
+            <Style Selector="^:pointerover">
+                <Setter Property="RenderTransform" Value="translateY(4px)"/>
+                            
+                <Style Selector="^ /template/ ContentPresenter">
+                    <Setter Property="Background" Value="#F2B8B8"/>
+                </Style>
+            </Style>
+                        
+            <Style Selector="^:pressed">
+                <Setter Property="RenderTransform" Value="translateY(8px)"/>
+                            
+                <Style Selector="^ /template/ ContentPresenter">
+                    <Setter Property="Background" Value="#E8A6A9"/>
+                </Style>
+            </Style>
+        </Style>
+        
     </Style>
 </Styles>

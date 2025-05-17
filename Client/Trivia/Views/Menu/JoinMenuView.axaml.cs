@@ -1,6 +1,7 @@
 using System;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using ReactiveUI;
 using Trivia.ViewModels.Menu;
 
@@ -28,11 +29,12 @@ public partial class JoinMenuView : PageViewControl<JoinMenuViewModel>
         }
     }
 
-    private void RoomListBoxOnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    private void RoomListBox_OnPointerReleased(object? sender, PointerReleasedEventArgs pointerReleasedEventArgs)
     {
         //TODO: Implement selected room
+        var listbox = (sender as ListBox)!;
         
-        if (e.AddedItems.Count == 0)
+        if (listbox.SelectedItem == null)
         {
             CloseRoomPanel();
             return;

@@ -1,7 +1,7 @@
 ﻿using ReactiveUI;
-using Trivia.ViewModels.Menu;
+using Trivia.ViewModels.Game;
 
-namespace Trivia.Views.Menu;
+namespace Trivia.Views.Game;
 
 public partial class CreateRoomView : PageViewControl<CreateRoomViewModel>
 {

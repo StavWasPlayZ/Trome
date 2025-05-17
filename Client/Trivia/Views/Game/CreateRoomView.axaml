@@ -2,12 +2,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vmmenu="clr-namespace:Trivia.ViewModels.Menu"
              xmlns:controls="clr-namespace:Trivia.Controls"
+             xmlns:game="clr-namespace:Trivia.ViewModels.Game"
              mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
              x:CompileBindings="True"
-             x:Class="Trivia.Views.Menu.CreateRoomView"
-             x:DataType="vmmenu:CreateRoomViewModel">
+             x:Class="Trivia.Views.Game.CreateRoomView"
+             x:DataType="game:CreateRoomViewModel">
     <Panel>
         <Panel.Background>
             <ImageBrush Source="avares://Trivia/Assets/drool-d-b1608556d649b5b943136ecc0df0fe1bc7ff644f.png"
@@ -17,81 +17,9 @@
         <Grid ColumnDefinitions="320, 15, *"
               Margin="35,35">
             
-            <!-- Users panel -->
-
-            <Border Grid.Column="0"
-                    Background="#673362"
-                    CornerRadius="30"
-                    ClipToBounds="True"
-                    Padding="10 0">
-                <Panel>
-                    <ListBox x:Name="RoomListBox"
-                             SelectionMode="Single"
-                             Background="Transparent"
-                             Padding="0 10 0 275">
-                    
-                        <ListBox.ItemsSource>
-                            gfgfgfgfgffff
-                        </ListBox.ItemsSource>
-                        
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Grid ColumnDefinitions="Auto, Auto, *">
-                                    
-                                    <Border Grid.Column="0" Background="#ffbcf8"
-                                            Height="50"
-                                            Width="50"
-                                            Padding="6"
-                                            CornerRadius="10"
-                                            Margin="10 0 15 0">
-                                        
-                                        <Svg Path="avares://Trivia/Assets/Icons/person.svg"
-                                             Css="* { fill: #813e7a; }"/>
-                                    </Border>
-                                    
-                                    <TextBlock Grid.Column="1"
-                                               VerticalAlignment="Center"
-                                               FontSize="30">
-                                        USERNAME
-                                    </TextBlock>
-                                    
-                                </Grid>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                        
-                        <ListBox.Styles>
-                            <Style Selector="ListBox > ListBoxItem">
-                                <Setter Property="Background" Value="#9d4d95"/>
-                                <Setter Property="Margin" Value="0 2"/>
-                                <Setter Property="Padding" Value="10 9"/>
-                                
-                                <Style Selector="^:nth-child(1)">
-                                    <Setter Property="CornerRadius" Value="25 25 0 0"/>
-                                </Style>
-                                <Style Selector="^:nth-last-child(1)">
-                                    <Setter Property="CornerRadius" Value="0 0 5 5"/>
-                                </Style>
-
-                                
-                                <!-- "Disable" selection; color it the exact same. -->
-                                <Style Selector="^:selected /template/ ContentPresenter">
-                                    <Setter Property="Background" Value="#9d4d95"/>
-                                </Style>
-                                
-                                <Style Selector="^:pointerover /template/ ContentPresenter">
-                                    <Setter Property="Background" Value="#B456AB"/>
-                                </Style>
-                                <Style Selector="^:pressed /template/ ContentPresenter">
-                                    <Setter Property="Background" Value="#85437D"/>
-                                </Style>
-                            </Style>
-                            
-                        </ListBox.Styles>
-                    </ListBox>
-                </Panel>
-            </Border>
-            
-            <!-- Main panel -->
+            <controls:TriviaUsersList Grid.Column="0">
+                <ListBox ItemsSource="gggggggggg"/>
+            </controls:TriviaUsersList>
 
             <Border Grid.Column="2"
                     Background="#FFCACA"
@@ -162,7 +90,8 @@
                                     Maximum="50"
                                     TickFrequency="1"
                                     IsSnapToTickEnabled="True"
-                                    Foreground="#e87dd3">
+                                    Foreground="#e87dd3"
+                                    Value="20">
                                 
                                 <Slider.Resources>
                                     <!-- ReSharper disable once Xaml.RedundantResource -->

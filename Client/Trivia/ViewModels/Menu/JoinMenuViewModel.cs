@@ -1,5 +1,6 @@
 ﻿using System.Reactive;
 using ReactiveUI;
+using Trivia.ViewModels.Game;
 
 namespace Trivia.ViewModels.Menu;
 

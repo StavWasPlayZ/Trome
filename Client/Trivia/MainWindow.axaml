@@ -17,18 +17,36 @@
         <vm:MainWindowViewModel />
     </Design.DataContext>
     
-    <rxui:RoutedViewHost
-        Router="{Binding Router}"
-        PageTransition="{x:Null}">
+    <Panel>
+        <rxui:RoutedViewHost
+            Router="{Binding Router}"
+            PageTransition="{x:Null}">
+            
+            <rxui:RoutedViewHost.DefaultContent>
+                <TextBlock>why hello there</TextBlock>
+            </rxui:RoutedViewHost.DefaultContent>
+            
+            <rxui:RoutedViewHost.ViewLocator>
+                <app:ViewLocator/>
+            </rxui:RoutedViewHost.ViewLocator>
+            
+        </rxui:RoutedViewHost>
         
-        <rxui:RoutedViewHost.DefaultContent>
-            <TextBlock>why hello there</TextBlock>
-        </rxui:RoutedViewHost.DefaultContent>
+        <Panel x:Name="ScreenDarkener"
+               Background="Black"
+               Opacity=".4"
+               IsVisible="False"
+               PointerReleased="ScreenDarkener_OnPointerReleased"/>
         
-        <rxui:RoutedViewHost.ViewLocator>
-            <app:ViewLocator/>
-        </rxui:RoutedViewHost.ViewLocator>
-        
-    </rxui:RoutedViewHost>
+        <TransitioningContentControl Content="{Binding PopupContents}"
+                                     PropertyChanged="PopupControl_OnPropertyChanged">
+            
+            <TransitioningContentControl.PageTransition>
+                <CrossFade Duration="0:0:0.15"/>
+            </TransitioningContentControl.PageTransition>
+            
+        </TransitioningContentControl>
+    </Panel>
+    
     
 </Window>
