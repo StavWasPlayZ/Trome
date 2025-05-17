@@ -16,7 +16,7 @@ public class Communicator : IDisposable
 
     public bool IsConnected => _clientSocket?.Connected ?? false;
 
-    private Socket? _clientSocket;
+    private TcpClient? _clientSocket;
     
     private Communicator()
     {
@@ -29,13 +29,8 @@ public class Communicator : IDisposable
         
         Console.WriteLine($"Establishing connection to {endpoint}...");
         
-        _clientSocket = new Socket(
-            endpoint.AddressFamily,
-            SocketType.Stream,
-            ProtocolType.Tcp
-        );
-        
-        await _clientSocket.ConnectAsync(endpoint);
+        _clientSocket = new TcpClient(endpoint.AddressFamily);
+        await _clientSocket.ConnectAsync(endpoint.Address, endpoint.Port);
         
         Console.WriteLine("Connection successfully established.");
     }
@@ -43,22 +38,7 @@ public class Communicator : IDisposable
     
     public void Disconnect()
     {
-        if (_clientSocket == null)
-            return;
-
-        try
-        {
-            if (_clientSocket.Connected)
-            {
-                _clientSocket?.Shutdown(SocketShutdown.Both);
-            }
-        }
-        catch (Exception)
-        {
-            // ignored
-        }
-        
-        _clientSocket!.Dispose();
+        _clientSocket?.Dispose();
         _clientSocket = null;
     }
 

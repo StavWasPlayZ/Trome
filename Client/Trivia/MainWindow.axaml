@@ -44,7 +44,7 @@
                                      PropertyChanged="PopupControl_OnPropertyChanged">
             
             <TransitioningContentControl.PageTransition>
-                <CrossFade Duration="0:0:0.15"/>
+                <CrossFade Duration="0:0:0.1"/>
             </TransitioningContentControl.PageTransition>
             
         </TransitioningContentControl>
