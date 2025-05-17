@@ -21,9 +21,7 @@ SignupResponse LoginManager::signup(const RequestInfo &context, const SignupRequ
 	}
     catch (const RegexViolationException &e)
     {
-        //TODO: Add detail as to what regex failed (contained in e.field)
-        // Generally add a field for optional failure details.
-        return SignupResponse(SignupStatus::FAILED_INVALID_ARGUMENT);
+        return SignupResponse(SignupStatus::FAILED_INVALID_ARGUMENT, e.field);
     }
 	catch (const std::runtime_error& e)
 	{

@@ -111,10 +111,14 @@ enum class SignupStatus : unsigned char
 struct SignupResponse : RegistrationResponse<SignupStatus>
 {
 	SignupResponse(SignupStatus status, unsigned int userId);
-	/**
-	 * A failed login response. Provided no user ID.
-	 */
-	explicit SignupResponse(SignupStatus status);
+    /**
+     * A failed login response. Provided no user ID.
+     */
+	SignupResponse(SignupStatus status, const std::string& context = "");
+
+    //TODO: Move succeed & context to general response
+    const bool succeed;
+    const std::string& context;
 };
 
 

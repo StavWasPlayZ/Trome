@@ -25,6 +25,11 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const SignupResponse &re
 	nlohmann::json data;
 	serializeBaseResponseToJson<SignupStatus>(data, response);
 
+    if (!response.succeed)
+    {
+        data["context"] = response.context;
+    }
+
 	return serializeJsonToProtocol(response.id, data);
 }
 
