@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 
 namespace Trivia;
 
-public class Communicator
+public class Communicator : IDisposable
 {
     public static readonly IPEndPoint DefaultEndpoint = new(IPAddress.Parse("127.0.0.1"), 6942);
     
     public static Communicator Instance { get; } = new();
+    
+    private bool _disposed;
 
 
     public bool IsConnected => _clientSocket?.Connected ?? false;
@@ -38,17 +40,36 @@ public class Communicator
         Console.WriteLine("Connection successfully established.");
     }
 
+    
     public void Disconnect()
     {
         if (_clientSocket == null)
             return;
 
-        if (_clientSocket.Connected)
+        try
         {
-            _clientSocket?.Shutdown(SocketShutdown.Both);
+            if (_clientSocket.Connected)
+            {
+                _clientSocket?.Shutdown(SocketShutdown.Both);
+            }
+        }
+        catch (Exception)
+        {
+            // ignored
         }
         
-        _clientSocket?.Close();
+        _clientSocket!.Dispose();
         _clientSocket = null;
+    }
+
+    public void Dispose()
+    {
+        if (_disposed)
+            return;
+        _disposed = true;
+        
+        Disconnect();
+
+        GC.SuppressFinalize(this);
     }
 }

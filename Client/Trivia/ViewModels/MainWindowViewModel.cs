@@ -22,7 +22,7 @@ public class MainWindowViewModel : ViewModelBase, IScreen
 
     public void HandleClosing()
     {
-        Communicator.Instance.Disconnect();
+        Communicator.Instance.Dispose();
     }
 
 
