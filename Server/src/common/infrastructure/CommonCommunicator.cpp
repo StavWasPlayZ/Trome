@@ -283,9 +283,11 @@ RequestInfo CommonCommunicator::_waitForClientRequest(const SOCKET socket) const
     receiveMsg(socket, &jsonLen, SIZE_JSON_LEN);
     jsonLen = ntohl(jsonLen) * sizeof(char);
 
+    // We do this check here too to validify whether the json MAY be read.
+    // This is NOT a part of parsing.
     if (jsonLen <= 0)
     {
-        throw std::runtime_error("Invalid JSON length");
+        throw std::runtime_error("Invalid JSON length: Reading phase");
     }
 
     const RequestInfo* info = nullptr;

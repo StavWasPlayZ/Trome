@@ -10,13 +10,23 @@ LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(const nlohma
 
 SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(const nlohmann::json &data)
 {
+    std::optional<std::string> address = std::nullopt;
+
+    if (data.contains("address"))
+    {
+        if (data.at("address").is_string())
+        {
+            address = std::optional(data.at("address"));
+        }
+    }
+
     return SignupRequest(
         data.at("username"),
         data.at("password"),
         data.at("email"),
         data.at("phone"),
         data.at("birthdate"),
-        data.contains("address") ? std::optional(data.at("address")) : std::nullopt
+        address
     );
 }
 
@@ -90,7 +100,7 @@ nlohmann::json JsonRequestPacketDeserializer::readJson(const unsigned char *data
 	// Avoid naughty buffer overflows
 	if (jsonLen <= 0)
 	{
-        throw std::runtime_error("Invalid JSON length");
+        throw std::runtime_error("Invalid JSON length: Parsing phase");
     }
 
 	char* const jsonRaw = new char[jsonLen];
