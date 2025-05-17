@@ -20,6 +20,12 @@ public class MainWindowViewModel : ViewModelBase, IScreen
     }
 
 
+    public void HandleClosing()
+    {
+        Communicator.Instance.Disconnect();
+    }
+
+
     private Control? _popupContents;
     
     public Control? PopupContents

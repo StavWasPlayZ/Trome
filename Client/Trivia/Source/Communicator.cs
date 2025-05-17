@@ -12,6 +12,8 @@ public class Communicator
     public static Communicator Instance { get; } = new();
 
 
+    public bool IsConnected => _clientSocket?.Connected ?? false;
+
     private Socket? _clientSocket;
     
     private Communicator()
@@ -34,5 +36,19 @@ public class Communicator
         await _clientSocket.ConnectAsync(endpoint);
         
         Console.WriteLine("Connection successfully established.");
+    }
+
+    public void Disconnect()
+    {
+        if (_clientSocket == null)
+            return;
+
+        if (_clientSocket.Connected)
+        {
+            _clientSocket?.Shutdown(SocketShutdown.Both);
+        }
+        
+        _clientSocket?.Close();
+        _clientSocket = null;
     }
 }
