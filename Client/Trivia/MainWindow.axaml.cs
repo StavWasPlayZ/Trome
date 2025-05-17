@@ -3,7 +3,6 @@ using Avalonia.Input;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
 using Trivia.ViewModels;
-using Trivia.ViewModels.Auth;
 
 namespace Trivia;
 
@@ -13,7 +12,7 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
     {
         this.WhenActivated(_ =>
         {
-            ViewModel?.Router.Navigate.Execute(new LoginViewModel(ViewModel));
+            ViewModel?.Router.Navigate.Execute(new ConnectingViewModel(ViewModel));
         });
         
         InitializeComponent();

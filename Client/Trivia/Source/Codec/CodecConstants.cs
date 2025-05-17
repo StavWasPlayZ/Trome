@@ -8,7 +8,7 @@ public static class CodecConstants
     public static readonly JsonSerializerSettings JsonSerializerSettings = new()
     {
         // Make the naming strategy be sneak_case and not camelCase.
-        // Aligns with server conventions
+        // Aligns with server conventions.
         ContractResolver = new DefaultContractResolver
         {
             NamingStrategy = new SnakeCaseNamingStrategy()

@@ -1,0 +1,52 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Trivia.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
+             x:CompileBindings="True"
+             x:Class="Trivia.Views.ConnectingView"
+             x:DataType="vm:ConnectingViewModel">
+
+    <Border>
+        <Border.Background>
+            <ImageBrush Source="avares://Trivia/Assets/blobs-l-b49caff1a7941d98b60902da64956ad85dfbe4f9.png"
+                        Stretch="UniformToFill" />
+        </Border.Background>
+        
+        <ContentControl VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Classes.fail-message="{Binding ConnectionFailed}">
+            
+            <ContentControl.Styles>
+                <Style Selector="TextBlock">
+                    <Setter Property="FontSize" Value="70"/>
+                </Style>
+                
+                <Style Selector="ContentControl:not(.fail-message)">
+                    <Setter Property="ContentTemplate">
+                        <!-- ReSharper disable once Xaml.RedundantResource -->
+                        <DataTemplate>
+                            <TextBlock>ESTABLISHING CONNECTION...</TextBlock>
+                        </DataTemplate>
+                    </Setter>
+                </Style>
+            
+                <Style Selector="ContentControl.fail-message">
+                    <Setter Property="ContentTemplate">
+                        <!-- ReSharper disable once Xaml.RedundantResource -->
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock HorizontalAlignment="Center">CONNECTION FAILED.</TextBlock>
+                                <TextBlock>RESTART GAME TO TRY AGAIN.</TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </Setter>
+                </Style>
+            </ContentControl.Styles>
+            
+        </ContentControl>
+        
+    </Border>
+
+</UserControl>
