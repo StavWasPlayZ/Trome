@@ -76,6 +76,9 @@ void CommonCommunicator::commonSetup()
 
     // The timeout for the recv method
     // Set in place to allow refreshing the value of _running.
+    //TODO: Make it so that the client is required to send a ping every RECV_REFRESH_TIMEOUT_MS,
+    // otherwise disconnect.
+    // This helps against the phantom ports issues of C#.
     setRecvTimeout(RECV_REFRESH_TIMEOUT_MS);
 
     // Set server address information
