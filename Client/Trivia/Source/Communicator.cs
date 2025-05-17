@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Trivia.Codec.C2S.Request;
@@ -44,7 +45,14 @@ public class Communicator : IDisposable
     {
         while (IsConnected)
         {
+            var buffer = new byte[1024];
+            var read = _clientSocket!.GetStream().Read(buffer, 0, buffer.Length);
+
+            if (read == 0)
+                return;
+            
             //TODO: Parse and delegate
+            Console.WriteLine("Received: " + Encoding.UTF8.GetString(buffer, 0, read));
         }
     }
 
