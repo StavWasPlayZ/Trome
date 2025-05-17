@@ -6,5 +6,5 @@ public record SignupRequest(
     string Email,
     string Phone,
     string? Address,
-    string Birthday
+    string Birthdate
 ) : ProtocolRequest(RequestCode.Signup);

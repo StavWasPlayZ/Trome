@@ -71,9 +71,8 @@
                     
                     <StackPanel Grid.Row="2"
                                 Grid.Column="0"
-                                Classes.passwords-mismatch="{Binding !DoPasswordsMatch}"
                                 Classes="required-field">
-                        <TextBlock>
+                        <TextBlock Classes.passwords-mismatch="{Binding !DoPasswordsMatch}">
                             PASSWORD
                         </TextBlock>
                         <TextBlock/>
@@ -87,9 +86,8 @@
                     
                     <StackPanel Grid.Row="3"
                                 Grid.Column="0"
-                                Classes.passwords-mismatch="{Binding !DoPasswordsMatch}"
                                 Classes="required-field">
-                        <TextBlock>
+                        <TextBlock Classes.passwords-mismatch="{Binding !DoPasswordsMatch}">
                             REPEAT PASSWORD
                         </TextBlock>
                         <TextBlock/>

@@ -1,9 +1,9 @@
 using Avalonia;
 using Avalonia.Input;
+using Avalonia.LogicalTree;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
 using Trivia.ViewModels;
-using Trivia.ViewModels.Auth;
 
 namespace Trivia;
 
@@ -13,7 +13,7 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
     {
         this.WhenActivated(_ =>
         {
-            ViewModel?.Router.Navigate.Execute(new LoginViewModel(ViewModel));
+            ViewModel?.Router.Navigate.Execute(new ConnectingViewModel(ViewModel));
         });
         
         InitializeComponent();
@@ -30,5 +30,10 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
     private void ScreenDarkener_OnPointerReleased(object? sender, PointerReleasedEventArgs pointerReleasedEventArgs)
     {
         ViewModel!.PopupContents = null;
+    }
+
+    private void OnDetachedFromLogicalTree(object? sender, LogicalTreeAttachmentEventArgs e)
+    {
+        ViewModel?.HandleClosing();
     }
 }

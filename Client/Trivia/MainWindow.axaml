@@ -11,7 +11,9 @@
         Icon="/Assets/avalonia-logo.ico"
         Width="1000" Height="600"
         CanResize="False"
-        Title="Trivia">
+        Title="Trivia"
+        
+        DetachedFromLogicalTree="OnDetachedFromLogicalTree">
     
     <Design.DataContext>
         <vm:MainWindowViewModel />
@@ -42,7 +44,7 @@
                                      PropertyChanged="PopupControl_OnPropertyChanged">
             
             <TransitioningContentControl.PageTransition>
-                <CrossFade Duration="0:0:0.15"/>
+                <CrossFade Duration="0:0:0.1"/>
             </TransitioningContentControl.PageTransition>
             
         </TransitioningContentControl>
