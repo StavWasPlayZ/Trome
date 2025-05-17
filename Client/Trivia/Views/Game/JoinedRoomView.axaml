@@ -27,17 +27,17 @@
                     Padding="40 40">
                 <Grid RowDefinitions="Auto, *, Auto">
 
-                    <controls:TriviaTextBox Grid.Row="0"
-                                            ClipToBounds="False">
-                        <TextBox FontSize="65">
-                            ROOM NAME
-                        </TextBox>
-                    </controls:TriviaTextBox>
+                    <TextBlock Grid.Row="0"
+                               FontSize="65"
+                               HorizontalAlignment="Center"
+                               Foreground="#4d264a">
+                        ROOM NAME
+                    </TextBlock>
                     
                     <Grid Grid.Row="1"
-                          RowDefinitions="50, 20, 50, 20, 50"
+                          RowDefinitions="50, 0, 50, 0, 50"
                           ColumnDefinitions="150, 20, *"
-                          Margin="35 40">
+                          Margin="70 30">
                         
                         <Grid.Styles>
                             <Style Selector="TextBlock">
@@ -46,9 +46,8 @@
                                 <Setter Property="VerticalAlignment" Value="Center"/>
                             </Style>
                             
-                            <Style Selector="controls|TriviaTextBox">
+                            <Style Selector="TextBlock[(Grid.Column)=2]">
                                 <Setter Property="HorizontalAlignment" Value="Right"/>
-                                <Setter Property="FontSize" Value="35"/>
                                 <Setter Property="Margin" Value="0 5" />
                             </Style>
                         </Grid.Styles>
@@ -60,73 +59,10 @@
                             QUESTIONS
                         </TextBlock>
                         
-                        <StackPanel Grid.Row="0"
+                        <TextBlock Grid.Row="0"
                                     Grid.Column="2">
-                            
-                            <StackPanel.Styles>
-                                <Style Selector="TextBlock">
-                                    <Setter Property="FontSize" Value="30"/>
-                                </Style>
-                            </StackPanel.Styles>
-                            
-                            <Panel>
-                                <TextBlock FontSize="30">
-                                    1
-                                </TextBlock>
-                                <TextBlock FontSize="25"
-                                           TextAlignment="Center"
-                                           VerticalAlignment="Bottom"
-                                           Foreground="#C2E064D6"
-                                           
-                                           Text="{Binding #QuestionsSlider.Value}"/>
-                                
-                                <TextBlock FontSize="30"
-                                           TextAlignment="End">
-                                    50
-                                </TextBlock>
-                            </Panel>
-                            
-                            <Slider x:Name="QuestionsSlider"
-                                    Maximum="50"
-                                    TickFrequency="1"
-                                    IsSnapToTickEnabled="True"
-                                    Foreground="#e87dd3"
-                                    Value="20">
-                                
-                                <Slider.Resources>
-                                    <!-- ReSharper disable once Xaml.RedundantResource -->
-                                    <x:Double x:Key="SliderHorizontalThumbWidth">40</x:Double>
-                                    <!-- ReSharper disable once Xaml.RedundantResource -->
-                                    <x:Double x:Key="SliderHorizontalThumbHeight">20</x:Double>
-                                    
-                                    <!-- ReSharper disable once Xaml.RedundantResource -->
-                                    <SolidColorBrush x:Key="SliderThumbBackground">#B150AA</SolidColorBrush>
-                                    
-                                    <!-- ReSharper disable once Xaml.RedundantResource -->
-                                    <x:Double x:Key="SliderTrackThemeHeight">7</x:Double>
-                                </Slider.Resources>
-                                
-                                <Slider.Styles>
-                                    <Style Selector="Slider /template/ RepeatButton Border">
-                                        <Setter Property="Height" Value="10" />
-                                    </Style>
-                                    
-                                    <Style Selector="Slider:pointerover /template/ Thumb">
-                                        <Setter Property="Background" Value="#C552BE"/>
-                                    </Style>
-                                    
-                                    <Style Selector="Slider:pressed /template/ Thumb">
-                                        <Setter Property="Background" Value="#9C4796"/>
-                                    </Style>
-                                    
-                                    <Style Selector="Slider:pointerover /template/ RepeatButton#PART_DecreaseButton,
-                                            Slider:pressed /template/ RepeatButton#PART_DecreaseButton">
-                                        <Setter Property="Background" Value="#e87dd3"/>
-                                    </Style>
-                                </Slider.Styles>
-                                
-                            </Slider>
-                        </StackPanel>
+                            20
+                        </TextBlock>
                         
                         <TextBlock Grid.Row="2"
                                    Grid.Column="0"
@@ -134,11 +70,10 @@
                                    Foreground="#813E7A">
                             SEC/Q
                         </TextBlock>
-                        <controls:TriviaTextBox Grid.Row="2"
-                                                Grid.Column="2"
-                                                ClipToBounds="False">
-                            <TextBox>10</TextBox>
-                        </controls:TriviaTextBox>
+                        <TextBlock Grid.Row="2"
+                                   Grid.Column="2">
+                            15
+                        </TextBlock>
                         
                         <TextBlock Grid.Row="4"
                                    Grid.Column="0"
@@ -146,17 +81,16 @@
                                    Foreground="#813E7A">
                             PLAYERS
                         </TextBlock>
-                        <controls:TriviaTextBox Grid.Row="4"
-                                                Grid.Column="2">
-                            <TextBox>10</TextBox>
-                        </controls:TriviaTextBox>
+                        <TextBlock Grid.Row="4"
+                                   Grid.Column="2">
+                            10
+                        </TextBlock>
                     </Grid>
                     
 
                     <Grid Grid.Row="2"
-                          ColumnDefinitions="Auto, 5 *"
-                          Margin="50 0"
-                          Height="65">
+                          ColumnDefinitions="Auto, 5, *"
+                          Margin="50 0">
                             
                         <Button Grid.Column="0"
                                 Command="{Binding NavigateBackCommand}"
@@ -166,7 +100,7 @@
                                 CornerRadius="5"
                                 Background="#b5253d"
                                 ClipToBounds="False"
-                                Padding="5">
+                                Padding="10">
                                 
                             <Button.Styles>
                                 <Style Selector="Button /template/ ContentPresenter">
@@ -181,57 +115,42 @@
                                     <Setter Property="Background" Value="#b5253d" />
                                 </Style>
                             </Button.Styles>
-                                
-                            <Border BorderBrush="White"
-                                    BorderThickness="5"
-                                    CornerRadius="2">
-                                <TextBlock TextAlignment="Center"
-                                           FontSize="40"
-                                           VerticalAlignment="Center">
-                                    X
-                                </TextBlock>
-                            </Border>
-                                
+
+                            <Svg Path="avares://Trivia/Assets/Icons/logout.svg"
+                                 Css="* { fill: #FFFFFF; }"
+                                 VerticalAlignment="Center"
+                                 Height="40"/>
+
                         </Button>
                         
-                        <Button Grid.Column="2"
+                        <Border Grid.Column="2"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
                                 CornerRadius="5"
-                                Background="#4D264A"
-                                ClipToBounds="False">
-
-                            <Button.Styles>
-                                <Style Selector="Button /template/ ContentPresenter">
-                                    <Setter Property="BoxShadow" Value="0 3 4 #3f000000" />
-                                </Style>
-
-                                <Style Selector="Button:pointerover /template/ ContentPresenter">
-                                    <Setter Property="Background" Value="#5A2757" />
-                                </Style>
-
-                                <Style Selector="Button:pressed /template/ ContentPresenter">
-                                    <Setter Property="Background" Value="#50214E" />
-                                </Style>
-                            </Button.Styles>
+                                Background="#5d445b"
+                                ClipToBounds="False"
+                                BoxShadow="0 3 4 #3f000000">
                             
-                            <StackPanel Orientation="Horizontal"
-                                        HorizontalAlignment="Center"
+                            <Grid ColumnDefinitions="Auto, 10, *"
                                         VerticalAlignment="Center"
-                                        Spacing="10">
+                                        Margin="20 10">
                                 
-                                <Svg Path="avares://Trivia/Assets/Icons/flag.svg"
+                                <Svg Grid.Column="0"
+                                     Path="avares://Trivia/Assets/Icons/flag.svg"
                                      Css="* { fill: #FFFFFF; }"
                                      Height="40"/>
                                 
-                                <TextBlock TextAlignment="Center"
+                                <TextBlock Grid.Column="2"
+                                           TextAlignment="Center"
                                            VerticalAlignment="Center"
-                                           FontSize="40">
-                                    START
+                                           FontSize="40"
+                                           LineHeight="30"
+                                           TextWrapping="Wrap">
+                                    WAITING FOR HOST...
                                 </TextBlock>
-                            </StackPanel>
+                            </Grid>
                                 
-                        </Button>
+                        </Border>
                     </Grid>
 
                 </Grid>
