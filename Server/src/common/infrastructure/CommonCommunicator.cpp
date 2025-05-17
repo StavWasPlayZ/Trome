@@ -328,8 +328,11 @@ void CommonCommunicator::_clientCleanerThreadFunc()
 	
 	while (this->_running)
 	{
-		// Waits for _enqueueDisconnectClient to be called
-		this->_disconnectedClientConditionalVariable.wait(lock);
+	    if (this->_disconnectingClients.empty())
+	    {
+		    // Wait for _enqueueDisconnectClient to be called
+		    this->_disconnectedClientConditionalVariable.wait(lock);
+	    }
 
 		_freeDisconnectedClients();
 	}
