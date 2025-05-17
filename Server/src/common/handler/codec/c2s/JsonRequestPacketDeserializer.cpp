@@ -37,12 +37,12 @@ GetRoomsRequest JsonRequestPacketDeserializer::deserializeGetRoomsRequest(const 
 
 GetPlayersInRoomRequest JsonRequestPacketDeserializer::deserializeGetPlayersInRoomRequest(const nlohmann::json &data)
 {
-    return GetPlayersInRoomRequest(toUL(data.at("roomID")));
+    return GetPlayersInRoomRequest(toUL(data.at("room_id")));
 }
 
 JoinRoomRequest JsonRequestPacketDeserializer::deserializeJoinRoomRequest(const nlohmann::json &data)
 {
-    return JoinRoomRequest(toUL(data.at("roomID")));
+    return JoinRoomRequest(toUL(data.at("room_id")));
 }
 
 GetHighScoresRequest JsonRequestPacketDeserializer::deserializeGetHighScoresRequest(const nlohmann::json &)
@@ -58,10 +58,10 @@ GetPersonalStatisticsRequest JsonRequestPacketDeserializer::deserializeGetPerson
 CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(const nlohmann::json &data)
 {
     return CreateRoomRequest(
-		data.at("roomName"),
-		data.at("maxPlayers"),
-		data.at("questionCount"),
-		data.at("answerTime")
+		data.at("room_name"),
+		data.at("max_players"),
+		data.at("question_count"),
+		data.at("answer_timeout")
 	);
 }
 

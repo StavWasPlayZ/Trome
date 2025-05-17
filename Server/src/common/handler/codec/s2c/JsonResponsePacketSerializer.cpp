@@ -127,7 +127,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetHighScoresRespo
         });
     }
 
-    data["highScores"] = response.stats;
+    data["high_scores"] = response.stats;
 
     return serializeJsonToProtocol(response.id, data);
 }
@@ -143,11 +143,11 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetPersonalStatist
     stats["points"] = response.stats.points;
     stats["games_played"] = response.stats.gamesPlayed;
     stats["questions_answered"] = response.stats.questionsAnswered;
-    stats["questions_answered_correct"] = response.stats.questionsAnsweredCorrect;
-    stats["time_on_questions_overall"] = response.stats.timeOnQuestionsOverall;
-    stats["time_per_questions_avg"] = response.stats.timePerQuestionsAvg;
+    stats["questions_answered_correctly"] = response.stats.questionsAnsweredCorrect;
+    stats["time_on_question_overall"] = response.stats.timeOnQuestionsOverall;
+    stats["time_on_questions_avg"] = response.stats.timePerQuestionsAvg;
 
-    data["personalStats"] = stats;
+    data["stats"] = stats;
 
     return serializeJsonToProtocol(response.id, data);
 }

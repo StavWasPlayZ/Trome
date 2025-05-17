@@ -1,0 +1,44 @@
+<!--
+Adds an underline to the child content.
+Added because the default underline for the native font is broken. 
+-->
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:Trivia.Controls">
+    <Design.PreviewWith>
+        <controls:Underlined Padding="0 0 0 10">
+            <TextBlock
+                FontSize="30"
+                Foreground="Black">Username</TextBlock>
+        </controls:Underlined>
+    </Design.PreviewWith>
+
+    <Style Selector="controls|Underlined">
+        <!-- Set Defaults -->
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="UnderlineThickness" Value="2" />
+
+        <Setter Property="Template">
+            <ControlTemplate>
+                <StackPanel VerticalAlignment="Center"
+                            Spacing="-3">
+                    
+                    <!-- ReSharper disable once InconsistentNaming -->
+                    <ContentPresenter x:Name="PART_ContentPresenter"
+                                      Content="{TemplateBinding Content}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                    
+                    <Canvas
+                        Height="2">
+                        <Line
+                            StartPoint="0, 0"
+                            EndPoint="1000, 0"
+                            StrokeThickness="{TemplateBinding UnderlineThickness}"
+                            Stroke="{TemplateBinding Foreground}"/>
+                    </Canvas>
+                    
+                </StackPanel>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

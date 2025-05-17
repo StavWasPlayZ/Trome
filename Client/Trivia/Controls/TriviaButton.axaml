@@ -1,0 +1,126 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:Trivia.Controls">
+    <Design.PreviewWith>
+        <StackPanel>
+            <controls:TriviaButton
+                IconSvgPath="avares://Trivia/Assets/Icons/play_arrow.svg"/>
+            
+            <controls:TriviaButton
+                IconSvgPath="avares://Trivia/Assets/Icons/play_arrow.svg"
+                IconColor="#ffb0b0"/>
+            
+            <controls:TriviaButton HorizontalAlignment="Left"
+                                   IsIconButton="True"
+                                   IconSvgPath="avares://Trivia/Assets/Icons/settings.svg"/>
+        </StackPanel>
+    </Design.PreviewWith>
+
+    <Style Selector="controls|TriviaButton">
+        <!-- Set Defaults -->
+        <Setter Property="ClipToBounds" Value="False" />
+
+        <Setter Property="Text" Value="TEXT" />
+        <Setter Property="Height" Value="60" />
+        <Setter Property="BorderBrush" Value="White" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="Background" Value="#211c2c" />
+        <Setter Property="CornerRadius" Value="5" />
+
+        <Setter Property="IsIconButton" Value="False" />
+        <Setter Property="IconColor" Value="White" />
+
+        <Style Selector="^[IsIconButton=False]">
+            <Setter Property="IconMargin" Value="0 13 0 13" />
+            <Setter Property="Padding" Value="15 0 15 0" />
+        </Style>
+        <Style Selector="^[IsIconButton=True]">
+            <Setter Property="IconMargin" Value="0 10 0 10" />
+            <Setter Property="Padding" Value="10 0 10 0" />
+        </Style>
+        
+        
+        <Setter Property="BorderBrushSelected" Value="#A33E75" />
+        <Setter Property="BackgroundSelected" Value="#1E132C" />
+        <Setter Property="BorderThicknessSelected" Value="4" />
+        
+        <Setter Property="BorderBrushPressed" Value="#682B49" />
+
+        <!-- <Setter Property="BorderBrushSelected" Value="#1E132C"></Setter> -->
+        <!-- <Setter Property="BackgroundSelected" Value="#ae2c4d"></Setter> -->
+        <!-- <Setter Property="BorderThicknessSelected" Value="6"></Setter> -->
+        
+        
+        <Style Selector="^ /template/ Button:pointerover">
+            
+            <Style Selector="^ /template/ ContentPresenter">
+                <Setter Property="Background" Value="{Binding $parent[controls:TriviaButton].BackgroundSelected}"/>
+                <Setter Property="BorderBrush" Value="{Binding $parent[controls:TriviaButton].BorderBrushSelected}"/>
+                <Setter Property="BorderThickness" Value="{Binding $parent[controls:TriviaButton].BorderThicknessSelected}"/>
+                <Setter Property="BoxShadow" Value="0 6 7 0 #5f000000"/>
+            </Style>
+            
+            <!-- Remove Buttons' transitions, make it choppy on purpose. -->
+            
+            <Setter Property="Transitions">
+                <Transitions/>
+            </Setter>
+            
+        </Style>
+        
+        <Style Selector="^ /template/ Button:pressed">
+            
+            <Style Selector="^ /template/ ContentPresenter">
+                <Setter Property="BorderBrush" Value="{Binding $parent[controls:TriviaButton].BorderBrushPressed}"/>
+            </Style>
+            
+        </Style>
+        
+        
+        <!-- Actual button -->
+        
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Button
+                    Command="{TemplateBinding Command}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="{TemplateBinding CornerRadius}"
+                    Background="{TemplateBinding Background}"
+                    Padding="{TemplateBinding Padding}"
+                    Height="{TemplateBinding Height}"
+                    HorizontalAlignment="Stretch"
+                    ClipToBounds="False">
+
+                    <Grid ColumnDefinitions="Auto, *">
+                        <Svg Grid.Column="0"
+                             Path="{TemplateBinding IconSvgPath}"
+                             Margin="{TemplateBinding IconMargin}">
+                                        
+                            <Svg.Css>
+                                <MultiBinding StringFormat="* {{ fill: {0}; }}">
+                                    <Binding Path="IconColor"
+                                             RelativeSource="{RelativeSource TemplatedParent}"
+                                             Converter="{StaticResource SolidColorBrushToHexStrConverter}"/>
+                                </MultiBinding>
+                            </Svg.Css>
+                                        
+                        </Svg>
+
+                        <TextBlock Grid.Column="1"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Text="{TemplateBinding Text}"
+                                   TextAlignment="Center"
+                                           
+                                   IsVisible="{
+                                       TemplateBinding IsIconButton,
+                                       Converter={x:Static BoolConverters.Not}
+                                   }"/>
+                    </Grid>
+
+                </Button>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>
