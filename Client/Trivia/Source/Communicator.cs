@@ -22,6 +22,9 @@ public class Communicator : IDisposable
     private readonly Queue<ProtocolRequest> _outgoingRequests = [];
     private readonly object _outgoingRequestsCv = new();
     
+    /// <summary>
+    /// Use this to subscribe to new server packets recieved.
+    /// </summary>
     public event ProtocolResponseHandler? ProtocolResponseReceived;
 
 
@@ -32,6 +35,10 @@ public class Communicator : IDisposable
     private Communicator() { }
 
 
+    /// <summary>
+    /// Sends the provided request to the server.
+    /// </summary>
+    /// <param name="request">The request to send to the server</param>
     public void SendRequest(ProtocolRequest request)
     {
         lock (_outgoingRequests)
