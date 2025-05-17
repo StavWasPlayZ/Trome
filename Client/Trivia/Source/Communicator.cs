@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Trivia.Codec.C2S.Request;
+using Trivia.Codec.S2C;
+using Trivia.Codec.S2C.Response;
 
 namespace Trivia;
 
@@ -15,14 +17,32 @@ public class Communicator : IDisposable
     public static Communicator Instance { get; } = new();
     
     private bool _disposed;
+    
+    
+    private readonly Queue<ProtocolRequest> _outgoingRequests = [];
+    private readonly object _outgoingRequestsCv = new();
+    
+    public event ProtocolResponseHandler? ProtocolResponseReceived;
 
 
     public bool IsConnected => _clientSocket?.Connected ?? false;
 
     private TcpClient? _clientSocket;
     
-    private Communicator()
+    private Communicator() { }
+
+
+    public void SendRequest(ProtocolRequest request)
     {
+        lock (_outgoingRequests)
+        {
+            _outgoingRequests.Enqueue(request);
+        }
+        
+        lock (_outgoingRequestsCv)
+        {
+            Monitor.Pulse(_outgoingRequestsCv);
+        }
     }
     
 
@@ -39,6 +59,21 @@ public class Communicator : IDisposable
         
         new Thread(ListenThread).Start();
         new Thread(WriterThread).Start();
+        
+        //NOTE: Test
+        // SendRequest(new SignupRequest(
+        //     "c# user",
+        //     "1234",
+        //     "email@example.com",
+        //     "0522222222",
+        //     null,
+        //     "17/06/2008"
+        // ));
+        //
+        // ProtocolResponseReceived += response =>
+        // {
+        //     return;
+        // };
     }
 
     private void ListenThread()
@@ -51,29 +86,42 @@ public class Communicator : IDisposable
             if (read == 0)
                 return;
             
-            //TODO: Parse and delegate
-            Console.WriteLine("Received: " + Encoding.UTF8.GetString(buffer, 0, read));
+            var parsed = RequestPacketDeserializer.Deserialize(buffer);
+
+            if (parsed == null)
+            {
+                Console.Error.WriteLine($"WARNING: Received unknown packet {buffer[0]}.");
+                continue;
+            }
+            
+            ProtocolResponseReceived?.Invoke(parsed);
         }
     }
 
     private void WriterThread()
     {
-        //TODO: Actually perform writer thread stuff
+        while (IsConnected)
+        {
+            ProtocolRequest request;
+            
+            lock (_outgoingRequestsCv)
+            {
+                while (_outgoingRequests.Count == 0)
+                {
+                    Monitor.Wait(_outgoingRequestsCv);
 
-        var signupRequest = new SignupRequest(
-            "c# user",
-            "1234",
-            "email@example.com",
-            "0522222222",
-            null,
-            "17/06/2008"
-        );
-
-        var rawRequest = signupRequest.Serialize();
-
-        _clientSocket!.GetStream().Write(rawRequest, 0, rawRequest.Length);
+                    if (!IsConnected)
+                        return;
+                }
+                
+                request = _outgoingRequests.Dequeue();
+            }
+            
+            var rawRequest = request.Serialize();
+            _clientSocket!.GetStream().Write(rawRequest, 0, rawRequest.Length);
+        }
     }
-
+    
     
     public void Disconnect()
     {
@@ -89,6 +137,13 @@ public class Communicator : IDisposable
         
         Disconnect();
 
+        lock (_outgoingRequestsCv)
+        {
+            Monitor.Pulse(_outgoingRequestsCv);
+        }
+
         GC.SuppressFinalize(this);
     }
 }
+
+public delegate void ProtocolResponseHandler(IProtocolResponse request);

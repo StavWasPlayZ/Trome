@@ -9,7 +9,7 @@ public enum ResponseCode : byte
     JoinRoom,
     CreateRoom,
     GetRooms,
-    GetPlayerInRoom,
+    GetPlayersInRoom,
     GetHighScores,
     GetPersonalStatistics
 }
