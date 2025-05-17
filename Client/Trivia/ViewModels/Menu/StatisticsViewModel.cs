@@ -1,6 +1,6 @@
 using System.Reactive;
 using ReactiveUI;
-using Trivia.Controls.Popup;
+using Trivia.Controls.Popups;
 
 namespace Trivia.ViewModels.Menu;
 
@@ -12,6 +12,9 @@ public class StatisticsViewModel(IScreen hostScreen) : PageViewModel(hostScreen)
         if (windowModel == null)
             return;
         
-        windowModel.PopupContents = new StatsPopup();
+        windowModel.PopupContents = new StatsPopup
+        {
+            CloseCommand = windowModel.CloseDialogCommand
+        };
     });
 }

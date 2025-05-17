@@ -63,4 +63,8 @@
         <SubType>Code</SubType>
       </Compile>
     </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Controls\Popups\StatsPopup.axaml" />
+    </ItemGroup>
 </Project>
