@@ -38,8 +38,14 @@
                IsVisible="False"
                PointerPressed="ScreenDarkener_OnPointerPressed"/>
         
-        <ContentControl Content="{Binding PopupContents}"
-                        PropertyChanged="PopupControl_OnPropertyChanged"/>
+        <TransitioningContentControl Content="{Binding PopupContents}"
+                                     PropertyChanged="PopupControl_OnPropertyChanged">
+            
+            <TransitioningContentControl.PageTransition>
+                <CrossFade Duration="0:0:0.15"/>
+            </TransitioningContentControl.PageTransition>
+            
+        </TransitioningContentControl>
     </Panel>
     
     
