@@ -1,7 +1,9 @@
 using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 using System.Threading.Tasks;
+using Trivia.Codec.C2S.Request;
 
 namespace Trivia;
 
@@ -33,6 +35,35 @@ public class Communicator : IDisposable
         await _clientSocket.ConnectAsync(endpoint.Address, endpoint.Port);
         
         Console.WriteLine("Connection successfully established.");
+        
+        new Thread(ListenThread).Start();
+        new Thread(WriterThread).Start();
+    }
+
+    private void ListenThread()
+    {
+        while (IsConnected)
+        {
+            //TODO: Parse and delegate
+        }
+    }
+
+    private void WriterThread()
+    {
+        //TODO: Actually perform writer thread stuff
+
+        var signupRequest = new SignupRequest(
+            "c# user",
+            "1234",
+            "email@example.com",
+            "0522222222",
+            null,
+            "17/06/2008"
+        );
+
+        var rawRequest = signupRequest.Serialize();
+
+        _clientSocket!.GetStream().Write(rawRequest, 0, rawRequest.Length);
     }
 
     
