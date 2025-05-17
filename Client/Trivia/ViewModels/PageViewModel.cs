@@ -13,22 +13,20 @@ public abstract class PageViewModel(IScreen hostScreen) : ViewModelBase, IRoutab
     
     
     public ReactiveCommand<Unit, IRoutableViewModel>? NavigateBackCommand { get; } =
-        GetMainWindowViewModel()?.Router.NavigateBack;
-    
+        MainWindowViewModel?.Router.NavigateBack;
 
-    protected static MainWindowViewModel? GetMainWindowViewModel()
-    {
-        return (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)
+
+    protected static MainWindowViewModel? MainWindowViewModel =>
+        (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)
             ?.MainWindow?.DataContext as MainWindowViewModel;
-    }
-    
+
     protected static IObservable<IRoutableViewModel>? NavigateTo(PageViewModel pageViewModel)
     {
-        return GetMainWindowViewModel()?.Router.Navigate.Execute(pageViewModel);
+        return MainWindowViewModel?.Router.Navigate.Execute(pageViewModel);
     }
     protected static IObservable<IRoutableViewModel>? NavigateAndReset(PageViewModel pageViewModel)
     {
-        return GetMainWindowViewModel()?.Router.Navigate.Execute(pageViewModel);
+        return MainWindowViewModel?.Router.Navigate.Execute(pageViewModel);
     }
 
     protected static ReactiveCommand<Unit, IRoutableViewModel> NavigateReactiveCommand(Func<PageViewModel> pageViewModel)

@@ -8,13 +8,12 @@ public class StatisticsViewModel(IScreen hostScreen) : PageViewModel(hostScreen)
 {
     public ReactiveCommand<Unit, Unit>? ShowStatsPopup { get; } = ReactiveCommand.Create(() =>
     {
-        var windowModel = GetMainWindowViewModel();
-        if (windowModel == null)
+        if (MainWindowViewModel == null)
             return;
         
-        windowModel.PopupContents = new StatsPopup
+        MainWindowViewModel.PopupContents = new StatsPopup
         {
-            CloseCommand = windowModel.CloseDialogCommand
+            CloseCommand = MainWindowViewModel.CloseDialogCommand
         };
     });
 }

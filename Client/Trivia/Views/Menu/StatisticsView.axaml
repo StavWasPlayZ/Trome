@@ -44,12 +44,6 @@
                               Margin="7"
                               Height="184">
                             
-                            <!-- <Grid.Styles> -->
-                            <!--     <Style Selector="controls|TriviaUsersList"> -->
-                            <!--         <Setter Property="Margin" Value="3"></Setter> -->
-                            <!--     </Style> -->
-                            <!-- </Grid.Styles> -->
-                            
                             <controls:TriviaUsersList Grid.Column="0"
                                                       Background="#ffddbe">
                                 <ListBox SelectionChanged="SelectingItemsControl_OnSelectionChanged">
