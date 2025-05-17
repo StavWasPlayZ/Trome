@@ -67,6 +67,7 @@
                                     </StackPanel>
                                     
                                     <Button Grid.Column="2"
+                                            Command="{Binding #JoinMenuViewControl.((vmmenu:JoinMenuViewModel)DataContext).JoinRoomButtonCommand}"
                                             HorizontalAlignment="Right"
                                             VerticalAlignment="Stretch"
                                             Background="#f9be82"
@@ -236,6 +237,7 @@
                                 </StackPanel>
                                 
                                 <Button Grid.Row="2"
+                                        Command="{Binding JoinRoomButtonCommand}"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Stretch"
                                         Background="#f9be82"
