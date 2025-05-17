@@ -9,4 +9,8 @@ public class JoinMenuViewModel(IScreen hostScreen) : PageViewModel(hostScreen)
     public ReactiveCommand<Unit, IRoutableViewModel> NewRoomButtonCommand { get; } = NavigateReactiveCommand(
         () => new CreateRoomViewModel(hostScreen)
     );
+    
+    public ReactiveCommand<Unit, IRoutableViewModel> JoinRoomButtonCommand { get; } = NavigateReactiveCommand(
+        () => new JoinedRoomViewModel(hostScreen)
+    );
 }

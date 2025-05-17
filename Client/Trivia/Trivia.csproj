@@ -62,6 +62,10 @@
         <DependentUpon>StatisticsView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Views\Game\JoinedRoomView.axaml.cs">
+        <DependentUpon>JoinedRoomView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
