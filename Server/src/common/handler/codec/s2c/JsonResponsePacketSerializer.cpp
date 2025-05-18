@@ -184,6 +184,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetRoomStateRespon
     const Room& room = response.room;
     const RoomData& roomData = room.getData();
 
+    data["game_status"] = roomData.status;
     data["questions_count"] = roomData.questionsCount;
     data["secs_per_question"] = roomData.secsPerQuestion;
     data["players"] = serializePlayersToJson(room.getAllUsers());
