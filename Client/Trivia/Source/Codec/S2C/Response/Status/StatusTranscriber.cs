@@ -14,7 +14,7 @@ public static class StatusTranscriber
         [LoginStatus.FailedAlreadyLoggedIn] = _ =>
             "User is already logged in. Log out of the other game session and try again.",
         [LoginStatus.FailedInternalError] = _ =>
-            "Internal Error",
+            "The server faulted",
         
         
         [SignupStatus.FailedInvalidArgument] = response =>
@@ -22,7 +22,7 @@ public static class StatusTranscriber
         [SignupStatus.FailedUsernameTaken] = _ =>
             "Username Taken",
         [SignupStatus.FailedInternalError] = _ =>
-            "Internal Error",
+            "The server faulted",
         
         
         [ErrorStatus.Generic] = response =>
