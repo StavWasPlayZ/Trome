@@ -5,15 +5,19 @@ namespace Trivia.Codec.S2C.Response.Status;
 
 public static class StatusTranscriber
 {
-    private static readonly Dictionary<object, string> transcribtions = new()
+    private static readonly Dictionary<object, Func<IProtocolResponse, string>> Transcriptions = new()
     {
-        [1] = "Success",
+        [1] = _ => "Success",
 
-        [LoginStatus.FailedInvalidCredentials] = "Invalid username or password. Please try again."
+        [LoginStatus.FailedInvalidCredentials] = _ =>
+            "Invalid username or password. Please try again.",
+        
+        [SignupStatus.FailedInvalidArgument] = response =>
+            $"Invalid {(response as SignupResponse).Context} format"
     };
 
     public static string Transcribe<TStatus>(ProtocolResponse<TStatus> response)
     {
-        return transcribtions[response.Status];
+        return Transcriptions[response.Status](response).ToUpper();
     }
 }

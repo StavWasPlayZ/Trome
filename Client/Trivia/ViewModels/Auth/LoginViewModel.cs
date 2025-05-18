@@ -5,7 +5,6 @@ using ReactiveUI;
 using Trivia.Codec.C2S.Request;
 using Trivia.Codec.S2C.Response;
 using Trivia.Codec.S2C.Response.Status;
-using Trivia.ViewModels.Menu;
 
 namespace Trivia.ViewModels.Auth;
 
@@ -40,15 +39,7 @@ public class LoginViewModel : AuthViewModel
 
     private void HandleLoginResponse(LoginResponse response)
     {
-        if (response.Status != LoginStatus.Success)
-        {
-            ErrorMessage = StatusTranscriber.Transcribe(response);
-            return;
-        }
-        
-        //TODO: Assign global user
-        
-        NavigateAndReset(new MainMenuViewModel(HostScreen));
+        HandleAuthResponse(response, response.Status == LoginStatus.Success);
     }
 
 

@@ -23,13 +23,6 @@
             </Style>
         </Style>
         
-        <Style Selector="^ TextBlock.warning-display">
-            <Setter Property="Foreground" Value="Red"/>
-            <Setter Property="TextAlignment" Value="Center"/>
-            <Setter Property="FontSize" Value="30"/>
-            <Setter Property="TextWrapping" Value="Wrap"/>
-        </Style>
-        
         <Style Selector="^ > StackPanel.required-field">
             <Setter Property="Orientation" Value="Horizontal"/>
                             
@@ -41,6 +34,13 @@
             </Style>
         </Style>
         
+    </Style>
+    
+    <Style Selector="TextBlock.warning-display">
+        <Setter Property="Foreground" Value="Red"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="30"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
     </Style>
     
 </Styles>

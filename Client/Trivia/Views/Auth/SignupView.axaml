@@ -137,7 +137,7 @@
                            Text="{Binding ErrorMessage}"/>
 
                 <StackPanel Spacing="5">
-                    <controls:TriviaButton Command="{Binding AuthenticateCommand}"
+                    <controls:TriviaButton Command="{Binding SignupCommand}"
                                            HorizontalAlignment="Center"
                                            Text="SIGNUP"
                                            Background="#362034"

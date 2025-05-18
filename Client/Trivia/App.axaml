@@ -50,7 +50,7 @@
         <StyleInclude Source="avares://Trivia/Controls/Popups/StatsPopup.axaml"/>
         
         <StyleInclude Source="avares://Trivia/Controls/Styles/TriviaListStyle.axaml"/>
-        <StyleInclude Source="avares://Trivia/Controls/Styles/TriviaInputFieldsContainer.axaml"/>
+        <StyleInclude Source="avares://Trivia/Controls/Styles/TriviaInputFieldsContainerStyle.axaml"/>
 
     </Application.Styles>
              

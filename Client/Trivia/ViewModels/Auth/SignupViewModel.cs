@@ -2,17 +2,39 @@
 using System.ComponentModel.DataAnnotations;
 using System.Reactive;
 using ReactiveUI;
+using Trivia.Codec.C2S.Request;
+using Trivia.Codec.S2C.Response;
+using Trivia.Codec.S2C.Response.Status;
 
 namespace Trivia.ViewModels.Auth;
 
 public class SignupViewModel : AuthViewModel
 {
     public ReactiveCommand<Unit, IRoutableViewModel> ToLoginCommand { get; }
+    public ReactiveCommand<Unit, Unit> SignupCommand { get; }
     
     public SignupViewModel(IScreen hostScreen) : base(hostScreen)
     {
         ToLoginCommand = NavigateAndResetReactiveCommand(
             () => new LoginViewModel(hostScreen)
+        );
+        
+        SignupCommand = ReactiveCommand.CreateFromTask(
+            async () =>
+            {
+                HandleSignupResponse(
+                    await Comm.SendRequestAwaitResponse<SignupResponse>(new SignupRequest(
+                        Username!,
+                        Password!,
+                        Email!,
+                        Phone!.Replace(" ", ""),
+                        //TODO: Re-add Address and Birthdate fields; Add scroller in View.
+                        Address,
+                        "17/06/2008"
+                    ))
+                );
+            },
+            this.WhenAnyValue(vm => vm.MayAuthenticate)
         );
 
         this
@@ -25,6 +47,11 @@ public class SignupViewModel : AuthViewModel
                 vm => vm.Address
             )
             .Subscribe(_ => UpdateMayAuthenticate());
+    }
+
+    private void HandleSignupResponse(SignupResponse response)
+    {
+        HandleAuthResponse(response, response.Status == SignupStatus.Success);
     }
 
 

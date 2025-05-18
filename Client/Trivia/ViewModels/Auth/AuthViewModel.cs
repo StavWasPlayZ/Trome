@@ -1,20 +1,24 @@
 using System;
-using System.Reactive;
 using ReactiveUI;
+using Trivia.Codec.S2C.Response;
+using Trivia.Codec.S2C.Response.Status;
 using Trivia.ViewModels.Menu;
 
 namespace Trivia.ViewModels.Auth;
 
-public abstract class AuthViewModel : PageViewModel
+public abstract class AuthViewModel(IScreen hostScreen) : PageViewModel(hostScreen)
 {
-    public ReactiveCommand<Unit, IRoutableViewModel> AuthenticateCommand { get; }
-    
-    protected AuthViewModel(IScreen hostScreen) : base(hostScreen)
+    protected void HandleAuthResponse<TStatus>(RegistrationResponse<TStatus> response, bool succeed) where TStatus : Enum
     {
-        AuthenticateCommand = ReactiveCommand.CreateFromObservable(
-            () => NavigateTo(new MainMenuViewModel(hostScreen))!,
-            this.WhenAnyValue(vm => vm.MayAuthenticate)
-        );
+        if (!succeed)
+        {
+            ErrorMessage = StatusTranscriber.Transcribe(response);
+            return;
+        }
+        
+        //TODO: Assign global user
+        
+        NavigateAndReset(new MainMenuViewModel(HostScreen));
     }
     
     
