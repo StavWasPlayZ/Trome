@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -102,9 +103,20 @@ public class Communicator : IDisposable
         while (IsConnected)
         {
             var buffer = new byte[1024];
-            var read = _clientSocket!.GetStream().Read(buffer, 0, buffer.Length);
 
-            if (read == 0)
+            int read;
+            
+            try
+            {
+                read = _clientSocket!.GetStream().Read(buffer, 0, buffer.Length);
+            }
+            catch (IOException)
+            {
+                Console.Error.WriteLine("IO Exception occured; Assuming forced disconnection");
+                return;
+            }
+
+            if (read == 0 || !IsConnected)
                 return;
             
             var parsed = RequestPacketDeserializer.Deserialize(buffer);
