@@ -25,14 +25,14 @@ SignupResponse LoginManager::signup(const RequestInfo &context, const SignupRequ
     }
 	catch (const std::runtime_error& e)
 	{
-	    // addNewUser will return runtime_error when adding a user with the same username bc its UNIQUE.
+	    // addNewUser will return runtime_error when adding a user with the same username because it's UNIQUE.
 
 		//TODO: actually check what the error is about, and act accordingly.
 		// Only throw this if relevant, otherwise generic/internal error.
 		return SignupResponse(SignupStatus::FAILED_USERNAME_TAKEN);
 	}
 
-	const LoginResponse loginRes = this->login(context, request);
+	const LoginResponse loginRes = this->login(context.client, request);
 
 	// Simply convert the login response to a signup one
 	if (loginRes.status == LoginStatus::SUCCESS)
@@ -44,7 +44,7 @@ SignupResponse LoginManager::signup(const RequestInfo &context, const SignupRequ
 }
 
 
-LoginResponse LoginManager::login(const RequestInfo &context, const LoginRequest &request)
+LoginResponse LoginManager::login(const Client &client, const LoginRequest &request)
 {
 	const unsigned int userId = this->m_database.queryIdOfUser(request.username, request.password);
 
@@ -60,30 +60,30 @@ LoginResponse LoginManager::login(const RequestInfo &context, const LoginRequest
 
 	const auto result = this->m_loggedUsers.emplace(
 	    request.username,
-        LoggedUser(userId, request.username, &context.client)
+        LoggedUser(userId, request.username, &client)
 	);
 
-    this->clientToLoggedUser.emplace(&context.client, &result.first->second);
+    this->m_clientToLoggedUser.emplace(&client, &result.first->second);
 
 	return LoginResponse(LoginStatus::SUCCESS, userId);
 }
 
-LogoutResponse LoginManager::logout(const RequestInfo& context, const std::string &username)
+LogoutResponse LoginManager::logout(const Client &client)
 {
-    const auto it = this->m_loggedUsers.find(username);
+    const auto it = this->m_clientToLoggedUser.find(&client);
 
-    if (it == m_loggedUsers.end()) // if found
+    if (it == m_clientToLoggedUser.end()) // if found
     {
         return LogoutResponse(LogoutStatus::FAILED_NOT_LOGGED_IN);
     }
 
-    this->m_loggedUsers.erase(it);
-    this->clientToLoggedUser.erase(&context.client);
+    this->m_loggedUsers.erase(it->second->getUsername());
+    this->m_clientToLoggedUser.erase(&client);
 
     return LogoutResponse(LogoutStatus::SUCCESS);
 }
 
 LoggedUser &LoginManager::getUserByClient(const Client &client) const
 {
-    return *this->clientToLoggedUser.at(&client);
+    return *this->m_clientToLoggedUser.at(&client);
 }
