@@ -26,7 +26,7 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& info, const 
 
 RequestResult LoginRequestHandler::login(const RequestInfo& context, const LoginRequest& request) const
 {
-    const LoginResponse response = this->m_handlerFactory.getLoginManager().login(context, request);
+    const LoginResponse response = this->m_handlerFactory.getLoginManager().login(context.client, request);
 
     if (response.status != LoginStatus::SUCCESS)
     {

@@ -24,11 +24,13 @@ public:
 	Client(SOCKET socket, const IRequestHandler* requestHandler);
 	~Client();
 
-	const SOCKET socket;
+    const SOCKET socket;
 	const IRequestHandler* requestHandler;
 
     const std::future<void>& getThread() const;
     void setAndStartThread(const std::function<void()>& threadFunc);
+
+    void handleDisconnecting() const;
 
 private:
 	const std::future<void>* thread;

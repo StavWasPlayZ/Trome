@@ -21,12 +21,12 @@ public:
 	/**
 	 * Registers the provided user as logged in, provided their credentials match.
 	 */
-	LoginResponse login(const RequestInfo& context, const LoginRequest& request);
+	LoginResponse login(const Client &client, const LoginRequest &request);
 
 	/**
 	 * Unregisters the user as being signed in.
 	 */
-	LogoutResponse logout(const RequestInfo& context, const std::string& username);
+	LogoutResponse logout(const Client &client);
 
     LoggedUser& getUserByClient(const Client& client) const;
 
@@ -40,5 +40,5 @@ private:
 	 */
 	std::unordered_map<std::string, LoggedUser> m_loggedUsers;
 
-    std::unordered_map<const Client*, LoggedUser*> clientToLoggedUser;
+    std::unordered_map<const Client*, LoggedUser*> m_clientToLoggedUser;
 };

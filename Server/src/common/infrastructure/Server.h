@@ -23,6 +23,10 @@ public:
 
 	bool isRunning() const;
 
+
+    LoginManager& getLoginManager();
+
+
 private:
     Server();
 

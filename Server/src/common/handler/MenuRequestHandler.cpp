@@ -169,7 +169,7 @@ RequestResult MenuRequestHandler::logout(const RequestInfo &info, const Protocol
 {
     LoginManager &uManager = m_handlerFactory.getLoginManager();
 
-    uManager.logout(info, getUserByInfo(info).getUsername());
+    uManager.logout(info.client);
 
     return RequestResult(
         JsonResponsePacketSerializer::serializeResponse(

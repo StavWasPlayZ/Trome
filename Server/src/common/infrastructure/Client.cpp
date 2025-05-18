@@ -1,5 +1,7 @@
 #include "Client.h"
 
+#include "Server.h"
+
 Client::Client(const SOCKET socket, const IRequestHandler *const requestHandler) :
     socket(socket),
     requestHandler(requestHandler),
@@ -25,4 +27,10 @@ void Client::setAndStartThread(const std::function<void()> &threadFunc)
     }
 
     this->thread = new std::future(std::async(std::launch::async, threadFunc));
+}
+
+
+void Client::handleDisconnecting() const
+{
+    Server::getInstance().getLoginManager().logout(*this);
 }
