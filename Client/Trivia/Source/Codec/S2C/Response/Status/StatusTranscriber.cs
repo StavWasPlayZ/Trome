@@ -14,8 +14,17 @@ public static class StatusTranscriber
         [LoginStatus.FailedAlreadyLoggedIn] = _ =>
             "User is already logged in. Log out of the other game session and try again.",
         
+        
         [SignupStatus.FailedInvalidArgument] = response =>
-            $"Invalid {(response as SignupResponse)!.Context} format"
+            $"Invalid {(response as SignupResponse)!.Context} format",
+        
+        
+        [ErrorStatus.Generic] = response =>
+            $"Error: {(response as ErrorResponse)!.Message}",
+        [ErrorStatus.IllegalRequest] = response =>
+            $"Error: Illegal request: {(response as ErrorResponse)!.Message}",
+        [ErrorStatus.ServerUnimplemented] = _ =>
+            "Error: Unimplemented",
     };
 
     public static string Transcribe<TStatus>(ProtocolResponse<TStatus> response)
