@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Reactive;
-using System.Threading.Tasks;
 using ReactiveUI;
 using Trivia.Codec.C2S.Request;
 using Trivia.Codec.S2C.Response;
@@ -24,7 +23,9 @@ public class LoginViewModel : AuthViewModel
         LoginCommand = ReactiveCommand.CreateFromTask(
             async () =>
             {
-                await DoSignIn();
+                HandleLoginInResponse(
+                    await Comm.SendRequestAwaitResponse<LoginResponse>(new LoginRequest(Username, Password))
+                );
             },
             this.WhenAnyValue(vm => vm.MayAuthenticate)
         );
@@ -35,28 +36,6 @@ public class LoginViewModel : AuthViewModel
                 vm => vm.Password
             )
             .Subscribe(_ => UpdateMayAuthenticate());
-    }
-
-    private async Task DoSignIn()
-    {
-        var task = new TaskCompletionSource();
-        
-        Comm.ProtocolResponseReceived += OnProtocolResponseReceived;
-        Comm.SendRequest(new LoginRequest(Username, Password));
-        
-        await task.Task;
-        return;
-
-        void OnProtocolResponseReceived(IProtocolResponse response)
-        {
-            if (response is not LoginResponse loginResponse)
-                return;
-            
-            HandleLoginInResponse(loginResponse);
-            
-            Comm.ProtocolResponseReceived -= OnProtocolResponseReceived;
-            task.TrySetResult();
-        }
     }
 
     private void HandleLoginInResponse(LoginResponse response)

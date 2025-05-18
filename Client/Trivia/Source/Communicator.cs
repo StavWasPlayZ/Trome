@@ -51,6 +51,25 @@ public class Communicator : IDisposable
         NotifyNewOutgoingRequest();
     }
 
+    public async Task<T> SendRequestAwaitResponse<T>(ProtocolRequest request) where T : IProtocolResponse
+    {
+        var task = new TaskCompletionSource<T>();
+        
+        ProtocolResponseReceived += OnProtocolResponseReceived;
+        SendRequest(request);
+        
+        return await task.Task;
+
+        void OnProtocolResponseReceived(IProtocolResponse response)
+        {
+            if (response is not T wantedResponse)
+                return;
+            
+            ProtocolResponseReceived -= OnProtocolResponseReceived;
+            task.TrySetResult(wantedResponse);
+        }
+    }
+
     /// <summary>
     /// Wakes up the Packet Writer thread to write
     /// any new entries of _outgoingRequests.
