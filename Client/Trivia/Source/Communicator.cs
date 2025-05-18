@@ -23,7 +23,7 @@ public class Communicator : IDisposable
     private readonly object _outgoingRequestsCv = new();
     
     /// <summary>
-    /// Use this to subscribe to new server packets recieved.
+    /// Use this to subscribe to new server packets received.
     /// </summary>
     public event ProtocolResponseHandler? ProtocolResponseReceived;
 
@@ -46,6 +46,15 @@ public class Communicator : IDisposable
             _outgoingRequests.Enqueue(request);
         }
         
+        NotifyNewOutgoingRequest();
+    }
+
+    /// <summary>
+    /// Wakes up the Packet Writer thread to write
+    /// any new entries of _outgoingRequests.
+    /// </summary>
+    private void NotifyNewOutgoingRequest()
+    {
         lock (_outgoingRequestsCv)
         {
             Monitor.Pulse(_outgoingRequestsCv);
@@ -66,23 +75,28 @@ public class Communicator : IDisposable
         
         new Thread(ListenThread).Start();
         new Thread(WriterThread).Start();
-        
-        //NOTE: Test
-        // SendRequest(new SignupRequest(
-        //     "c# user",
-        //     "1234",
-        //     "email@example.com",
-        //     "0522222222",
-        //     null,
-        //     "17/06/2008"
-        // ));
-        //
-        // ProtocolResponseReceived += response =>
-        // {
-        //     return;
-        // };
+
+        // TestCommunication();
     }
 
+    // private void TestCommunication()
+    // {
+    //     SendRequest(new SignupRequest(
+    //         "c# user",
+    //         "1234",
+    //         "email@example.com",
+    //         "0522222222",
+    //         null,
+    //         "17/06/2008"
+    //     ));
+    //     
+    //     ProtocolResponseReceived += response =>
+    //     {
+    //         return;
+    //     };
+    // }
+
+        
     private void ListenThread()
     {
         while (IsConnected)
@@ -143,11 +157,7 @@ public class Communicator : IDisposable
         _disposed = true;
         
         Disconnect();
-
-        lock (_outgoingRequestsCv)
-        {
-            Monitor.Pulse(_outgoingRequestsCv);
-        }
+        NotifyNewOutgoingRequest();
 
         GC.SuppressFinalize(this);
     }
