@@ -23,7 +23,7 @@
             <StackPanel Margin="50,40,50,10"
                         Spacing="20">
                 
-                <Grid RowDefinitions="55, 55, 55, 55, 55, 55"
+                <Grid RowDefinitions="55, 55, 55, 55, 55"
                       ColumnDefinitions="Auto, *"
                       Margin="10"
                       Classes="t-input-fields-container">
@@ -117,15 +117,18 @@
                                        Text="{Binding Phone}"/>
                         
                     </controls:TriviaTextBox>
+                   
+                    <!--NOTE: Address field is causing unecessary overflow. -->
+                    <!-- Too lazy to make it a scrollable. -->
                     
-                    <TextBlock Grid.Row="5"
-                               Grid.Column="0">
-                        ADDRESS
-                    </TextBlock>
-                    <controls:TriviaTextBox Grid.Row="5"
-                               Grid.Column="1">
-                        <TextBox Text="{Binding Address}"/>
-                    </controls:TriviaTextBox>
+                    <!-- <TextBlock Grid.Row="5" -->
+                    <!--            Grid.Column="0"> -->
+                    <!--     ADDRESS -->
+                    <!-- </TextBlock> -->
+                    <!-- <controls:TriviaTextBox Grid.Row="5" -->
+                    <!--            Grid.Column="1"> -->
+                    <!--     <TextBox Text="{Binding Address}"/> -->
+                    <!-- </controls:TriviaTextBox> -->
                     
                 </Grid>
                 
