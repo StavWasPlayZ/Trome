@@ -38,6 +38,16 @@ public static class StatusTranscriber
             "The user isn't logged in",
         [LogoutStatus.FailedInternalError] = _ =>
             "The server faulted",
+        
+        // generic response
+        [GenericResponseStatus.Error] = _ =>
+            "An error occurred on the server",
+        
+        // generic stats
+        [GenericStatsStatus.Error] = _ =>
+            "An error occurred on the server",
+        [GenericStatsStatus.NotConnectedError] = _ =>
+            "An error occurred: The Database isn't connected",
     };
 
     public static string Transcribe<TStatus>(ProtocolResponse<TStatus> response)
