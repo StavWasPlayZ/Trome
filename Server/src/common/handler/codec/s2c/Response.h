@@ -117,7 +117,7 @@ struct SignupResponse : RegistrationResponse<SignupStatus>
     explicit SignupResponse(SignupStatus status, const std::string& context = "");
 
     //NOTE: If you find yourself needing more than one context, please consider moving to ProtocolResponse.
-    const std::string& context;
+    const std::string context;
 };
 
 
