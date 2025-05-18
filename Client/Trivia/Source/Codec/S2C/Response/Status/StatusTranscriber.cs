@@ -13,10 +13,16 @@ public static class StatusTranscriber
             "Invalid username or password. Please try again.",
         [LoginStatus.FailedAlreadyLoggedIn] = _ =>
             "User is already logged in. Log out of the other game session and try again.",
+        [LoginStatus.FailedInternalError] = _ =>
+            "Internal Error",
         
         
         [SignupStatus.FailedInvalidArgument] = response =>
             $"Invalid {(response as SignupResponse)!.Context} format",
+        [SignupStatus.FailedUsernameTaken] = _ =>
+            "Username Taken",
+        [SignupStatus.FailedInternalError] = _ =>
+            "Internal Error",
         
         
         [ErrorStatus.Generic] = response =>
