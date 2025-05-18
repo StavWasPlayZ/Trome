@@ -14,7 +14,7 @@ namespace Trivia;
 
 public class Communicator : IDisposable
 {
-    public static readonly IPEndPoint DefaultEndpoint = new(IPAddress.Parse("127.0.0.1"), 6942);
+    public static readonly IPEndPoint DefaultEndpoint = new(IPAddress.Parse("127.0.0.1"), 6943);
     
     public static Communicator Instance { get; } = new();
     
