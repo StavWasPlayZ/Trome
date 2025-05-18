@@ -64,12 +64,9 @@
                     
                 </Grid>
                 
-                <TextBlock Foreground="Red"
-                           TextAlignment="Center"
-                           FontSize="30"
+                <TextBlock Classes="warning-display"
                            IsVisible="{Binding !!ErrorMessage}"
-                           Text="{Binding ErrorMessage}"
-                           TextWrapping="Wrap"/>
+                           Text="{Binding ErrorMessage}"/>
 
                 <StackPanel Spacing="5">
                     

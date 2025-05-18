@@ -23,7 +23,7 @@ public class LoginViewModel : AuthViewModel
         LoginCommand = ReactiveCommand.CreateFromTask(
             async () =>
             {
-                HandleLoginInResponse(
+                HandleLoginResponse(
                     await Comm.SendRequestAwaitResponse<LoginResponse>(new LoginRequest(Username, Password))
                 );
             },
@@ -38,7 +38,7 @@ public class LoginViewModel : AuthViewModel
             .Subscribe(_ => UpdateMayAuthenticate());
     }
 
-    private void HandleLoginInResponse(LoginResponse response)
+    private void HandleLoginResponse(LoginResponse response)
     {
         if (response.Status != LoginStatus.Success)
         {

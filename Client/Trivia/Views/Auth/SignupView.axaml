@@ -17,15 +17,14 @@
         <controls:TriviaMenuPanel Title="SIGNUP"
                                   DisplayBackButton="False"
                                   VerticalAlignment="Center"
-                                  HorizontalAlignment="Center">
+                                  HorizontalAlignment="Center"
+                                  Width="700">
             
-            <StackPanel Margin="40,40,40,10"
-                        HorizontalAlignment="Center"
+            <StackPanel Margin="50,40,50,10"
                         Spacing="20">
                 
                 <Grid RowDefinitions="55, 55, 55, 55, 55, 55"
                       ColumnDefinitions="Auto, *"
-                      HorizontalAlignment="Center"
                       Margin="10"
                       Classes="t-input-fields-container">
                     
@@ -129,6 +128,10 @@
                     </controls:TriviaTextBox>
                     
                 </Grid>
+                
+                <TextBlock Classes="warning-display"
+                           IsVisible="{Binding !!ErrorMessage}"
+                           Text="{Binding ErrorMessage}"/>
 
                 <StackPanel Spacing="5">
                     <controls:TriviaButton Command="{Binding AuthenticateCommand}"
