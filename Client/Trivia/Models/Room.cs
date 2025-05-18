@@ -10,9 +10,10 @@ public enum RoomStatus : uint
 }
 
 public record Room(
-        RoomStatus GameStatus,
-        int QuestionsCount,
-        int SecsPerQuestion,
-        List<LoggedUser> Players,
-        bool IsGameRunning
+        int Id,
+        string Name,
+        int MaxPlayers,
+        RoomStatus Status,
+        int TimePerQuestion,
+        int PlayersCount
     );
