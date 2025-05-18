@@ -9,6 +9,7 @@ public static class StatusTranscriber
     {
         [1] = _ => "Success",
 
+        // login
         [LoginStatus.FailedInvalidCredentials] = _ =>
             "Invalid username or password. Please try again.",
         [LoginStatus.FailedAlreadyLoggedIn] = _ =>
@@ -16,7 +17,7 @@ public static class StatusTranscriber
         [LoginStatus.FailedInternalError] = _ =>
             "The server faulted",
         
-        
+        // signup
         [SignupStatus.FailedInvalidArgument] = response =>
             $"Invalid {(response as SignupResponse)!.Context} format",
         [SignupStatus.FailedUsernameTaken] = _ =>
@@ -24,13 +25,19 @@ public static class StatusTranscriber
         [SignupStatus.FailedInternalError] = _ =>
             "The server faulted",
         
-        
+        // error
         [ErrorStatus.Generic] = response =>
             $"Error: {(response as ErrorResponse)!.Message}",
         [ErrorStatus.IllegalRequest] = response =>
             $"Error: Illegal request: {(response as ErrorResponse)!.Message}",
         [ErrorStatus.ServerUnimplemented] = _ =>
             "Error: Unimplemented",
+        
+        // logout
+        [LogoutStatus.FailedNotLoggedIn] = _ =>
+            "The user isn't logged in",
+        [LogoutStatus.FailedInternalError] = _ =>
+            "The server faulted",
     };
 
     public static string Transcribe<TStatus>(ProtocolResponse<TStatus> response)
