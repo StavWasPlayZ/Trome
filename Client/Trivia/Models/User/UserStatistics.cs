@@ -1,4 +1,4 @@
-﻿namespace Trivia.Models;
+﻿namespace Trivia.Models.User;
 
 public record UserStatistics(
     int Points,

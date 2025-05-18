@@ -118,7 +118,7 @@
                         
                     </controls:TriviaTextBox>
                    
-                    <!--NOTE: Address field is causing unecessary overflow. -->
+                    <!--NOTE: Address field is causing unnecessary overflow. -->
                     <!-- Too lazy to make it a scrollable. -->
                     
                     <!-- <TextBlock Grid.Row="5" -->
