@@ -1,7 +1,9 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using ReactiveUI;
 using Trivia.Codec.S2C.Response;
 using Trivia.Codec.S2C.Response.Status;
+using Trivia.Models.User;
 using Trivia.ViewModels.Menu;
 
 namespace Trivia.ViewModels.Auth;
@@ -15,10 +17,29 @@ public abstract class AuthViewModel(IScreen hostScreen) : PageViewModel(hostScre
             ErrorMessage = StatusTranscriber.Transcribe(response);
             return;
         }
-        
-        //TODO: Assign global user
+
+        App.AppService.SessionedUser = new User((int)response.UserId!, Username!);
         
         NavigateAndReset(new MainMenuViewModel(HostScreen));
+    }
+    
+    
+    private string? _username;
+
+    [Required]
+    public string? Username
+    {
+        get => _username;
+        set => this.RaiseAndSetIfChanged(ref _username, value);
+    }
+    
+    private string? _password;
+
+    [Required]
+    public string? Password
+    {
+        get => _password;
+        set => this.RaiseAndSetIfChanged(ref _password, value);
     }
     
     
@@ -26,7 +47,7 @@ public abstract class AuthViewModel(IScreen hostScreen) : PageViewModel(hostScre
 
     public string? ErrorMessage
     {
-        get => this._errorMessage;
+        get => _errorMessage;
         protected set => this.RaiseAndSetIfChanged(ref _errorMessage, value);
     }
 

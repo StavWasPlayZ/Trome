@@ -11,13 +11,17 @@ public static class StatusTranscriber
 
         [LoginStatus.FailedInvalidCredentials] = _ =>
             "Invalid username or password. Please try again.",
+        [LoginStatus.FailedAlreadyLoggedIn] = _ =>
+            "User is already logged in. Log out of the other game session and try again.",
         
         [SignupStatus.FailedInvalidArgument] = response =>
-            $"Invalid {(response as SignupResponse).Context} format"
+            $"Invalid {(response as SignupResponse)!.Context} format"
     };
 
     public static string Transcribe<TStatus>(ProtocolResponse<TStatus> response)
     {
-        return Transcriptions[response.Status](response).ToUpper();
+        return Transcriptions.TryGetValue(response.Status!, out var transcriber)
+            ? transcriber(response).ToUpper()
+            : "Untranscribable error occured";
     }
 }

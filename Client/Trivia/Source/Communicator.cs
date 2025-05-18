@@ -147,7 +147,7 @@ public class Communicator : IDisposable
                 continue;
             }
             
-            // Already just dipatch it to the UI thread
+            // Already just dispatch it to the UI thread
             Dispatcher.UIThread.Post(() => ProtocolResponseReceived?.Invoke(parsed));
         }
     }
