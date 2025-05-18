@@ -48,6 +48,12 @@ public static class StatusTranscriber
             "An error occurred on the server",
         [GenericStatsStatus.NotConnectedError] = _ =>
             "An error occurred: The Database isn't connected",
+        
+        // consuming response
+        [ConsumingResponseStatus.ErrorInternal] = _ =>
+            "The server faulted",
+        [ConsumingResponseStatus.ErrorUnknownResource] = _ =>
+            "The server faulted while trying to use unknown resource"
     };
 
     public static string Transcribe<TStatus>(ProtocolResponse<TStatus> response)
