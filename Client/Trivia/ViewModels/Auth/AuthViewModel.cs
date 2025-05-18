@@ -1,3 +1,4 @@
+using System;
 using System.Reactive;
 using ReactiveUI;
 using Trivia.ViewModels.Menu;
@@ -16,6 +17,15 @@ public abstract class AuthViewModel : PageViewModel
         );
     }
     
+    
+    private string? _errorMessage;
+
+    public string? ErrorMessage
+    {
+        get => this._errorMessage;
+        protected set => this.RaiseAndSetIfChanged(ref _errorMessage, value);
+    }
+
 
     private bool _mayAuthenticate;
 

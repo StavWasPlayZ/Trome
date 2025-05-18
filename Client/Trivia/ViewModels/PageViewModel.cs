@@ -11,6 +11,8 @@ public abstract class PageViewModel(IScreen hostScreen) : ViewModelBase, IRoutab
     public IScreen HostScreen { get; } = hostScreen;
     public string? UrlPathSegment { get; } = Guid.NewGuid().ToString()[..5];
     
+    protected Communicator Comm = Communicator.Instance;
+    
     
     public ReactiveCommand<Unit, IRoutableViewModel>? NavigateBackCommand { get; } =
         MainWindowViewModel?.Router.NavigateBack;

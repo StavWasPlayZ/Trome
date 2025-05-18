@@ -13,8 +13,8 @@
         <Style Selector="^ controls|TriviaTextBox[(Grid.Column)=1]">
             <Setter Property="Width" Value="250"/>
             <Setter Property="Height" Value="45"/>
-            <Setter Property="Margin" Value="100 0 0 0"/>
             <Setter Property="Background" Value="#33EF657C"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
                             
             <Style Selector="^ TextBox">
                 <Setter Property="TextAlignment" Value="Start"/>

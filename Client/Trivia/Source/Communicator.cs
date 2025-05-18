@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia.Threading;
 using Trivia.Codec.C2S.Request;
 using Trivia.Codec.S2C;
 using Trivia.Codec.S2C.Response;
@@ -97,7 +98,7 @@ public class Communicator : IDisposable
     //     };
     // }
 
-        
+    
     private void ListenThread()
     {
         while (IsConnected)
@@ -127,7 +128,8 @@ public class Communicator : IDisposable
                 continue;
             }
             
-            ProtocolResponseReceived?.Invoke(parsed);
+            // Already just dipatch it to the UI thread
+            Dispatcher.UIThread.Post(() => ProtocolResponseReceived?.Invoke(parsed));
         }
     }
 

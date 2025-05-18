@@ -17,15 +17,14 @@
         <controls:TriviaMenuPanel Title="LOGIN"
                                   DisplayBackButton="False"
                                   VerticalAlignment="Center"
-                                  HorizontalAlignment="Center">
+                                  HorizontalAlignment="Center"
+                                  Width="650">
             
-            <StackPanel Margin="40,40,40,10"
-                        HorizontalAlignment="Center"
+            <StackPanel Margin="50,40,50,10"
                         Spacing="20">
                 
                 <Grid RowDefinitions="55, 55"
                       ColumnDefinitions="Auto, *"
-                      HorizontalAlignment="Center"
                       Margin="10"
                       Classes="t-input-fields-container">
                     
@@ -64,10 +63,17 @@
                     </controls:TriviaTextBox>
                     
                 </Grid>
+                
+                <TextBlock Foreground="Red"
+                           TextAlignment="Center"
+                           FontSize="30"
+                           IsVisible="{Binding !!ErrorMessage}"
+                           Text="{Binding ErrorMessage}"
+                           TextWrapping="Wrap"/>
 
                 <StackPanel Spacing="5">
                     
-                    <controls:TriviaButton Command="{Binding AuthenticateCommand}"
+                    <controls:TriviaButton Command="{Binding LoginCommand}"
                                            HorizontalAlignment="Center"
                                            Text="LOGIN"
                                            Background="#362034"
