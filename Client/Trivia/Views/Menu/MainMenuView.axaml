@@ -1,0 +1,137 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:Trivia.Controls"
+             xmlns:vmmenu="clr-namespace:Trivia.ViewModels.Menu"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
+             x:CompileBindings="True"
+             x:Class="Trivia.Views.Menu.MainMenuView"
+             x:DataType="vmmenu:MainMenuViewModel">
+
+    <Panel>
+        <Panel.Background>
+            <ImageBrush Source="avares://Trivia/Assets/blobs-l-b49caff1a7941d98b60902da64956ad85dfbe4f9.png"
+                        Stretch="UniformToFill" />
+        </Panel.Background>
+
+        <Grid
+            VerticalAlignment="Center"
+            ColumnDefinitions="*, *"
+            Height="{
+                Binding $parent[Window].Bounds.Height,
+                Converter={StaticResource MultiplicationConverter},
+                ConverterParameter=0.55
+            }">
+    
+            <!-- Left Panel -->
+            
+            <Border Grid.Column="0"
+                    CornerRadius="0 25 25 0"
+                    Background="rgba(0, 0, 0, 190)"
+                    Padding="50 20 30 20">
+        
+                <Grid RowDefinitions="*, Auto">
+    
+                    <StackPanel Grid.Row="0"
+                                Spacing="7">
+    
+                        <controls:TriviaButton Command="{Binding PlayCommand}"
+                                               Text="PLAY"
+                                               Background="#362034"
+                                               BorderBrush="#b92e2b"
+                                               IconColor="#ffbbbb"
+                                               BorderBrushSelected="#D93040"
+                                               BorderBrushPressed="#AA2C2F"
+                                               BorderThickness="3"
+                                               IconSvgPath="avares://Trivia/Assets/Icons/play_arrow.svg"
+                                               IconMargin="-7 7 -10 7"/>
+                        <controls:TriviaButton Command="{Binding StatisticsCommand}"
+                                               Text="STATISTICS"
+                                               BorderBrushSelected="#6154A3"
+                                               BorderBrushPressed="#3D366D"
+                                               IconSvgPath="avares://Trivia/Assets/Icons/leaderboard.svg"/>
+                        <controls:TriviaButton x:Name="AboutButton"
+                                               Text="ABOUT"
+                                               IconSvgPath="avares://Trivia/Assets/Icons/info.svg"/>
+    
+                    </StackPanel>
+    
+                    <Grid Grid.Row="1"
+                                ColumnDefinitions="*, 7, Auto">
+                        <controls:TriviaButton Grid.Column="0"
+                                               Command="{Binding ExitCommand}"
+                                               Text="EXIT"
+                                               BorderBrush="#F2B2B8"
+                                               BorderBrushSelected="Crimson"
+                                               BorderBrushPressed="#AF183A"/>
+                        
+                        <Panel Grid.Column="1" />
+
+                        <controls:TriviaButton Grid.Column="2"
+                                               x:Name="SettingsButton"
+                                               IsIconButton="True"
+                                               IconSvgPath="avares://Trivia/Assets/Icons/settings.svg"
+                                               BorderBrushSelected="LightGray"
+                                               BorderBrushPressed="#ADADAD"
+                                               CornerRadius="5 5 0 5"/>
+                    </Grid>
+    
+                </Grid>
+    
+            </Border>
+    
+            <Border Grid.Column="1">
+                <Image Source="avares://Trivia/Assets/logo.png"/>
+            </Border>
+    
+        </Grid>
+        
+        <!-- Username & Logout -->
+        
+        <StackPanel
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Orientation="Horizontal"
+            Spacing="8"
+            Margin="20 10">
+            
+            <!-- TODO: Maybe add SVG border -->
+            
+            <Button Command="{Binding SignOutCommand}"
+                    Padding="0"
+                    Theme="{StaticResource EmptyButton}">
+                
+                <Svg Path="avares://Trivia/Assets/Icons/logout.svg"
+                     Height="40"/>
+                
+                <Button.Styles>
+                    
+                    <Style Selector="Button">
+                        <Style Selector="^:pointerover">
+                            <Style Selector="^ > Svg">
+                                <Setter Property="Css" Value="* { fill: #b92e2b; }" />
+                            </Style>
+                        </Style>
+                        
+                        <Style Selector="^:not(:pointerover) > Svg">
+                            <Setter Property="Css" Value="* { fill: #d74351; }" />
+                        </Style>
+                    </Style>
+                    
+                </Button.Styles>
+            </Button>
+            
+            <Button Theme="{StaticResource EmptyButton}">
+                
+                <controls:Underlined>
+                    <TextBlock
+                        FontSize="30">Username</TextBlock>
+                </controls:Underlined>
+                
+            </Button>
+            
+        </StackPanel>
+    </Panel>
+
+</UserControl>

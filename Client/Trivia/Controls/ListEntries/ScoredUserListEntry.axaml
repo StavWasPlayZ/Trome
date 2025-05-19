@@ -1,0 +1,88 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:Trivia.Controls.ListEntries"
+        xmlns:controls1="clr-namespace:Trivia.Controls">
+    <Design.PreviewWith>
+        <controls1:TriviaUsersList Grid.Column="0">
+            <ListBox Width="350">
+
+                <ListBox.Items>
+                    <x:Int32>1</x:Int32>
+                    <x:Int32>2</x:Int32>
+                    <x:Int32>3</x:Int32>
+                </ListBox.Items>
+                
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <controls:ScoredUserListEntry NumberedPlace="{Binding}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                
+            </ListBox>
+            
+        </controls1:TriviaUsersList>
+    </Design.PreviewWith>
+    
+
+    <Style Selector="controls|ScoredUserListEntry">
+        <!-- Set Defaults -->
+        <Setter Property="NumberedPlace" Value="0"/>
+        
+        <Setter Property="Template">
+            <ControlTemplate>
+                
+                <Grid ColumnDefinitions="Auto, Auto, Auto, *">
+                                            
+                    <TextBlock Classes="secondary-text"
+                               Grid.Column="0"
+                               VerticalAlignment="Center"
+                               FontSize="25"
+                               Margin="5 0 2 0"
+                               Text="{Binding $parent[controls:ScoredUserListEntry].NumberedPlace, StringFormat={}{0}.}"/>
+
+                    <Border Grid.Column="1"
+                            CornerRadius="10"
+                            Margin="10 0 15 0">
+
+                        <Svg Path="avares://Trivia/Assets/Icons/person.svg"/>
+                    </Border>
+
+                    <TextBlock Classes="primary-text"
+                               Grid.Column="2"
+                               VerticalAlignment="Center"
+                               FontSize="30">
+                        USERNAME
+                    </TextBlock>
+                    
+                    <TextBlock Classes="secondary-text"
+                               Grid.Column="3"
+                               VerticalAlignment="Center"
+                               TextAlignment="End"
+                               FontSize="30">
+                        69420
+                    </TextBlock>
+
+                </Grid>
+                
+            </ControlTemplate>
+        </Setter>
+        
+        
+        <Style Selector="^ Border">
+            <Setter Property="Background" Value="#ffbcf8"/>
+            
+            <Setter Property="Width" Value="60"/>
+            <Setter Property="Height" Value="60"/>
+            <Setter Property="Padding" Value="6"/>
+                                            
+            <Style Selector="^ > Svg">
+                <Setter Property="Css" Value="* { fill: #813e7a; }"/>
+            </Style>
+        </Style>
+                                        
+        <Style Selector="^ TextBlock.primary-text, ^ TextBlock.secondary-text">
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        
+    </Style>
+</Styles>
