@@ -28,6 +28,11 @@ public:
     static SignupRequest deserializeSignupRequest(const nlohmann::json &data);
 
     /**
+    * Returns: The deserialized object.
+    */
+    static LogoutRequest deserializeLogoutRequest(const nlohmann::json &data);
+
+    /**
      * Returns: The deserialized object.
      */
     static GetRoomsRequest deserializeGetRoomsRequest(const nlohmann::json &data);
