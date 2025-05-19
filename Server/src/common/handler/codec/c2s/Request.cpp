@@ -36,6 +36,9 @@ ProtocolRequest *ProtocolRequest::fromRequest(const RequestInfo &info) {
     case RequestCode::SIGNUP: return new SignupRequest(
         JsonRequestPacketDeserializer::deserializeSignupRequest(info.data)
     );
+    case RequestCode::LOGOUT: return new LogoutRequest(
+        JsonRequestPacketDeserializer::deserializeLogoutRequest(info.data)
+    );
     case RequestCode::GET_PLAYERS_IN_ROOM: return new GetPlayersInRoomRequest(
         JsonRequestPacketDeserializer::deserializeGetPlayersInRoomRequest(info.data)
     );
