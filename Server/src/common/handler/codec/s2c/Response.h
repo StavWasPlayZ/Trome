@@ -117,7 +117,7 @@ struct SignupResponse : RegistrationResponse<SignupStatus>
     explicit SignupResponse(SignupStatus status, const std::string& context = "");
 
     //NOTE: If you find yourself needing more than one context, please consider moving to ProtocolResponse.
-    const std::string& context;
+    const std::string context;
 };
 
 
@@ -178,8 +178,7 @@ struct GetPlayersInRoomResponse : ProtocolResponse<ConsumingResponseStatus>
 enum class GeneralStatsStatus : unsigned int
 {
     SUCCESS = 1,
-    ERROR = 0,
-	NOT_CONNECTED_ERROR = 2
+    ERROR = 0
 };
 
 struct GetHighScoresResponse : ProtocolResponse<GeneralStatsStatus>

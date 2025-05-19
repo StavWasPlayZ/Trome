@@ -30,6 +30,11 @@ SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(const nloh
     );
 }
 
+LogoutRequest JsonRequestPacketDeserializer::deserializeLogoutRequest(const nlohmann::json &)
+{
+    return LogoutRequest();
+}
+
 GetRoomsRequest JsonRequestPacketDeserializer::deserializeGetRoomsRequest(const nlohmann::json &)
 {
     return GetRoomsRequest();

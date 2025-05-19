@@ -61,6 +61,10 @@ struct SignupRequest : LoginRequest
 	const std::string birthdate;
 };
 
+struct LogoutRequest : ProtocolRequest
+{
+};
+
 struct GetPlayersInRoomRequest : ProtocolRequest
 {
     explicit GetPlayersInRoomRequest(unsigned int roomID);

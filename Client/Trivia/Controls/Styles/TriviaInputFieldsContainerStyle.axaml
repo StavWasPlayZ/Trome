@@ -13,8 +13,8 @@
         <Style Selector="^ controls|TriviaTextBox[(Grid.Column)=1]">
             <Setter Property="Width" Value="250"/>
             <Setter Property="Height" Value="45"/>
-            <Setter Property="Margin" Value="100 0 0 0"/>
             <Setter Property="Background" Value="#33EF657C"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
                             
             <Style Selector="^ TextBox">
                 <Setter Property="TextAlignment" Value="Start"/>
@@ -22,7 +22,6 @@
                 <Setter Property="CaretBrush" Value="White"/>
             </Style>
         </Style>
-        
         
         <Style Selector="^ > StackPanel.required-field">
             <Setter Property="Orientation" Value="Horizontal"/>
@@ -35,6 +34,13 @@
             </Style>
         </Style>
         
+    </Style>
+    
+    <Style Selector="TextBlock.warning-display">
+        <Setter Property="Foreground" Value="Red"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="30"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
     </Style>
     
 </Styles>

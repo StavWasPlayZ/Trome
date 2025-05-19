@@ -57,5 +57,6 @@ RequestResult RoomMemberRequestHandler::getRoomState(const RequestInfo &info, co
             GetRoomStateResponse(GenericResponseStatus::SUCCESS, m_room)
         ),
 
-        new RoomMemberRequestHandler(*this));
+        new RoomMemberRequestHandler(*this)
+    );
 }

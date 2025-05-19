@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia.Threading;
 using Trivia.Codec.C2S.Request;
 using Trivia.Codec.S2C;
 using Trivia.Codec.S2C.Response;
@@ -48,7 +50,7 @@ public class Communicator : IDisposable
         
         NotifyNewOutgoingRequest();
     }
-    
+
     public async Task<T> SendRequestAwaitResponse<T>(ProtocolRequest request) where T : IProtocolResponse
     {
         var task = new TaskCompletionSource<T>();
@@ -115,15 +117,26 @@ public class Communicator : IDisposable
     //     };
     // }
 
-        
+    
     private void ListenThread()
     {
         while (IsConnected)
         {
             var buffer = new byte[1024];
-            var read = _clientSocket!.GetStream().Read(buffer, 0, buffer.Length);
 
-            if (read == 0)
+            int read;
+            
+            try
+            {
+                read = _clientSocket!.GetStream().Read(buffer, 0, buffer.Length);
+            }
+            catch (IOException)
+            {
+                Console.Error.WriteLine("IO Exception occured; Assuming forced disconnection");
+                return;
+            }
+
+            if (read == 0 || !IsConnected)
                 return;
             
             var parsed = RequestPacketDeserializer.Deserialize(buffer);
@@ -134,7 +147,8 @@ public class Communicator : IDisposable
                 continue;
             }
             
-            ProtocolResponseReceived?.Invoke(parsed);
+            // Already just dispatch it to the UI thread
+            Dispatcher.UIThread.Post(() => ProtocolResponseReceived?.Invoke(parsed));
         }
     }
 
