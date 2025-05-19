@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Threading;
@@ -14,11 +13,12 @@ namespace Trivia.ViewModels.Menu;
 
 public class JoinMenuViewModel : PageViewModel, IActivatableViewModel
 {
+    private const int RefreshTime = 3000;
+    
     public ViewModelActivator Activator { get; } = new();
     
     private List<Room> rooms = [];
     private bool _isDisposed;
-    private readonly int refreshTime = 3000;
 
     public JoinMenuViewModel(IScreen hostScreen) : base(hostScreen)
     {
@@ -29,14 +29,13 @@ public class JoinMenuViewModel : PageViewModel, IActivatableViewModel
             () => new JoinedRoomViewModel(hostScreen)
         );
 
-        this.WhenActivated((CompositeDisposable disposables) =>
+        this.WhenActivated(disposables =>
         {
-            //TODO: Create thread to refresh rooms
             Disposable
                 .Create(() => _isDisposed = true)
                 .DisposeWith(disposables);
 
-            _ = RefreshThread();
+            new Thread(() => _ = RefreshThread()).Start();
         });
     }
 
@@ -47,7 +46,7 @@ public class JoinMenuViewModel : PageViewModel, IActivatableViewModel
             var response = await Communicator.Instance.SendRequestAwaitResponse<GetRoomsResponse>(new GetRoomsRequest());
 
             rooms = response.Rooms;
-            Thread.Sleep(refreshTime);
+            Thread.Sleep(RefreshTime);
         }
     }
 

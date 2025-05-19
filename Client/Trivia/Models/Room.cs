@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace Trivia.Models;
 
 public enum RoomStatus : uint
@@ -10,10 +8,10 @@ public enum RoomStatus : uint
 }
 
 public record Room(
-        int Id,
-        string Name,
-        int MaxPlayers,
-        RoomStatus Status,
-        int TimePerQuestion,
-        int PlayersCount
-    );
+    int Id,
+    string Name,
+    int MaxPlayers,
+    RoomStatus Status,
+    int TimePerQuestion,
+    int PlayersCount
+);
