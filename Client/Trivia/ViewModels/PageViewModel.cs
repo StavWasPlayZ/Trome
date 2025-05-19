@@ -9,10 +9,11 @@ namespace Trivia.ViewModels;
 
 public abstract class PageViewModel(IScreen hostScreen) : ViewModelBase, IRoutableViewModel
 {
+    protected static readonly Communicator Comm = Communicator.Instance;
+    
     public IScreen HostScreen { get; } = hostScreen;
     public string? UrlPathSegment { get; } = Guid.NewGuid().ToString()[..5];
     
-    protected readonly Communicator Comm = Communicator.Instance;
     public ApplicationService AppService => App.AppService;
 
 
