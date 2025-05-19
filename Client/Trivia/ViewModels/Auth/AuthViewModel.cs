@@ -18,7 +18,7 @@ public abstract class AuthViewModel(IScreen hostScreen) : PageViewModel(hostScre
             return;
         }
 
-        App.AppService.SessionedUser = new User((int)response.UserId!, Username!);
+        App.AppService.SessionUser = new User((int)response.UserId!, Username!);
         
         NavigateAndReset(new MainMenuViewModel(HostScreen));
     }

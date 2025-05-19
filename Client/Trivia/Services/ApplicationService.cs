@@ -4,5 +4,5 @@ namespace Trivia.Services;
 
 public class ApplicationService
 {
-    public User SessionedUser { get; set; }
+    public User? SessionUser { get; set; }
 }
