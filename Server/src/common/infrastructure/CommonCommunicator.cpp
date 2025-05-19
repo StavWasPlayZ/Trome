@@ -222,6 +222,8 @@ void CommonCommunicator::_clientThreadFunc(const SOCKET socket)
         }
     }
 
+    this->m_clients.at(socket)->handleDisconnecting();
+
     _enqueueDisconnectClient(socket);
 }
 

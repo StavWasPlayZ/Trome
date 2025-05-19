@@ -58,8 +58,10 @@ public static class StatusTranscriber
 
     public static string Transcribe<TStatus>(ProtocolResponse<TStatus> response)
     {
-        return Transcriptions.TryGetValue(response.Status!, out var transcriber)
-            ? transcriber(response).ToUpper()
-            : "Untranscribable error occured";
+        return (
+            Transcriptions.TryGetValue(response.Status!, out var transcriber)
+                ? transcriber(response)
+                : "Untranscribable error occured"
+        ).ToUpper();
     }
 }

@@ -15,7 +15,7 @@
 OBuffer JsonResponsePacketSerializer::serializeResponse(const LoginResponse &response)
 {
 	nlohmann::json data;
-	serializeBaseResponseToJson<LoginStatus>(data, response);
+	serializeRegistrationResponseToJson<LoginStatus>(data, response);
 
 	return serializeJsonToProtocol(response.id, data);
 }
@@ -23,7 +23,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const LoginResponse &res
 OBuffer JsonResponsePacketSerializer::serializeResponse(const SignupResponse &response)
 {
 	nlohmann::json data;
-	serializeBaseResponseToJson<SignupStatus>(data, response);
+	serializeRegistrationResponseToJson<SignupStatus>(data, response);
 
     if (response.status != SignupStatus::SUCCESS)
     {
@@ -184,6 +184,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetRoomStateRespon
     const Room& room = response.room;
     const RoomData& roomData = room.getData();
 
+    data["game_status"] = roomData.status;
     data["questions_count"] = roomData.questionsCount;
     data["secs_per_question"] = roomData.secsPerQuestion;
     data["players"] = serializePlayersToJson(room.getAllUsers());

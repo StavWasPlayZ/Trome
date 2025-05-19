@@ -96,5 +96,10 @@ void Server::close() const
 
 bool Server::isRunning() const
 {
-	return this->m_communicator.isRunning();
+    return this->m_communicator.isRunning();
+}
+
+LoginManager &Server::getLoginManager()
+{
+    return this->m_loginManager;
 }
