@@ -126,7 +126,10 @@
                 
                 <controls:Underlined>
                     <TextBlock
-                        FontSize="30">Username</TextBlock>
+                        FontSize="30"
+                        Text="{Binding AppService.SessionUser.Username,
+                            FallbackValue=Username                        
+                        }"/>
                 </controls:Underlined>
                 
             </Button>

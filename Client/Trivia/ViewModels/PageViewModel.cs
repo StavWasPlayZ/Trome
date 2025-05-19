@@ -3,6 +3,7 @@ using System.Reactive;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using ReactiveUI;
+using Trivia.Services;
 
 namespace Trivia.ViewModels;
 
@@ -11,7 +12,10 @@ public abstract class PageViewModel(IScreen hostScreen) : ViewModelBase, IRoutab
     public IScreen HostScreen { get; } = hostScreen;
     public string? UrlPathSegment { get; } = Guid.NewGuid().ToString()[..5];
     
-    
+    protected readonly Communicator Comm = Communicator.Instance;
+    public ApplicationService AppService => App.AppService;
+
+
     public ReactiveCommand<Unit, IRoutableViewModel>? NavigateBackCommand { get; } =
         MainWindowViewModel?.Router.NavigateBack;
 
