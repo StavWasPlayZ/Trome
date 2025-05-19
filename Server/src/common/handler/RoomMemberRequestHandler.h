@@ -9,8 +9,8 @@ class RoomMemberRequestHandler : public IRequestHandler
 public:
     RoomMemberRequestHandler(const RequestHandlerFactory &handlerFactory, Room &room);
 
-    bool isRequestRelevant(const RequestInfo &info) const;
-    RequestResult handleRequest(const RequestInfo &info, const ProtocolRequest &request) const;
+    bool isRequestRelevant(const RequestInfo &info) const override;
+    RequestResult handleRequest(const RequestInfo &info, const ProtocolRequest &request) const override;
 private:
     Room& m_room;
 
