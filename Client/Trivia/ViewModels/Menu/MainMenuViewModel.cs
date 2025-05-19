@@ -18,9 +18,6 @@ public class MainMenuViewModel(IScreen hostScreen) : PageViewModel(hostScreen)
         () => new StatisticsViewModel(hostScreen)
     );
     
-    // public ReactiveCommand<Unit, IRoutableViewModel> LogOutCommand { get; } = NavigateAndResetReactiveCommand(
-    //     () => new LoginViewModel(hostScreen)
-    // );
     public ReactiveCommand<Unit, Unit> LogOutCommand { get; } = ReactiveCommand.CreateFromTask(async () =>
     {
         await Comm.SendRequestAwaitResponse<LogoutResponse>(new LogoutRequest());
