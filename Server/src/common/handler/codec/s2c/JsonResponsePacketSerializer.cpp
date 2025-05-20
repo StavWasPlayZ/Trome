@@ -56,6 +56,25 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const JoinRoomResponse &
     nlohmann::json data;
     serializeBaseResponseToJson<ConsumingResponseStatus>(data, response);
 
+    if (response.room.has_value())
+    {
+        RoomData roomData = response.room.value()->getData();
+
+        data["name"] = roomData.name;
+        data["max_players"] = roomData.maxPlayers;
+        data["question_count"] = roomData.questionsCount;
+        data["secs_per_question"] = roomData.secsPerQuestion;
+        data["status"] = roomData.status;
+    }
+    else // note: there must be all those fields, therefore this:
+    {
+        data["name"] = "";
+        data["max_players"] = "";
+        data["question_count"] = "";
+        data["secs_per_question"] = "";
+        data["status"] = "";
+    }
+
     return serializeJsonToProtocol(response.id, data);
 }
 
