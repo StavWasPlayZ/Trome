@@ -69,10 +69,10 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const JoinRoomResponse &
     else // note: there must be all those fields, therefore this:
     {
         data["name"] = "";
-        data["max_players"] = "";
-        data["question_count"] = "";
-        data["secs_per_question"] = "";
-        data["room_status"] = "";
+        data["max_players"] = 0;
+        data["question_count"] = 0;
+        data["secs_per_question"] = 0;
+        data["room_status"] = RoomStatus::NOT_FOUND;
     }
 
     return serializeJsonToProtocol(response.id, data);
