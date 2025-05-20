@@ -54,7 +54,9 @@
                                     
                                     <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock FontSize="30">ROOM</TextBlock>
+                                            <TextBlock FontSize="30"
+                                                       Text="{Binding Name}"/>
+                                            
                                             <TextBlock FontSize="22"
                                                        VerticalAlignment="Center"
                                                        Opacity=".7"
@@ -161,11 +163,11 @@
                                 CornerRadius="30"
                                 ClipToBounds="True">
                             
-                            <Grid RowDefinitions="Auto, *, Auto"
-                                  Margin="30">
+                            <Grid RowDefinitions="Auto, *, Auto">
                                 <StackPanel Grid.Row="0"
                                             Orientation="Horizontal"
-                                            Margin="10">
+                                            HorizontalAlignment="Center"
+                                            Margin="0 30 0 0">
                                     
                                     <StackPanel Orientation="Horizontal">
                                         <Border Background="#ffb0a1"
@@ -181,31 +183,39 @@
                                         
                                         <StackPanel VerticalAlignment="Center"
                                                     Margin="0 0 0 10">
-                                            <TextBlock FontSize="60">
-                                                ROOM
-                                            </TextBlock>
+                                            <TextBlock FontSize="60"
+                                                       Text="{Binding SelectedRoom.Name}"/>
+                                            
                                             <TextBlock FontSize="20"
-                                                       Opacity=".6">1/6 PLAYERS</TextBlock>
+                                                       Opacity=".6">
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="{}{0}/{1} PLAYERS">
+                                                        <Binding Path="SelectedRoom.PlayersCount"/>
+                                                        <Binding Path="SelectedRoom.MaxPlayers"/>
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
                                         </StackPanel>
                                         
                                     </StackPanel>
                                     
                                 </StackPanel>
                                 
-                                <StackPanel Grid.Row="1">
-                                    <Grid ColumnDefinitions="Auto, *"
-                                          Margin="10"
-                                          Opacity=".9">
+                                <StackPanel Grid.Row="1"
+                                            Margin="30 10">
+                                    <StackPanel Orientation="Horizontal"
+                                                Margin="10"
+                                                Opacity=".9"
+                                                HorizontalAlignment="Center"
+                                                Spacing="5">
                                         
-                                        <TextBlock Grid.Column="0"
-                                                    FontSize="37"
+                                        <TextBlock FontSize="37"
                                                    Text="ADMIN: "/> 
-                                        <TextBlock Grid.Column="1"
-                                                    FontSize="37"
+                                        <TextBlock FontSize="37"
                                                    Foreground="#EAACC4"
                                                    TextAlignment="End"
-                                                   Text="USERNAME"/>
-                                    </Grid>
+                                                   Text="{Binding SelectedRoom.Admin.Username}"/>
+                                    </StackPanel>
                                     
                                     <Grid RowDefinitions="Auto, Auto"
                                           ColumnDefinitions="Auto, *"
@@ -224,18 +234,22 @@
                                         </Grid.Styles>
                                         
                                         <TextBlock Grid.Row="0"
-                                                   Grid.Column="0">
-                                            • 25
-                                        </TextBlock>
+                                                   Grid.Column="0"
+                                                   Text="{Binding SelectedRoom.Questions,
+                                                       StringFormat='• {0}'
+                                                   }"/>
+                                        
                                         <TextBlock Grid.Row="0"
                                                    Grid.Column="1">
                                             QUESTIONS
                                         </TextBlock>
                                         
                                         <TextBlock Grid.Row="1"
-                                                   Grid.Column="0">
-                                            • 10
-                                        </TextBlock>
+                                                   Grid.Column="0"
+                                                   Text="{Binding SelectedRoom.TimePerQuestion,
+                                                       StringFormat='• {0}'
+                                                   }"/>
+                                        
                                         <TextBlock Grid.Row="1"
                                                    Grid.Column="1">
                                             SEC/Q
@@ -253,7 +267,8 @@
                                         CornerRadius="5"
                                         Width="240"
                                         Height="55"
-                                        ClipToBounds="False">
+                                        ClipToBounds="False"
+                                        Margin="0 0 0 30">
                                         
                                     <Button.Styles>
                                         <Style Selector="Button /template/ ContentPresenter">

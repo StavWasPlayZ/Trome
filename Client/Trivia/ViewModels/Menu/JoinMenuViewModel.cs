@@ -26,14 +26,30 @@ public class JoinMenuViewModel : PageViewModel, IActivatableViewModel
             i % 2 == 0 ? RoomStatus.Waiting : RoomStatus.Playing,
             new User(i, $"User {i}"),
             10,
-            10,
+            7,
             2,
-            10
+            15
         ))
         .ToList();
     
     
+    public ReactiveCommand<Unit, IRoutableViewModel> NewRoomButtonCommand { get; }
+    
+    public ReactiveCommand<Unit, IRoutableViewModel> JoinRoomButtonCommand { get; }
+    
+    
     public List<Room> Rooms { get; private set; } = [];
+
+
+    private Room? _room;
+    
+    public Room? SelectedRoom
+    {
+        get => _room;
+        set => this.RaiseAndSetIfChanged(ref _room, value);
+    }
+    
+    
     private bool _isDisposed;
 
     public JoinMenuViewModel(IScreen hostScreen) : base(hostScreen)
@@ -44,6 +60,8 @@ public class JoinMenuViewModel : PageViewModel, IActivatableViewModel
         JoinRoomButtonCommand = NavigateReactiveCommand(
             () => new JoinedRoomViewModel(hostScreen)
         );
+        
+        // Rooms = MockRooms;
 
         this.WhenActivated(disposables =>
         {
@@ -51,7 +69,7 @@ public class JoinMenuViewModel : PageViewModel, IActivatableViewModel
                 .Create(() => _isDisposed = true)
                 .DisposeWith(disposables);
             
-            new Thread(() => _ = RefreshThread()).Start();
+            new Thread(() => _ = RefreshRoomsThread()).Start();
         });
     }
     
@@ -59,9 +77,11 @@ public class JoinMenuViewModel : PageViewModel, IActivatableViewModel
     {
         NewRoomButtonCommand = JoinRoomButtonCommand = NoOpNavCommand;
         Rooms = MockRooms;
+        SelectedRoom = MockRooms[0];
     }
+    
 
-    private async Task RefreshThread()
+    private async Task RefreshRoomsThread()
     {
         while (!_isDisposed)
         {
@@ -71,8 +91,4 @@ public class JoinMenuViewModel : PageViewModel, IActivatableViewModel
             Thread.Sleep(RefreshTime);
         }
     }
-
-    public ReactiveCommand<Unit, IRoutableViewModel> NewRoomButtonCommand { get; }
-    
-    public ReactiveCommand<Unit, IRoutableViewModel> JoinRoomButtonCommand { get; }
 }
