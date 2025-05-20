@@ -64,7 +64,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const JoinRoomResponse &
         data["max_players"] = roomData.maxPlayers;
         data["question_count"] = roomData.questionsCount;
         data["secs_per_question"] = roomData.secsPerQuestion;
-        data["status"] = roomData.status;
+        data["room_status"] = roomData.status;
     }
     else // note: there must be all those fields, therefore this:
     {
@@ -72,7 +72,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const JoinRoomResponse &
         data["max_players"] = "";
         data["question_count"] = "";
         data["secs_per_question"] = "";
-        data["status"] = "";
+        data["room_status"] = "";
     }
 
     return serializeJsonToProtocol(response.id, data);
