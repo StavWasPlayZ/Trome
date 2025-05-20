@@ -26,6 +26,8 @@ public class ConnectingViewModel : PageViewModel, IActivatableViewModel
         });
     }
     
+    public ConnectingViewModel() { }
+    
     
     private bool _connectionFailed;
 

@@ -10,6 +10,10 @@
              x:Class="Trivia.Views.Menu.StatisticsView"
              x:DataType="vmmenu:StatisticsViewModel">
     
+    <Design.DataContext>
+        <vmmenu:StatisticsViewModel/>
+    </Design.DataContext>
+    
     <Panel>
         <Panel.Background>
             <ImageBrush Source="avares://Trivia/Assets/blobs-l-b49caff1a7941d98b60902da64956ad85dfbe4f9.png"

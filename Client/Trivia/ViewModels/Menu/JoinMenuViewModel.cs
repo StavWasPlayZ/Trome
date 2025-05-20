@@ -4,13 +4,24 @@ using Trivia.ViewModels.Game;
 
 namespace Trivia.ViewModels.Menu;
 
-public class JoinMenuViewModel(IScreen hostScreen) : PageViewModel(hostScreen)
+public class JoinMenuViewModel : PageViewModel
 {
-    public ReactiveCommand<Unit, IRoutableViewModel> NewRoomButtonCommand { get; } = NavigateReactiveCommand(
-        () => new CreateRoomViewModel(hostScreen)
-    );
+    public JoinMenuViewModel(IScreen hostScreen) : base(hostScreen)
+    {
+        NewRoomButtonCommand = NavigateReactiveCommand(
+            () => new CreateRoomViewModel(hostScreen)
+        );
+        JoinRoomButtonCommand = NavigateReactiveCommand(
+            () => new JoinedRoomViewModel(hostScreen)
+        );
+    }
+
+    public JoinMenuViewModel()
+    {
+        NewRoomButtonCommand = JoinRoomButtonCommand = NoOpNavCommand;
+    }
+
+    public ReactiveCommand<Unit, IRoutableViewModel> NewRoomButtonCommand { get; }
     
-    public ReactiveCommand<Unit, IRoutableViewModel> JoinRoomButtonCommand { get; } = NavigateReactiveCommand(
-        () => new JoinedRoomViewModel(hostScreen)
-    );
+    public ReactiveCommand<Unit, IRoutableViewModel> JoinRoomButtonCommand { get; }
 }

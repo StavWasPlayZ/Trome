@@ -2,7 +2,8 @@
 
 namespace Trivia.ViewModels.Game;
 
-public class CreateRoomViewModel(IScreen hostScreen) : PageViewModel(hostScreen)
+public class CreateRoomViewModel : PageViewModel
 {
-    
+    public CreateRoomViewModel(IScreen hostScreen) : base(hostScreen) { }
+    public CreateRoomViewModel() { }
 }

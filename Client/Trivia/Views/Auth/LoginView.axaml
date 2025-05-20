@@ -8,6 +8,11 @@
              x:CompileBindings="True"
              x:Class="Trivia.Views.Auth.LoginView"
              x:DataType="auth:LoginViewModel">
+    
+    <Design.DataContext>
+        <auth:LoginViewModel/>
+    </Design.DataContext>
+    
     <Panel>
         <Panel.Background>
             <ImageBrush Source="avares://Trivia/Assets/blobs-l-b49caff1a7941d98b60902da64956ad85dfbe4f9.png"
