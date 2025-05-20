@@ -13,7 +13,7 @@ public enum RequestCode : byte
     GetPersonalStatistics,
     CloseGame,
     StartGame,
-    GetRoomStates,
+    GetRoomState,
     LeaveRoom,
-    UpdateRoomData,
+    UpdateRoomData
 }
