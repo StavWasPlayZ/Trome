@@ -16,5 +16,6 @@ public record Room(
     
     int MaxPlayers,
     int TimePerQuestion,
-    int PlayersCount
+    int PlayersCount,
+    int Questions
 );

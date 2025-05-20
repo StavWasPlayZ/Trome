@@ -34,11 +34,8 @@
                              SelectionMode="Single, Toggle"
                              Background="Transparent"
                              Classes="t-list"
-                             Padding="0 20 0 275">
-                    
-                        <ListBox.ItemsSource>
-                            naorsdsadasdasdasdjtffjghfgjhfghjfghj
-                        </ListBox.ItemsSource>
+                             Padding="0 20 0 275"
+                             ItemsSource="{Binding Rooms}">
                         
                         <ListBox.ItemTemplate>
                             <DataTemplate>
@@ -61,12 +58,20 @@
                                             <TextBlock FontSize="22"
                                                        VerticalAlignment="Center"
                                                        Opacity=".7"
-                                                       Text=" • USERNAME"/>
+                                                       Text="{Binding Admin.Username,
+                                                           StringFormat=' • {0}'
+                                                       }"/>
                                         </StackPanel>
                                         
                                         <TextBlock FontSize="15"
                                                    Opacity=".4">
-                                            1/6 PLAYERS • 25 QUESTIONS
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0}/{1} PLAYERS • {2} QUESTIONS">
+                                                    <Binding Path="PlayersCount"/>
+                                                    <Binding Path="MaxPlayers"/>
+                                                    <Binding Path="Questions"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
                                         </TextBlock>
                                     </StackPanel>
                                     

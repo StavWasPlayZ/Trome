@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Threading;
@@ -13,11 +14,26 @@ namespace Trivia.ViewModels.Menu;
 
 public class JoinMenuViewModel : PageViewModel, IActivatableViewModel
 {
-    private const int RefreshTime = 3000;
-    
     public ViewModelActivator Activator { get; } = new();
     
-    private List<Room> rooms = [];
+    
+    private const int RefreshTime = 3000;
+
+    private static readonly List<Room> MockRooms = Enumerable.Range(1, 30)
+        .Select(i => new Room(
+            i,
+            $"Room {i}",
+            i % 2 == 0 ? RoomStatus.Waiting : RoomStatus.Playing,
+            new User(i, $"User {i}"),
+            10,
+            10,
+            2,
+            10
+        ))
+        .ToList();
+    
+    
+    public List<Room> Rooms { get; private set; } = [];
     private bool _isDisposed;
 
     public JoinMenuViewModel(IScreen hostScreen) : base(hostScreen)
@@ -34,9 +50,15 @@ public class JoinMenuViewModel : PageViewModel, IActivatableViewModel
             Disposable
                 .Create(() => _isDisposed = true)
                 .DisposeWith(disposables);
-
+            
             new Thread(() => _ = RefreshThread()).Start();
         });
+    }
+    
+    public JoinMenuViewModel() : base(null!)
+    {
+        NewRoomButtonCommand = JoinRoomButtonCommand = NoOpNavCommand;
+        Rooms = MockRooms;
     }
 
     private async Task RefreshThread()
@@ -45,7 +67,7 @@ public class JoinMenuViewModel : PageViewModel, IActivatableViewModel
         {
             var response = await Communicator.Instance.SendRequestAwaitResponse<GetRoomsResponse>(new GetRoomsRequest());
 
-            rooms = response.Rooms;
+            Rooms = response.Rooms;
             Thread.Sleep(RefreshTime);
         }
     }

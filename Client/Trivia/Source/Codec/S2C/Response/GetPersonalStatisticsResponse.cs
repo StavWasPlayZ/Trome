@@ -1,5 +1,5 @@
 using Trivia.Codec.S2C.Response.Status;
-using Trivia.Models.User;
+using Trivia.Models;
 
 namespace Trivia.Codec.S2C.Response;
 
