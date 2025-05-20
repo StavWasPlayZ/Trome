@@ -36,10 +36,15 @@ public class JoinMenuViewModel : PageViewModel, IActivatableViewModel
     public ReactiveCommand<Unit, IRoutableViewModel> NewRoomButtonCommand { get; }
     
     public ReactiveCommand<Unit, IRoutableViewModel> JoinRoomButtonCommand { get; }
-    
-    
-    public List<Room> Rooms { get; private set; } = [];
 
+
+    private List<Room> _rooms = [];
+
+    public List<Room> Rooms
+    {
+        get => _rooms;
+        private set => this.RaiseAndSetIfChanged(ref _rooms, value);
+    }
 
     private Room? _room;
     
