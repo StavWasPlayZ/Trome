@@ -10,8 +10,11 @@ public enum RoomStatus : uint
 public record Room(
     int Id,
     string Name,
-    int MaxPlayers,
     RoomStatus Status,
+    
+    User Admin,
+    
+    int MaxPlayers,
     int TimePerQuestion,
     int PlayersCount
 );
