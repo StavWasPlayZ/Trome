@@ -10,5 +10,10 @@ public enum RequestCode : byte
     CreateRoom,
     GetRooms,
     GetHighScores,
-    GetPersonalStatistics
+    GetPersonalStatistics,
+    CloseGame,
+    StartGame,
+    GetRoomState,
+    LeaveRoom,
+    UpdateRoomData
 }

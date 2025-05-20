@@ -11,5 +11,10 @@ public enum ResponseCode : byte
     GetRooms,
     GetPlayersInRoom,
     GetHighScores,
-    GetPersonalStatistics
+    GetPersonalStatistics,
+    CloseGame,
+    StartGame,
+    GetRoomState,
+    LeaveRoom,
+    UpdateRoomData
 }
