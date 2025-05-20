@@ -27,7 +27,7 @@ ErrorResponse::ErrorResponse(const ErrorStatus status, const std::string &messag
     message(message)
 {}
 
-JoinRoomResponse::JoinRoomResponse(const ConsumingResponseStatus status, std::optional<Room *> &room) :
+JoinRoomResponse::JoinRoomResponse(const ConsumingResponseStatus status, std::optional<Room *> room) :
     ProtocolResponse(ResponseCode::JOIN_ROOM, status), 
     room(std::move(room))
 {}
