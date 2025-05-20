@@ -151,7 +151,9 @@ struct ErrorResponse : ProtocolResponse<ErrorStatus>
 //TODO: Provide room metadata
 struct JoinRoomResponse : ProtocolResponse<ConsumingResponseStatus>
 {
-    explicit JoinRoomResponse(ConsumingResponseStatus status);
+    explicit JoinRoomResponse(ConsumingResponseStatus status, std::optional<Room *>& room);
+
+	const std::optional<Room *> &room;
 };
 
 struct CreateRoomResponse : ProtocolResponse<GenericResponseStatus>

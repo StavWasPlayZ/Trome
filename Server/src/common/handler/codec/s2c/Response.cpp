@@ -27,8 +27,9 @@ ErrorResponse::ErrorResponse(const ErrorStatus status, const std::string &messag
     message(message)
 {}
 
-JoinRoomResponse::JoinRoomResponse(const ConsumingResponseStatus status) :
-    ProtocolResponse(ResponseCode::JOIN_ROOM, status)
+JoinRoomResponse::JoinRoomResponse(const ConsumingResponseStatus status, std::optional<Room *> &room) :
+    ProtocolResponse(ResponseCode::JOIN_ROOM, status), 
+    room(room)
 {}
 
 CreateRoomResponse::CreateRoomResponse(const GenericResponseStatus status, const unsigned int roomId) :
