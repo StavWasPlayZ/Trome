@@ -1,11 +1,6 @@
-namespace Trivia.Models;
+using Trivia.Codec;
 
-public enum RoomStatus : uint
-{
-    Waiting = 0,
-    Playing = 1,
-    NotFound = 2
-}
+namespace Trivia.Models;
 
 public record Room(
     int Id,

@@ -5,6 +5,7 @@ using System.Reactive.Disposables;
 using System.Threading;
 using System.Threading.Tasks;
 using ReactiveUI;
+using Trivia.Codec;
 using Trivia.Codec.C2S.Request;
 using Trivia.Codec.S2C.Response;
 using Trivia.Models;
