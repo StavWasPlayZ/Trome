@@ -164,58 +164,64 @@
                                 ClipToBounds="True">
                             
                             <Grid RowDefinitions="Auto, *, Auto">
-                                <StackPanel Grid.Row="0"
-                                            Orientation="Horizontal"
-                                            HorizontalAlignment="Center"
-                                            Margin="0 30 0 0">
-                                    
-                                    <StackPanel Orientation="Horizontal">
-                                        <Border Background="#ffb0a1"
-                                                Width="90"
-                                                Height="90"
-                                                Padding="20"
-                                                CornerRadius="15"
-                                                Margin="15 0">
+
+                                <Grid Grid.Column="0"
+                                      ColumnDefinitions="Auto, *"
+                                      HorizontalAlignment="Center"
+                                      Margin="10 30 10 0">
+                                    <Border Grid.Column="0"
+                                            Background="#ffb0a1"
+                                            Width="90"
+                                            Height="90"
+                                            Padding="20"
+                                            CornerRadius="15"
+                                            Margin="15 0">
                                             
-                                            <Svg Path="avares://Trivia/Assets/Icons/sports_kabaddi.svg"
-                                                 Css="* { fill: #2f223b; }"/>
-                                        </Border>
+                                        <Svg Path="avares://Trivia/Assets/Icons/sports_kabaddi.svg"
+                                             Css="* { fill: #2f223b; }"/>
+                                    </Border>
                                         
-                                        <StackPanel VerticalAlignment="Center"
-                                                    Margin="0 0 0 10">
-                                            <TextBlock FontSize="60"
-                                                       Text="{Binding SelectedRoom.Name}"/>
+                                    <StackPanel Grid.Column="1"
+                                                Spacing="5"
+                                                VerticalAlignment="Center"
+                                                Margin="0 0 0 10">
                                             
-                                            <TextBlock FontSize="20"
-                                                       Opacity=".6">
-                                                <TextBlock.Text>
-                                                    <MultiBinding StringFormat="{}{0}/{1} PLAYERS">
-                                                        <Binding Path="SelectedRoom.PlayersCount"/>
-                                                        <Binding Path="SelectedRoom.MaxPlayers"/>
-                                                    </MultiBinding>
-                                                </TextBlock.Text>
-                                            </TextBlock>
-                                        </StackPanel>
-                                        
+                                        <TextBlock FontSize="50"
+                                                   Text="{Binding SelectedRoom.Name}"
+                                                   LineHeight="40"
+                                                   TextWrapping="Wrap"/>
+                                            
+                                        <TextBlock FontSize="20"
+                                                   Opacity=".6">
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0}/{1} PLAYERS">
+                                                    <Binding Path="SelectedRoom.PlayersCount"/>
+                                                    <Binding Path="SelectedRoom.MaxPlayers"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                            
                                     </StackPanel>
-                                    
-                                </StackPanel>
-                                
+                                        
+                                </Grid>
+
                                 <StackPanel Grid.Row="1"
                                             Margin="30 10">
-                                    <StackPanel Orientation="Horizontal"
+                                    <Grid ColumnDefinitions="Auto, 5, *"
                                                 Margin="10"
                                                 Opacity=".9"
-                                                HorizontalAlignment="Center"
-                                                Spacing="5">
+                                                HorizontalAlignment="Center">
                                         
-                                        <TextBlock FontSize="37"
-                                                   Text="ADMIN: "/> 
-                                        <TextBlock FontSize="37"
+                                        <TextBlock Grid.Column="0"
+                                                   FontSize="37"
+                                                   Text="ADMIN: "
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="2"
+                                                   FontSize="37"
                                                    Foreground="#EAACC4"
-                                                   TextAlignment="End"
-                                                   Text="{Binding SelectedRoom.Admin.Username}"/>
-                                    </StackPanel>
+                                                   Text="{Binding SelectedRoom.Admin.Username}"
+                                                   TextWrapping="Wrap"/>
+                                    </Grid>
                                     
                                     <Grid RowDefinitions="Auto, Auto"
                                           ColumnDefinitions="Auto, *"
