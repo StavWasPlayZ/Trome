@@ -51,7 +51,7 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo &info, const Protoc
     {
         return RequestResult(
             JsonResponsePacketSerializer::serializeResponse(
-                JoinRoomResponse(ConsumingResponseStatus::ERROR_UNKNOWN_RESOURCE)
+                JoinRoomResponse(ConsumingResponseStatus::ERROR_UNKNOWN_RESOURCE, room)
             ),
 
             new MenuRequestHandler(*this)
@@ -59,11 +59,10 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo &info, const Protoc
     }
 
     room.value()->addUser(getUserByInfo(info));
-    auto temp = &room.value();
 
     return RequestResult(
         JsonResponsePacketSerializer::serializeResponse(
-            JoinRoomResponse(ConsumingResponseStatus::SUCCESS)
+            JoinRoomResponse(ConsumingResponseStatus::SUCCESS, room)
         ),
         new RoomMemberRequestHandler(this->m_handlerFactory, *room.value())
     );
