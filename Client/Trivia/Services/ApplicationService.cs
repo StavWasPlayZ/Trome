@@ -1,4 +1,4 @@
-using Trivia.Models.User;
+using Trivia.Models;
 
 namespace Trivia.Services;
 

@@ -3,6 +3,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using ReactiveUI;
+using Trivia.Models;
 using Trivia.ViewModels.Menu;
 
 namespace Trivia.Views.Menu;
@@ -31,7 +32,6 @@ public partial class JoinMenuView : PageViewControl<JoinMenuViewModel>
 
     private void RoomListBox_OnPointerReleased(object? sender, PointerReleasedEventArgs pointerReleasedEventArgs)
     {
-        //TODO: Implement selected room
         var listbox = (sender as ListBox)!;
         
         if (listbox.SelectedItem == null)
@@ -40,27 +40,18 @@ public partial class JoinMenuView : PageViewControl<JoinMenuViewModel>
             return;
         }
 
-        // // If we not only removed, but also added, we swapped.
-        // // Animate the animation in and out.
-        // if (e.RemovedItems.Count == 1)
-        // {
-        //     CloseRoomPanel();
-        //
-        //     Task.Run(async () =>
-        //     {
-        //         RoomInfoPanelAnimationTime /= 1.5;
-        //         await Task.Delay(RoomInfoPanelAnimationTime);
-        //         RoomInfoPanelAnimationTime *= 1.5;
-        //
-        //         Dispatcher.UIThread.Post(ExpandRoomPanel);
-        //     });
-        //     
-        //     return;
-        // }
-
-        ExpandRoomPanel();
+        ExpandRoomPanel((listbox.SelectedItem as Room)!);
     }
     
-    private void ExpandRoomPanel() => RoomInfoPanel.Width = _roomInfoPanelWidth;
-    private void CloseRoomPanel() => RoomInfoPanel.Width = 0;
+    private void ExpandRoomPanel(Room room)
+    {
+        RoomInfoPanel.Width = _roomInfoPanelWidth;
+        ViewModel!.SelectedRoom = room;
+    }
+
+    private void CloseRoomPanel()
+    {
+        RoomInfoPanel.Width = 0;
+        ViewModel!.SelectedRoom = null;
+    }
 }

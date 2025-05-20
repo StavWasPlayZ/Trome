@@ -1,4 +1,4 @@
-namespace Trivia.Models.User;
+namespace Trivia.Models;
 
 public record User(
     int Id,

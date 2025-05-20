@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using ReactiveUI;
 using Trivia.Codec.S2C.Response;
 using Trivia.Codec.S2C.Response.Status;
-using Trivia.Models.User;
+using Trivia.Models;
 using Trivia.ViewModels.Menu;
 
 namespace Trivia.ViewModels.Auth;
