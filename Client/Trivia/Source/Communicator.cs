@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Threading;
@@ -15,6 +17,11 @@ namespace Trivia;
 public class Communicator : IDisposable
 {
     public static readonly IPEndPoint DefaultEndpoint = new(IPAddress.Parse("127.0.0.1"), 6942);
+    
+    /// <summary>
+    /// Whether to print to Debug the various packets.
+    /// </summary>
+    private const bool Verbose = true;
     
     public static Communicator Instance { get; } = new();
     
@@ -87,35 +94,18 @@ public class Communicator : IDisposable
     {
         endpoint ??= DefaultEndpoint;
         
-        Console.WriteLine($"Establishing connection to {endpoint}...");
+        Log($"Establishing connection to {endpoint}...");
         
         _clientSocket = new TcpClient(endpoint.AddressFamily);
         await _clientSocket.ConnectAsync(endpoint.Address, endpoint.Port);
         
-        Console.WriteLine("Connection successfully established.");
+        Log("Connection successfully established.");
         
         new Thread(ListenThread).Start();
         new Thread(WriterThread).Start();
 
         // TestCommunication();
     }
-
-    // private void TestCommunication()
-    // {
-    //     SendRequest(new SignupRequest(
-    //         "c# user",
-    //         "1234",
-    //         "email@example.com",
-    //         "0522222222",
-    //         null,
-    //         "17/06/2008"
-    //     ));
-    //     
-    //     ProtocolResponseReceived += response =>
-    //     {
-    //         return;
-    //     };
-    // }
 
     
     private void ListenThread()
@@ -135,6 +125,8 @@ public class Communicator : IDisposable
                 Console.Error.WriteLine("IO Exception occured; Assuming forced disconnection");
                 return;
             }
+            
+            VerboseLog($"Received packet: {Encoding.UTF8.GetString(buffer, 0, read)}");
 
             if (read == 0 || !IsConnected)
                 return;
@@ -146,8 +138,10 @@ public class Communicator : IDisposable
                 Console.Error.WriteLine($"WARNING: Received unknown packet {buffer[0]}.");
                 continue;
             }
+
+            VerboseLog($"Successfully parsed as: {parsed}");
             
-            // Already just dispatch it to the UI thread
+            // Just dispatch it to the UI thread from here
             Dispatcher.UIThread.Post(() => ProtocolResponseReceived?.Invoke(parsed));
         }
     }
@@ -172,6 +166,10 @@ public class Communicator : IDisposable
             }
             
             var rawRequest = request.Serialize();
+
+            VerboseLog($"Sending packet: {request}");
+            VerboseLog($"In raw form: {Encoding.UTF8.GetString(rawRequest, 0, rawRequest.Length)}");
+            
             _clientSocket!.GetStream().Write(rawRequest, 0, rawRequest.Length);
         }
     }
@@ -193,6 +191,21 @@ public class Communicator : IDisposable
         NotifyNewOutgoingRequest();
 
         GC.SuppressFinalize(this);
+    }
+
+
+    [Conditional("DEBUG")]
+    private static void VerboseLog(string message)
+    {
+        if (!Verbose)
+            return;
+        
+        Log(message);
+    }
+    
+    private static void Log(string message)
+    {
+        Console.WriteLine($"[Communicator] {message}");
     }
 }
 
