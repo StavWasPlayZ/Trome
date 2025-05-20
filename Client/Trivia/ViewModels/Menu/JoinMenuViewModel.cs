@@ -65,8 +65,6 @@ public class JoinMenuViewModel : PageViewModel, IActivatableViewModel
         JoinRoomButtonCommand = NavigateReactiveCommand(
             () => new JoinedRoomViewModel(hostScreen)
         );
-        
-        // Rooms = MockRooms;
 
         this.WhenActivated(disposables =>
         {
