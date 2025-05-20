@@ -148,7 +148,6 @@ struct ErrorResponse : ProtocolResponse<ErrorStatus>
 	const std::string message;
 };
 
-//TODO: Provide room metadata
 struct JoinRoomResponse : ProtocolResponse<ConsumingResponseStatus>
 {
     explicit JoinRoomResponse(ConsumingResponseStatus status, std::optional<Room *> room);
