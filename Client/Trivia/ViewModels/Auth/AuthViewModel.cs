@@ -8,8 +8,15 @@ using Trivia.ViewModels.Menu;
 
 namespace Trivia.ViewModels.Auth;
 
-public abstract class AuthViewModel(IScreen hostScreen) : PageViewModel(hostScreen)
+public abstract class AuthViewModel : PageViewModel
 {
+    protected AuthViewModel(IScreen hostScreen) : base(hostScreen) { }
+    protected AuthViewModel()
+    {
+        // Just to see the final button design
+        MayAuthenticate = true;
+    }
+    
     protected void HandleAuthResponse<TStatus>(RegistrationResponse<TStatus> response, bool succeed) where TStatus : Enum
     {
         if (!succeed)

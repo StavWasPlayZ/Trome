@@ -11,6 +11,10 @@
              x:Name="JoinMenuViewControl"
              
              AttachedToVisualTree="OnAttachedToVisualTree">
+    
+    <Design.DataContext>
+        <vmmenu:JoinMenuViewModel/>
+    </Design.DataContext>
 
     <Panel>
         <Panel.Background>

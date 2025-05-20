@@ -7,6 +7,10 @@
              x:CompileBindings="True"
              x:Class="Trivia.Views.ConnectingView"
              x:DataType="vm:ConnectingViewModel">
+    
+    <Design.DataContext>
+        <vm:ConnectingViewModel/>
+    </Design.DataContext>
 
     <Border>
         <Border.Background>
@@ -38,7 +42,7 @@
                         <DataTemplate>
                             <StackPanel>
                                 <TextBlock HorizontalAlignment="Center">CONNECTION FAILED.</TextBlock>
-                                <TextBlock>RESTART GAME TO TRY AGAIN.</TextBlock>
+                                <TextBlock HorizontalAlignment="Center">RESTART GAME TO TRY AGAIN.</TextBlock>
                             </StackPanel>
                         </DataTemplate>
                     </Setter>

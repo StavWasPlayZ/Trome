@@ -10,5 +10,9 @@
              x:DataType="vmmenu:TestViewModel">
 
     <popups:StatsPopup/>
+    
+    <Design.DataContext>
+        <vmmenu:TestViewModel/>
+    </Design.DataContext>
 
 </UserControl>

@@ -7,14 +7,32 @@ using Trivia.Services;
 
 namespace Trivia.ViewModels;
 
-public abstract class PageViewModel(IScreen hostScreen) : ViewModelBase, IRoutableViewModel
+public abstract class PageViewModel : ViewModelBase, IRoutableViewModel
 {
     protected static readonly Communicator Comm = Communicator.Instance;
     
-    public IScreen HostScreen { get; } = hostScreen;
+    public IScreen HostScreen { get; }
     public string? UrlPathSegment { get; } = Guid.NewGuid().ToString()[..5];
     
-    public ApplicationService AppService => App.AppService;
+    public ApplicationService AppService { get; }
+    
+    protected PageViewModel(IScreen hostScreen)
+    {
+        AppService = App.AppService;
+        HostScreen = hostScreen;
+    }
+    
+    // Mock implementations
+    protected PageViewModel()
+    {
+        AppService = ApplicationService.MockAppService;
+        HostScreen = null!;
+    }
+
+    protected static ReactiveCommand<Unit, Unit> NoOpCommand { get; } =
+        ReactiveCommand.Create(() => { });
+    protected static ReactiveCommand<Unit, IRoutableViewModel> NoOpNavCommand { get; } =
+        ReactiveCommand.Create(IRoutableViewModel () => null!);
 
 
     public ReactiveCommand<Unit, IRoutableViewModel>? NavigateBackCommand { get; } =

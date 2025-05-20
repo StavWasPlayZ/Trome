@@ -49,6 +49,12 @@ public class SignupViewModel : AuthViewModel
             .Subscribe(_ => UpdateMayAuthenticate());
     }
 
+    public SignupViewModel()
+    {
+        ToLoginCommand = NoOpNavCommand;
+        SignupCommand = NoOpCommand;
+    }
+
     private void HandleSignupResponse(SignupResponse response)
     {
         HandleAuthResponse(response, response.Status == SignupStatus.Success);

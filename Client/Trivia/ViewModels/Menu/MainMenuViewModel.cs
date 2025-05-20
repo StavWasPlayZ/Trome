@@ -8,23 +8,37 @@ using Trivia.ViewModels.Auth;
 
 namespace Trivia.ViewModels.Menu;
 
-public class MainMenuViewModel(IScreen hostScreen) : PageViewModel(hostScreen)
+public class MainMenuViewModel : PageViewModel
 {
-    public ReactiveCommand<Unit, IRoutableViewModel> PlayCommand { get; } = NavigateReactiveCommand(
-        () => new JoinMenuViewModel(hostScreen)
-    );
-    
-    public ReactiveCommand<Unit, IRoutableViewModel> StatisticsCommand { get; } = NavigateReactiveCommand(
-        () => new StatisticsViewModel(hostScreen)
-    );
-    
-    public ReactiveCommand<Unit, Unit> LogOutCommand { get; } = ReactiveCommand.CreateFromTask(async () =>
+    public MainMenuViewModel(IScreen hostScreen) : base(hostScreen)
     {
-        await Comm.SendRequestAwaitResponse<LogoutResponse>(new LogoutRequest());
+        PlayCommand = NavigateReactiveCommand(
+            () => new JoinMenuViewModel(hostScreen)
+        );
+        StatisticsCommand = NavigateReactiveCommand(
+            () => new StatisticsViewModel(hostScreen)
+        );
+        LogOutCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await Comm.SendRequestAwaitResponse<LogoutResponse>(new LogoutRequest());
         
-        // Assuming this just worked.
-        NavigateAndReset(new LoginViewModel(hostScreen));
-    });
+            // Assuming this just worked.
+            NavigateAndReset(new LoginViewModel(hostScreen));
+        });
+    }
+
+    public MainMenuViewModel()
+    {
+        PlayCommand = StatisticsCommand = NoOpNavCommand;
+        LogOutCommand = NoOpCommand;
+    }
+    
+
+    public ReactiveCommand<Unit, IRoutableViewModel> PlayCommand { get; }
+    
+    public ReactiveCommand<Unit, IRoutableViewModel> StatisticsCommand { get; }
+    
+    public ReactiveCommand<Unit, Unit> LogOutCommand { get; }
 
     public ReactiveCommand<Unit, Unit> ExitCommand { get; } = ReactiveCommand.Create(() =>
     {

@@ -8,6 +8,11 @@
              x:CompileBindings="True"
              x:Class="Trivia.Views.Game.JoinedRoomView"
              x:DataType="game:JoinedRoomViewModel">
+    
+    <Design.DataContext>
+        <game:JoinedRoomViewModel/>
+    </Design.DataContext>
+    
     <Panel>
         <Panel.Background>
             <ImageBrush Source="avares://Trivia/Assets/drool-d-b1608556d649b5b943136ecc0df0fe1bc7ff644f.png"
