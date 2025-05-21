@@ -1,7 +1,9 @@
 #pragma once
 
-#include <string>
+#include "infrastructure/RoomData.h"
+
 #include <optional>
+#include <string>
 
 #include "infrastructure/request/RequestInfo.h"
 
@@ -85,17 +87,6 @@ struct GetRoomsRequest : ProtocolRequest
 
 struct CreateRoomRequest : ProtocolRequest
 {
-    CreateRoomRequest(
-		const std::string &roomName,
-		int maxPlayers,
-		int questionCount,
-		int answerTimeout
-	);
-
-	const std::string roomName;
-    const int maxPlayers;
-    const int questionCount;
-    const int answerTimeout;
 };
 
 struct GetHighScoresRequest : ProtocolRequest
@@ -124,11 +115,7 @@ struct LeaveRoomRequest : ProtocolRequest
 
 struct UpdateRoomDataRequest : ProtocolRequest
 {
-    UpdateRoomDataRequest(const std::string &roomName, int maxPlayers,
-                          int timePerQuestion, int questionsCount);
+    explicit UpdateRoomDataRequest(const RoomData &data);
 
-    const std::string roomName;
-    const int maxPlayers;
-    const int timePerQuestion;
-    const int questionsCount;
+    const RoomData data;
 };

@@ -23,13 +23,17 @@ public class JoinMenuViewModel : PageViewModel, IActivatableViewModel
     private static readonly List<Room> MockRooms = Enumerable.Range(1, 30)
         .Select(i => new Room(
             i,
-            $"Room {i}",
             i % 2 == 0 ? RoomStatus.Waiting : RoomStatus.Playing,
             new User(i, $"User {i}"),
-            10,
-            7,
+            
             2,
-            15
+            
+            new RoomData(
+                $"Room {i}",
+                10,
+                7,
+                15
+            )
         ))
         .ToList();
     

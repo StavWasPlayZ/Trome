@@ -56,6 +56,11 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const JoinRoomResponse &
     nlohmann::json data;
     serializeBaseResponseToJson<ConsumingResponseStatus>(data, response);
 
+    if (response.room.has_value())
+    {
+        data["room"] = serializeRoomToJson(*response.room.value());
+    }
+
     return serializeJsonToProtocol(response.id, data);
 }
 
@@ -71,33 +76,15 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const CreateRoomResponse
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const GetRoomsResponse &response)
 {
-
     nlohmann::json data;
     serializeBaseResponseToJson<GenericResponseStatus>(data, response);
 
-    nlohmann::json rooms = nlohmann::json::array();
+    nlohmann::json& rooms = data["rooms"] = nlohmann::json::array();
 
 	for (const auto& room : response.rooms)
     {
-        nlohmann::json roomObj;
-	    const RoomData& roomData = room->getData();
-
-		roomObj["id"] = roomData.id;
-		roomObj["name"] = roomData.name;
-        roomObj["status"] = roomData.status;
-
-        roomObj["admin"] = serializePlayerToJson(room->getAdmin());
-
-        roomObj["max_players"] = roomData.maxPlayers;
-        roomObj["time_per_question"] = roomData.secsPerQuestion;
-
-	    roomObj["players_count"] = room->getAllUsers().size();
-	    roomObj["questions"] = roomData.questionsCount;
-
-        rooms.push_back(roomObj);
+        rooms.push_back(serializeRoomToJson(*room));
 	}
-
-	data["rooms"] = rooms;
 
     return serializeJsonToProtocol(response.id, data);
 }
@@ -189,19 +176,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetRoomStateRespon
     nlohmann::json data;
     serializeBaseResponseToJson<GenericResponseStatus>(data, response);
 
-    const Room& room = response.room;
-    const RoomData& roomData = room.getData();
-
-    data["game_status"] = roomData.status;
-    data["questions_count"] = roomData.questionsCount;
-    data["secs_per_question"] = roomData.secsPerQuestion;
-    data["is_game_running"] = roomData.status == RoomStatus::PLAYING;
-
-    data["players"] = nlohmann::json::array();
-    for (const LoggedUser* user : room.getAllUsers())
-    {
-        data["players"].push_back(serializePlayerToJson(*user));
-    }
+    data["room"] = serializeRoomToJson(response.room);
 
     return serializeJsonToProtocol(response.id, data);
 }
@@ -220,6 +195,33 @@ nlohmann::json JsonResponsePacketSerializer::serializePlayerToJson(const LoggedU
 
     result["id"] = player.getId();
     result["username"] = player.getUsername();
+
+    return result;
+}
+
+nlohmann::json JsonResponsePacketSerializer::serializeRoomToJson(const Room &room)
+{
+    nlohmann::json result;
+
+    result["id"] = room.getId();
+    result["status"] = room.getStatus();
+    result["admin"] = serializePlayerToJson(room.getAdmin());
+
+    result["players_count"] = room.getAllUsers().size();
+
+    result["data"] = serializeRoomDataToJson(room.getData());
+
+    return result;
+}
+
+nlohmann::json JsonResponsePacketSerializer::serializeRoomDataToJson(const RoomData &room)
+{
+    nlohmann::json result;
+
+    result["name"] = room.name;
+    result["max_players"] = room.maxPlayers;
+    result["time_per_question_secs"] = room.timePerQuestionSecs;
+    result["questions_count"] = room.questionsCount;
 
     return result;
 }

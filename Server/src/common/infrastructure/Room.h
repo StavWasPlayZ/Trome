@@ -7,6 +7,7 @@
 #include <optional>
 #include <vector>
 
+enum class RoomStatus : unsigned int;
 class Game;
 
 class Room
@@ -17,14 +18,16 @@ public:
      *
      * Users should be added manually via Room::addUser.
      */
-    Room(LoggedUser& admin, const RoomData& data, const IDatabase& database);
+    Room(LoggedUser& admin, const RoomData& data, const IDatabase& database, RoomStatus status);
 
     std::optional<Game*> getCurrentGame() const;
     void setCurrentGame(Game& game);
 
     void addUser(LoggedUser& user);
     void removeUser(const LoggedUser& user);
-    std::vector<LoggedUser*> getAllUsers() const;
+    const std::vector<LoggedUser*>& getAllUsers() const;
+
+    unsigned int getId() const;
 
     const RoomData& getData() const;
     void setData(const RoomData& newData);
@@ -32,7 +35,13 @@ public:
     LoggedUser& getAdmin() const;
     void setAdmin(LoggedUser& admin);
 
+    RoomStatus getStatus() const;
+    void setStatus(RoomStatus status);
+
 private:
+    const unsigned int id;
+    RoomStatus status;
+
     // Made a pointer such that if we'd like to change it in the future
     LoggedUser* m_admin;
 
@@ -42,4 +51,18 @@ private:
     Game* m_currentGame;
 
     const IDatabase& m_database;
+
+    /**
+     * Used for counting how many instances of Room exists,
+     * generating a unique ID for each.
+     */
+    static unsigned int globalId;
+};
+
+
+enum class RoomStatus : unsigned int
+{
+    WAITING = 0,
+    PLAYING = 1,
+    NOT_FOUND = 2
 };

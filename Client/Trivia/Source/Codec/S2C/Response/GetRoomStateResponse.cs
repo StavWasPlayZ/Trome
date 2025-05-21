@@ -1,12 +1,9 @@
 ﻿using Trivia.Codec.S2C.Response.Status;
+using Trivia.Models;
 
 namespace Trivia.Codec.S2C.Response;
 
 public record GetRoomStateResponse(
     GenericResponseStatus Status,
-    RoomStatus GameStatus,
-    int QuestionCount,
-    int SecsPerQuestion,
-    int Players,
-    bool IsGameRunning
+    Room Room
 ) : ProtocolResponse<GenericResponseStatus>(Status);
