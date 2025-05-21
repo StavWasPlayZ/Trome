@@ -100,6 +100,14 @@ public class Communicator : IDisposable
         }
     }
 
+    /// <summary>
+    /// Asynchronously sends a request, providing its result.
+    /// If an <see cref="ErrorResponse"/> is received, a <see cref="ServerErrorException"/> is thrown.
+    /// </summary>
+    /// 
+    /// <param name="request">The request to send to the server</param>
+    /// 
+    /// <typeparam name="T">The expected <see cref="ProtocolResponse"/> type</typeparam>
     public async Task<T> SendRequestAwaitResponse<T>(ProtocolRequest request) where T : ProtocolResponse
     {
         var task = new TaskCompletionSource<T>();
