@@ -3,7 +3,6 @@ using System.Reactive;
 using ReactiveUI;
 using Trivia.Codec.C2S.Request;
 using Trivia.Codec.S2C.Response;
-using Trivia.Codec.S2C.Response.Status;
 
 namespace Trivia.ViewModels.Auth;
 
@@ -18,13 +17,8 @@ public class LoginViewModel : AuthViewModel
             () => new SignupViewModel(hostScreen)
         );
 
-        LoginCommand = ReactiveCommand.CreateFromTask(
-            async () =>
-            {
-                HandleLoginResponse(
-                    await Comm.SendRequestAwaitResponse<LoginResponse>(new LoginRequest(Username!, Password!))
-                );
-            },
+        LoginCommand = ReactiveCommand.Create(
+            DoLogin,
             this.WhenAnyValue(vm => vm.MayAuthenticate)
         );
         
@@ -35,17 +29,21 @@ public class LoginViewModel : AuthViewModel
             )
             .Subscribe(_ => UpdateMayAuthenticate());
     }
-
+    
     public LoginViewModel()
     {
         ToSignupCommand = NoOpNavCommand;
         LoginCommand = NoOpCommand;
     }
-    
 
-    private void HandleLoginResponse(LoginResponse response)
+    
+    private void DoLogin()
     {
-        HandleAuthResponse(response, response.Status == LoginStatus.Success);
+        Comm.SendRequest<LoginResponse>(
+            new LoginRequest(Username!, Password!),
+            HandleAuthResponse,
+            HandleErrorResponse
+        );
     }
 
 

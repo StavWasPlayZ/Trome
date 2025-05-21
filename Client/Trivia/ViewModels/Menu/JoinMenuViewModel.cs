@@ -92,7 +92,7 @@ public class JoinMenuViewModel : PageViewModel, IActivatableViewModel
     private async Task RefreshRoomsThread()
     {
         while (!_isDisposed)
-        {
+        {            
             var response = await Communicator.Instance.SendRequestAwaitResponse<GetRoomsResponse>(new GetRoomsRequest());
 
             Rooms = response.Rooms;

@@ -11,6 +11,7 @@ using Avalonia.Threading;
 using Trivia.Codec.C2S.Request;
 using Trivia.Codec.S2C;
 using Trivia.Codec.S2C.Response;
+using Trivia.Exceptions;
 
 namespace Trivia;
 
@@ -58,23 +59,51 @@ public class Communicator : IDisposable
         NotifyNewOutgoingRequest();
     }
 
-    public async Task<T> SendRequestAwaitResponse<T>(ProtocolRequest request) where T : IProtocolResponse
+    /// <summary>
+    /// Sends the provided request to the server, awaiting a response of <typeparamref name="T"/>.
+    /// </summary>
+    /// <param name="request">The request to send to the server</param>
+    /// <param name="onResponse">An action called when the first instance of <typeparamref name="T"/>
+    /// is provided by the server</param>
+    /// <param name="onError">An action called if an <see cref="ErrorResponse"/> was provided
+    /// instead of <typeparamref name="T"/>.</param>
+    /// <typeparam name="T">The expected <see cref="ProtocolResponse"/> type.</typeparam>
+    public void SendRequest<T>(ProtocolRequest request, Action<T> onResponse, Action<ErrorResponse>? onError = null)
+        where T : ProtocolResponse
     {
-        var task = new TaskCompletionSource<T>();
-        
         ProtocolResponseReceived += OnProtocolResponseReceived;
         SendRequest(request);
         
-        return await task.Task;
+        return;
 
-        void OnProtocolResponseReceived(IProtocolResponse response)
+        void OnProtocolResponseReceived(ProtocolResponse response)
         {
-            if (response is not T wantedResponse)
-                return;
+            //TODO: Filter out notification packets
+            
+            if (response is T wantedResponse)
+            {
+                onResponse(wantedResponse);
+            }
+            else if (response is ErrorResponse errorResponse)
+            {
+                onError?.Invoke(errorResponse);
+            }
             
             ProtocolResponseReceived -= OnProtocolResponseReceived;
-            task.TrySetResult(wantedResponse);
         }
+    }
+
+    public async Task<T> SendRequestAwaitResponse<T>(ProtocolRequest request) where T : ProtocolResponse
+    {
+        var task = new TaskCompletionSource<T>();
+        
+        SendRequest<T>(
+            request,
+            response => task.TrySetResult(response),
+            response => task.TrySetException(new ServerErrorException(response))
+        );
+        
+        return await task.Task;
     }
 
     /// <summary>
@@ -209,4 +238,4 @@ public class Communicator : IDisposable
     }
 }
 
-public delegate void ProtocolResponseHandler(IProtocolResponse request);
+public delegate void ProtocolResponseHandler(ProtocolResponse request);
