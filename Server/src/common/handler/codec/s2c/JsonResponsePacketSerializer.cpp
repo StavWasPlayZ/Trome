@@ -117,7 +117,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetPersonalStatist
 {
     nlohmann::json data;
 
-    nlohmann::json& stats = data["status"] = nlohmann::json::object();
+    nlohmann::json& stats = data["stats"] = nlohmann::json::object();
 
     stats["points"] = response.stats.points;
     stats["games_played"] = response.stats.gamesPlayed;
