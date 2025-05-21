@@ -9,7 +9,6 @@ LoginRequestHandler::LoginRequestHandler(const RequestHandlerFactory &handlerFac
 
 bool LoginRequestHandler::isRequestRelevant(const RequestInfo &info) const
 {
-    //TODO: Check if client is already logged in (?)
     return (info.id == RequestCode::LOGIN) || (info.id == RequestCode::SIGNUP);
 }
 
