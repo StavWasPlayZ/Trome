@@ -1,6 +1,7 @@
 #include "Request.h"
 
 #include "JsonRequestPacketDeserializer.h"
+#include "infrastructure/RoomData.h"
 
 LoginRequest::LoginRequest(const std::string &username, const std::string &password) :
     username(username),
@@ -80,16 +81,5 @@ ProtocolRequest *ProtocolRequest::fromRequest(const RequestInfo &info) {
 JoinRoomRequest::JoinRoomRequest(const unsigned int roomID) : roomID(roomID)
 {}
 
-CreateRoomRequest::CreateRoomRequest(const std::string &roomName, const int maxPlayers,
-                                     const int questionCount, const int answerTimeout)
-    : roomName(roomName), maxPlayers(maxPlayers), questionCount(questionCount), answerTimeout(answerTimeout)
-{}
-
-UpdateRoomDataRequest::UpdateRoomDataRequest(const std::string &roomName,
-                                             const int maxPlayers,
-                                             const int timePerQuestion,
-                                             const int questionsCount)
-    : roomName(roomName), maxPlayers(maxPlayers),
-      timePerQuestion(timePerQuestion),
-      questionsCount(questionsCount)
+UpdateRoomDataRequest::UpdateRoomDataRequest(const RoomData& data) : data(data)
 {}

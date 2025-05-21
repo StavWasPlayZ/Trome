@@ -4,10 +4,12 @@ RoomManager::RoomManager(const IDatabase &database) :
     m_database(database)
 {}
 
-void RoomManager::createRoom(LoggedUser &admin, const RoomData &data)
+Room &RoomManager::createRoom(LoggedUser &admin, const RoomData &data)
 {
-    Room room(admin, data, this->m_database);
-    this->m_rooms.emplace(data.id, room);
+    Room room(admin, data, this->m_database, RoomStatus::WAITING);
+    const auto [entry, _] = this->m_rooms.emplace(room.getId(), room);
+
+    return entry->second;
 }
 
 void RoomManager::deleteRoom(const int roomID)
@@ -24,7 +26,7 @@ RoomStatus RoomManager::getRoomStatus(const int roomID) const
         return RoomStatus::NOT_FOUND;
     }
 
-    return room.value()->getData().status;
+    return room.value()->getStatus();
 }
 
 std::vector<Room*> RoomManager::getRooms() const

@@ -7,9 +7,9 @@
 class RoomManager
 {
 public:
-    RoomManager(const IDatabase& database);
+    explicit RoomManager(const IDatabase& database);
 
-    void createRoom(LoggedUser &admin, const RoomData &data);
+    Room& createRoom(LoggedUser &admin, const RoomData &data);
     void deleteRoom(int roomID);
 
     RoomStatus getRoomStatus(int roomID) const;

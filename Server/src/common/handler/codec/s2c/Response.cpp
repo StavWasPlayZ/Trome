@@ -27,14 +27,16 @@ ErrorResponse::ErrorResponse(const ErrorStatus status, const std::string &messag
     message(message)
 {}
 
-JoinRoomResponse::JoinRoomResponse(const ConsumingResponseStatus status, std::optional<Room *> room) :
+JoinRoomResponse::JoinRoomResponse(const ConsumingResponseStatus status, const std::optional<Room *> &room) :
     ProtocolResponse(ResponseCode::JOIN_ROOM, status), 
-    room(std::move(room))
+    room(room)
 {}
 
-CreateRoomResponse::CreateRoomResponse(const GenericResponseStatus status, const unsigned int roomId) :
+CreateRoomResponse::CreateRoomResponse(const GenericResponseStatus status, const unsigned int roomId,
+        const RoomData& data) :
     ProtocolResponse(ResponseCode::CREATE_ROOM, status),
-    roomId(roomId)
+    roomId(roomId),
+    data(data)
 {}
 
 GetRoomsResponse::GetRoomsResponse(const GenericResponseStatus status, const std::vector<Room*> &rooms) :

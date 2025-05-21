@@ -12,7 +12,7 @@ void Game::startGame()
 {
     const RoomData& roomData = m_room.getData();
 
-    if (roomData.status == RoomStatus::PLAYING)
+    if (m_room.getStatus() == RoomStatus::PLAYING)
         throw std::runtime_error("Game is already in progress");
 
     const std::list<Question> questions = this->m_database.queryQuestions(roomData.questionsCount);
@@ -20,15 +20,10 @@ void Game::startGame()
 
     this->m_questionsRotation = std::rand() % 4;
 
-
-    RoomData newRoomData = RoomData(roomData);
-    newRoomData.status = RoomStatus::PLAYING;
-    m_room.setData(newRoomData);
+    m_room.setStatus(RoomStatus::PLAYING);
 }
 
 void Game::endGame() const
 {
-    RoomData newRoomData = RoomData(m_room.getData());
-    newRoomData.status = RoomStatus::WAITING;
-    m_room.setData(newRoomData);
+    m_room.setStatus(RoomStatus::WAITING);
 }
