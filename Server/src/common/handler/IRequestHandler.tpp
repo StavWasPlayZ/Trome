@@ -9,12 +9,13 @@
 
 
 template <typename T>
-RequestResult IRequestHandler::errorUnimplementedResult() const
+RequestResult IRequestHandler::errorUnimplementedResult(const RequestCode reqId) const
 {
     return RequestResult(
         JsonResponsePacketSerializer::serializeResponse(
             ErrorResponse(
                 ErrorStatus::SERVER_UNIMPLEMENTED,
+                reqId,
                 "Unimplemented server-side"
             )
         ),

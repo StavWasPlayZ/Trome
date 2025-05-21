@@ -15,13 +15,17 @@ public:
 
 	/**
 	 * Signs up a new user, then registers them as logged in.
+	 *
+	 * NOTE: THE RETURNED RESOURCE MUST BE FREED!
 	 */
-	SignupResponse signup(const RequestInfo& context, const SignupRequest& request);
+	ProtocolResponse* signup(const RequestInfo& context, const SignupRequest& request);
 
 	/**
 	 * Registers the provided user as logged in, provided their credentials match.
+	 *
+	 * NOTE: THE RETURNED RESOURCE MUST BE FREED!
 	 */
-	LoginResponse login(const Client &client, const LoginRequest &request);
+	ProtocolResponse* login(const Client &client, const LoginRequest &request);
 
 	/**
 	 * Unregisters the user as being signed in.

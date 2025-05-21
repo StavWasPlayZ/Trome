@@ -34,27 +34,23 @@ RequestResult RoomMemberRequestHandler::handleRequest(const RequestInfo &info, c
     }
 }
 
-RequestResult RoomMemberRequestHandler::leaveRoom(const RequestInfo &info, const ProtocolRequest &request) const
+RequestResult RoomMemberRequestHandler::leaveRoom(const RequestInfo &info, const ProtocolRequest &) const
 {
-    const LeaveRoomRequest &req = static_cast<const LeaveRoomRequest &>(request);
-
     m_room.removeUser(getUserByInfo(info));
 
     return RequestResult(
             JsonResponsePacketSerializer::serializeResponse(
-                LeaveRoomResponse(GenericResponseStatus::SUCCESS)
+                LeaveRoomResponse()
         ),
 
         new MenuRequestHandler(this->m_handlerFactory));
 }
 
-RequestResult RoomMemberRequestHandler::getRoomState(const RequestInfo &info, const ProtocolRequest &request) const
+RequestResult RoomMemberRequestHandler::getRoomState(const RequestInfo &, const ProtocolRequest &) const
 {
-    const GetRoomStateRequest &req = static_cast<const GetRoomStateRequest &>(request);
-
     return RequestResult(
         JsonResponsePacketSerializer::serializeResponse(
-            GetRoomStateResponse(GenericResponseStatus::SUCCESS, m_room)
+            GetRoomStateResponse(m_room)
         ),
 
         new RoomMemberRequestHandler(*this)

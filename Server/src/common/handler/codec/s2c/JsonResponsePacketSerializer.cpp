@@ -7,7 +7,7 @@
 
 #include <infrastructure/RoomData.h>
 
-// fucking windows and their stupid ass macros cost me 1 hour 30
+// fucking windows and their stupidass macros cost me 1 hour 30
 #ifdef ERROR
 #undef ERROR
 #endif
@@ -15,7 +15,7 @@
 OBuffer JsonResponsePacketSerializer::serializeResponse(const LoginResponse &response)
 {
 	nlohmann::json data;
-	serializeRegistrationResponseToJson<LoginStatus>(data, response);
+	serializeRegistrationResponseToJson(data, response);
 
 	return serializeJsonToProtocol(response.id, data);
 }
@@ -23,12 +23,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const LoginResponse &res
 OBuffer JsonResponsePacketSerializer::serializeResponse(const SignupResponse &response)
 {
 	nlohmann::json data;
-	serializeRegistrationResponseToJson<SignupStatus>(data, response);
-
-    if (response.status != SignupStatus::SUCCESS)
-    {
-        data["context"] = response.context;
-    }
+	serializeRegistrationResponseToJson(data, response);
 
 	return serializeJsonToProtocol(response.id, data);
 }
@@ -36,34 +31,28 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const SignupResponse &re
 OBuffer JsonResponsePacketSerializer::serializeResponse(const ErrorResponse &response)
 {
     nlohmann::json data;
-    serializeBaseResponseToJson<ErrorStatus>(data, response);
 
-    data["message"] = response.message;
+    data["req_code"] = response.reqCode;
+    data["status"] = response.status;
+
+    if (response.context.has_value())
+    {
+        data["context"] = response.context.value();
+    }
 
     return serializeJsonToProtocol(response.id, data);
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const LogoutResponse &response)
 {
-    nlohmann::json data;
-    serializeBaseResponseToJson<LogoutStatus>(data, response);
-
-    return serializeJsonToProtocol(response.id, data);
+    return serializeJsonToProtocol(response.id, nlohmann::json::object());
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const JoinRoomResponse &response)
 {
     nlohmann::json data;
-    serializeBaseResponseToJson<ConsumingResponseStatus>(data, response);
 
-    if (response.room.has_value())
-    {
-        data["room"] = serializeRoomToJson(*response.room.value());
-    }
-    else
-    {
-        data["room"] = nullptr;
-    }
+    data["room"] = serializeRoomToJson(response.room);
 
     return serializeJsonToProtocol(response.id, data);
 }
@@ -71,7 +60,6 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const JoinRoomResponse &
 OBuffer JsonResponsePacketSerializer::serializeResponse(const CreateRoomResponse &response)
 {
     nlohmann::json data;
-    serializeBaseResponseToJson<GenericResponseStatus>(data, response);
 
     data["room_id"] = response.roomId;
 
@@ -81,7 +69,6 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const CreateRoomResponse
 OBuffer JsonResponsePacketSerializer::serializeResponse(const GetRoomsResponse &response)
 {
     nlohmann::json data;
-    serializeBaseResponseToJson<GenericResponseStatus>(data, response);
 
     nlohmann::json& rooms = data["rooms"] = nlohmann::json::array();
 
@@ -96,16 +83,12 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetRoomsResponse &
 OBuffer JsonResponsePacketSerializer::serializeResponse(const GetPlayersInRoomResponse &response)
 {
     nlohmann::json data;
-    serializeBaseResponseToJson<ConsumingResponseStatus>(data, response);
 
-    if (response.players.has_value())
+    data["players"] = nlohmann::json::array();
+
+    for (const LoggedUser* user : response.players)
     {
-        data["players"] = nlohmann::json::array();
-
-        for (const LoggedUser* user : response.players.value())
-        {
-            data["players"].push_back(serializePlayerToJson(*user));
-        }
+        data["players"].push_back(serializePlayerToJson(*user));
     }
 
     return serializeJsonToProtocol(response.id, data);
@@ -114,7 +97,6 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetPlayersInRoomRe
 OBuffer JsonResponsePacketSerializer::serializeResponse(const GetHighScoresResponse &response)
 {
     nlohmann::json data;
-    serializeBaseResponseToJson<GeneralStatsStatus>(data, response);
 
     nlohmann::json scoresArr = nlohmann::json::array();
 
@@ -135,7 +117,6 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetPersonalStatist
 {
 
     nlohmann::json data;
-    serializeBaseResponseToJson<GeneralStatsStatus>(data, response);
 
     nlohmann::json stats;
 
@@ -153,32 +134,22 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetPersonalStatist
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const CloseRoomResponse &response)
 {
-    nlohmann::json data;
-    serializeBaseResponseToJson<GenericResponseStatus>(data, response);
-
-    return serializeJsonToProtocol(response.id, data);
+    return serializeJsonToProtocol(response.id, nlohmann::json::object());
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const StartGameResponse &response)
 {
-    nlohmann::json data;
-    serializeBaseResponseToJson<GenericResponseStatus>(data, response);
-
-    return serializeJsonToProtocol(response.id, data);
+    return serializeJsonToProtocol(response.id, nlohmann::json::object());
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const LeaveRoomResponse &response)
 {
-    nlohmann::json data;
-    serializeBaseResponseToJson<GenericResponseStatus>(data, response);
-
-    return serializeJsonToProtocol(response.id, data);
+    return serializeJsonToProtocol(response.id, nlohmann::json::object());
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const GetRoomStateResponse &response)
 {
     nlohmann::json data;
-    serializeBaseResponseToJson<GenericResponseStatus>(data, response);
 
     data["room"] = serializeRoomToJson(response.room);
 
@@ -187,10 +158,13 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetRoomStateRespon
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const UpdateRoomDataResponse &response)
 {
-    nlohmann::json data;
-    serializeBaseResponseToJson<GenericResponseStatus>(data, response);
+    return serializeJsonToProtocol(response.id, nlohmann::json::object());
+}
 
-    return serializeJsonToProtocol(response.id, data);
+void JsonResponsePacketSerializer::serializeRegistrationResponseToJson(nlohmann::json &json,
+                                                                       const RegistrationResponse &response)
+{
+    json["user_id"] = response.userId;
 }
 
 nlohmann::json JsonResponsePacketSerializer::serializePlayerToJson(const LoggedUser &player)

@@ -6,7 +6,7 @@ LoginManager::LoginManager(const IDatabase& database) :
 	m_database(database)
 {}
 
-SignupResponse LoginManager::signup(const RequestInfo &context, const SignupRequest &request)
+ProtocolResponse *LoginManager::signup(const RequestInfo &context, const SignupRequest &request)
 {
 	try
 	{
@@ -21,7 +21,7 @@ SignupResponse LoginManager::signup(const RequestInfo &context, const SignupRequ
 	}
     catch (const RegexViolationException &e)
     {
-        return SignupResponse(SignupStatus::FAILED_INVALID_ARGUMENT, e.field);
+        return new ErrorResponse(ErrorStatus::FAILED_INVALID_ARGUMENT, context.id, e.field);
     }
 	catch (const std::runtime_error& e)
 	{
@@ -29,18 +29,22 @@ SignupResponse LoginManager::signup(const RequestInfo &context, const SignupRequ
 
 		//TODO: actually check what the error is about, and act accordingly.
 		// Only throw this if relevant, otherwise generic/internal error.
-		return SignupResponse(SignupStatus::FAILED_USERNAME_TAKEN);
+		return new ErrorResponse(ErrorStatus::FAILED_USERNAME_TAKEN, context.id);
 	}
 
-	const LoginResponse loginRes = this->login(context.client, request);
+	const ProtocolResponse* loginRes = this->login(context.client, request);
 
 	// Simply convert the login response to a signup one
-	if (loginRes.status == LoginStatus::SUCCESS)
+	if (loginRes->id != ResponseCode::ERROR)
 	{
-		return SignupResponse(SignupStatus::SUCCESS, loginRes.userId);
+		SignupResponse* result = new SignupResponse(static_cast<const LoginResponse*>(loginRes)->userId);
+	    delete loginRes;
+	    return result;
 	}
 
-	return SignupResponse(SignupStatus::FAILED_INTERNAL_ERROR);
+    delete loginRes;
+
+	return new ErrorResponse(ErrorStatus::INTERNAL, context.id);
 }
 
 

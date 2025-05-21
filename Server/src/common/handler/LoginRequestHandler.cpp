@@ -28,7 +28,7 @@ RequestResult LoginRequestHandler::login(const RequestInfo& context, const Login
 {
     const LoginResponse response = this->m_handlerFactory.getLoginManager().login(context.client, request);
 
-    if (response.status != LoginStatus::SUCCESS)
+    if (response.id == ResponseCode::ERROR)
     {
         return RequestResult(
             JsonResponsePacketSerializer::serializeResponse(response),
@@ -46,7 +46,7 @@ RequestResult LoginRequestHandler::signup(const RequestInfo& context, const Sign
 {
     const SignupResponse response = this->m_handlerFactory.getLoginManager().signup(context, request);
 
-    if (response.status != SignupStatus::SUCCESS)
+    if (response.id == ResponseCode::ERROR)
     {
         return RequestResult(
             JsonResponsePacketSerializer::serializeResponse(response),

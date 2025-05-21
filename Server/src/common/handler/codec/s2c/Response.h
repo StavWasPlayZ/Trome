@@ -3,7 +3,6 @@
 #include "infrastructure/UserStatistics.h"
 
 #include <infrastructure/RoomData.h>
-#include <optional>
 #include <string>
 #include <vector>
 
@@ -29,209 +28,106 @@ enum class ResponseCode : unsigned char
 	UPDATE_ROOM_DATA
 };
 
-// Generic statuses
 
-enum class GenericResponseStatus : unsigned int
-{
-    SUCCESS = 1,
-    ERROR_INTERNAL = 0
-};
-
-/**
- * The status of a response that takes in a resource.
- *
- * May be of any type.
- */
-enum class ConsumingResponseStatus : unsigned char
-{
-    SUCCESS = 1,
-    ERROR_UNKNOWN_RESOURCE,
-    ERROR_INTERNAL = 0,
-};
-
-
-/**
- * S - The enum Status type
- */
-template <typename S>
 struct ProtocolResponse
 {
-	ProtocolResponse(ResponseCode id, S status);
+    explicit ProtocolResponse(ResponseCode id);
 
     const ResponseCode id;
-	const S status;
 };
 
 
-/**
- * S - The enum Status type
- */
-template <typename S>
-struct RegistrationResponse : ProtocolResponse<S>
+struct RegistrationResponse : ProtocolResponse
 {
-	RegistrationResponse(ResponseCode id, S status, unsigned int userId);
-	/**
-	 * A failed login response. Provided no user ID.
-	 */
-	RegistrationResponse(ResponseCode id, S status);
+	RegistrationResponse(ResponseCode id, unsigned int userId);
 
-	/**
-	 * For failure, equals -1 (4294967295).
-	 */
 	const unsigned int userId;
 };
 
-
-enum class LoginStatus : unsigned char
+struct LoginResponse : RegistrationResponse
 {
-	SUCCESS = 1,
-	FAILED_INVALID_CREDENTIALS = 2,
-	FAILED_ALREADY_LOGGED_IN = 3,
-	FAILED_INTERNAL_ERROR = 0
-};
-
-struct LoginResponse : RegistrationResponse<LoginStatus>
-{
-	LoginResponse(LoginStatus status, unsigned int userId);
-	/**
-	 * A failed login response. Provided no user ID.
-	 */
-	explicit LoginResponse(LoginStatus status);
+    explicit LoginResponse(unsigned int userId);
 };
 
 
-enum class SignupStatus : unsigned char
+struct SignupResponse : RegistrationResponse
 {
-	SUCCESS = 1,
-	FAILED_USERNAME_TAKEN = 2,
-    FAILED_INVALID_ARGUMENT = 3,
-	FAILED_INTERNAL_ERROR = 0
-};
-
-struct SignupResponse : RegistrationResponse<SignupStatus>
-{
-	SignupResponse(SignupStatus status, unsigned int userId);
-    /**
-     * A failed login response. Provided no user ID.
-     */
-    explicit SignupResponse(SignupStatus status, const std::string& context = "");
-
-    //NOTE: If you find yourself needing more than one context, please consider moving to ProtocolResponse.
-    const std::string context;
+    explicit SignupResponse(unsigned int userId);
 };
 
 
-enum class LogoutStatus : unsigned char
+struct LogoutResponse : ProtocolResponse
 {
-	SUCCESS = 1,
-	FAILED_NOT_LOGGED_IN = 2,
-	FAILED_INTERNAL_ERROR = 0
-};
-
-struct LogoutResponse : ProtocolResponse<LogoutStatus>
-{
-	explicit LogoutResponse(LogoutStatus status);
+    LogoutResponse();
 };
 
 
-enum class ErrorStatus : unsigned char
+struct JoinRoomResponse : ProtocolResponse
 {
-	GENERIC = 0,
-	SERVER_UNIMPLEMENTED,
-	ILLEGAL_REQUEST
+    explicit JoinRoomResponse(const Room& room);
+
+	const Room& room;
 };
 
-struct ErrorResponse : ProtocolResponse<ErrorStatus>
+struct CreateRoomResponse : ProtocolResponse
 {
-	ErrorResponse(ErrorStatus status, const std::string& message);
-	
-	const std::string message;
-};
-
-struct JoinRoomResponse : ProtocolResponse<ConsumingResponseStatus>
-{
-    explicit JoinRoomResponse(ConsumingResponseStatus status, const std::optional<Room *>& room);
-
-    //TODO: Make error response better, meaning this will NOT be necessary as an optional.
-	const std::optional<Room *> room;
-};
-
-struct CreateRoomResponse : ProtocolResponse<GenericResponseStatus>
-{
-    CreateRoomResponse(GenericResponseStatus status, unsigned int roomId, const RoomData& data);
+    CreateRoomResponse(unsigned int roomId, const RoomData& data);
 
     const unsigned int roomId;
     RoomData data;
 };
 
-struct GetRoomsResponse : ProtocolResponse<GenericResponseStatus>
+struct GetRoomsResponse : ProtocolResponse
 {
-    GetRoomsResponse(GenericResponseStatus status, const std::vector<Room*> &rooms);
+    explicit GetRoomsResponse(const std::vector<Room*> &rooms);
 
 	const std::vector<Room*> rooms;
 };
 
-/**
- * NOTE: This should NOT be used, because we use notifiers to notify of specific rooms
- * changes anyway.
- */
-struct GetPlayersInRoomResponse : ProtocolResponse<ConsumingResponseStatus>
+struct GetPlayersInRoomResponse : ProtocolResponse
 {
-    GetPlayersInRoomResponse(ConsumingResponseStatus status, const std::optional<std::vector<LoggedUser*>> &players);
+    explicit GetPlayersInRoomResponse(const std::vector<LoggedUser*> &players);
 
-	const std::optional<std::vector<LoggedUser*>> players;
+	const std::vector<LoggedUser*> players;
 };
 
-enum class GeneralStatsStatus : unsigned int
+struct GetHighScoresResponse : ProtocolResponse
 {
-    SUCCESS = 1,
-    ERROR = 0
-};
-
-struct GetHighScoresResponse : ProtocolResponse<GeneralStatsStatus>
-{
-    GetHighScoresResponse(GeneralStatsStatus status, const std::vector<std::pair<std::string, int>> &stats);
+    explicit GetHighScoresResponse(const std::vector<std::pair<std::string, int>> &stats);
 
     const std::vector<std::pair<std::string, int>> stats;
 };
 
-struct GetPersonalStatisticsResponse : ProtocolResponse<GeneralStatsStatus>
+struct GetPersonalStatisticsResponse : ProtocolResponse
 {
-    GetPersonalStatisticsResponse(GeneralStatsStatus status, const UserStatistics &stats);
+    explicit GetPersonalStatisticsResponse(const UserStatistics &stats);
 
     const UserStatistics stats;
 };
 
-struct CloseRoomResponse : ProtocolResponse<GenericResponseStatus>
+struct CloseRoomResponse : ProtocolResponse
 {
-    explicit CloseRoomResponse(GenericResponseStatus status);
+    CloseRoomResponse();
 };
 
-struct StartGameResponse : ProtocolResponse<GenericResponseStatus>
+struct StartGameResponse : ProtocolResponse
 {
-    explicit StartGameResponse(GenericResponseStatus status);
+    StartGameResponse();
 };
 
-struct LeaveRoomResponse : ProtocolResponse<GenericResponseStatus>
+struct LeaveRoomResponse : ProtocolResponse
 {
-    explicit LeaveRoomResponse(GenericResponseStatus status);
+    LeaveRoomResponse();
 };
 
-/**
- * NOTE: This should NOT be used, because we use notifiers to notify of specific rooms
- * changes anyway.
- */
-struct GetRoomStateResponse : ProtocolResponse<GenericResponseStatus>
+struct GetRoomStateResponse : ProtocolResponse
 {
-    GetRoomStateResponse(GenericResponseStatus protocolStatus, const Room& room);
+    explicit GetRoomStateResponse(const Room& room);
 
 	const Room& room;
 };
 
-struct UpdateRoomDataResponse : ProtocolResponse<GenericResponseStatus>
+struct UpdateRoomDataResponse : ProtocolResponse
 {
-    explicit UpdateRoomDataResponse(GenericResponseStatus status);
+    UpdateRoomDataResponse();
 };
-
-
-#include "Response.tpp"
