@@ -1,8 +1,10 @@
+using System.Collections.Generic;
 using Trivia.Codec.S2C.Response.Status;
+using Trivia.Models;
 
 namespace Trivia.Codec.S2C.Response;
 
-//TODO: When Room is implemented, add below.
 public record GetPlayersInRoomResponse(
-    GenericResponseStatus Status
+    GenericResponseStatus Status,
+    List<User> Players
 ) : ProtocolResponse<GenericResponseStatus>(Status);

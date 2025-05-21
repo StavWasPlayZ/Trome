@@ -5,6 +5,5 @@ namespace Trivia.Codec.S2C.Response;
 
 public record GetRoomStateResponse(
     GenericResponseStatus Status,
-    RoomStatus GameStatus,
-    RoomData Data
+    Room Room
 ) : ProtocolResponse<GenericResponseStatus>(Status);

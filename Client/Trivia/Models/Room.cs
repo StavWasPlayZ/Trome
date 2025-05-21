@@ -7,5 +7,7 @@ public record Room(
     RoomStatus Status,
     User Admin,
     
+    int PlayersCount,
+    
     RoomData Data
 );

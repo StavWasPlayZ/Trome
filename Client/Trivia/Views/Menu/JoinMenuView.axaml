@@ -69,7 +69,7 @@
                                                    Opacity=".4">
                                             <TextBlock.Text>
                                                 <MultiBinding StringFormat="{}{0}/{1} PLAYERS • {2} QUESTIONS">
-                                                    <Binding Path="Data.PlayersCount"/>
+                                                    <Binding Path="PlayersCount"/>
                                                     <Binding Path="Data.MaxPlayers"/>
                                                     <Binding Path="Data.QuestionsCount"/>
                                                 </MultiBinding>
@@ -195,7 +195,7 @@
                                                    Opacity=".6">
                                             <TextBlock.Text>
                                                 <MultiBinding StringFormat="{}{0}/{1} PLAYERS">
-                                                    <Binding Path="SelectedRoom.Data.PlayersCount"/>
+                                                    <Binding Path="SelectedRoom.PlayersCount"/>
                                                     <Binding Path="SelectedRoom.Data.MaxPlayers"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -252,7 +252,7 @@
                                         
                                         <TextBlock Grid.Row="1"
                                                    Grid.Column="0"
-                                                   Text="{Binding SelectedRoom.Data.TimePerQuestion,
+                                                   Text="{Binding SelectedRoom.Data.TimePerQuestionSecs,
                                                        StringFormat='• {0}'
                                                    }"/>
                                         
