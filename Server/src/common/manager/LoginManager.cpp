@@ -57,7 +57,7 @@ ProtocolResponse *LoginManager::login(const RequestInfo &info, const LoginReques
         return new ErrorResponse(ErrorStatus::FAILED_INVALID_CREDENTIALS, info.id);
 	}
 
-	if (this->m_loggedUsers.contains(request.username))
+	if (this->m_clientToLoggedUser.contains(&info.client))
 	{
         return new ErrorResponse(ErrorStatus::FAILED_ALREADY_LOGGED_IN, info.id);
 	}
