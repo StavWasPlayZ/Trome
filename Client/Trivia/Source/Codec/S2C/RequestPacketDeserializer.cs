@@ -10,7 +10,7 @@ public static class RequestPacketDeserializer
     /// <summary>
     /// T - Protocol Response
     /// </summary>
-    public static IProtocolResponse? Deserialize(byte[] buffer)
+    public static ProtocolResponse? Deserialize(byte[] buffer)
     {
         var offset = 0;
         
@@ -42,12 +42,17 @@ public static class RequestPacketDeserializer
             ResponseCode.GetPlayersInRoom => Deserialize<GetPlayersInRoomResponse>(json),
             ResponseCode.GetHighScores => Deserialize<GetHighScoresResponse>(json),
             ResponseCode.GetPersonalStatistics => Deserialize<GetPersonalStatisticsResponse>(json),
+            ResponseCode.CloseGame => Deserialize<CloseGameResponse>(json),
+            ResponseCode.StartGame => Deserialize<StartGameResponse>(json),
+            ResponseCode.GetRoomState => Deserialize<GetRoomStateResponse>(json),
+            ResponseCode.LeaveRoom => Deserialize<LeaveRoomResponse>(json),
+            ResponseCode.UpdateRoomData => Deserialize<UpdateRoomDataResponse>(json),
             _ => null
         };
     }
 
 
-    private static IProtocolResponse? Deserialize<T>(string json) where T : IProtocolResponse
+    private static ProtocolResponse? Deserialize<T>(string json) where T : ProtocolResponse
     {
         return JsonConvert.DeserializeObject<T>(json, CodecConstants.JsonSerializerSettings);
     }

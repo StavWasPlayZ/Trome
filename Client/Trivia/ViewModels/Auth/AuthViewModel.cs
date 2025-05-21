@@ -1,8 +1,7 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 using ReactiveUI;
 using Trivia.Codec.S2C.Response;
-using Trivia.Codec.S2C.Response.Status;
+using Trivia.Codec.S2C.Status;
 using Trivia.Models;
 using Trivia.ViewModels.Menu;
 
@@ -17,17 +16,16 @@ public abstract class AuthViewModel : PageViewModel
         MayAuthenticate = true;
     }
     
-    protected void HandleAuthResponse<TStatus>(RegistrationResponse<TStatus> response, bool succeed) where TStatus : Enum
+    
+    protected void HandleAuthResponse(RegistrationResponse response)
     {
-        if (!succeed)
-        {
-            ErrorMessage = StatusTranscriber.Transcribe(response);
-            return;
-        }
-
-        App.AppService.SessionUser = new User((int)response.UserId!, Username!);
-        
+        App.AppService.SessionUser = new User(response.UserId, Username!);
         NavigateAndReset(new MainMenuViewModel(HostScreen));
+    }
+    
+    protected void HandleErrorResponse(ErrorResponse response)
+    {
+        ErrorMessage = response.Transcribe();
     }
     
     
