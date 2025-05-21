@@ -55,7 +55,7 @@
                                     <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock FontSize="30"
-                                                       Text="{Binding Name}"/>
+                                                       Text="{Binding Metadata.Name}"/>
                                             
                                             <TextBlock FontSize="22"
                                                        VerticalAlignment="Center"
@@ -69,9 +69,9 @@
                                                    Opacity=".4">
                                             <TextBlock.Text>
                                                 <MultiBinding StringFormat="{}{0}/{1} PLAYERS • {2} QUESTIONS">
-                                                    <Binding Path="PlayersCount"/>
-                                                    <Binding Path="MaxPlayers"/>
-                                                    <Binding Path="Questions"/>
+                                                    <Binding Path="Metadata.PlayersCount"/>
+                                                    <Binding Path="Metadata.MaxPlayers"/>
+                                                    <Binding Path="Metadata.QuestionsCount"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                         </TextBlock>
@@ -187,7 +187,7 @@
                                                 Margin="0 0 0 10">
                                             
                                         <TextBlock FontSize="50"
-                                                   Text="{Binding SelectedRoom.Name}"
+                                                   Text="{Binding SelectedRoom.Metadata.Name}"
                                                    LineHeight="40"
                                                    TextWrapping="Wrap"/>
                                             
@@ -195,8 +195,8 @@
                                                    Opacity=".6">
                                             <TextBlock.Text>
                                                 <MultiBinding StringFormat="{}{0}/{1} PLAYERS">
-                                                    <Binding Path="SelectedRoom.PlayersCount"/>
-                                                    <Binding Path="SelectedRoom.MaxPlayers"/>
+                                                    <Binding Path="SelectedRoom.Metadata.PlayersCount"/>
+                                                    <Binding Path="SelectedRoom.Metadata.MaxPlayers"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                         </TextBlock>
@@ -241,7 +241,7 @@
                                         
                                         <TextBlock Grid.Row="0"
                                                    Grid.Column="0"
-                                                   Text="{Binding SelectedRoom.Questions,
+                                                   Text="{Binding SelectedRoom.Metadata.QuestionsCount,
                                                        StringFormat='• {0}'
                                                    }"/>
                                         
@@ -252,7 +252,7 @@
                                         
                                         <TextBlock Grid.Row="1"
                                                    Grid.Column="0"
-                                                   Text="{Binding SelectedRoom.TimePerQuestion,
+                                                   Text="{Binding SelectedRoom.Metadata.TimePerQuestion,
                                                        StringFormat='• {0}'
                                                    }"/>
                                         
