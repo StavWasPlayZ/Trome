@@ -26,7 +26,7 @@ public class JoinMenuViewModel : PageViewModel, IActivatableViewModel
             i % 2 == 0 ? RoomStatus.Waiting : RoomStatus.Playing,
             new User(i, $"User {i}"),
             
-            new RoomMetadata(
+            new RoomData(
                 $"Room {i}",
                 10,
                 7,

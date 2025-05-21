@@ -3,5 +3,5 @@
 namespace Trivia.Codec.C2S.Request;
 
 public record UpdateRoomDataRequest(
-    RoomMetadata Metadata
+    RoomData Data
 ) : ProtocolRequest(RequestCode.UpdateRoomData);

@@ -1,6 +1,6 @@
 namespace Trivia.Models;
 
-public record RoomMetadata(
+public record RoomData(
     string Name,
     int MaxPlayers,
     int TimePerQuestion,

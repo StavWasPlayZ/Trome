@@ -6,5 +6,5 @@ namespace Trivia.Codec.S2C.Response;
 public record JoinRoomResponse(
     ConsumingResponseStatus Status,
     RoomStatus RoomStatus,
-    RoomMetadata Metadata
+    RoomData Data
 ) : ProtocolResponse<ConsumingResponseStatus>(Status);

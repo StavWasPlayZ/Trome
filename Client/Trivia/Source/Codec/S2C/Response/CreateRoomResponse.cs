@@ -6,5 +6,5 @@ namespace Trivia.Codec.S2C.Response;
 public record CreateRoomResponse(
     GenericResponseStatus Status,
     int RoomId,
-    RoomMetadata Metadata
+    RoomData Data
 ) : ProtocolResponse<GenericResponseStatus>(Status);

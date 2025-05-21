@@ -7,5 +7,5 @@ public record Room(
     RoomStatus Status,
     User Admin,
     
-    RoomMetadata Metadata
+    RoomData Data
 );
