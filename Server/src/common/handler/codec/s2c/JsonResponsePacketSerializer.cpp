@@ -115,10 +115,9 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetHighScoresRespo
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const GetPersonalStatisticsResponse &response)
 {
-
     nlohmann::json data;
 
-    nlohmann::json stats;
+    nlohmann::json& stats = data["stats"] = nlohmann::json::object();
 
     stats["points"] = response.stats.points;
     stats["games_played"] = response.stats.gamesPlayed;
@@ -126,8 +125,6 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetPersonalStatist
     stats["questions_answered_correctly"] = response.stats.questionsAnsweredCorrect;
     stats["time_on_question_overall"] = response.stats.timeOnQuestionsOverall;
     stats["time_on_questions_avg"] = response.stats.timePerQuestionsAvg;
-
-    data["stats"] = stats;
 
     return serializeJsonToProtocol(response.id, data);
 }
