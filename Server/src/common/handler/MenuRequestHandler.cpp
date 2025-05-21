@@ -95,25 +95,15 @@ RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo &, const Pr
     );
 }
 
-RequestResult MenuRequestHandler::createRoom(const RequestInfo& info, const ProtocolRequest& request) const
+RequestResult MenuRequestHandler::createRoom(const RequestInfo& info, const ProtocolRequest&) const
 {
     RoomManager &rManager = m_handlerFactory.getRoomManager();
 
-    const CreateRoomRequest &req = static_cast<const CreateRoomRequest &>(request);
-
-    const RoomData roomData = RoomData(
-        req.roomName,
-        RoomStatus::WAITING,
-        req.maxPlayers,
-        req.answerTimeout,
-        req.questionCount
-    );
-
-    rManager.createRoom(getUserByInfo(info), roomData);
+    const Room& room = rManager.createRoom(getUserByInfo(info), RoomData::ofDefaults());
 
     return RequestResult(
         JsonResponsePacketSerializer::serializeResponse(
-            CreateRoomResponse(GenericResponseStatus::SUCCESS, roomData.id)
+            CreateRoomResponse(GenericResponseStatus::SUCCESS, room.getId(), room.getData())
         ),
 
         // TODO : make it RoomAdminRequestHandler when its implemented

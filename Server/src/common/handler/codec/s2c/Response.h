@@ -150,16 +150,18 @@ struct ErrorResponse : ProtocolResponse<ErrorStatus>
 
 struct JoinRoomResponse : ProtocolResponse<ConsumingResponseStatus>
 {
-    explicit JoinRoomResponse(ConsumingResponseStatus status, std::optional<Room *> room);
+    explicit JoinRoomResponse(ConsumingResponseStatus status, const std::optional<Room *>& room);
 
-	const std::optional<Room *> &room;
+    //TODO: Make error response better, meaning this will NOT be necessary as an optional.
+	const std::optional<Room *> room;
 };
 
 struct CreateRoomResponse : ProtocolResponse<GenericResponseStatus>
 {
-    explicit CreateRoomResponse(GenericResponseStatus status, unsigned int roomId);
+    CreateRoomResponse(GenericResponseStatus status, unsigned int roomId, const RoomData& data);
 
     const unsigned int roomId;
+    RoomData data;
 };
 
 struct GetRoomsResponse : ProtocolResponse<GenericResponseStatus>
@@ -169,6 +171,10 @@ struct GetRoomsResponse : ProtocolResponse<GenericResponseStatus>
 	const std::vector<Room*> rooms;
 };
 
+/**
+ * NOTE: This should NOT be used, because we use notifiers to notify of specific rooms
+ * changes anyway.
+ */
 struct GetPlayersInRoomResponse : ProtocolResponse<ConsumingResponseStatus>
 {
     GetPlayersInRoomResponse(ConsumingResponseStatus status, const std::optional<std::vector<LoggedUser*>> &players);
@@ -211,6 +217,10 @@ struct LeaveRoomResponse : ProtocolResponse<GenericResponseStatus>
     explicit LeaveRoomResponse(GenericResponseStatus status);
 };
 
+/**
+ * NOTE: This should NOT be used, because we use notifiers to notify of specific rooms
+ * changes anyway.
+ */
 struct GetRoomStateResponse : ProtocolResponse<GenericResponseStatus>
 {
     GetRoomStateResponse(GenericResponseStatus protocolStatus, const Room& room);

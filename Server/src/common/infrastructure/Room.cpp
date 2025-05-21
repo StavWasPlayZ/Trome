@@ -4,7 +4,13 @@
 
 #include "db/IDatabase.h"
 
-Room::Room(LoggedUser &admin, const RoomData &data, const IDatabase& database) :
+unsigned int Room::globalId = 0;
+
+Room::Room(LoggedUser &admin, const RoomData &data, const IDatabase& database, const RoomStatus status) :
+    id(globalId++),
+    // REVIEW: Perhaps could be initialized directly.
+    // On this condition that Not Found it not set.
+    status(status),
     m_admin(&admin),
     m_metadata(data),
     m_database(database)
@@ -38,9 +44,14 @@ void Room::removeUser(const LoggedUser &user)
     }
 }
 
-std::vector<LoggedUser*> Room::getAllUsers() const
+const std::vector<LoggedUser *>& Room::getAllUsers() const
 {
     return this->m_users;
+}
+
+unsigned int Room::getId() const
+{
+    return this->id;
 }
 
 const RoomData &Room::getData() const
@@ -63,4 +74,14 @@ LoggedUser &Room::getAdmin() const
 void Room::setAdmin(LoggedUser &admin)
 {
     this->m_admin = &admin;
+}
+
+RoomStatus Room::getStatus() const
+{
+    return this->status;
+}
+
+void Room::setStatus(const RoomStatus status)
+{
+    this->status = status;
 }
