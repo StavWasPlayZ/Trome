@@ -60,6 +60,10 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const JoinRoomResponse &
     {
         data["room"] = serializeRoomToJson(*response.room.value());
     }
+    else
+    {
+        data["room"] = nullptr;
+    }
 
     return serializeJsonToProtocol(response.id, data);
 }
