@@ -9,7 +9,8 @@ LoginRequestHandler::LoginRequestHandler(const RequestHandlerFactory &handlerFac
 
 bool LoginRequestHandler::isRequestRelevant(const RequestInfo &info) const
 {
-    return (info.id == RequestCode::LOGIN) || (info.id == RequestCode::SIGNUP);
+    return ((info.id == RequestCode::LOGIN) || (info.id == RequestCode::SIGNUP))
+        && !this->m_handlerFactory.getLoginManager().isLoggedIn(info.client);
 }
 
 RequestResult LoginRequestHandler::handleRequest(const RequestInfo& info, const ProtocolRequest& request) const

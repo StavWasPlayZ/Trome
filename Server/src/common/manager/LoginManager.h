@@ -35,6 +35,7 @@ public:
 	 */
 	bool logout(const Client &client);
 
+	bool isLoggedIn(const Client &client) const;
     LoggedUser& getUserByClient(const Client& client) const;
 
 private:

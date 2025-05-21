@@ -57,7 +57,7 @@ ProtocolResponse *LoginManager::login(const RequestInfo &info, const LoginReques
         return new ErrorResponse(ErrorStatus::FAILED_INVALID_CREDENTIALS, info.id);
 	}
 
-	if (this->m_clientToLoggedUser.contains(&info.client))
+	if (isLoggedIn(info.client))
 	{
         return new ErrorResponse(ErrorStatus::FAILED_ALREADY_LOGGED_IN, info.id);
 	}
@@ -86,6 +86,11 @@ bool LoginManager::logout(const Client &client)
     this->m_clientToLoggedUser.erase(&client);
 
     return true;
+}
+
+bool LoginManager::isLoggedIn(const Client &client) const
+{
+    return this->m_clientToLoggedUser.contains(&client);
 }
 
 LoggedUser &LoginManager::getUserByClient(const Client &client) const
