@@ -1,5 +1,14 @@
 #include "Response.h"
 
+ProtocolResponse::ProtocolResponse(const ResponseCode id) :
+    id(id)
+{}
+
+RegistrationResponse::RegistrationResponse(const ResponseCode id, const unsigned int userId) :
+    ProtocolResponse(id),
+    userId(userId)
+{}
+
 LoginResponse::LoginResponse(const unsigned int userId) :
     RegistrationResponse(ResponseCode::LOGIN, userId)
 {}

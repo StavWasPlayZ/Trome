@@ -24,38 +24,38 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& info, const 
     }
 }
 
-RequestResult LoginRequestHandler::login(const RequestInfo& context, const LoginRequest& request) const
+RequestResult LoginRequestHandler::login(const RequestInfo &info, const LoginRequest &request) const
 {
-    const LoginResponse response = this->m_handlerFactory.getLoginManager().login(context.client, request);
+    const ProtocolResponse *const response = this->m_handlerFactory.getLoginManager().login(info, request);
 
-    if (response.id == ResponseCode::ERROR)
+    if (response->id == ResponseCode::ERROR)
     {
         return RequestResult(
-            JsonResponsePacketSerializer::serializeResponse(response),
+            JsonResponsePacketSerializer::serializeResponse(*static_cast<const ErrorResponse*>(response)),
             new LoginRequestHandler(*this)
         );
     }
 
     return RequestResult(
-        JsonResponsePacketSerializer::serializeResponse(response),
+        JsonResponsePacketSerializer::serializeResponse(*static_cast<const LoginResponse*>(response)),
         new MenuRequestHandler(this->m_handlerFactory)
     );
 }
 
-RequestResult LoginRequestHandler::signup(const RequestInfo& context, const SignupRequest& request) const
+RequestResult LoginRequestHandler::signup(const RequestInfo &info, const SignupRequest &request) const
 {
-    const SignupResponse response = this->m_handlerFactory.getLoginManager().signup(context, request);
+    const ProtocolResponse *const response = this->m_handlerFactory.getLoginManager().signup(info, request);
 
-    if (response.id == ResponseCode::ERROR)
+    if (response->id == ResponseCode::ERROR)
     {
         return RequestResult(
-            JsonResponsePacketSerializer::serializeResponse(response),
+            JsonResponsePacketSerializer::serializeResponse(*static_cast<const LoginResponse*>(response)),
             new LoginRequestHandler(*this)
         );
     }
 
     return RequestResult(
-        JsonResponsePacketSerializer::serializeResponse(response),
+        JsonResponsePacketSerializer::serializeResponse(*static_cast<const SignupResponse*>(response)),
         new MenuRequestHandler(this->m_handlerFactory)
     );
 }
