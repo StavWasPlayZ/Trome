@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ErrorResponse.h"
+
 #include <nlohmann/json.hpp>
 
 #include "Response.h"
@@ -123,17 +125,11 @@ public:
     static OBuffer serializeResponse(const UpdateRoomDataResponse &response);
 
 private:
-	/**
-	 * Serializes the base response into the provided json.
-	 */
-	template <typename S>
-	static void serializeBaseResponseToJson(nlohmann::json& json, const ProtocolResponse<S>& response);
 
 	/**
 	 * Serializes the response into the provided json.
 	 */
-	template <typename S>
-    static void serializeRegistrationResponseToJson(nlohmann::json &json, const RegistrationResponse<S> &response);
+    static void serializeRegistrationResponseToJson(nlohmann::json &json, const RegistrationResponse &response);
 
 
     static nlohmann::json serializePlayerToJson(const LoggedUser &player);
@@ -151,6 +147,3 @@ private:
 
 	static void writeInt(int num, unsigned char* buffer);
 };
-
-
-#include "JsonResponsePacketSerializer.tpp"

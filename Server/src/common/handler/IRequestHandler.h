@@ -24,7 +24,7 @@ public:
      * T - The current handler type
      */
     template <typename T>
-    RequestResult errorUnimplementedResult() const;
+    RequestResult errorUnimplementedResult(RequestCode reqId) const;
 
 protected:
     const RequestHandlerFactory& m_handlerFactory;

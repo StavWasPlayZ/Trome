@@ -6,7 +6,8 @@ LoginManager::LoginManager(const IDatabase& database) :
 	m_database(database)
 {}
 
-SignupResponse LoginManager::signup(const RequestInfo &context, const SignupRequest &request)
+//TODO: Use RAII pointers instead.
+ProtocolResponse *LoginManager::signup(const RequestInfo &info, const SignupRequest &request)
 {
 	try
 	{
@@ -21,7 +22,7 @@ SignupResponse LoginManager::signup(const RequestInfo &context, const SignupRequ
 	}
     catch (const RegexViolationException &e)
     {
-        return SignupResponse(SignupStatus::FAILED_INVALID_ARGUMENT, e.field);
+        return new ErrorResponse(ErrorStatus::FAILED_INVALID_ARGUMENT, info.id, e.field);
     }
 	catch (const std::runtime_error& e)
 	{
@@ -29,58 +30,67 @@ SignupResponse LoginManager::signup(const RequestInfo &context, const SignupRequ
 
 		//TODO: actually check what the error is about, and act accordingly.
 		// Only throw this if relevant, otherwise generic/internal error.
-		return SignupResponse(SignupStatus::FAILED_USERNAME_TAKEN);
+		return new ErrorResponse(ErrorStatus::FAILED_USERNAME_TAKEN, info.id);
 	}
 
-	const LoginResponse loginRes = this->login(context.client, request);
+	const ProtocolResponse *const loginRes = this->login(info, request);
 
 	// Simply convert the login response to a signup one
-	if (loginRes.status == LoginStatus::SUCCESS)
+	if (loginRes->id != ResponseCode::ERROR)
 	{
-		return SignupResponse(SignupStatus::SUCCESS, loginRes.userId);
+		SignupResponse* result = new SignupResponse(static_cast<const LoginResponse*>(loginRes)->userId);
+	    delete loginRes;
+	    return result;
 	}
 
-	return SignupResponse(SignupStatus::FAILED_INTERNAL_ERROR);
+    delete loginRes;
+
+	return new ErrorResponse(ErrorStatus::INTERNAL, info.id);
 }
 
-
-LoginResponse LoginManager::login(const Client &client, const LoginRequest &request)
+ProtocolResponse *LoginManager::login(const RequestInfo &info, const LoginRequest &request)
 {
 	const unsigned int userId = this->m_database.queryIdOfUser(request.username, request.password);
 
 	if (userId == -1)
 	{
-		return LoginResponse(LoginStatus::FAILED_INVALID_CREDENTIALS);
+        return new ErrorResponse(ErrorStatus::FAILED_INVALID_CREDENTIALS, info.id);
 	}
 
-	if (this->m_loggedUsers.contains(request.username))
+	if (isLoggedIn(info.client))
 	{
-		return LoginResponse(LoginStatus::FAILED_ALREADY_LOGGED_IN);
+        return new ErrorResponse(ErrorStatus::FAILED_ALREADY_LOGGED_IN, info.id);
 	}
 
 	const auto result = this->m_loggedUsers.emplace(
 	    request.username,
-        LoggedUser(userId, request.username, &client)
+        LoggedUser(userId, request.username, &info.client)
 	);
 
-    this->m_clientToLoggedUser.emplace(&client, &result.first->second);
+    this->m_clientToLoggedUser.emplace(&info.client, &result.first->second);
 
-	return LoginResponse(LoginStatus::SUCCESS, userId);
+	return new LoginResponse(userId);
 }
 
-LogoutResponse LoginManager::logout(const Client &client)
+bool LoginManager::logout(const Client &client)
 {
     const auto it = this->m_clientToLoggedUser.find(&client);
 
     if (it == m_clientToLoggedUser.end()) // if found
     {
-        return LogoutResponse(LogoutStatus::FAILED_NOT_LOGGED_IN);
+        // return new ErrorResponse(ErrorStatus::FAILED_NOT_LOGGED_IN, info.id);
+        return false;
     }
 
     this->m_loggedUsers.erase(it->second->getUsername());
     this->m_clientToLoggedUser.erase(&client);
 
-    return LogoutResponse(LogoutStatus::SUCCESS);
+    return true;
+}
+
+bool LoginManager::isLoggedIn(const Client &client) const
+{
+    return this->m_clientToLoggedUser.contains(&client);
 }
 
 LoggedUser &LoginManager::getUserByClient(const Client &client) const

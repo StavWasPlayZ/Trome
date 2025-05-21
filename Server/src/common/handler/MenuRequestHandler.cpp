@@ -51,7 +51,7 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo &info, const Protoc
     {
         return RequestResult(
             JsonResponsePacketSerializer::serializeResponse(
-                JoinRoomResponse(ConsumingResponseStatus::ERROR_UNKNOWN_RESOURCE, room)
+                ErrorResponse(ErrorStatus::ERROR_UNKNOWN_RESOURCE, info.id)
             ),
 
             new MenuRequestHandler(*this)
@@ -62,13 +62,13 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo &info, const Protoc
 
     return RequestResult(
         JsonResponsePacketSerializer::serializeResponse(
-            JoinRoomResponse(ConsumingResponseStatus::SUCCESS, room)
+            JoinRoomResponse(*room.value())
         ),
         new RoomMemberRequestHandler(this->m_handlerFactory, *room.value())
     );
 }
 
-RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo &, const ProtocolRequest &request) const
+RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo &info, const ProtocolRequest &request) const
 {
     const GetPlayersInRoomRequest &req = static_cast<const GetPlayersInRoomRequest &>(request);
     const RoomManager &rManager = m_handlerFactory.getRoomManager();
@@ -79,7 +79,7 @@ RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo &, const Pr
     {
         return RequestResult(
             JsonResponsePacketSerializer::serializeResponse(
-                GetPlayersInRoomResponse(ConsumingResponseStatus::ERROR_UNKNOWN_RESOURCE, std::nullopt)
+                ErrorResponse(ErrorStatus::ERROR_UNKNOWN_RESOURCE, info.id)
             ),
 
             new MenuRequestHandler(*this)
@@ -88,7 +88,7 @@ RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo &, const Pr
 
     return RequestResult(
         JsonResponsePacketSerializer::serializeResponse(
-            GetPlayersInRoomResponse(ConsumingResponseStatus::SUCCESS, room.value()->getAllUsers())
+            GetPlayersInRoomResponse(room.value()->getAllUsers())
         ),
 
         new MenuRequestHandler(*this)
@@ -103,7 +103,7 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& info, const Prot
 
     return RequestResult(
         JsonResponsePacketSerializer::serializeResponse(
-            CreateRoomResponse(GenericResponseStatus::SUCCESS, room.getId(), room.getData())
+            CreateRoomResponse(room.getId(), room.getData())
         ),
 
         // TODO : make it RoomAdminRequestHandler when its implemented
@@ -117,7 +117,7 @@ RequestResult MenuRequestHandler::getRooms(const RequestInfo &, const ProtocolRe
 
     return RequestResult(
         JsonResponsePacketSerializer::serializeResponse(
-            GetRoomsResponse(GenericResponseStatus::SUCCESS, rManager.getRooms())
+            GetRoomsResponse(rManager.getRooms())
         ),
 
         new MenuRequestHandler(*this)
@@ -130,7 +130,7 @@ RequestResult MenuRequestHandler::getHighScores(const RequestInfo &, const Proto
 
     return RequestResult(
         JsonResponsePacketSerializer::serializeResponse(
-            GetHighScoresResponse(GeneralStatsStatus::SUCCESS, sManager.getHighScores())
+            GetHighScoresResponse(sManager.getHighScores())
         ),
 
         new MenuRequestHandler(*this)
@@ -143,7 +143,7 @@ RequestResult MenuRequestHandler::getPersonalStatistics(const RequestInfo& info,
 
     return RequestResult(
         JsonResponsePacketSerializer::serializeResponse(
-            GetPersonalStatisticsResponse(GeneralStatsStatus::SUCCESS,
+            GetPersonalStatisticsResponse(
                 sManager.getUserStatistics(
                     getUserByInfo(info).getUsername()
                 )
@@ -162,7 +162,7 @@ RequestResult MenuRequestHandler::logout(const RequestInfo &info, const Protocol
 
     return RequestResult(
         JsonResponsePacketSerializer::serializeResponse(
-            LogoutResponse(LogoutStatus::SUCCESS)
+            LogoutResponse()
         ),
 
         new LoginRequestHandler(this->m_handlerFactory)

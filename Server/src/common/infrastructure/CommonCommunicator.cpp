@@ -240,7 +240,7 @@ void CommonCommunicator::_handleClient(const SOCKET socket) const
     if (!handler->isRequestRelevant(info))
     {
         responseBuffer = JsonResponsePacketSerializer::serializeResponse(
-            ErrorResponse(ErrorStatus::ILLEGAL_REQUEST, "Illegal request")
+            ErrorResponse(ErrorStatus::ILLEGAL_REQUEST, info.id)
         );
     }
     else

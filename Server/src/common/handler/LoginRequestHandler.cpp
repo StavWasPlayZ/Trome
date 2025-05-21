@@ -9,8 +9,8 @@ LoginRequestHandler::LoginRequestHandler(const RequestHandlerFactory &handlerFac
 
 bool LoginRequestHandler::isRequestRelevant(const RequestInfo &info) const
 {
-    //TODO: Check if client is already logged in (?)
-    return (info.id == RequestCode::LOGIN) || (info.id == RequestCode::SIGNUP);
+    return ((info.id == RequestCode::LOGIN) || (info.id == RequestCode::SIGNUP))
+        && !this->m_handlerFactory.getLoginManager().isLoggedIn(info.client);
 }
 
 RequestResult LoginRequestHandler::handleRequest(const RequestInfo& info, const ProtocolRequest& request) const
@@ -24,38 +24,38 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& info, const 
     }
 }
 
-RequestResult LoginRequestHandler::login(const RequestInfo& context, const LoginRequest& request) const
+RequestResult LoginRequestHandler::login(const RequestInfo &info, const LoginRequest &request) const
 {
-    const LoginResponse response = this->m_handlerFactory.getLoginManager().login(context.client, request);
+    const ProtocolResponse *const response = this->m_handlerFactory.getLoginManager().login(info, request);
 
-    if (response.status != LoginStatus::SUCCESS)
+    if (response->id == ResponseCode::ERROR)
     {
-        return RequestResult(
-            JsonResponsePacketSerializer::serializeResponse(response),
-            new LoginRequestHandler(*this)
-        );
+        const OBuffer serialized = JsonResponsePacketSerializer::serializeResponse(*static_cast<const ErrorResponse*>(response));
+        delete response;
+
+        return RequestResult(serialized, new LoginRequestHandler(*this));
     }
 
-    return RequestResult(
-        JsonResponsePacketSerializer::serializeResponse(response),
-        new MenuRequestHandler(this->m_handlerFactory)
-    );
+    const OBuffer serialized = JsonResponsePacketSerializer::serializeResponse(*static_cast<const LoginResponse*>(response));
+    delete response;
+
+    return RequestResult(serialized, new MenuRequestHandler(this->m_handlerFactory));
 }
 
-RequestResult LoginRequestHandler::signup(const RequestInfo& context, const SignupRequest& request) const
+RequestResult LoginRequestHandler::signup(const RequestInfo &info, const SignupRequest &request) const
 {
-    const SignupResponse response = this->m_handlerFactory.getLoginManager().signup(context, request);
+    const ProtocolResponse *const response = this->m_handlerFactory.getLoginManager().signup(info, request);
 
-    if (response.status != SignupStatus::SUCCESS)
+    if (response->id == ResponseCode::ERROR)
     {
-        return RequestResult(
-            JsonResponsePacketSerializer::serializeResponse(response),
-            new LoginRequestHandler(*this)
-        );
+        const OBuffer serialized = JsonResponsePacketSerializer::serializeResponse(*static_cast<const ErrorResponse*>(response));
+        delete response;
+
+        return RequestResult(serialized, new LoginRequestHandler(*this));
     }
 
-    return RequestResult(
-        JsonResponsePacketSerializer::serializeResponse(response),
-        new MenuRequestHandler(this->m_handlerFactory)
-    );
+    const OBuffer serialized = JsonResponsePacketSerializer::serializeResponse(*static_cast<const SignupResponse*>(response));
+    delete response;
+
+    return RequestResult(serialized, new MenuRequestHandler(this->m_handlerFactory));
 }

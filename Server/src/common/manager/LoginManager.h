@@ -15,19 +15,27 @@ public:
 
 	/**
 	 * Signs up a new user, then registers them as logged in.
+	 *
+	 * NOTE: THE RETURNED RESOURCE MUST BE FREED
 	 */
-	SignupResponse signup(const RequestInfo& context, const SignupRequest& request);
+	ProtocolResponse* signup(const RequestInfo &info, const SignupRequest &request);
 
 	/**
 	 * Registers the provided user as logged in, provided their credentials match.
+	 *
+	 * NOTE: THE RETURNED RESOURCE MUST BE FREED
 	 */
-	LoginResponse login(const Client &client, const LoginRequest &request);
+	ProtocolResponse* login(const RequestInfo &info, const LoginRequest &request);
 
 	/**
 	 * Unregisters the user as being signed in.
+	 *
+	 * Returns: True if the user has successfully logged out, or false if they
+	 * weren't logged in to begin with.
 	 */
-	LogoutResponse logout(const Client &client);
+	bool logout(const Client &client);
 
+	bool isLoggedIn(const Client &client) const;
     LoggedUser& getUserByClient(const Client& client) const;
 
 private:
