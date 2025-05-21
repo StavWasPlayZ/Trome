@@ -48,7 +48,7 @@ RequestResult LoginRequestHandler::signup(const RequestInfo &info, const SignupR
 
     if (response->id == ResponseCode::ERROR)
     {
-        const OBuffer serialized = JsonResponsePacketSerializer::serializeResponse(*static_cast<const LoginResponse*>(response));
+        const OBuffer serialized = JsonResponsePacketSerializer::serializeResponse(*static_cast<const ErrorResponse*>(response));
         delete response;
 
         return RequestResult(serialized, new LoginRequestHandler(*this));
