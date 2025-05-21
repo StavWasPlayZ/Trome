@@ -32,6 +32,7 @@ enum class ResponseCode : unsigned char
 struct ProtocolResponse
 {
     explicit ProtocolResponse(ResponseCode id);
+    virtual ~ProtocolResponse();
 
     const ResponseCode id;
 };

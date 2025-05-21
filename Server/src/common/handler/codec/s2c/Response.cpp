@@ -4,6 +4,8 @@ ProtocolResponse::ProtocolResponse(const ResponseCode id) :
     id(id)
 {}
 
+ProtocolResponse::~ProtocolResponse() = default;
+
 RegistrationResponse::RegistrationResponse(const ResponseCode id, const unsigned int userId) :
     ProtocolResponse(id),
     userId(userId)

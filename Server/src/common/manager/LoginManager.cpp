@@ -7,7 +7,6 @@ LoginManager::LoginManager(const IDatabase& database) :
 {}
 
 //TODO: Use RAII pointers instead.
-// ReSharper disable CppDFAMemoryLeak
 ProtocolResponse *LoginManager::signup(const RequestInfo &info, const SignupRequest &request)
 {
 	try

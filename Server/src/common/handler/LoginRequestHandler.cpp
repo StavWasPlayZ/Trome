@@ -30,16 +30,16 @@ RequestResult LoginRequestHandler::login(const RequestInfo &info, const LoginReq
 
     if (response->id == ResponseCode::ERROR)
     {
-        return RequestResult(
-            JsonResponsePacketSerializer::serializeResponse(*static_cast<const ErrorResponse*>(response)),
-            new LoginRequestHandler(*this)
-        );
+        const OBuffer serialized = JsonResponsePacketSerializer::serializeResponse(*static_cast<const ErrorResponse*>(response));
+        delete response;
+
+        return RequestResult(serialized, new LoginRequestHandler(*this));
     }
 
-    return RequestResult(
-        JsonResponsePacketSerializer::serializeResponse(*static_cast<const LoginResponse*>(response)),
-        new MenuRequestHandler(this->m_handlerFactory)
-    );
+    const OBuffer serialized = JsonResponsePacketSerializer::serializeResponse(*static_cast<const LoginResponse*>(response));
+    delete response;
+
+    return RequestResult(serialized, new MenuRequestHandler(this->m_handlerFactory));
 }
 
 RequestResult LoginRequestHandler::signup(const RequestInfo &info, const SignupRequest &request) const
@@ -48,14 +48,14 @@ RequestResult LoginRequestHandler::signup(const RequestInfo &info, const SignupR
 
     if (response->id == ResponseCode::ERROR)
     {
-        return RequestResult(
-            JsonResponsePacketSerializer::serializeResponse(*static_cast<const LoginResponse*>(response)),
-            new LoginRequestHandler(*this)
-        );
+        const OBuffer serialized = JsonResponsePacketSerializer::serializeResponse(*static_cast<const LoginResponse*>(response));
+        delete response;
+
+        return RequestResult(serialized, new LoginRequestHandler(*this));
     }
 
-    return RequestResult(
-        JsonResponsePacketSerializer::serializeResponse(*static_cast<const SignupResponse*>(response)),
-        new MenuRequestHandler(this->m_handlerFactory)
-    );
+    const OBuffer serialized = JsonResponsePacketSerializer::serializeResponse(*static_cast<const SignupResponse*>(response));
+    delete response;
+
+    return RequestResult(serialized, new MenuRequestHandler(this->m_handlerFactory));
 }
