@@ -62,11 +62,18 @@ public class Communicator : IDisposable
     /// <summary>
     /// Sends the provided request to the server, awaiting a response of <typeparamref name="T"/>.
     /// </summary>
-    /// <param name="request">The request to send to the server</param>
-    /// <param name="onResponse">An action called when the first instance of <typeparamref name="T"/>
-    /// is provided by the server</param>
-    /// <param name="onError">An action called if an <see cref="ErrorResponse"/> was provided
-    /// instead of <typeparamref name="T"/>.</param>
+    /// 
+    /// <param name="request">
+    /// The request to send to the server
+    /// </param>
+    /// <param name="onResponse">
+    /// An action called when the first instance of <typeparamref name="T"/>
+    /// is provided by the server
+    /// </param>
+    /// <param name="onError">
+    /// An action called if an <see cref="ErrorResponse"/> was provided instead of <typeparamref name="T"/>.
+    /// </param>
+    /// 
     /// <typeparam name="T">The expected <see cref="ProtocolResponse"/> type.</typeparam>
     public void SendRequest<T>(ProtocolRequest request, Action<T> onResponse, Action<ErrorResponse>? onError = null)
         where T : ProtocolResponse
