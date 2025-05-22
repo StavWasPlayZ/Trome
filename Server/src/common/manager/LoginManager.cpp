@@ -1,5 +1,10 @@
 #include "manager/LoginManager.h"
 
+// for using our ERROR Response Code
+#ifdef ERROR
+#undef ERROR
+#endif
+
 #include "exception/RegexViolationException.h"
 
 LoginManager::LoginManager(const IDatabase& database) :
