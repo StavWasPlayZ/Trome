@@ -1,5 +1,7 @@
 #pragma once
 
+#include "S2CPacketType.h"
+
 #include <nlohmann/json.hpp>
 
 #include "infrastructure/OBuffer.h"
@@ -21,7 +23,7 @@ public:
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serializeJsonToProtocol(ResponseCode msgCode, const nlohmann::json &data);
+    static OBuffer serialize(S2CPacketType packetType, ResponseCode msgCode, const nlohmann::json &data);
 
 private:
     static void writeInt(int num, unsigned char* buffer);

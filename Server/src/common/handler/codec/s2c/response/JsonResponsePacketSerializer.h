@@ -125,6 +125,7 @@ public:
     static OBuffer serializeResponse(const UpdateRoomDataResponse &response);
 
 private:
+    static OBuffer serialize(ResponseCode msgCode, const nlohmann::json &data);
 
 	/**
 	 * Serializes the response into the provided json.

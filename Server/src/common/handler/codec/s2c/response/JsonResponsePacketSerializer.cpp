@@ -17,7 +17,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const LoginResponse &res
 	nlohmann::json data;
 	serializeRegistrationResponseToJson(data, response);
 
-	return ProtocolPacketSerializer::serializeJsonToProtocol(response.id, data);
+	return serialize(response.id, data);
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const SignupResponse &response)
@@ -25,7 +25,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const SignupResponse &re
 	nlohmann::json data;
 	serializeRegistrationResponseToJson(data, response);
 
-	return ProtocolPacketSerializer::serializeJsonToProtocol(response.id, data);
+	return serialize(response.id, data);
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const ErrorResponse &response)
@@ -40,12 +40,12 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const ErrorResponse &res
         data["context"] = response.context.value();
     }
 
-    return ProtocolPacketSerializer::serializeJsonToProtocol(response.id, data);
+    return serialize(response.id, data);
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const LogoutResponse &response)
 {
-    return ProtocolPacketSerializer::serializeJsonToProtocol(response.id, nlohmann::json::object());
+    return serialize(response.id, nlohmann::json::object());
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const JoinRoomResponse &response)
@@ -54,7 +54,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const JoinRoomResponse &
 
     data["room"] = serializeRoomToJson(response.room);
 
-    return ProtocolPacketSerializer::serializeJsonToProtocol(response.id, data);
+    return serialize(response.id, data);
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const CreateRoomResponse &response)
@@ -63,7 +63,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const CreateRoomResponse
 
     data["room_id"] = response.roomId;
 
-    return ProtocolPacketSerializer::serializeJsonToProtocol(response.id, data);
+    return serialize(response.id, data);
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const GetRoomsResponse &response)
@@ -77,7 +77,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetRoomsResponse &
         rooms.push_back(serializeRoomToJson(*room));
 	}
 
-    return ProtocolPacketSerializer::serializeJsonToProtocol(response.id, data);
+    return serialize(response.id, data);
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const GetPlayersInRoomResponse &response)
@@ -91,7 +91,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetPlayersInRoomRe
         data["players"].push_back(serializePlayerToJson(*user));
     }
 
-    return ProtocolPacketSerializer::serializeJsonToProtocol(response.id, data);
+    return serialize(response.id, data);
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const GetHighScoresResponse &response)
@@ -110,7 +110,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetHighScoresRespo
 
     data["high_scores"] = response.stats;
 
-    return ProtocolPacketSerializer::serializeJsonToProtocol(response.id, data);
+    return serialize(response.id, data);
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const GetPersonalStatisticsResponse &response)
@@ -126,22 +126,22 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetPersonalStatist
     stats["time_on_question_overall"] = response.stats.timeOnQuestionsOverall;
     stats["time_on_questions_avg"] = response.stats.timePerQuestionsAvg;
 
-    return ProtocolPacketSerializer::serializeJsonToProtocol(response.id, data);
+    return serialize(response.id, data);
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const CloseRoomResponse &response)
 {
-    return ProtocolPacketSerializer::serializeJsonToProtocol(response.id, nlohmann::json::object());
+    return serialize(response.id, nlohmann::json::object());
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const StartGameResponse &response)
 {
-    return ProtocolPacketSerializer::serializeJsonToProtocol(response.id, nlohmann::json::object());
+    return serialize(response.id, nlohmann::json::object());
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const LeaveRoomResponse &response)
 {
-    return ProtocolPacketSerializer::serializeJsonToProtocol(response.id, nlohmann::json::object());
+    return serialize(response.id, nlohmann::json::object());
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const GetRoomStateResponse &response)
@@ -150,13 +150,20 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetRoomStateRespon
 
     data["room"] = serializeRoomToJson(response.room);
 
-    return ProtocolPacketSerializer::serializeJsonToProtocol(response.id, data);
+    return serialize(response.id, data);
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const UpdateRoomDataResponse &response)
 {
-    return ProtocolPacketSerializer::serializeJsonToProtocol(response.id, nlohmann::json::object());
+    return serialize(response.id, nlohmann::json::object());
 }
+
+
+OBuffer JsonResponsePacketSerializer::serialize(const ResponseCode msgCode, const nlohmann::json &data)
+{
+    return ProtocolPacketSerializer::serialize(S2CPacketType::RESPONSE, msgCode, data);
+}
+
 
 void JsonResponsePacketSerializer::serializeRegistrationResponseToJson(nlohmann::json &json,
                                                                        const RegistrationResponse &response)

@@ -5,7 +5,7 @@
 #include <cstring>
 #include <netinet/in.h>
 
-OBuffer ProtocolPacketSerializer::serializeJsonToProtocol(const ResponseCode msgCode, const nlohmann::json &data)
+OBuffer ProtocolPacketSerializer::serialize(const S2CPacketType packetType, const ResponseCode msgCode, const nlohmann::json &data)
 {
     const std::string dataStr = data.dump();
 

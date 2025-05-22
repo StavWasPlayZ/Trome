@@ -94,6 +94,7 @@ add_executable (Server
 
   "src/common/handler/codec/s2c/ProtocolPacketSerializer.cpp"
   "src/common/handler/codec/s2c/ProtocolPacketSerializer.h"
+  "src/common/handler/codec/s2c/S2CPacketType.h"
 )
 
 # Platform-specific sources
