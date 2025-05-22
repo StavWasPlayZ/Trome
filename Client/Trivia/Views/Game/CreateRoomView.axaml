@@ -4,6 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:Trivia.Controls"
              xmlns:game="clr-namespace:Trivia.ViewModels.Game"
+             xmlns:generic="clr-namespace:System.Collections.Generic;assembly=System.Collections"
+             xmlns:models="clr-namespace:Trivia.Models"
+             xmlns:listEntries="clr-namespace:Trivia.Controls.ListEntries"
              mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
              x:CompileBindings="True"
              x:Class="Trivia.Views.Game.CreateRoomView"
@@ -23,7 +26,31 @@
               Margin="35,35">
             
             <controls:TriviaUsersList Grid.Column="0">
-                <ListBox ItemsSource="gggggggggg"/>
+                <ListBox>
+                
+                    <ListBox.ItemsSource>
+                        <generic:List x:TypeArguments="models:User">
+                            <models:User Username="USERNAME"/>
+                            <models:User Username="USERNAME"/>
+                            <models:User Username="USERNAME"/>
+                            <models:User Username="USERNAME"/>
+                            <models:User Username="USERNAME"/>
+                            <models:User Username="USERNAME"/>
+                            <models:User Username="USERNAME"/>
+                            <models:User Username="USERNAME"/>
+                            <models:User Username="USERNAME"/>
+                            <models:User Username="USERNAME"/>
+                            <models:User Username="USERNAME"/>
+                        </generic:List>
+                    </ListBox.ItemsSource>
+                    
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <listEntries:UserListEntry User="{Binding}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    
+                </ListBox>
             </controls:TriviaUsersList>
 
             <Border Grid.Column="2"
