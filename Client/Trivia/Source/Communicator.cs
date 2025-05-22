@@ -214,19 +214,17 @@ public class Communicator : IDisposable
         
         
         //TODO: Account for notification packets        
-        VerboseLog($"Successfully received packet of code {code}: {json}");
+        VerboseLog($"Successfully received response of code {code}: {json}");
         
         var result = ResponsePacketDeserializer.Deserialize((ResponseCode) code, json);
 
         if (result == null)
         {
             Console.Error.WriteLine($"WARNING: Unknown response code {code}");
+            return null;
         }
-        else
-        {
-            VerboseLog($"Successfully parsed as: {result}");
-        }
-        
+
+        VerboseLog($"Successfully parsed as: {result}");
         return result;
     }
 
