@@ -19,7 +19,11 @@ public abstract class AuthViewModel : PageViewModel
     
     protected void HandleAuthResponse(RegistrationResponse response)
     {
-        App.AppService.SessionUser = new User(response.UserId, Username!);
+        App.AppService.SessionUser = new User
+        {
+            Id = response.UserId,
+            Username = Username!
+        };
         NavigateAndReset(new MainMenuViewModel(HostScreen));
     }
     

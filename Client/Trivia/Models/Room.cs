@@ -2,12 +2,13 @@ using Trivia.Codec;
 
 namespace Trivia.Models;
 
-public record Room(
-    int Id,
-    RoomStatus Status,
-    User Admin,
+public class Room
+{
+    public required int Id { get; init; }
+    public required RoomStatus Status { get; init; }
+    public required User Admin { get; init; }
     
-    int PlayersCount,
+    public required int PlayersCount { get; init; }
     
-    RoomData Data
-);
+    public required RoomData Data { get; init; }
+}
