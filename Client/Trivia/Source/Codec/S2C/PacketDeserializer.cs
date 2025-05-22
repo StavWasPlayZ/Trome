@@ -47,12 +47,12 @@ public static class PacketDeserializer
         switch (packetType)
         {
             case S2CPacketType.Response:
-                VerboseLog($"Successfully received response of code {code}: {json}");
+                VerboseLog($"Received response of code {code}: {json}");
                 result = DeserializeResponse((ResponseCode) code, json);
                 break;
             
             case S2CPacketType.Notification:
-                VerboseLog($"Successfully received notification of code {code}: {json}");
+                VerboseLog($"Received notification of code {code}: {json}");
                 result = DeserializeNotification((ResponseCode) code, json);
                 break;
             
