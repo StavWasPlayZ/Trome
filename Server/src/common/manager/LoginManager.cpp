@@ -32,10 +32,11 @@ ProtocolResponse *LoginManager::signup(const RequestInfo &info, const SignupRequ
 	catch (const std::runtime_error& e)
 	{
 	    // addNewUser will return runtime_error when adding a user with the same username because it's UNIQUE.
-
-		//TODO: actually check what the error is about, and act accordingly.
-		// Only throw this if relevant, otherwise generic/internal error.
-		return new ErrorResponse(ErrorStatus::FAILED_USERNAME_TAKEN, info.id);
+        if (e.what() == "Error in SQL: UNIQUE constraint failed: users.username") // make it as a const later
+        {
+            return new ErrorResponse(ErrorStatus::FAILED_USERNAME_TAKEN, info.id);
+        }
+        return new ErrorResponse(ErrorStatus::FAILED_INVALID_ARGUMENT, info.id, e.what());
 	}
 
 	const ProtocolResponse *const loginRes = this->login(info, request);
