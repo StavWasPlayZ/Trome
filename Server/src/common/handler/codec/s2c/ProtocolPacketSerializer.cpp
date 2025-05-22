@@ -15,6 +15,10 @@ OBuffer ProtocolPacketSerializer::serialize(const S2CPacketType packetType, cons
     unsigned char* writeBuffer = buffer;
 
     // Serializing:
+
+    // Packet Type
+    writeBuffer[0] = static_cast<unsigned char>(packetType);
+    writeBuffer += SIZE_PACKET_TYPE;
     // Code
     writeBuffer[0] = static_cast<unsigned char>(msgCode);
     writeBuffer += SIZE_CODE;
