@@ -1,9 +1,14 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:menu="clr-namespace:Trivia.Views.Menu">
+        xmlns:menu="clr-namespace:Trivia.Views.Menu"
+        xmlns:menu1="clr-namespace:Trivia.ViewModels.Menu">
     <Design.PreviewWith>
-        <Panel Width="1300" Height="800">
-            <menu:JoinMenuView/>
+        <Panel Width="1000" Height="600">
+            <menu:JoinMenuView>
+                <menu:JoinMenuView.DataContext>
+                    <menu1:JoinMenuViewModel />
+                </menu:JoinMenuView.DataContext>
+            </menu:JoinMenuView>
         </Panel>
     </Design.PreviewWith>
 
