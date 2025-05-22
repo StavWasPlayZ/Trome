@@ -3,7 +3,7 @@
         xmlns:controls="using:Trivia.Controls.ListEntries"
         xmlns:controls1="clr-namespace:Trivia.Controls">
     <Design.PreviewWith>
-        <controls1:TriviaUsersList Grid.Column="0">
+        <controls1:TriviaUsersList>
             <ListBox Width="350">
 
                 <ListBox.Items>

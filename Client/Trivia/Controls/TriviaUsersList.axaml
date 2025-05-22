@@ -1,11 +1,39 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:controls="using:Trivia.Controls">
+        xmlns:controls="using:Trivia.Controls"
+        xmlns:models="clr-namespace:Trivia.Models"
+        xmlns:generic="clr-namespace:System.Collections.Generic;assembly=System.Collections"
+        xmlns:listEntries="clr-namespace:Trivia.Controls.ListEntries"
+        x:CompileBindings="True">
     <Design.PreviewWith>
         <Border Width="300"
                 Height="500">
             <controls:TriviaUsersList>
-                <ListBox ItemsSource="asdfhkjjhiuh"/>
+                <ListBox>
+                
+                    <ListBox.ItemsSource>
+                        <generic:List x:TypeArguments="models:User">
+                            <models:User Username="USERNAME"/>
+                            <models:User Username="USERNAME"/>
+                            <models:User Username="USERNAME"/>
+                            <models:User Username="USERNAME"/>
+                            <models:User Username="USERNAME"/>
+                            <models:User Username="USERNAME"/>
+                            <models:User Username="USERNAME"/>
+                            <models:User Username="USERNAME"/>
+                            <models:User Username="USERNAME"/>
+                            <models:User Username="USERNAME"/>
+                            <models:User Username="USERNAME"/>
+                        </generic:List>
+                    </ListBox.ItemsSource>
+                    
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <listEntries:UserListEntry User="{Binding}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    
+                </ListBox>
             </controls:TriviaUsersList>
         </Border>
     </Design.PreviewWith>
@@ -46,30 +74,6 @@
             <!-- We disable the bottom padding due to bad rendering behavior in Avalonia's side -->
             <!-- <Setter Property="Padding" Value="0 10 0 275"/> -->
             <Setter Property="Padding" Value="0 10 0 10"/>
-            
-            <Setter Property="ItemTemplate">
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-        
-                        <Border Background="#ffbcf8"
-                                Height="50"
-                                Width="50"
-                                Padding="6"
-                                CornerRadius="10"
-                                Margin="10 0 15 0">
-        
-                            <Svg Path="avares://Trivia/Assets/Icons/person.svg"
-                                 Css="* { fill: #813e7a; }"/>
-                        </Border>
-        
-                        <TextBlock VerticalAlignment="Center"
-                                   FontSize="30">
-                            USERNAME
-                        </TextBlock>
-        
-                    </StackPanel>
-                </DataTemplate>
-            </Setter>
             
             <Style Selector="^ > ListBoxItem">
                 <Setter Property="Background" Value="#9d4d95"/>
