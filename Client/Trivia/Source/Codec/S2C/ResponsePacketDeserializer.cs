@@ -1,35 +1,15 @@
-﻿using System;
-using System.Text;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Trivia.Codec.S2C.Response;
 
 namespace Trivia.Codec.S2C;
 
-public static class RequestPacketDeserializer
+public static class ResponsePacketDeserializer
 {
     /// <summary>
     /// T - Protocol Response
     /// </summary>
-    public static ProtocolResponse? Deserialize(byte[] buffer)
+    public static ProtocolResponse? Deserialize(ResponseCode code, string json)
     {
-        var offset = 0;
-        
-        var code = (ResponseCode) buffer[offset];
-        offset += CodecConstants.SizeCode;
-
-        
-        var rawJsonLen = buffer[offset..(offset + CodecConstants.SizeJsonLen)];
-        if (BitConverter.IsLittleEndian)
-        {
-            Array.Reverse(rawJsonLen);
-        }
-        
-        var jsonLen = BitConverter.ToInt32(rawJsonLen, 0);
-        offset += CodecConstants.SizeJsonLen;
-        
-        
-        var json = Encoding.UTF8.GetString(buffer, offset, jsonLen);
-
         return code switch
         {
             ResponseCode.Error => Deserialize<ErrorResponse>(json),
