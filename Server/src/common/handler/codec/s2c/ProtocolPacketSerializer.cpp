@@ -34,7 +34,7 @@ OBuffer ProtocolPacketSerializer::serialize(const S2CPacketType packetType, cons
 
 void ProtocolPacketSerializer::writeInt(int num, unsigned char *const buffer)
 {
-    // Little/big median format
+    // Little/big endian format
     num = htonl(num);
 
     std::memcpy(buffer, &num, sizeof(int));
