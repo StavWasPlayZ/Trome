@@ -156,39 +156,91 @@ public class Communicator : IDisposable
     {
         while (IsConnected)
         {
-            var buffer = new byte[1024];
-
-            int read;
+            ProtocolResponse? serverPacket;
             
             try
             {
-                read = _clientSocket!.GetStream().Read(buffer, 0, buffer.Length);
+                serverPacket = ReadServerPacket();
             }
             catch (IOException)
             {
                 Console.Error.WriteLine("IO Exception occured; Assuming forced disconnection");
                 return;
             }
-            
-            VerboseLog($"Received packet: {Encoding.UTF8.GetString(buffer, 0, read)}");
 
-            if (read == 0 || !IsConnected)
+            if (serverPacket == null)
                 return;
             
-            var parsed = RequestPacketDeserializer.Deserialize(buffer);
-
-            if (parsed == null)
-            {
-                Console.Error.WriteLine($"WARNING: Received unknown packet {buffer[0]}.");
-                continue;
-            }
-
-            VerboseLog($"Successfully parsed as: {parsed}");
-            
             // Just dispatch it to the UI thread from here
-            Dispatcher.UIThread.Post(() => ProtocolResponseReceived?.Invoke(parsed));
+            Dispatcher.UIThread.Post(() => ProtocolResponseReceived?.Invoke(serverPacket));
         }
     }
+
+    private ProtocolResponse? ReadServerPacket()
+    {
+        var packetType = ReadSingleByte();
+
+        if (packetType == null)
+            return null;
+        
+        
+        var code = ReadSingleByte();
+
+        if (code == null)
+            return null;
+
+        
+        var jsonLengthRaw = new byte[sizeof(int)];
+        var read = _clientSocket!.GetStream().Read(jsonLengthRaw, 0, jsonLengthRaw.Length);
+        
+        if (read == 0 || !IsConnected)
+            return null;
+        
+        if (BitConverter.IsLittleEndian)
+        {
+            Array.Reverse(jsonLengthRaw);
+        }
+        
+        var jsonLength = BitConverter.ToInt32(jsonLengthRaw, 0);
+        
+        
+        var jsonRaw = new byte[jsonLength];
+        read = _clientSocket!.GetStream().Read(jsonRaw, 0, jsonRaw.Length);
+        
+        if (read == 0 || !IsConnected)
+            return null;
+        
+        var json = Encoding.UTF8.GetString(jsonRaw, 0, jsonRaw.Length);
+        
+        
+        //TODO: Account for notification packets        
+        VerboseLog($"Successfully received packet of code {code}: {json}");
+        
+        var result = ResponsePacketDeserializer.Deserialize((ResponseCode) code, json);
+
+        if (result == null)
+        {
+            Console.Error.WriteLine($"WARNING: Unknown response code {code}");
+        }
+        else
+        {
+            VerboseLog($"Successfully parsed as: {result}");
+        }
+        
+        return result;
+    }
+
+    private byte? ReadSingleByte()
+    {
+        var result = new byte[1];
+        var read = _clientSocket!.GetStream().Read(result, 0, result.Length);
+
+        if (read == 0 || !IsConnected)
+            return null;
+        
+        return result[0];
+    }
+    
 
     private void WriterThread()
     {
