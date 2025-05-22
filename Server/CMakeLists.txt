@@ -91,6 +91,9 @@ add_executable (Server
   "src/common/infrastructure/Game.cpp"
   "src/common/handler/RoomMemberRequestHandler.h" 
   "src/common/handler/RoomMemberRequestHandler.cpp"
+
+  "src/common/handler/codec/s2c/ProtocolPacketSerializer.cpp"
+  "src/common/handler/codec/s2c/ProtocolPacketSerializer.h"
 )
 
 # Platform-specific sources

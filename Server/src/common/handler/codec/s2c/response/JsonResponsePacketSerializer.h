@@ -136,14 +136,4 @@ private:
     static nlohmann::json serializeRoomToJson(const Room &room);
     static nlohmann::json serializeRoomDataToJson(const RoomData &room);
 
-
-	/**
-	 * Converts the provided json into a writable resource,
-	 * prepending the necessary binary headers.
-	 * 
-	 * NOTE: The returned resource must be freed.
-	 */
-	static OBuffer serializeJsonToProtocol(ResponseCode msgCode, const nlohmann::json &data);
-
-	static void writeInt(int num, unsigned char* buffer);
 };
