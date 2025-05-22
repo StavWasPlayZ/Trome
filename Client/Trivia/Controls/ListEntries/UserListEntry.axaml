@@ -39,29 +39,59 @@
 
     <Style Selector="controls|UserListEntry">
         <!-- Set Defaults -->
+        <Setter Property="Background" Value="#9d4d95"/>
+        <Setter Property="Padding" Value="10 10"/>
+
         <Setter Property="Template">
             <ControlTemplate>
-                <StackPanel Orientation="Horizontal">
-        
-                    <Border Background="#ffbcf8"
-                            Height="50"
-                            Width="50"
-                            Padding="6"
-                            CornerRadius="10"
-                            Margin="10 0 15 0">
-                        
-                        <Svg Path="avares://Trivia/Assets/Icons/person.svg"
-                             Css="* { fill: #813e7a; }"/>
-                    </Border>
-        
-                    <TextBlock VerticalAlignment="Center"
-                               FontSize="30"
-                               Text="{Binding User.Username,
-                                   RelativeSource={RelativeSource TemplatedParent}
-                               }"/>
-        
-                </StackPanel>
+                <Border x:Name="PART_Outer"
+                        Background="{TemplateBinding Background}"
+                        Padding="{TemplateBinding Padding}"
+                        CornerRadius="{TemplateBinding CornerRadius}">
+                    
+                    <StackPanel Orientation="Horizontal">
+            
+                        <Border Background="#ffbcf8"
+                                Height="50"
+                                Width="50"
+                                Padding="6"
+                                CornerRadius="10"
+                                Margin="10 0 15 0">
+                            
+                            <Svg Path="avares://Trivia/Assets/Icons/person.svg"
+                                 Css="* { fill: #813e7a; }"/>
+                        </Border>
+            
+                        <TextBlock VerticalAlignment="Center"
+                                   FontSize="30"
+                                   Text="{Binding User.Username,
+                                       RelativeSource={RelativeSource TemplatedParent}
+                                   }"/>
+            
+                    </StackPanel>
+                    
+                </Border>
             </ControlTemplate>
-        </Setter>
+        </Setter>        
+    </Style>
+    
+    <Style Selector="controls1|TriviaUsersList ListBoxItem">
+        <Style Selector="^:pointerover > controls|UserListEntry">
+            <Setter Property="Background" Value="#B456AB"/>
+        </Style>
+        <Style Selector="^:pressed > controls|UserListEntry">
+            <Setter Property="Background" Value="#85437D"/>
+        </Style>
+        
+        <!--
+        We do the roundings here and not at the parent Trivia list because
+        of a current Avalonia glitch where it won't update under some conditions.
+        -->
+        <Style Selector="^:nth-child(1) > controls|UserListEntry">
+            <Setter Property="CornerRadius" Value="25 25 0 0"/>
+        </Style>
+        <Style Selector="^:nth-last-child(1) controls|UserListEntry">
+            <Setter Property="CornerRadius" Value="0 0 25 25"/>
+        </Style>
     </Style>
 </Styles>

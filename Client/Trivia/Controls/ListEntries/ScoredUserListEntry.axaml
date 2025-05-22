@@ -27,48 +27,56 @@
     <Style Selector="controls|ScoredUserListEntry">
         <!-- Set Defaults -->
         <Setter Property="NumberedPlace" Value="0"/>
+        <Setter Property="Background" Value="#9d4d95"/>
+        <Setter Property="Padding" Value="10 10"/>
         
         <Setter Property="Template">
             <ControlTemplate>
-                
-                <Grid ColumnDefinitions="Auto, Auto, Auto, *">
-                                            
-                    <TextBlock Classes="secondary-text"
-                               Grid.Column="0"
-                               VerticalAlignment="Center"
-                               FontSize="25"
-                               Margin="5 0 2 0"
-                               Text="{Binding $parent[controls:ScoredUserListEntry].NumberedPlace, StringFormat={}{0}.}"/>
-
-                    <Border Grid.Column="1"
-                            CornerRadius="10"
-                            Margin="10 0 15 0">
-
-                        <Svg Path="avares://Trivia/Assets/Icons/person.svg"/>
-                    </Border>
-
-                    <TextBlock Classes="primary-text"
-                               Grid.Column="2"
-                               VerticalAlignment="Center"
-                               FontSize="30">
-                        USERNAME
-                    </TextBlock>
+                <Border Background="{TemplateBinding Background}"
+                        Padding="{TemplateBinding Padding}"
+                        CornerRadius="{TemplateBinding CornerRadius}">
                     
-                    <TextBlock Classes="secondary-text"
-                               Grid.Column="3"
-                               VerticalAlignment="Center"
-                               TextAlignment="End"
-                               FontSize="30">
-                        69420
-                    </TextBlock>
+                    <Grid ColumnDefinitions="Auto, Auto, Auto, *">
+                                            
+                        <TextBlock Classes="secondary-text"
+                                   Grid.Column="0"
+                                   VerticalAlignment="Center"
+                                   FontSize="25"
+                                   Margin="5 0 2 0"
+                                   Width="25"
+                                   TextAlignment="End"
+                                   Text="{Binding $parent[controls:ScoredUserListEntry].NumberedPlace, StringFormat={}{0}.}"/>
 
-                </Grid>
-                
+                        <Border x:Name="PART_Pfp"
+                                Grid.Column="1"
+                                CornerRadius="10"
+                                Margin="10 0 15 0">
+
+                            <Svg Path="avares://Trivia/Assets/Icons/person.svg"/>
+                        </Border>
+
+                        <TextBlock Classes="primary-text"
+                                   Grid.Column="2"
+                                   VerticalAlignment="Center"
+                                   FontSize="30">
+                            USERNAME
+                        </TextBlock>
+                    
+                        <TextBlock Classes="secondary-text"
+                                   Grid.Column="3"
+                                   VerticalAlignment="Center"
+                                   TextAlignment="End"
+                                   FontSize="30">
+                            69420
+                        </TextBlock>
+
+                    </Grid>
+                    
+                </Border>
             </ControlTemplate>
         </Setter>
         
-        
-        <Style Selector="^ Border">
+        <Style Selector="^ Border#PART_Pfp">
             <Setter Property="Background" Value="#ffbcf8"/>
             
             <Setter Property="Width" Value="60"/>
@@ -84,5 +92,22 @@
             <Setter Property="Foreground" Value="White"/>
         </Style>
         
+    </Style>
+    
+    <Style Selector="controls1|TriviaUsersList ListBoxItem">
+        <Style Selector="^:pointerover > controls|ScoredUserListEntry">
+            <Setter Property="Background" Value="#B456AB"/>
+        </Style>
+        <Style Selector="^:pressed > controls|ScoredUserListEntry">
+            <Setter Property="Background" Value="#85437D"/>
+        </Style>
+        
+            
+        <Style Selector="^:nth-child(1) > controls|ScoredUserListEntry">
+            <Setter Property="CornerRadius" Value="25 25 0 0"/>
+        </Style>
+        <Style Selector="^:nth-last-child(1) controls|ScoredUserListEntry">
+            <Setter Property="CornerRadius" Value="0 0 25 25"/>
+        </Style>
     </Style>
 </Styles>
