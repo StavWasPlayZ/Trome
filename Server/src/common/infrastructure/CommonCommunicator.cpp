@@ -9,10 +9,10 @@
 #include "exception/SocketDisconnectionException.h"
 #include "exception/SocketTimeoutException.h"
 
-#include "handler/codec/s2c/Response.h"
+#include "handler/codec/s2c/response/Response.h"
 
-#include "handler/codec/c2s/JsonRequestPacketDeserializer.h"
-#include "handler/codec/s2c/JsonResponsePacketSerializer.h"
+#include "../handler/codec/c2s/request/JsonRequestPacketDeserializer.h"
+#include "../handler/codec/s2c/response/JsonResponsePacketSerializer.h"
 
 #include <arpa/inet.h>
 

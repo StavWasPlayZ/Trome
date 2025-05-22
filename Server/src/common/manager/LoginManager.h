@@ -4,9 +4,9 @@
 
 #include "LoggedUser.h"
 
+#include "../handler/codec/c2s/request/Request.h"
+#include "../handler/codec/s2c/response/Response.h"
 #include "infrastructure/db/IDatabase.h"
-#include "handler/codec/s2c/Response.h"
-#include "handler/codec/c2s/Request.h"
 
 class LoginManager
 {
