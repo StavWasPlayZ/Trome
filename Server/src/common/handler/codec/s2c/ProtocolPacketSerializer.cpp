@@ -9,7 +9,7 @@ OBuffer ProtocolPacketSerializer::serialize(const S2CPacketType packetType, cons
 {
     const std::string dataStr = data.dump();
 
-    const int len = SIZE_CODE + SIZE_JSON_LEN + dataStr.size();
+    const int len = SIZE_PACKET_TYPE + SIZE_CODE + SIZE_JSON_LEN + dataStr.size();
     unsigned char* const buffer = new unsigned char[len];
 
     unsigned char* writeBuffer = buffer;
