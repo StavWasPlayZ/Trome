@@ -22,7 +22,7 @@ public class Communicator : IDisposable
     /// <summary>
     /// Whether to print to Debug the various packets.
     /// </summary>
-    private const bool Verbose = true;
+    public const bool Verbose = true;
     
     public static Communicator Instance { get; } = new();
     
@@ -74,7 +74,7 @@ public class Communicator : IDisposable
     /// An action called if an <see cref="ErrorResponse"/> was provided instead of <typeparamref name="T"/>.
     /// </param>
     /// 
-    /// <typeparam name="T">The expected <see cref="ProtocolResponse"/> type.</typeparam>
+    /// <typeparam name="T">The expected <see cref="S2CPacket"/> type.</typeparam>
     public void SendRequest<T>(ProtocolRequest request, Action<T> onResponse, Action<ErrorResponse>? onError = null)
         where T : ProtocolResponse
     {
@@ -83,10 +83,8 @@ public class Communicator : IDisposable
         
         return;
 
-        void OnProtocolResponseReceived(ProtocolResponse response)
+        void OnProtocolResponseReceived(S2CPacket response)
         {
-            //TODO: Filter out notification packets
-            
             if (response is T wantedResponse)
             {
                 onResponse(wantedResponse);
@@ -107,7 +105,7 @@ public class Communicator : IDisposable
     /// 
     /// <param name="request">The request to send to the server</param>
     /// 
-    /// <typeparam name="T">The expected <see cref="ProtocolResponse"/> type</typeparam>
+    /// <typeparam name="T">The expected <see cref="S2CPacket"/> type</typeparam>
     public async Task<T> SendRequestAwaitResponse<T>(ProtocolRequest request) where T : ProtocolResponse
     {
         var task = new TaskCompletionSource<T>();
@@ -156,7 +154,7 @@ public class Communicator : IDisposable
     {
         while (IsConnected)
         {
-            ProtocolResponse? serverPacket;
+            S2CPacket? serverPacket;
             
             try
             {
@@ -176,7 +174,7 @@ public class Communicator : IDisposable
         }
     }
 
-    private ProtocolResponse? ReadServerPacket()
+    private S2CPacket? ReadServerPacket()
     {
         var packetType = ReadSingleByte();
 
@@ -211,21 +209,9 @@ public class Communicator : IDisposable
             return null;
         
         var json = Encoding.UTF8.GetString(jsonRaw, 0, jsonRaw.Length);
-        
-        
-        //TODO: Account for notification packets        
-        VerboseLog($"Successfully received response of code {code}: {json}");
-        
-        var result = ResponsePacketDeserializer.Deserialize((ResponseCode) code, json);
 
-        if (result == null)
-        {
-            Console.Error.WriteLine($"WARNING: Unknown response code {code}");
-            return null;
-        }
-
-        VerboseLog($"Successfully parsed as: {result}");
-        return result;
+        
+        return PacketDeserializer.Deserialize((S2CPacketType) packetType, (byte) code, json);
     }
 
     private byte? ReadSingleByte()
@@ -299,8 +285,8 @@ public class Communicator : IDisposable
     
     private static void Log(string message)
     {
-        Console.WriteLine($"[Communicator] {message}");
+        Console.WriteLine($"[{nameof(Communicator)}] {message}");
     }
 }
 
-public delegate void ProtocolResponseHandler(ProtocolResponse request);
+public delegate void ProtocolResponseHandler(S2CPacket request);
