@@ -1,8 +1,14 @@
 #include "LoginRequestHandler.h"
 
-#include "codec/s2c/JsonResponsePacketSerializer.h"
-#include "codec/s2c/Response.h"
+#include "codec/s2c/response/Response.h"
+#include "codec/s2c/response/JsonResponsePacketSerializer.h"
 #include "handler/RequestHandlerFactory.h"
+
+
+// for using our ERROR Response Code
+#ifdef ERROR
+#undef ERROR
+#endif
 
 LoginRequestHandler::LoginRequestHandler(const RequestHandlerFactory &handlerFactory) : IRequestHandler(handlerFactory)
 {}

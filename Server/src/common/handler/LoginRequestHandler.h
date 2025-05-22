@@ -1,7 +1,7 @@
 #pragma once
 
 #include "IRequestHandler.h"
-#include "codec/c2s/Request.h"
+#include "codec/c2s/request/Request.h"
 
 class RequestHandlerFactory;  // Circle dependency
 

@@ -2,7 +2,7 @@
 
 #include "RequestHandlerFactory.h"
 #include "RoomMemberRequestHandler.h"
-#include "codec/c2s/Request.h"
+#include "codec/c2s/request/Request.h"
 
 MenuRequestHandler::MenuRequestHandler(const RequestHandlerFactory &handlerFactory) : IRequestHandler(handlerFactory)
 {}

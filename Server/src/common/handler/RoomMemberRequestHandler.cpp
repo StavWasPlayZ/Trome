@@ -1,6 +1,6 @@
 #include "RoomMemberRequestHandler.h"
 #include "RequestHandlerFactory.h"
-#include "codec/c2s/Request.h"
+#include "codec/c2s/request/Request.h"
 
 RoomMemberRequestHandler::RoomMemberRequestHandler(const RequestHandlerFactory &handlerFactory, Room &room)
     : IRequestHandler(handlerFactory), m_room(room)

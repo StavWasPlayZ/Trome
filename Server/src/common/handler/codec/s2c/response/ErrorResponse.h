@@ -1,7 +1,7 @@
 #pragma once
 
+#include "../../c2s/request/Request.h"
 #include "Response.h"
-#include "handler/codec/c2s/Request.h"
 
 enum class ErrorStatus : unsigned int;
 

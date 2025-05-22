@@ -22,7 +22,7 @@ public class Communicator : IDisposable
     /// <summary>
     /// Whether to print to Debug the various packets.
     /// </summary>
-    private const bool Verbose = true;
+    public const bool Verbose = true;
     
     public static Communicator Instance { get; } = new();
     
@@ -74,7 +74,7 @@ public class Communicator : IDisposable
     /// An action called if an <see cref="ErrorResponse"/> was provided instead of <typeparamref name="T"/>.
     /// </param>
     /// 
-    /// <typeparam name="T">The expected <see cref="ProtocolResponse"/> type.</typeparam>
+    /// <typeparam name="T">The expected <see cref="S2CPacket"/> type.</typeparam>
     public void SendRequest<T>(ProtocolRequest request, Action<T> onResponse, Action<ErrorResponse>? onError = null)
         where T : ProtocolResponse
     {
@@ -83,10 +83,8 @@ public class Communicator : IDisposable
         
         return;
 
-        void OnProtocolResponseReceived(ProtocolResponse response)
+        void OnProtocolResponseReceived(S2CPacket response)
         {
-            //TODO: Filter out notification packets
-            
             if (response is T wantedResponse)
             {
                 onResponse(wantedResponse);
@@ -107,7 +105,7 @@ public class Communicator : IDisposable
     /// 
     /// <param name="request">The request to send to the server</param>
     /// 
-    /// <typeparam name="T">The expected <see cref="ProtocolResponse"/> type</typeparam>
+    /// <typeparam name="T">The expected <see cref="S2CPacket"/> type</typeparam>
     public async Task<T> SendRequestAwaitResponse<T>(ProtocolRequest request) where T : ProtocolResponse
     {
         var task = new TaskCompletionSource<T>();
@@ -156,39 +154,77 @@ public class Communicator : IDisposable
     {
         while (IsConnected)
         {
-            var buffer = new byte[1024];
-
-            int read;
+            S2CPacket? serverPacket;
             
             try
             {
-                read = _clientSocket!.GetStream().Read(buffer, 0, buffer.Length);
+                serverPacket = ReadServerPacket();
             }
             catch (IOException)
             {
                 Console.Error.WriteLine("IO Exception occured; Assuming forced disconnection");
                 return;
             }
-            
-            VerboseLog($"Received packet: {Encoding.UTF8.GetString(buffer, 0, read)}");
 
-            if (read == 0 || !IsConnected)
+            if (serverPacket == null)
                 return;
             
-            var parsed = RequestPacketDeserializer.Deserialize(buffer);
-
-            if (parsed == null)
-            {
-                Console.Error.WriteLine($"WARNING: Received unknown packet {buffer[0]}.");
-                continue;
-            }
-
-            VerboseLog($"Successfully parsed as: {parsed}");
-            
             // Just dispatch it to the UI thread from here
-            Dispatcher.UIThread.Post(() => ProtocolResponseReceived?.Invoke(parsed));
+            Dispatcher.UIThread.Post(() => ProtocolResponseReceived?.Invoke(serverPacket));
         }
     }
+
+    private S2CPacket? ReadServerPacket()
+    {
+        var packetType = ReadSingleByte();
+
+        if (packetType == null)
+            return null;
+        
+        
+        var code = ReadSingleByte();
+
+        if (code == null)
+            return null;
+
+        
+        var jsonLengthRaw = new byte[sizeof(int)];
+        var read = _clientSocket!.GetStream().Read(jsonLengthRaw, 0, jsonLengthRaw.Length);
+        
+        if (read == 0 || !IsConnected)
+            return null;
+        
+        if (BitConverter.IsLittleEndian)
+        {
+            Array.Reverse(jsonLengthRaw);
+        }
+        
+        var jsonLength = BitConverter.ToInt32(jsonLengthRaw, 0);
+        
+        
+        var jsonRaw = new byte[jsonLength];
+        read = _clientSocket!.GetStream().Read(jsonRaw, 0, jsonRaw.Length);
+        
+        if (read == 0 || !IsConnected)
+            return null;
+        
+        var json = Encoding.UTF8.GetString(jsonRaw, 0, jsonRaw.Length);
+
+        
+        return PacketDeserializer.Deserialize((S2CPacketType) packetType, (byte) code, json);
+    }
+
+    private byte? ReadSingleByte()
+    {
+        var result = new byte[1];
+        var read = _clientSocket!.GetStream().Read(result, 0, result.Length);
+
+        if (read == 0 || !IsConnected)
+            return null;
+        
+        return result[0];
+    }
+    
 
     private void WriterThread()
     {
@@ -249,8 +285,8 @@ public class Communicator : IDisposable
     
     private static void Log(string message)
     {
-        Console.WriteLine($"[Communicator] {message}");
+        Console.WriteLine($"[{nameof(Communicator)}] {message}");
     }
 }
 
-public delegate void ProtocolResponseHandler(ProtocolResponse request);
+public delegate void ProtocolResponseHandler(S2CPacket request);

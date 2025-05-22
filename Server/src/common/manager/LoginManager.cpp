@@ -1,5 +1,10 @@
 #include "manager/LoginManager.h"
 
+// for using our ERROR Response Code
+#ifdef ERROR
+#undef ERROR
+#endif
+
 #include "exception/RegexViolationException.h"
 
 LoginManager::LoginManager(const IDatabase& database) :
@@ -27,10 +32,15 @@ ProtocolResponse *LoginManager::signup(const RequestInfo &info, const SignupRequ
 	catch (const std::runtime_error& e)
 	{
 	    // addNewUser will return runtime_error when adding a user with the same username because it's UNIQUE.
+	    // Note that the full message reads as follows:
+	    // "Error in SQL: UNIQUE constraint failed: users.username"
 
-		//TODO: actually check what the error is about, and act accordingly.
-		// Only throw this if relevant, otherwise generic/internal error.
-		return new ErrorResponse(ErrorStatus::FAILED_USERNAME_TAKEN, info.id);
+        if (std::strstr(e.what(), "UNIQUE") != nullptr)
+        {
+            return new ErrorResponse(ErrorStatus::FAILED_USERNAME_TAKEN, info.id);
+        }
+
+        return new ErrorResponse(ErrorStatus::FAILED_INVALID_ARGUMENT, info.id, e.what());
 	}
 
 	const ProtocolResponse *const loginRes = this->login(info, request);

@@ -47,17 +47,17 @@ add_executable (Server
   "src/common/handler/MenuRequestHandler.h"
   "src/common/handler/MenuRequestHandler.cpp"
 
-  "src/common/handler/codec/s2c/Response.h"
-  "src/common/handler/codec/s2c/Response.cpp"
-  "src/common/handler/codec/s2c/ErrorResponse.h"
-  "src/common/handler/codec/s2c/ErrorResponse.cpp"
-  "src/common/handler/codec/s2c/JsonResponsePacketSerializer.h"
-  "src/common/handler/codec/s2c/JsonResponsePacketSerializer.cpp"
+  "src/common/handler/codec/s2c/response/Response.h"
+  "src/common/handler/codec/s2c/response/Response.cpp"
+  "src/common/handler/codec/s2c/response/ErrorResponse.h"
+  "src/common/handler/codec/s2c/response/ErrorResponse.cpp"
+  "src/common/handler/codec/s2c/response/JsonResponsePacketSerializer.h"
+  "src/common/handler/codec/s2c/response/JsonResponsePacketSerializer.cpp"
 
-  "src/common/handler/codec/c2s/Request.h"
-  "src/common/handler/codec/c2s/Request.cpp"
-  "src/common/handler/codec/c2s/JsonRequestPacketDeserializer.h"
-  "src/common/handler/codec/c2s/JsonRequestPacketDeserializer.cpp"
+  "src/common/handler/codec/c2s/request/Request.h"
+  "src/common/handler/codec/c2s/request/Request.cpp"
+  "src/common/handler/codec/c2s/request/JsonRequestPacketDeserializer.h"
+  "src/common/handler/codec/c2s/request/JsonRequestPacketDeserializer.cpp"
 
   "src/common/infrastructure/request/RequestInfo.h"
   "src/common/infrastructure/request/RequestInfo.cpp"
@@ -91,6 +91,12 @@ add_executable (Server
   "src/common/infrastructure/Game.cpp"
   "src/common/handler/RoomMemberRequestHandler.h" 
   "src/common/handler/RoomMemberRequestHandler.cpp"
+
+  "src/common/handler/codec/s2c/ProtocolPacketSerializer.cpp"
+  "src/common/handler/codec/s2c/ProtocolPacketSerializer.h"
+  "src/common/handler/codec/s2c/S2CPacketType.h"
+  "src/common/handler/codec/s2c/notification/NotificationPacketSerializer.cpp"
+  "src/common/handler/codec/s2c/notification/NotificationPacketSerializer.h"
 )
 
 # Platform-specific sources
