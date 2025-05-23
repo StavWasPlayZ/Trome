@@ -13,7 +13,7 @@ public class MainMenuViewModel : PageViewModel
     public MainMenuViewModel(IScreen hostScreen) : base(hostScreen)
     {
         PlayCommand = NavigateReactiveCommand(
-            () => new JoinMenuViewModel(hostScreen)
+            () => new JoinRoomMenuViewModel(hostScreen)
         );
         StatisticsCommand = NavigateReactiveCommand(
             () => new StatisticsViewModel(hostScreen)

@@ -11,7 +11,7 @@ using Trivia.ViewModels.Game;
 
 namespace Trivia.ViewModels.Menu;
 
-public class JoinMenuViewModel : PageViewModel, IActivatableViewModel
+public class JoinRoomMenuViewModel : PageViewModel, IActivatableViewModel
 {
     private const int RefreshTime = 3000;
     
@@ -42,7 +42,7 @@ public class JoinMenuViewModel : PageViewModel, IActivatableViewModel
     
     private bool _isDisposed;
 
-    public JoinMenuViewModel(IScreen hostScreen) : base(hostScreen)
+    public JoinRoomMenuViewModel(IScreen hostScreen) : base(hostScreen)
     {
         NewRoomButtonCommand = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -70,7 +70,7 @@ public class JoinMenuViewModel : PageViewModel, IActivatableViewModel
         });
     }
     
-    public JoinMenuViewModel() : base(null!)
+    public JoinRoomMenuViewModel() : base(null!)
     {
         JoinRoomButtonCommand = NoOpNavCommand;
         NewRoomButtonCommand = NoOpCommand;

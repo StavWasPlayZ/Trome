@@ -4,11 +4,11 @@
         xmlns:menu1="clr-namespace:Trivia.ViewModels.Menu">
     <Design.PreviewWith>
         <Panel Width="1000" Height="600">
-            <menu:JoinRoomRoomMenuView>
-                <menu:JoinRoomRoomMenuView.DataContext>
-                    <menu1:JoinMenuViewModel />
-                </menu:JoinRoomRoomMenuView.DataContext>
-            </menu:JoinRoomRoomMenuView>
+            <menu:JoinRoomMenuView>
+                <menu:JoinRoomMenuView.DataContext>
+                    <menu1:JoinRoomMenuViewModel />
+                </menu:JoinRoomMenuView.DataContext>
+            </menu:JoinRoomMenuView>
         </Panel>
     </Design.PreviewWith>
 
