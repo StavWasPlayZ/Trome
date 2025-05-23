@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Threading;
 using System.Threading.Tasks;
 using ReactiveUI;
-using Trivia.Codec;
 using Trivia.Codec.C2S.Request;
 using Trivia.Codec.S2C.Response;
 using Trivia.Models.Raw;
@@ -15,36 +13,12 @@ namespace Trivia.ViewModels.Menu;
 
 public class JoinMenuViewModel : PageViewModel, IActivatableViewModel
 {
+    private const int RefreshTime = 3000;
+    
     public ViewModelActivator Activator { get; } = new();
     
     
-    private const int RefreshTime = 3000;
-
-    private static readonly List<Room> MockRooms = Enumerable.Range(1, 30)
-        .Select(i => new Room
-            {
-                Id = i,
-                Status = i % 2 == 0 ? RoomStatus.Waiting : RoomStatus.Playing,
-                Admin = new User
-                {
-                    Id = i,
-                    Username = $"User {i}"
-                },
-                
-                PlayersCount = 2,
-                
-                Data = new RoomData
-                {
-                    Name = $"Room {i}",
-                    MaxPlayers = 10,
-                    TimePerQuestionSecs = 7,
-                    QuestionsCount = 15
-                }
-            }
-        ).ToList();
-    
-    
-    public ReactiveCommand<Unit, IRoutableViewModel> NewRoomButtonCommand { get; }
+    public ReactiveCommand<Unit, Unit> NewRoomButtonCommand { get; }
     
     public ReactiveCommand<Unit, IRoutableViewModel> JoinRoomButtonCommand { get; }
 
@@ -70,9 +44,18 @@ public class JoinMenuViewModel : PageViewModel, IActivatableViewModel
 
     public JoinMenuViewModel(IScreen hostScreen) : base(hostScreen)
     {
-        NewRoomButtonCommand = NavigateReactiveCommand(
-            () => new CreateRoomViewModel(hostScreen)
-        );
+        NewRoomButtonCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            var response = await Comm.SendRequestAwaitResponse<CreateRoomResponse>(new CreateRoomRequest());
+            
+            NavigateTo(new CreateRoomViewModel(hostScreen, new Room
+            {
+                Id = response.RoomId,
+                Admin = AppService.SessionUser!,
+                Data = response.Data
+            }));
+        });
+        
         JoinRoomButtonCommand = NavigateReactiveCommand(
             () => new JoinedRoomViewModel(hostScreen)
         );
@@ -89,9 +72,10 @@ public class JoinMenuViewModel : PageViewModel, IActivatableViewModel
     
     public JoinMenuViewModel() : base(null!)
     {
-        NewRoomButtonCommand = JoinRoomButtonCommand = NoOpNavCommand;
-        Rooms = MockRooms;
-        SelectedRoom = MockRooms[0];
+        JoinRoomButtonCommand = NoOpNavCommand;
+        NewRoomButtonCommand = NoOpCommand;
+        Rooms = Room.MockRooms;
+        SelectedRoom = Room.MockRooms[0];
     }
     
 
