@@ -43,7 +43,7 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo &info, const P
 RequestResult MenuRequestHandler::joinRoom(const RequestInfo &info, const ProtocolRequest &request) const
 {
     const JoinRoomRequest &req = static_cast<const JoinRoomRequest &>(request);
-    const RoomManager &rManager = m_handlerFactory.getRoomManager();
+    RoomManager &rManager = m_handlerFactory.getRoomManager();
 
     const std::optional<Room*> room = rManager.getRoom(req.roomID);
 
@@ -71,7 +71,7 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo &info, const Protoc
 RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo &info, const ProtocolRequest &request) const
 {
     const GetPlayersInRoomRequest &req = static_cast<const GetPlayersInRoomRequest &>(request);
-    const RoomManager &rManager = m_handlerFactory.getRoomManager();
+    RoomManager &rManager = m_handlerFactory.getRoomManager();
 
     const std::optional<Room*> room = rManager.getRoom(req.roomID);
 
@@ -113,7 +113,7 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& info, const Prot
 
 RequestResult MenuRequestHandler::getRooms(const RequestInfo &, const ProtocolRequest &) const
 {
-    const RoomManager &rManager = m_handlerFactory.getRoomManager();
+    RoomManager &rManager = m_handlerFactory.getRoomManager();
 
     return RequestResult(
         JsonResponsePacketSerializer::serializeResponse(
