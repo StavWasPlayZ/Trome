@@ -52,6 +52,7 @@ public class JoinRoomMenuViewModel : PageViewModel, IActivatableViewModel
             {
                 Id = response.RoomId,
                 Admin = AppService.SessionUser!,
+                PlayersCount = 1,
                 Data = response.Data
             }));
         });
@@ -61,7 +62,7 @@ public class JoinRoomMenuViewModel : PageViewModel, IActivatableViewModel
             //TODO: Handle room deleted before refresh
             var response = await Comm.SendRequestAwaitResponse<JoinRoomResponse>(new JoinRoomRequest(roomId));
             
-            NavigateTo(new JoinedRoomViewModel(hostScreen, response.Room));
+            NavigateTo(new JoinedRoomViewModel(hostScreen, response.Room, response.Players));
         });
 
         this.WhenActivated(disposables =>

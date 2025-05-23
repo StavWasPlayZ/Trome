@@ -9,20 +9,35 @@ namespace Trivia.ViewModels.Game;
 public abstract class RoomViewModel : PageViewModel
 {
     public Room Room { get; init; }
-    public List<RoomUserModel?> Users { get; }
+    public List<RoomUserModel?> Players { get; }
 
-    protected RoomViewModel(IScreen hostScreen, Room room) : base(hostScreen)
+    /// <summary>
+    /// </summary>
+    /// <param name="hostScreen"></param>
+    /// <param name="room"></param>
+    /// <param name="players">
+    /// A list of already existing players.
+    /// Must be present if the room's <see cref="Room.PlayersCount"/> is greater than 1.
+    /// </param>
+    protected RoomViewModel(IScreen hostScreen, Room room, List<User>? players = null) : base(hostScreen)
     {
         Room = room;
         
-        Users = new List<RoomUserModel?>(room.Data.MaxPlayers)
+        // This assumes that the first player is always the admin.
+        Players = new List<RoomUserModel?>(room.Data.MaxPlayers)
         {
-            RoomUserModel.FromUser(room.Admin, room.Admin == AppService.SessionUser, true)
+            RoomUserModel.FromUser(room.Admin, room.Admin == AppService.SessionUser!, true)
         };
 
-        for (var i = 1; i < room.Data.MaxPlayers; i++)
+        for (var i = 1; i < room.PlayersCount; i++)
         {
-            Users.Add(null);
+            var player = players![i];
+            Players.Add(RoomUserModel.FromUser(player, player == AppService.SessionUser!, false));
+        }
+
+        for (var i = room.PlayersCount; i < room.Data.MaxPlayers; i++)
+        {
+            Players.Add(null);
         }
     }
 
@@ -30,7 +45,7 @@ public abstract class RoomViewModel : PageViewModel
     {
         Room = Room.CreateMockRoom(AppService.SessionUser!);
         
-        Users = Enumerable.Range(1, 10)
+        Players = Enumerable.Range(1, 10)
             .Select(i =>
             {
                 if (i > 5)

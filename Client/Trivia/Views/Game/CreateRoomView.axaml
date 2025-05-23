@@ -24,7 +24,7 @@
               Margin="35,35">
             
             <controls:TriviaUsersList Grid.Column="0">
-                <ListBox ItemsSource="{Binding Users}">
+                <ListBox ItemsSource="{Binding Players}">
                     
                     <ListBox.ItemTemplate>
                         <DataTemplate>

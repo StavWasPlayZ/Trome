@@ -4,9 +4,8 @@ using Trivia.Codec;
 
 namespace Trivia.Models.Raw;
 
-public class Room
+public class Room : IdentifiableModel
 {
-    public required int Id { get; init; }
     public RoomStatus Status { get; init; } = RoomStatus.Waiting;
     public required User Admin { get; init; }
     
