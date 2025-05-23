@@ -8,7 +8,9 @@
              mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
              x:CompileBindings="True"
              x:Class="Trivia.Views.Game.JoinedRoomView"
-             x:DataType="game:JoinedRoomViewModel">
+             x:DataType="game:JoinedRoomViewModel"
+             
+             AttachedToLogicalTree="OnAttachedToLogicalTree">
     
     <Design.DataContext>
         <game:JoinedRoomViewModel/>
