@@ -2,8 +2,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="using:Trivia.Controls.ListEntries"
         xmlns:controls1="clr-namespace:Trivia.Controls"
-        xmlns:models="clr-namespace:Trivia.Models"
-        xmlns:generic="clr-namespace:System.Collections.Generic;assembly=System.Collections">
+        xmlns:generic="clr-namespace:System.Collections.Generic;assembly=System.Collections"
+        xmlns:user="clr-namespace:Trivia.Models.User">
     <Design.PreviewWith>
         <Border Width="300"
                 Height="500">
@@ -11,24 +11,24 @@
                 <ListBox>
                 
                     <ListBox.ItemsSource>
-                        <generic:List x:TypeArguments="models:User">
-                            <models:User Username="USERNAME"/>
-                            <models:User Username="USERNAME"/>
-                            <models:User Username="USERNAME"/>
-                            <models:User Username="USERNAME"/>
-                            <models:User Username="USERNAME"/>
-                            <models:User Username="USERNAME"/>
-                            <models:User Username="USERNAME"/>
-                            <models:User Username="USERNAME"/>
-                            <models:User Username="USERNAME"/>
-                            <models:User Username="USERNAME"/>
-                            <models:User Username="USERNAME"/>
+                        <generic:List x:TypeArguments="user:RoomUserModel">
+                            <user:RoomUserModel Username="USERNAME"/>
+                            <user:RoomUserModel Username="USERNAME"/>
+                            <user:RoomUserModel Username="USERNAME"/>
+                            <user:RoomUserModel Username="USERNAME"/>
+                            <user:RoomUserModel Username="USERNAME"/>
+                            <user:RoomUserModel Username="USERNAME"/>
+                            <user:RoomUserModel Username="USERNAME"/>
+                            <user:RoomUserModel Username="USERNAME"/>
+                            <user:RoomUserModel Username="USERNAME"/>
+                            <user:RoomUserModel Username="USERNAME"/>
+                            <user:RoomUserModel Username="USERNAME"/>
                         </generic:List>
                     </ListBox.ItemsSource>
                     
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <controls:UserListEntry User="{Binding}"/>
+                            <controls:RoomUserListEntry User="{Binding}"/>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                     
@@ -37,7 +37,7 @@
         </Border>
     </Design.PreviewWith>
 
-    <Style Selector="controls|UserListEntry">
+    <Style Selector="controls|RoomUserListEntry">
         <!-- Set Defaults -->
         <Setter Property="Background" Value="#9d4d95"/>
         <Setter Property="Padding" Value="10 10"/>
@@ -76,10 +76,10 @@
     </Style>
     
     <Style Selector="controls1|TriviaUsersList ListBoxItem">
-        <Style Selector="^:pointerover > controls|UserListEntry">
+        <Style Selector="^:pointerover > controls|RoomUserListEntry">
             <Setter Property="Background" Value="#B456AB"/>
         </Style>
-        <Style Selector="^:pressed > controls|UserListEntry">
+        <Style Selector="^:pressed > controls|RoomUserListEntry">
             <Setter Property="Background" Value="#85437D"/>
         </Style>
         
@@ -87,10 +87,10 @@
         We do the roundings here and not at the parent Trivia list because
         of a current Avalonia glitch where it won't update under some conditions.
         -->
-        <Style Selector="^:nth-child(1) > controls|UserListEntry">
+        <Style Selector="^:nth-child(1) > controls|RoomUserListEntry">
             <Setter Property="CornerRadius" Value="25 25 0 0"/>
         </Style>
-        <Style Selector="^:nth-last-child(1) controls|UserListEntry">
+        <Style Selector="^:nth-last-child(1) controls|RoomUserListEntry">
             <Setter Property="CornerRadius" Value="0 0 25 25"/>
         </Style>
     </Style>

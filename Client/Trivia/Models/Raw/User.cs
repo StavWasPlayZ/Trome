@@ -1,4 +1,4 @@
-namespace Trivia.Models;
+namespace Trivia.Models.Raw;
 
 public class User
 {

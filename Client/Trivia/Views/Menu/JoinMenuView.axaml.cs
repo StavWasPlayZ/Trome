@@ -3,7 +3,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using ReactiveUI;
-using Trivia.Models;
+using Trivia.Models.Raw;
 using Trivia.ViewModels.Menu;
 
 namespace Trivia.Views.Menu;

@@ -8,7 +8,7 @@ using ReactiveUI;
 using Trivia.Codec;
 using Trivia.Codec.C2S.Request;
 using Trivia.Codec.S2C.Response;
-using Trivia.Models;
+using Trivia.Models.Raw;
 using Trivia.ViewModels.Game;
 
 namespace Trivia.ViewModels.Menu;

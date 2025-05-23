@@ -1,6 +1,6 @@
 using Trivia.Codec;
 
-namespace Trivia.Models;
+namespace Trivia.Models.Raw;
 
 public class Room
 {
