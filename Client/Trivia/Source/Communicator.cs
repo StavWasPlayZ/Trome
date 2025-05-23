@@ -75,7 +75,7 @@ public class Communicator : IDisposable
     /// An action called if an <see cref="ErrorResponse"/> was provided instead of <typeparamref name="T"/>.
     /// </param>
     /// 
-    /// <typeparam name="T">The expected <see cref="IS2CPacket"/> type.</typeparam>
+    /// <typeparam name="T">The expected <see cref="S2CPacket"/> type.</typeparam>
     public void SendRequest<T>(ProtocolRequest request, Action<T> onResponse, Action<ErrorResponse>? onError = null)
         where T : ProtocolResponse
     {
@@ -84,7 +84,7 @@ public class Communicator : IDisposable
         
         return;
 
-        void OnPacketReceived(IS2CPacket packet)
+        void OnPacketReceived(S2CPacket packet)
         {
             if (packet is T wantedResponse)
             {
@@ -107,7 +107,7 @@ public class Communicator : IDisposable
     /// 
     /// <param name="request">The request to send to the server</param>
     /// 
-    /// <typeparam name="T">The expected <see cref="IS2CPacket"/> type</typeparam>
+    /// <typeparam name="T">The expected <see cref="S2CPacket"/> type</typeparam>
     public async Task<T> SendRequestAwaitResponse<T>(ProtocolRequest request) where T : ProtocolResponse
     {
         var task = new TaskCompletionSource<T>();
@@ -154,7 +154,7 @@ public class Communicator : IDisposable
     {
         while (IsConnected)
         {
-            IS2CPacket? serverPacket;
+            S2CPacket? serverPacket;
             
             try
             {
@@ -174,7 +174,7 @@ public class Communicator : IDisposable
         }
     }
 
-    private IS2CPacket? ReadServerPacket()
+    private S2CPacket? ReadServerPacket()
     {
         var packetType = ReadSingleByte();
 
@@ -289,4 +289,4 @@ public class Communicator : IDisposable
     }
 }
 
-public delegate void ServerPacketHandler(IS2CPacket packet);
+public delegate void ServerPacketHandler(S2CPacket packet);

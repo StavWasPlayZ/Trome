@@ -38,15 +38,14 @@ public static class PacketDeserializer
         return code switch
         {
             NotificationCode.PlayerJoinedRoom => Deserialize<PlayerJoinedRoomNotification>(json),
-            NotificationCode.PlayerLeftRoom => Deserialize<PlayerLeftRoomNotification>(json),
             _ => null
         };
     }
     
     
-    public static IS2CPacket? Deserialize(S2CPacketType packetType, byte code, string json)
+    public static S2CPacket? Deserialize(S2CPacketType packetType, byte code, string json)
     {
-        IS2CPacket? result;
+        S2CPacket? result;
 
         switch (packetType)
         {
