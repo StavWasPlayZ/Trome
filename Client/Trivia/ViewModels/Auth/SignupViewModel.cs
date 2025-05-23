@@ -44,7 +44,7 @@ public class SignupViewModel : AuthViewModel
 
     private void DoSignup()
     {
-        Comm.SendRequest<LoginResponse>(
+        Comm.SendRequest<SignupResponse>(
             new SignupRequest(
                 Username!,
                 Password!,
