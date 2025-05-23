@@ -1,4 +1,4 @@
-﻿namespace Trivia.Models.User;
+﻿namespace Trivia.Models.Raw;
 
 public class UserStatistics
 {

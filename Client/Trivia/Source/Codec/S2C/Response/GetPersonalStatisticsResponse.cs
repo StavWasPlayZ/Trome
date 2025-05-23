@@ -1,4 +1,4 @@
-using Trivia.Models.User;
+using Trivia.Models.Raw;
 
 namespace Trivia.Codec.S2C.Response;
 
