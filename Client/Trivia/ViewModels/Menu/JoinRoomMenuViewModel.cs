@@ -20,7 +20,7 @@ public class JoinRoomMenuViewModel : PageViewModel, IActivatableViewModel
     
     public ReactiveCommand<Unit, Unit> NewRoomButtonCommand { get; }
     
-    public ReactiveCommand<Unit, IRoutableViewModel> JoinRoomButtonCommand { get; }
+    public ReactiveCommand<int, Unit> JoinRoomButtonCommand { get; }
 
 
     private List<Room> _rooms = [];
@@ -56,9 +56,13 @@ public class JoinRoomMenuViewModel : PageViewModel, IActivatableViewModel
             }));
         });
         
-        JoinRoomButtonCommand = NavigateReactiveCommand(
-            () => new JoinedRoomViewModel(hostScreen)
-        );
+        JoinRoomButtonCommand = ReactiveCommand.CreateFromTask<int>(async roomId =>
+        {
+            //TODO: Handle room deleted before refresh
+            var response = await Comm.SendRequestAwaitResponse<JoinRoomResponse>(new JoinRoomRequest(roomId));
+            
+            NavigateTo(new JoinedRoomViewModel(hostScreen, response.Room));
+        });
 
         this.WhenActivated(disposables =>
         {
@@ -72,9 +76,9 @@ public class JoinRoomMenuViewModel : PageViewModel, IActivatableViewModel
     
     public JoinRoomMenuViewModel() : base(null!)
     {
-        JoinRoomButtonCommand = NoOpNavCommand;
+        JoinRoomButtonCommand = ReactiveCommand.Create<int>(_ => { });
         NewRoomButtonCommand = NoOpCommand;
-        Rooms = Room.GenerateMockRooms(1);
+        Rooms = Room.GenerateMockRooms(30);
         SelectedRoom = Rooms[0];
     }
     
