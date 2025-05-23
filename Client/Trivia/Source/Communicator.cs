@@ -91,6 +91,7 @@ public class Communicator : IDisposable
             }
             else if (response is ErrorResponse errorResponse)
             {
+                //TODO: Check if it actually corresponds to the original code
                 onError?.Invoke(errorResponse);
             }
             
@@ -145,8 +146,6 @@ public class Communicator : IDisposable
         
         new Thread(ListenThread).Start();
         new Thread(WriterThread).Start();
-
-        // TestCommunication();
     }
 
     
