@@ -4,9 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:Trivia.Controls"
              xmlns:game="clr-namespace:Trivia.ViewModels.Game"
-             xmlns:generic="clr-namespace:System.Collections.Generic;assembly=System.Collections"
              xmlns:listEntries="clr-namespace:Trivia.Controls.ListEntries"
-             xmlns:user="clr-namespace:Trivia.Models.User"
              mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
              x:CompileBindings="True"
              x:Class="Trivia.Views.Game.CreateRoomView"
@@ -26,29 +24,16 @@
               Margin="35,35">
             
             <controls:TriviaUsersList Grid.Column="0">
-                <ListBox>
-                
-                    <ListBox.ItemsSource>
-                        <generic:List x:TypeArguments="user:RoomUserModel">
-                            <user:RoomUserModel Username="USERNAME"
-                                                  IsAdmin="True"
-                                                  IsCurrentUser="True"/>
-                            <user:RoomUserModel Username="USERNAME"/>
-                            <user:RoomUserModel Username="USERNAME"/>
-                            <user:RoomUserModel Username="USERNAME"/>
-                            <user:RoomUserModel Username="USERNAME"/>
-                            <user:RoomUserModel Username="USERNAME"/>
-                            <user:RoomUserModel Username="USERNAME"/>
-                            <user:RoomUserModel Username="USERNAME"/>
-                            <user:RoomUserModel Username="USERNAME"/>
-                            <user:RoomUserModel Username="USERNAME"/>
-                            <user:RoomUserModel Username="USERNAME"/>
-                        </generic:List>
-                    </ListBox.ItemsSource>
+                <ListBox ItemsSource="{Binding Users}">
                     
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <listEntries:RoomUserListEntry User="{Binding}"/>
+                            <listEntries:RoomUserListEntry User="{Binding}"
+                                                           IsCurrentUser="{Binding IsCurrentUser}"
+                                                           IsAdmin="{Binding IsAdmin}"
+                                                           IsEmptySlot="{Binding
+                                                               Converter={x:Static ObjectConverters.IsNull}
+                                                           }"/>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                     
