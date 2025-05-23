@@ -5,12 +5,50 @@
 
 #include "handler/codec/s2c/ProtocolPacketSerializer.h"
 
-#include <infrastructure/RoomData.h>
-
 // fucking windows and their stupidass macros cost me 1 hour 30
 #ifdef ERROR
 #undef ERROR
 #endif
+
+OBuffer JsonResponsePacketSerializer::serializeResponse(const ProtocolResponse &response)
+{
+    switch (response.id)
+    {
+    case ResponseCode::ERROR:
+        return serializeResponse(static_cast<const ErrorResponse&>(response));
+    case ResponseCode::LOGIN:
+        return serializeResponse(static_cast<const LoginResponse&>(response));
+    case ResponseCode::SIGNUP:
+        return serializeResponse(static_cast<const SignupResponse&>(response));
+    case ResponseCode::LOGOUT:
+        return serializeResponse(static_cast<const LogoutResponse&>(response));
+    case ResponseCode::JOIN_ROOM:
+        return serializeResponse(static_cast<const JoinRoomResponse&>(response));
+    case ResponseCode::CREATE_ROOM:
+        return serializeResponse(static_cast<const CreateRoomResponse&>(response));
+    case ResponseCode::GET_ROOMS:
+        return serializeResponse(static_cast<const GetRoomsResponse&>(response));
+    case ResponseCode::GET_PLAYERS_IN_ROOM:
+        return serializeResponse(static_cast<const GetPlayersInRoomResponse&>(response));
+    case ResponseCode::GET_HIGH_SCORES:
+        return serializeResponse(static_cast<const GetHighScoresResponse&>(response));
+    case ResponseCode::GET_PERSONAL_STATISTICS:
+        return serializeResponse(static_cast<const GetPersonalStatisticsResponse&>(response));
+    case ResponseCode::CLOSE_ROOM:
+        return serializeResponse(static_cast<const CloseRoomResponse&>(response));
+    case ResponseCode::START_GAME:
+        return serializeResponse(static_cast<const StartGameResponse&>(response));
+    case ResponseCode::GET_ROOM_STATE:
+        return serializeResponse(static_cast<const GetRoomStateResponse&>(response));
+    case ResponseCode::LEAVE_ROOM:
+        return serializeResponse(static_cast<const LeaveRoomResponse&>(response));
+    case ResponseCode::UPDATE_ROOM_DATA:
+        return serializeResponse(static_cast<const UpdateRoomDataResponse&>(response));
+
+    default: throw std::invalid_argument("Invalid response ID");
+    }
+}
+
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const LoginResponse &response)
 {
@@ -52,7 +90,13 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const JoinRoomResponse &
 {
     nlohmann::json data;
 
-    data["room"] = serializeRoomToJson(response.room);
+    data["room"] = ProtocolPacketSerializer::serializeAsJson(response.room);
+
+    data["players"] = nlohmann::json::array();
+    for (const LoggedUser* user : response.players)
+    {
+        data["players"].push_back(ProtocolPacketSerializer::serializeAsJson(*user));
+    }
 
     return serialize(response.id, data);
 }
@@ -62,6 +106,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const CreateRoomResponse
     nlohmann::json data;
 
     data["room_id"] = response.roomId;
+    data["data"] = ProtocolPacketSerializer::serializeAsJson(response.data);
 
     return serialize(response.id, data);
 }
@@ -74,7 +119,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetRoomsResponse &
 
 	for (const auto& room : response.rooms)
     {
-        rooms.push_back(serializeRoomToJson(*room));
+        rooms.push_back(ProtocolPacketSerializer::serializeAsJson(*room));
 	}
 
     return serialize(response.id, data);
@@ -88,7 +133,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetPlayersInRoomRe
 
     for (const LoggedUser* user : response.players)
     {
-        data["players"].push_back(serializePlayerToJson(*user));
+        data["players"].push_back(ProtocolPacketSerializer::serializeAsJson(*user));
     }
 
     return serialize(response.id, data);
@@ -148,7 +193,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetRoomStateRespon
 {
     nlohmann::json data;
 
-    data["room"] = serializeRoomToJson(response.room);
+    data["room"] = ProtocolPacketSerializer::serializeAsJson(response.room);
 
     return serialize(response.id, data);
 }
@@ -161,7 +206,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const UpdateRoomDataResp
 
 OBuffer JsonResponsePacketSerializer::serialize(const ResponseCode msgCode, const nlohmann::json &data)
 {
-    return ProtocolPacketSerializer::serialize(S2CPacketType::RESPONSE, msgCode, data);
+    return ProtocolPacketSerializer::serialize(S2CPacketType::RESPONSE, static_cast<unsigned char>(msgCode), data);
 }
 
 
@@ -169,41 +214,4 @@ void JsonResponsePacketSerializer::serializeRegistrationResponseToJson(nlohmann:
                                                                        const RegistrationResponse &response)
 {
     json["user_id"] = response.userId;
-}
-
-nlohmann::json JsonResponsePacketSerializer::serializePlayerToJson(const LoggedUser &player)
-{
-    nlohmann::json result;
-
-    result["id"] = player.getId();
-    result["username"] = player.getUsername();
-
-    return result;
-}
-
-nlohmann::json JsonResponsePacketSerializer::serializeRoomToJson(const Room &room)
-{
-    nlohmann::json result;
-
-    result["id"] = room.getId();
-    result["status"] = room.getStatus();
-    result["admin"] = serializePlayerToJson(room.getAdmin());
-
-    result["players_count"] = room.getAllUsers().size();
-
-    result["data"] = serializeRoomDataToJson(room.getData());
-
-    return result;
-}
-
-nlohmann::json JsonResponsePacketSerializer::serializeRoomDataToJson(const RoomData &room)
-{
-    nlohmann::json result;
-
-    result["name"] = room.name;
-    result["max_players"] = room.maxPlayers;
-    result["time_per_question_secs"] = room.timePerQuestionSecs;
-    result["questions_count"] = room.questionsCount;
-
-    return result;
 }

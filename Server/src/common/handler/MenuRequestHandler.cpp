@@ -3,6 +3,7 @@
 #include "RequestHandlerFactory.h"
 #include "RoomMemberRequestHandler.h"
 #include "codec/c2s/request/Request.h"
+#include "codec/s2c/notification/Notification.h"
 
 MenuRequestHandler::MenuRequestHandler(const RequestHandlerFactory &handlerFactory) : IRequestHandler(handlerFactory)
 {}
@@ -43,54 +44,49 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo &info, const P
 RequestResult MenuRequestHandler::joinRoom(const RequestInfo &info, const ProtocolRequest &request) const
 {
     const JoinRoomRequest &req = static_cast<const JoinRoomRequest &>(request);
-    const RoomManager &rManager = m_handlerFactory.getRoomManager();
+    RoomManager &rManager = m_handlerFactory.getRoomManager();
 
     const std::optional<Room*> room = rManager.getRoom(req.roomID);
 
     if (!room)
     {
         return RequestResult(
-            JsonResponsePacketSerializer::serializeResponse(
-                ErrorResponse(ErrorStatus::ERROR_UNKNOWN_RESOURCE, info.id)
-            ),
-
+            new ErrorResponse(ErrorStatus::ERROR_UNKNOWN_RESOURCE, info.id),
             new MenuRequestHandler(*this)
         );
     }
 
-    room.value()->addUser(getUserByInfo(info));
+    LoggedUser& user = getUserByInfo(info);
+    room.value()->addUser(user);
 
     return RequestResult(
-        JsonResponsePacketSerializer::serializeResponse(
-            JoinRoomResponse(*room.value())
-        ),
-        new RoomMemberRequestHandler(this->m_handlerFactory, *room.value())
+        new JoinRoomResponse(*room.value(), room.value()->getAllUsers()),
+        new RoomMemberRequestHandler(this->m_handlerFactory, *room.value()),
+
+        new NotificationPayload(
+            new PlayerJoinedRoomNotification(user),
+            room.value()->getAllUsers()
+        )
     );
 }
 
 RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo &info, const ProtocolRequest &request) const
 {
     const GetPlayersInRoomRequest &req = static_cast<const GetPlayersInRoomRequest &>(request);
-    const RoomManager &rManager = m_handlerFactory.getRoomManager();
+    RoomManager &rManager = m_handlerFactory.getRoomManager();
 
     const std::optional<Room*> room = rManager.getRoom(req.roomID);
 
     if (!room)
     {
         return RequestResult(
-            JsonResponsePacketSerializer::serializeResponse(
-                ErrorResponse(ErrorStatus::ERROR_UNKNOWN_RESOURCE, info.id)
-            ),
-
+            new ErrorResponse(ErrorStatus::ERROR_UNKNOWN_RESOURCE, info.id),
             new MenuRequestHandler(*this)
         );
     }
 
     return RequestResult(
-        JsonResponsePacketSerializer::serializeResponse(
-            GetPlayersInRoomResponse(room.value()->getAllUsers())
-        ),
-
+        new GetPlayersInRoomResponse(room.value()->getAllUsers()),
         new MenuRequestHandler(*this)
     );
 }
@@ -102,9 +98,7 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& info, const Prot
     const Room& room = rManager.createRoom(getUserByInfo(info), RoomData::ofDefaults());
 
     return RequestResult(
-        JsonResponsePacketSerializer::serializeResponse(
-            CreateRoomResponse(room.getId(), room.getData())
-        ),
+        new CreateRoomResponse(room.getId(), room.getData()),
 
         // TODO : make it RoomAdminRequestHandler when its implemented
         new MenuRequestHandler(*this)
@@ -113,13 +107,10 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& info, const Prot
 
 RequestResult MenuRequestHandler::getRooms(const RequestInfo &, const ProtocolRequest &) const
 {
-    const RoomManager &rManager = m_handlerFactory.getRoomManager();
+    RoomManager &rManager = m_handlerFactory.getRoomManager();
 
     return RequestResult(
-        JsonResponsePacketSerializer::serializeResponse(
-            GetRoomsResponse(rManager.getRooms())
-        ),
-
+        new GetRoomsResponse(rManager.getRooms()),
         new MenuRequestHandler(*this)
     );
 }
@@ -129,10 +120,7 @@ RequestResult MenuRequestHandler::getHighScores(const RequestInfo &, const Proto
     const StatisticsManager &sManager = m_handlerFactory.getStatisticsManager();
 
     return RequestResult(
-        JsonResponsePacketSerializer::serializeResponse(
-            GetHighScoresResponse(sManager.getHighScores())
-        ),
-
+        new GetHighScoresResponse(sManager.getHighScores()),
         new MenuRequestHandler(*this)
     );
 }
@@ -142,11 +130,9 @@ RequestResult MenuRequestHandler::getPersonalStatistics(const RequestInfo& info,
     const StatisticsManager &sManager = m_handlerFactory.getStatisticsManager();
 
     return RequestResult(
-        JsonResponsePacketSerializer::serializeResponse(
-            GetPersonalStatisticsResponse(
-                sManager.getUserStatistics(
-                    getUserByInfo(info).getUsername()
-                )
+        new GetPersonalStatisticsResponse(
+            sManager.getUserStatistics(
+                getUserByInfo(info).getUsername()
             )
         ),
 
@@ -160,11 +146,5 @@ RequestResult MenuRequestHandler::logout(const RequestInfo &info, const Protocol
 
     uManager.logout(info.client);
 
-    return RequestResult(
-        JsonResponsePacketSerializer::serializeResponse(
-            LogoutResponse()
-        ),
-
-        new LoginRequestHandler(this->m_handlerFactory)
-    );
+    return RequestResult(new LogoutResponse(), new LoginRequestHandler(this->m_handlerFactory));
 }

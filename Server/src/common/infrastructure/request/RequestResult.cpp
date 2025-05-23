@@ -1,8 +1,22 @@
 #include "RequestResult.h"
 
+#include "handler/codec/s2c/notification/Notification.h"
 #include "handler/IRequestHandler.h"
 
-RequestResult::RequestResult(const OBuffer &response, const IRequestHandler *const newHandler) :
+NotificationPayload::NotificationPayload(const ProtocolNotification *const notification,
+                                         const std::vector<LoggedUser *> &clients) :
+    notification(notification),
+    clients(clients)
+{}
+
+NotificationPayload::~NotificationPayload()
+{
+    delete notification;
+}
+
+RequestResult::RequestResult(const ProtocolResponse *const response, const IRequestHandler *const newHandler,
+        const std::optional<const NotificationPayload*> &notificationPayload) :
     response(response),
-    newHandler(newHandler)
+    newHandler(newHandler),
+    notificationPayload(notificationPayload)
 {}

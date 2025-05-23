@@ -6,6 +6,7 @@
 
 #include "infrastructure/OBuffer.h"
 #include "response/Response.h"
+#include "infrastructure/Room.h"
 
 class ProtocolPacketSerializer
 {
@@ -23,7 +24,12 @@ public:
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serialize(S2CPacketType packetType, ResponseCode msgCode, const nlohmann::json &data);
+    static OBuffer serialize(S2CPacketType packetType, unsigned char msgCode, const nlohmann::json &data);
+
+
+    static nlohmann::json serializeAsJson(const LoggedUser &player);
+    static nlohmann::json serializeAsJson(const Room &room);
+    static nlohmann::json serializeAsJson(const RoomData &room);
 
 private:
     static void writeInt(int num, unsigned char* buffer);

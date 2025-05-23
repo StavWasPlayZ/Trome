@@ -19,6 +19,14 @@ public:
     JsonResponsePacketSerializer& operator=(JsonResponsePacketSerializer&&) = delete;
 
 
+    /**
+     * Returns: The serialized object.
+     *
+     * NOTE: The returned resource must be freed.
+     */
+    static OBuffer serializeResponse(const ProtocolResponse& response);
+
+
 	/**
 	 * Returns: The serialized object.
 	 * 
@@ -131,10 +139,5 @@ private:
 	 * Serializes the response into the provided json.
 	 */
     static void serializeRegistrationResponseToJson(nlohmann::json &json, const RegistrationResponse &response);
-
-
-    static nlohmann::json serializePlayerToJson(const LoggedUser &player);
-    static nlohmann::json serializeRoomToJson(const Room &room);
-    static nlohmann::json serializeRoomDataToJson(const RoomData &room);
 
 };

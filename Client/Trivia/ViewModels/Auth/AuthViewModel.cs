@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using ReactiveUI;
 using Trivia.Codec.S2C.Response;
-using Trivia.Codec.S2C.Status;
-using Trivia.Models;
+using Trivia.Codec.S2C.Response.Packets;
+using Trivia.Models.Raw;
 using Trivia.ViewModels.Menu;
 
 namespace Trivia.ViewModels.Auth;
@@ -19,7 +19,11 @@ public abstract class AuthViewModel : PageViewModel
     
     protected void HandleAuthResponse(RegistrationResponse response)
     {
-        App.AppService.SessionUser = new User(response.UserId, Username!);
+        App.AppService.SessionUser = new User
+        {
+            Id = response.UserId,
+            Username = Username!
+        };
         NavigateAndReset(new MainMenuViewModel(HostScreen));
     }
     

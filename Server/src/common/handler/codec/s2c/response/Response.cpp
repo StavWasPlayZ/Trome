@@ -23,9 +23,10 @@ LogoutResponse::LogoutResponse() :
     ProtocolResponse(ResponseCode::LOGOUT)
 {}
 
-JoinRoomResponse::JoinRoomResponse(const Room &room) :
+JoinRoomResponse::JoinRoomResponse(const Room &room, const std::vector<LoggedUser*> &players) :
     ProtocolResponse(ResponseCode::JOIN_ROOM),
-    room(room)
+    room(room),
+    players(players)
 {}
 
 CreateRoomResponse::CreateRoomResponse(const unsigned int roomId, const RoomData& data) :

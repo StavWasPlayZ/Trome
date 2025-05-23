@@ -65,9 +65,10 @@ struct LogoutResponse : ProtocolResponse
 
 struct JoinRoomResponse : ProtocolResponse
 {
-    explicit JoinRoomResponse(const Room& room);
+    explicit JoinRoomResponse(const Room& room, const std::vector<LoggedUser*>& players);
 
 	const Room& room;
+    const std::vector<LoggedUser*> players;
 };
 
 struct CreateRoomResponse : ProtocolResponse

@@ -132,6 +132,12 @@ private:
 	//ANCHOR Actual client processing function.
 	void _handleClient(SOCKET socket) const;
 
+    /**
+     * Sends the relevant fields of the provided RequestResult,
+     * freeing any that are no longer necessary.
+     */
+    void _dispatchRequestResults(SOCKET socket, const RequestResult& requestResult) const;
+
 	RequestInfo _waitForClientRequest(SOCKET socket) const;
 	void _clientCleanerThreadFunc();
 

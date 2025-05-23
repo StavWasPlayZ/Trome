@@ -38,21 +38,10 @@ RequestResult RoomMemberRequestHandler::leaveRoom(const RequestInfo &info, const
 {
     m_room.removeUser(getUserByInfo(info));
 
-    return RequestResult(
-            JsonResponsePacketSerializer::serializeResponse(
-                LeaveRoomResponse()
-        ),
-
-        new MenuRequestHandler(this->m_handlerFactory));
+    return RequestResult(new LeaveRoomResponse(), new MenuRequestHandler(this->m_handlerFactory));
 }
 
 RequestResult RoomMemberRequestHandler::getRoomState(const RequestInfo &, const ProtocolRequest &) const
 {
-    return RequestResult(
-        JsonResponsePacketSerializer::serializeResponse(
-            GetRoomStateResponse(m_room)
-        ),
-
-        new RoomMemberRequestHandler(*this)
-    );
+    return RequestResult(new GetRoomStateResponse(m_room), new RoomMemberRequestHandler(*this));
 }

@@ -4,10 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:Trivia.Controls"
              xmlns:game="clr-namespace:Trivia.ViewModels.Game"
+             xmlns:listEntries="clr-namespace:Trivia.Controls.ListEntries"
              mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
              x:CompileBindings="True"
              x:Class="Trivia.Views.Game.CreateRoomView"
-             x:DataType="game:CreateRoomViewModel">
+             x:DataType="game:CreateRoomViewModel"
+             
+             AttachedToLogicalTree="OnAttachedToLogicalTree">
     
     <Design.DataContext>
         <game:CreateRoomViewModel/>
@@ -23,7 +26,20 @@
               Margin="35,35">
             
             <controls:TriviaUsersList Grid.Column="0">
-                <ListBox ItemsSource="gggggggggg"/>
+                <ListBox ItemsSource="{Binding Players}">
+                    
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <listEntries:RoomUserListEntry User="{Binding}"
+                                                           IsCurrentUser="{Binding IsCurrentUser}"
+                                                           IsAdmin="{Binding IsAdmin}"
+                                                           IsEmptySlot="{Binding
+                                                               Converter={x:Static ObjectConverters.IsNull}
+                                                           }"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    
+                </ListBox>
             </controls:TriviaUsersList>
 
             <Border Grid.Column="2"

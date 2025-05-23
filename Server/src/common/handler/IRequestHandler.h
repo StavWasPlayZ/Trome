@@ -1,11 +1,11 @@
 #pragma once
 
 #include "infrastructure/request/RequestInfo.h"
+#include "infrastructure/request/RequestResult.h"
 
 class LoggedUser;
 struct ProtocolRequest;
 struct RequestInfo;
-struct RequestResult;
 class RequestHandlerFactory;
 class Client;
 

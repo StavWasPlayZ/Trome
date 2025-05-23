@@ -2,7 +2,9 @@
 using System.Diagnostics;
 using Newtonsoft.Json;
 using Trivia.Codec.S2C.Notification;
+using Trivia.Codec.S2C.Notification.Packets;
 using Trivia.Codec.S2C.Response;
+using Trivia.Codec.S2C.Response.Packets;
 
 namespace Trivia.Codec.S2C;
 
@@ -31,10 +33,11 @@ public static class PacketDeserializer
         };
     }
 
-    private static ProtocolNotification? DeserializeNotification(ResponseCode code, string json)
+    private static ProtocolNotification? DeserializeNotification(NotificationCode code, string json)
     {
         return code switch
         {
+            NotificationCode.PlayerJoinedRoom => Deserialize<PlayerJoinedRoomNotification>(json),
             _ => null
         };
     }
@@ -53,7 +56,7 @@ public static class PacketDeserializer
             
             case S2CPacketType.Notification:
                 VerboseLog($"Received notification of code {code}: {json}");
-                result = DeserializeNotification((ResponseCode) code, json);
+                result = DeserializeNotification((NotificationCode) code, json);
                 break;
             
             default:
@@ -71,7 +74,7 @@ public static class PacketDeserializer
         return result;
     }
     
-    private static ProtocolResponse? Deserialize<T>(string json) where T : ProtocolResponse
+    private static T? Deserialize<T>(string json)
     {
         return JsonConvert.DeserializeObject<T>(json, CodecConstants.JsonSerializerSettings);
     }

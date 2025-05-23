@@ -1,4 +1,4 @@
-using Trivia.Models;
+using Trivia.Models.Raw;
 
 namespace Trivia.Services;
 
@@ -9,6 +9,10 @@ public class ApplicationService
     
     public static readonly ApplicationService MockAppService = new()
     {
-        SessionUser = new User(1, "Username")
+        SessionUser = new User
+        {
+            Id = 1,
+            Username = "Username"
+        }
     };
 }

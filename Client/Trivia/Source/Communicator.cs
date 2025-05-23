@@ -11,6 +11,7 @@ using Avalonia.Threading;
 using Trivia.Codec.C2S.Request;
 using Trivia.Codec.S2C;
 using Trivia.Codec.S2C.Response;
+using Trivia.Codec.S2C.Response.Packets;
 using Trivia.Exceptions;
 
 namespace Trivia;
@@ -35,7 +36,7 @@ public class Communicator : IDisposable
     /// <summary>
     /// Use this to subscribe to new server packets received.
     /// </summary>
-    public event ProtocolResponseHandler? ProtocolResponseReceived;
+    public event ServerPacketHandler? PacketReceived;
 
 
     public bool IsConnected => _clientSocket?.Connected ?? false;
@@ -78,23 +79,24 @@ public class Communicator : IDisposable
     public void SendRequest<T>(ProtocolRequest request, Action<T> onResponse, Action<ErrorResponse>? onError = null)
         where T : ProtocolResponse
     {
-        ProtocolResponseReceived += OnProtocolResponseReceived;
+        PacketReceived += OnPacketReceived;
         SendRequest(request);
         
         return;
 
-        void OnProtocolResponseReceived(S2CPacket response)
+        void OnPacketReceived(S2CPacket packet)
         {
-            if (response is T wantedResponse)
+            if (packet is T wantedResponse)
             {
                 onResponse(wantedResponse);
             }
-            else if (response is ErrorResponse errorResponse)
+            else if (packet is ErrorResponse errorResponse)
             {
+                //TODO: Check if it actually corresponds to the original code
                 onError?.Invoke(errorResponse);
             }
             
-            ProtocolResponseReceived -= OnProtocolResponseReceived;
+            PacketReceived -= OnPacketReceived;
         }
     }
 
@@ -145,8 +147,6 @@ public class Communicator : IDisposable
         
         new Thread(ListenThread).Start();
         new Thread(WriterThread).Start();
-
-        // TestCommunication();
     }
 
     
@@ -170,7 +170,7 @@ public class Communicator : IDisposable
                 return;
             
             // Just dispatch it to the UI thread from here
-            Dispatcher.UIThread.Post(() => ProtocolResponseReceived?.Invoke(serverPacket));
+            Dispatcher.UIThread.Post(() => PacketReceived?.Invoke(serverPacket));
         }
     }
 
@@ -289,4 +289,4 @@ public class Communicator : IDisposable
     }
 }
 
-public delegate void ProtocolResponseHandler(S2CPacket request);
+public delegate void ServerPacketHandler(S2CPacket packet);

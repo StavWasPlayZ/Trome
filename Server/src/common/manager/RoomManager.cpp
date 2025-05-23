@@ -7,7 +7,7 @@ RoomManager::RoomManager(const IDatabase &database) :
 Room &RoomManager::createRoom(LoggedUser &admin, const RoomData &data)
 {
     Room room(admin, data, this->m_database, RoomStatus::WAITING);
-    const auto [entry, _] = this->m_rooms.emplace(room.getId(), room);
+    const auto [entry, _] = this->m_rooms.emplace(room.getId(), std::move(room));
 
     return entry->second;
 }
@@ -29,9 +29,33 @@ RoomStatus RoomManager::getRoomStatus(const int roomID) const
     return room.value()->getStatus();
 }
 
-std::vector<Room*> RoomManager::getRooms() const
+std::vector<Room*> RoomManager::getRooms()
 {
     std::vector<Room*> data;
+
+    for (auto& pair : this->m_rooms)
+    {
+        data.push_back(&pair.second);
+    }
+
+    return data;
+}
+
+std::optional<Room*> RoomManager::getRoom(const int roomID)
+{
+    const auto it = m_rooms.find(roomID);
+
+    if (it != m_rooms.end())
+    {
+        return &it->second;
+    }
+
+    return std::nullopt;
+}
+
+std::vector<const Room*> RoomManager::getRooms() const
+{
+    std::vector<const Room*> data;
 
     for (const auto& pair : this->m_rooms)
     {
@@ -41,9 +65,10 @@ std::vector<Room*> RoomManager::getRooms() const
     return data;
 }
 
-std::optional<Room*> RoomManager::getRoom(const int roomID) const
+std::optional<const Room*> RoomManager::getRoom(const int roomID) const
 {
     const auto it = m_rooms.find(roomID);
+
     if (it != m_rooms.end())
     {
         return &it->second;

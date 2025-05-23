@@ -1,9 +1,15 @@
 ﻿using ReactiveUI;
+using Trivia.Models.Raw;
 
 namespace Trivia.ViewModels.Game;
 
-public class CreateRoomViewModel : PageViewModel
+public class CreateRoomViewModel : RoomViewModel
 {
-    public CreateRoomViewModel(IScreen hostScreen) : base(hostScreen) { }
-    public CreateRoomViewModel() { }
+    public CreateRoomViewModel(IScreen hostScreen, Room room) : base(hostScreen, room)
+    {
+    }
+
+    public CreateRoomViewModel()
+    {
+    }
 }

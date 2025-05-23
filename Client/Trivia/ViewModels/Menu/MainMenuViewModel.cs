@@ -2,8 +2,8 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using ReactiveUI;
-using Trivia.Codec.C2S.Request;
-using Trivia.Codec.S2C.Response;
+using Trivia.Codec.C2S.Request.Packets;
+using Trivia.Codec.S2C.Response.Packets;
 using Trivia.ViewModels.Auth;
 
 namespace Trivia.ViewModels.Menu;
@@ -13,7 +13,7 @@ public class MainMenuViewModel : PageViewModel
     public MainMenuViewModel(IScreen hostScreen) : base(hostScreen)
     {
         PlayCommand = NavigateReactiveCommand(
-            () => new JoinMenuViewModel(hostScreen)
+            () => new JoinRoomMenuViewModel(hostScreen)
         );
         StatisticsCommand = NavigateReactiveCommand(
             () => new StatisticsViewModel(hostScreen)

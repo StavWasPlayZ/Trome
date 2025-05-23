@@ -11,7 +11,7 @@
 
 #include <cstring>
 
-OBuffer ProtocolPacketSerializer::serialize(const S2CPacketType packetType, const ResponseCode msgCode, const nlohmann::json &data)
+OBuffer ProtocolPacketSerializer::serialize(const S2CPacketType packetType, const unsigned char msgCode, const nlohmann::json &data)
 {
     const std::string dataStr = data.dump();
 
@@ -26,7 +26,7 @@ OBuffer ProtocolPacketSerializer::serialize(const S2CPacketType packetType, cons
     writeBuffer[0] = static_cast<unsigned char>(packetType);
     writeBuffer += SIZE_PACKET_TYPE;
     // Code
-    writeBuffer[0] = static_cast<unsigned char>(msgCode);
+    writeBuffer[0] = msgCode;
     writeBuffer += SIZE_CODE;
     // JSON length
     writeInt(dataStr.size(), writeBuffer);
@@ -37,6 +37,45 @@ OBuffer ProtocolPacketSerializer::serialize(const S2CPacketType packetType, cons
 
     return OBuffer(buffer, len);
 }
+
+
+nlohmann::json ProtocolPacketSerializer::serializeAsJson(const LoggedUser &player)
+{
+    nlohmann::json result;
+
+    result["id"] = player.getId();
+    result["username"] = player.getUsername();
+
+    return result;
+}
+
+nlohmann::json ProtocolPacketSerializer::serializeAsJson(const Room &room)
+{
+    nlohmann::json result;
+
+    result["id"] = room.getId();
+    result["status"] = room.getStatus();
+    result["admin"] = serializeAsJson(room.getAdmin());
+
+    result["players_count"] = room.getAllUsers().size();
+
+    result["data"] = serializeAsJson(room.getData());
+
+    return result;
+}
+
+nlohmann::json ProtocolPacketSerializer::serializeAsJson(const RoomData &room)
+{
+    nlohmann::json result;
+
+    result["name"] = room.name;
+    result["max_players"] = room.maxPlayers;
+    result["time_per_question_secs"] = room.timePerQuestionSecs;
+    result["questions_count"] = room.questionsCount;
+
+    return result;
+}
+
 
 void ProtocolPacketSerializer::writeInt(int num, unsigned char *const buffer)
 {
