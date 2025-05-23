@@ -56,16 +56,18 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo &info, const Protoc
         );
     }
 
+    const std::vector<LoggedUser*> usersBeforeNew = room.value()->getAllUsers();
+
     LoggedUser& user = getUserByInfo(info);
     room.value()->addUser(user);
 
     return RequestResult(
-        new JoinRoomResponse(*room.value(), room.value()->getAllUsers()),
+        new JoinRoomResponse(*room.value(), usersBeforeNew),
         new RoomMemberRequestHandler(this->m_handlerFactory, *room.value()),
 
         new NotificationPayload(
             new PlayerJoinedRoomNotification(user),
-            room.value()->getAllUsers()
+            usersBeforeNew
         )
     );
 }
