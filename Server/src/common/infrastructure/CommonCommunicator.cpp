@@ -14,7 +14,11 @@
 #include "../handler/codec/c2s/request/JsonRequestPacketDeserializer.h"
 #include "../handler/codec/s2c/response/JsonResponsePacketSerializer.h"
 
+#ifdef _WIN32
+#else
 #include <arpa/inet.h>
+#endif
+
 
 CommonCommunicator::CommonCommunicator(const SOCKET defaultSocket, const RequestHandlerFactory& handlerFactory) :
     _running(false),
@@ -119,6 +123,9 @@ void CommonCommunicator::registerClient(const SOCKET socket)
         }
     );
 
+#ifdef _WIN32
+    std::cout << "Connection accepted from " + std::to_string(socket);
+#else
     // Get the IP of the remote to display it
     socklen_t addrLen = sizeof(this->_serverSockAddr);
     char ipStr[INET_ADDRSTRLEN] = {};
@@ -128,8 +135,8 @@ void CommonCommunicator::registerClient(const SOCKET socket)
         inet_ntop(AF_INET, &this->_serverSockAddr.sin_addr, ipStr, sizeof(ipStr));
     }
 
-    std::cout << "Connection accepted from " + std::to_string(socket)
-        << " (" << ipStr << ")" << std::endl;
+    std::cout << "Connection accepted from " + std::to_string(socket) << " (" << ipStr << ")" << std::endl;
+#endif
 }
 
 void CommonCommunicator::startServerThreads()
