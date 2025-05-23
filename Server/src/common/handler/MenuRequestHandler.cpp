@@ -62,7 +62,7 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo &info, const Protoc
 
     return RequestResult(
         JsonResponsePacketSerializer::serializeResponse(
-            JoinRoomResponse(*room.value())
+            JoinRoomResponse(*room.value(), room.value()->getAllUsers())
         ),
         new RoomMemberRequestHandler(this->m_handlerFactory, *room.value())
     );

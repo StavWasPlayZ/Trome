@@ -54,6 +54,12 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const JoinRoomResponse &
 
     data["room"] = serializeRoomToJson(response.room);
 
+    data["players"] = nlohmann::json::array();
+    for (const LoggedUser* user : response.players)
+    {
+        data["players"].push_back(serializePlayerToJson(*user));
+    }
+
     return serialize(response.id, data);
 }
 
