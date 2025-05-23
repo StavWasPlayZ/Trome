@@ -93,12 +93,39 @@ public abstract class RoomViewModel : PageViewModel, IActivatableViewModel
         Comm.PacketReceived += CommOnPacketReceived;
     }
 
-    private void CommOnPacketReceived(S2CPacket packet)
+    private void CommOnPacketReceived(IS2CPacket packet)
     {
-        if (packet is not PlayerJoinedRoomNotification playerJoinedRoomNotif)
-            return;
-        
+        switch (packet)
+        {
+            case PlayerJoinedRoomNotification playerJoinedRoomNotif:
+                CommOnPacketReceived(playerJoinedRoomNotif);
+                break;
+            
+            case PlayerLeftRoomNotification playerLeftRoomNotif:
+                CommOnPacketReceived(playerLeftRoomNotif);
+                break;
+        }
+    }
+
+    private void CommOnPacketReceived(PlayerJoinedRoomNotification playerJoinedRoomNotif)
+    {
         Players[Room.PlayersCount] = RoomUserModel.FromUser(playerJoinedRoomNotif.Player, false, false);
         Room.PlayersCount++;
+    }
+
+    private void CommOnPacketReceived(PlayerLeftRoomNotification playerLeftRoomNotif)
+    {
+        for (var i = 0; i < Players.Count; i++)
+        {
+            if (Players[i]!.Id != playerLeftRoomNotif.PlayerId)
+                continue;
+            
+            Players.RemoveAt(i);
+            break;
+        }
+        
+        Players.Add(null);
+        
+        Room.PlayersCount--;
     }
 }

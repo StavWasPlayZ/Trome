@@ -1,3 +1,3 @@
 namespace Trivia.Codec.S2C.Notification;
 
-public record ProtocolNotification : S2CPacket;
+public record ProtocolNotification : IS2CPacket;

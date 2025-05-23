@@ -1,6 +1,7 @@
 #include "RoomMemberRequestHandler.h"
 #include "RequestHandlerFactory.h"
 #include "codec/c2s/request/Request.h"
+#include "codec/s2c/notification/Notification.h"
 
 RoomMemberRequestHandler::RoomMemberRequestHandler(const RequestHandlerFactory &handlerFactory, Room &room)
     : IRequestHandler(handlerFactory), m_room(room)
@@ -36,9 +37,19 @@ RequestResult RoomMemberRequestHandler::handleRequest(const RequestInfo &info, c
 
 RequestResult RoomMemberRequestHandler::leaveRoom(const RequestInfo &info, const ProtocolRequest &) const
 {
-    m_room.removeUser(getUserByInfo(info));
+    const LoggedUser& user = getUserByInfo(info);
 
-    return RequestResult(new LeaveRoomResponse(), new MenuRequestHandler(this->m_handlerFactory));
+    m_room.removeUser(user);
+
+    return RequestResult(
+        new LeaveRoomResponse(),
+        new MenuRequestHandler(this->m_handlerFactory),
+
+        new NotificationPayload(
+            new PlayerLeftRoomNotification(user.getId()),
+            m_room.getAllUsers()
+        )
+    );
 }
 
 RequestResult RoomMemberRequestHandler::getRoomState(const RequestInfo &, const ProtocolRequest &) const
