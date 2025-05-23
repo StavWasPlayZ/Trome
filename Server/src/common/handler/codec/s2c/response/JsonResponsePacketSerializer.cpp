@@ -5,8 +5,6 @@
 
 #include "handler/codec/s2c/ProtocolPacketSerializer.h"
 
-#include <infrastructure/RoomData.h>
-
 // fucking windows and their stupidass macros cost me 1 hour 30
 #ifdef ERROR
 #undef ERROR

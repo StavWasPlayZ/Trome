@@ -13,6 +13,7 @@
 
 #include "../handler/codec/c2s/request/JsonRequestPacketDeserializer.h"
 #include "../handler/codec/s2c/response/JsonResponsePacketSerializer.h"
+#include "handler/codec/s2c/notification/NotificationPacketSerializer.h"
 
 #include <arpa/inet.h>
 
@@ -232,48 +233,66 @@ void CommonCommunicator::_handleClient(const SOCKET socket) const
 {
     const RequestInfo info = _waitForClientRequest(socket);
 
-    Client* const client = this->m_clients.at(socket);
-    const IRequestHandler* const handler = client->requestHandler;
-
-    OBuffer responseBuffer;
+    Client *const client = this->m_clients.at(socket);
+    const IRequestHandler *const handler = client->requestHandler;
 
     if (!handler->isRequestRelevant(info))
     {
-        responseBuffer = JsonResponsePacketSerializer::serializeResponse(
-            ErrorResponse(ErrorStatus::ILLEGAL_REQUEST, info.id)
-        );
+        _dispatchRequestResults(socket, RequestResult(
+            new ErrorResponse(ErrorStatus::ILLEGAL_REQUEST, info.id),
+            handler
+        ));
+
+        return;
     }
-    else
+
+
+    const ProtocolRequest *const request = ProtocolRequest::fromRequest(info);
+
+    const RequestResult *result = nullptr;
+
+    try
     {
-        const RequestResult* result = nullptr;
-
-        const ProtocolRequest* const request = ProtocolRequest::fromRequest(info);
-
-        try
-        {
-            result = new RequestResult(handler->handleRequest(info, *request));
-        }
-        catch (const std::exception &)
-        {
-            delete request;
-            delete handler;
-            throw;
-        }
-
-        delete request;
-
-        // The Handler did its job well.
-        // 🫡
-        delete handler;
-
-        responseBuffer = JsonResponsePacketSerializer::serializeResponse(*result->response);
-        client->requestHandler = result->newHandler;
-
-        delete result;
+        result = new RequestResult(handler->handleRequest(info, *request));
     }
+    catch (const std::exception &)
+    {
+        delete request;
+        delete handler;
+        throw;
+    }
+
+    delete request;
+
+    // The Handler did its job well.
+    // 🫡
+    delete handler;
+    client->requestHandler = result->newHandler;
+
+    _dispatchRequestResults(socket, *result);
+    delete result;
+}
+
+void CommonCommunicator::_dispatchRequestResults(const SOCKET socket, const RequestResult &requestResult) const
+{
+    const OBuffer responseBuffer = JsonResponsePacketSerializer::serializeResponse(*requestResult.response);
+    delete requestResult.response;
 
     sendMsg(socket, responseBuffer.contents, responseBuffer.length);
-    responseBuffer.freeContents();
+
+
+    if (requestResult.notificationPayload != std::nullopt)
+    {
+        const NotificationPayload& notifPayload = *requestResult.notificationPayload.value();
+        const OBuffer notificationBuffer = NotificationPacketSerializer::serialize(*notifPayload.notification);
+
+        for (const Client *const receiver : notifPayload.clients)
+        {
+            sendMsg(receiver->socket, notificationBuffer.contents, notificationBuffer.length);
+        }
+
+        delete requestResult.notificationPayload.value();
+    }
 }
 
 RequestInfo CommonCommunicator::_waitForClientRequest(const SOCKET socket) const

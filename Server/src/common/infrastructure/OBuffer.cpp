@@ -5,11 +5,7 @@ OBuffer::OBuffer(const unsigned char *const contents, const size_t length) :
     length(length)
 {}
 
-OBuffer::OBuffer() : OBuffer(nullptr, 0)
-{}
-
-void OBuffer::freeContents()
+OBuffer::~OBuffer()
 {
     delete[] this->contents;
-    *this = OBuffer();
 }
