@@ -164,6 +164,10 @@
             </Style>
         </Style>
         
+        <Style Selector="^:pointerover > controls|RoomUserListEntry[IsEmptySlot=True]">
+            <Setter Property="Background" Value="#52294E"/>
+        </Style>
+        
         
         <!--
         We do the roundings here and not at the parent Trivia list because
