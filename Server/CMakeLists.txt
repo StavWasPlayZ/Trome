@@ -97,6 +97,8 @@ add_executable (Server
   "src/common/handler/codec/s2c/S2CPacketType.h"
   "src/common/handler/codec/s2c/notification/NotificationPacketSerializer.cpp"
   "src/common/handler/codec/s2c/notification/NotificationPacketSerializer.h"
+  "src/common/handler/codec/s2c/notification/Notification.cpp"
+  "src/common/handler/codec/s2c/notification/Notification.h"
 )
 
 # Platform-specific sources

@@ -92,12 +92,12 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const JoinRoomResponse &
 {
     nlohmann::json data;
 
-    data["room"] = serializeRoomToJson(response.room);
+    data["room"] = ProtocolPacketSerializer::serializeAsJson(response.room);
 
     data["players"] = nlohmann::json::array();
     for (const LoggedUser* user : response.players)
     {
-        data["players"].push_back(serializePlayerToJson(*user));
+        data["players"].push_back(ProtocolPacketSerializer::serializeAsJson(*user));
     }
 
     return serialize(response.id, data);
@@ -108,7 +108,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const CreateRoomResponse
     nlohmann::json data;
 
     data["room_id"] = response.roomId;
-    data["data"] = serializeRoomDataToJson(response.data);
+    data["data"] = ProtocolPacketSerializer::serializeAsJson(response.data);
 
     return serialize(response.id, data);
 }
@@ -121,7 +121,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetRoomsResponse &
 
 	for (const auto& room : response.rooms)
     {
-        rooms.push_back(serializeRoomToJson(*room));
+        rooms.push_back(ProtocolPacketSerializer::serializeAsJson(*room));
 	}
 
     return serialize(response.id, data);
@@ -135,7 +135,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetPlayersInRoomRe
 
     for (const LoggedUser* user : response.players)
     {
-        data["players"].push_back(serializePlayerToJson(*user));
+        data["players"].push_back(ProtocolPacketSerializer::serializeAsJson(*user));
     }
 
     return serialize(response.id, data);
@@ -195,7 +195,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetRoomStateRespon
 {
     nlohmann::json data;
 
-    data["room"] = serializeRoomToJson(response.room);
+    data["room"] = ProtocolPacketSerializer::serializeAsJson(response.room);
 
     return serialize(response.id, data);
 }
@@ -208,7 +208,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const UpdateRoomDataResp
 
 OBuffer JsonResponsePacketSerializer::serialize(const ResponseCode msgCode, const nlohmann::json &data)
 {
-    return ProtocolPacketSerializer::serialize(S2CPacketType::RESPONSE, msgCode, data);
+    return ProtocolPacketSerializer::serialize(S2CPacketType::RESPONSE, static_cast<unsigned char>(msgCode), data);
 }
 
 
@@ -216,41 +216,4 @@ void JsonResponsePacketSerializer::serializeRegistrationResponseToJson(nlohmann:
                                                                        const RegistrationResponse &response)
 {
     json["user_id"] = response.userId;
-}
-
-nlohmann::json JsonResponsePacketSerializer::serializePlayerToJson(const LoggedUser &player)
-{
-    nlohmann::json result;
-
-    result["id"] = player.getId();
-    result["username"] = player.getUsername();
-
-    return result;
-}
-
-nlohmann::json JsonResponsePacketSerializer::serializeRoomToJson(const Room &room)
-{
-    nlohmann::json result;
-
-    result["id"] = room.getId();
-    result["status"] = room.getStatus();
-    result["admin"] = serializePlayerToJson(room.getAdmin());
-
-    result["players_count"] = room.getAllUsers().size();
-
-    result["data"] = serializeRoomDataToJson(room.getData());
-
-    return result;
-}
-
-nlohmann::json JsonResponsePacketSerializer::serializeRoomDataToJson(const RoomData &room)
-{
-    nlohmann::json result;
-
-    result["name"] = room.name;
-    result["max_players"] = room.maxPlayers;
-    result["time_per_question_secs"] = room.timePerQuestionSecs;
-    result["questions_count"] = room.questionsCount;
-
-    return result;
 }

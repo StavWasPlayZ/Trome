@@ -1,6 +1,6 @@
 #pragma once
 
-#include "handler/codec/s2c/response/Response.h"
+#include "Notification.h"
 #include "infrastructure/OBuffer.h"
 
 #include <nlohmann/json.hpp>
@@ -15,6 +15,13 @@ public:
     NotificationPacketSerializer(NotificationPacketSerializer&&) = delete;
     NotificationPacketSerializer& operator=(NotificationPacketSerializer&&) = delete;
 
+
+    static OBuffer serialize(const ProtocolNotification& notification);
+
+
+    static OBuffer serialize(const PlayerJoinedRoomNotification& notification);
+
+
 private:
-    static OBuffer serialize(ResponseCode msgCode, const nlohmann::json &data);
+    static OBuffer serialize(NotificationCode msgCode, const nlohmann::json &data);
 };
