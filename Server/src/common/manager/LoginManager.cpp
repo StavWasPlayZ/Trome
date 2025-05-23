@@ -74,7 +74,7 @@ ProtocolResponse *LoginManager::login(const RequestInfo &info, const LoginReques
 
 	const auto result = this->m_loggedUsers.emplace(
 	    request.username,
-        LoggedUser(userId, request.username, &info.client)
+        LoggedUser(userId, request.username, info.client)
 	);
 
     this->m_clientToLoggedUser.emplace(&info.client, &result.first->second);

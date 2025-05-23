@@ -6,7 +6,7 @@
 struct ProtocolResponse;
 class IRequestHandler;
 struct ProtocolNotification;
-class Client;
+class LoggedUser;
 struct NotificationPayload;
 
 
@@ -33,12 +33,14 @@ struct RequestResult
 
 struct NotificationPayload
 {
-    NotificationPayload(const ProtocolNotification* notification, const std::vector<const Client*>& clients);
+    NotificationPayload(const ProtocolNotification* notification, const std::vector<LoggedUser*>& clients);
     ~NotificationPayload();
 
     const ProtocolNotification* notification;
+
+    // Made of LoggedUser and not Client for ease of use
     /**
-     * The clients to send the notification to
+     * The clients to send the notification to.
      */
-    const std::vector<const Client*> clients;
+    const std::vector<LoggedUser*> clients;
 };

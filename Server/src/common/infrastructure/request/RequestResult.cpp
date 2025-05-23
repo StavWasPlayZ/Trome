@@ -4,7 +4,7 @@
 #include "handler/IRequestHandler.h"
 
 NotificationPayload::NotificationPayload(const ProtocolNotification *const notification,
-                                         const std::vector<const Client *> &clients) :
+                                         const std::vector<LoggedUser *> &clients) :
     notification(notification),
     clients(clients)
 {}

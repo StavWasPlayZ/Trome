@@ -3,6 +3,7 @@
 #include "RequestHandlerFactory.h"
 #include "RoomMemberRequestHandler.h"
 #include "codec/c2s/request/Request.h"
+#include "codec/s2c/notification/Notification.h"
 
 MenuRequestHandler::MenuRequestHandler(const RequestHandlerFactory &handlerFactory) : IRequestHandler(handlerFactory)
 {}
@@ -55,11 +56,17 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo &info, const Protoc
         );
     }
 
-    room.value()->addUser(getUserByInfo(info));
+    LoggedUser& user = getUserByInfo(info);
+    room.value()->addUser(user);
 
     return RequestResult(
         new JoinRoomResponse(*room.value(), room.value()->getAllUsers()),
-        new RoomMemberRequestHandler(this->m_handlerFactory, *room.value())
+        new RoomMemberRequestHandler(this->m_handlerFactory, *room.value()),
+
+        new NotificationPayload(
+            new PlayerJoinedRoomNotification(user),
+            room.value()->getAllUsers()
+        )
     );
 }
 

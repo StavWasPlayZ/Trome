@@ -286,9 +286,10 @@ void CommonCommunicator::_dispatchRequestResults(const SOCKET socket, const Requ
         const NotificationPayload& notifPayload = *requestResult.notificationPayload.value();
         const OBuffer notificationBuffer = NotificationPacketSerializer::serialize(*notifPayload.notification);
 
-        for (const Client *const receiver : notifPayload.clients)
+        for (const LoggedUser *const receiver : notifPayload.clients)
         {
-            sendMsg(receiver->socket, notificationBuffer.contents, notificationBuffer.length);
+
+            sendMsg(receiver->getClient().socket, notificationBuffer.contents, notificationBuffer.length);
         }
 
         delete requestResult.notificationPayload.value();
