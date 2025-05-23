@@ -71,4 +71,8 @@
     <ItemGroup>
       <AdditionalFiles Include="Controls\Popups\StatsPopup.axaml" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Source\Codec\S2C\Notification\Packets\" />
+    </ItemGroup>
 </Project>
