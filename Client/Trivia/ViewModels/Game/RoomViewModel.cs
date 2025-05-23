@@ -124,8 +124,6 @@ public abstract class RoomViewModel : PageViewModel, IActivatableViewModel
             break;
         }
         
-        Players.Add(null);
-        
         Room.PlayersCount--;
     }
 }
