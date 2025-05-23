@@ -40,7 +40,7 @@ public class JoinRoomMenuViewModel : PageViewModel, IActivatableViewModel
     }
     
     
-    private bool _isDisposed;
+    private bool _refreshRoomThreadRunning;
 
     public JoinRoomMenuViewModel(IScreen hostScreen) : base(hostScreen)
     {
@@ -68,10 +68,8 @@ public class JoinRoomMenuViewModel : PageViewModel, IActivatableViewModel
         this.WhenActivated(disposables =>
         {
             Disposable
-                .Create(() => _isDisposed = true)
+                .Create(() => _refreshRoomThreadRunning = false)
                 .DisposeWith(disposables);
-            
-            new Thread(() => _ = RefreshRoomsThread()).Start();
         });
     }
     
@@ -82,11 +80,21 @@ public class JoinRoomMenuViewModel : PageViewModel, IActivatableViewModel
         Rooms = Room.GenerateMockRooms(30);
         SelectedRoom = Rooms[0];
     }
+
+
+    public void RunRefreshRoomsThread()
+    {
+        if (_refreshRoomThreadRunning)
+            return;
+        
+        _refreshRoomThreadRunning = true;
+        new Thread(() => _ = RefreshRoomsThread()).Start();
+    }
     
 
     private async Task RefreshRoomsThread()
     {
-        while (!_isDisposed)
+        while (_refreshRoomThreadRunning)
         {            
             var response = await Communicator.Instance.SendRequestAwaitResponse<GetRoomsResponse>(new GetRoomsRequest());
 

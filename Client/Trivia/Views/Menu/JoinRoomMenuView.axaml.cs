@@ -2,6 +2,7 @@ using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.LogicalTree;
 using ReactiveUI;
 using Trivia.Models.Raw;
 using Trivia.ViewModels.Menu;
@@ -21,7 +22,7 @@ public partial class JoinRoomMenuView : PageViewControl<JoinRoomMenuViewModel>
     }
 
     private void OnAttachedToVisualTree(object? sender, VisualTreeAttachmentEventArgs e)
-    {
+    {        
         _roomInfoPanelWidth = RoomInfoPanel.Width;
         // 20 is the padding we defaulted to.
         FixedWidthGrid.Width = _roomInfoPanelWidth - 20;
@@ -31,6 +32,12 @@ public partial class JoinRoomMenuView : PageViewControl<JoinRoomMenuViewModel>
             CloseRoomPanel();
         }
     }
+    
+    private void OnAttachedToLogicalTree(object? sender, LogicalTreeAttachmentEventArgs e)
+    {
+        ViewModel?.RunRefreshRoomsThread();
+    }
+    
 
     private void RoomListBox_OnPointerReleased(object? sender, PointerReleasedEventArgs pointerReleasedEventArgs)
     {

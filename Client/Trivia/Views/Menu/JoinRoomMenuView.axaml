@@ -10,7 +10,8 @@
              x:DataType="vmmenu:JoinRoomMenuViewModel"
              x:Name="JoinMenuViewControl"
              
-             AttachedToVisualTree="OnAttachedToVisualTree">
+             AttachedToVisualTree="OnAttachedToVisualTree"
+             AttachedToLogicalTree="OnAttachedToLogicalTree">
     
     <Design.DataContext>
         <vmmenu:JoinRoomMenuViewModel/>
