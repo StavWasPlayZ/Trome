@@ -8,12 +8,12 @@ using Trivia.ViewModels.Menu;
 
 namespace Trivia.Views.Menu;
 
-public partial class JoinMenuView : PageViewControl<JoinMenuViewModel>
+public partial class JoinRoomRoomMenuView : PageViewControl<JoinMenuViewModel>
 {
     public TimeSpan RoomInfoPanelAnimationTime { get; private set; } = TimeSpan.FromMilliseconds(200);
     private double _roomInfoPanelWidth;
     
-    public JoinMenuView()
+    public JoinRoomRoomMenuView()
     {
         InitializeComponent();
         
