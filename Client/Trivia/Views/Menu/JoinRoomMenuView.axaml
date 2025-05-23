@@ -148,9 +148,8 @@
                     
                     <Grid Grid.Column="1"
                           x:Name="RoomInfoPanel"
-                          ColumnDefinitions="Auto, *"
+                          ColumnDefinitions="20, *"
                           Width="350">
-                        <Panel Grid.Column="0" Width="20"/>
                         
                         <Grid.Transitions>
                             <Transitions>
@@ -166,7 +165,8 @@
                                 CornerRadius="30"
                                 ClipToBounds="True">
                             
-                            <Grid RowDefinitions="Auto, *, Auto">
+                            <Grid RowDefinitions="Auto, *, Auto"
+                                  x:Name="FixedWidthGrid">
 
                                 <Grid Grid.Column="0"
                                       ColumnDefinitions="Auto, *"

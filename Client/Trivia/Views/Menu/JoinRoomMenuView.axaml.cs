@@ -17,12 +17,14 @@ public partial class JoinRoomMenuView : PageViewControl<JoinRoomMenuViewModel>
     {
         InitializeComponent();
         
-        this.WhenActivated(_ => { });
+        this.WhenActivated(_ => { });        
     }
 
     private void OnAttachedToVisualTree(object? sender, VisualTreeAttachmentEventArgs e)
     {
         _roomInfoPanelWidth = RoomInfoPanel.Width;
+        // 20 is the padding we defaulted to.
+        FixedWidthGrid.Width = _roomInfoPanelWidth - 20;
 
         if (!Design.IsDesignMode)
         {    
