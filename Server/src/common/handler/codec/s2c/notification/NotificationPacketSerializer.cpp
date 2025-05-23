@@ -2,6 +2,18 @@
 
 #include "handler/codec/s2c/ProtocolPacketSerializer.h"
 
+OBuffer NotificationPacketSerializer::serialize(const ProtocolNotification &notification)
+{
+    switch (notification.id)
+    {
+    case NotificationCode::PLAYER_JOINED_ROOM:
+        return serialize(static_cast<const PlayerJoinedRoomNotification&>(notification));
+
+    default: throw std::invalid_argument("Invalid notification ID");
+    }
+}
+
+
 OBuffer NotificationPacketSerializer::serialize(const PlayerJoinedRoomNotification &notification)
 {
     nlohmann::json data;

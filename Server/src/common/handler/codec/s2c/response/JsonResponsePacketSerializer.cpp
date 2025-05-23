@@ -47,7 +47,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const ProtocolResponse &
     case ResponseCode::UPDATE_ROOM_DATA:
         return serializeResponse(static_cast<const UpdateRoomDataResponse&>(response));
 
-    default: throw std::invalid_argument("Invalid request ID");
+    default: throw std::invalid_argument("Invalid response ID");
     }
 }
 
