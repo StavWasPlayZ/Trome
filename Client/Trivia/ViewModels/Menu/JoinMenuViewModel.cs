@@ -74,8 +74,8 @@ public class JoinMenuViewModel : PageViewModel, IActivatableViewModel
     {
         JoinRoomButtonCommand = NoOpNavCommand;
         NewRoomButtonCommand = NoOpCommand;
-        Rooms = Room.MockRooms;
-        SelectedRoom = Room.MockRooms[0];
+        Rooms = Room.GenerateMockRooms(1);
+        SelectedRoom = Rooms[0];
     }
     
 

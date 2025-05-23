@@ -15,28 +15,31 @@ public class Room
     public required RoomData Data { get; init; }
 
 
-    public static readonly List<Room> MockRooms = Enumerable.Range(1, 30)
-        .Select(i => new Room
-            {
-                Id = i,
-                Status = i % 2 == 0 ? RoomStatus.Waiting : RoomStatus.Playing,
-                Admin = new User
+    public static List<Room> GenerateMockRooms(int count)
+    {
+        return Enumerable.Range(1, count)
+            .Select(i => new Room
                 {
                     Id = i,
-                    Username = $"User {i}"
-                },
-                
-                PlayersCount = 2,
-                
-                Data = new RoomData
-                {
-                    Name = $"Room {i}",
-                    MaxPlayers = 10,
-                    TimePerQuestionSecs = 7,
-                    QuestionsCount = 15
+                    Status = i % 2 == 0 ? RoomStatus.Waiting : RoomStatus.Playing,
+                    Admin = new User
+                    {
+                        Id = i,
+                        Username = $"User {i}"
+                    },
+
+                    PlayersCount = 2,
+
+                    Data = new RoomData
+                    {
+                        Name = $"Room {i}",
+                        MaxPlayers = 10,
+                        TimePerQuestionSecs = 7,
+                        QuestionsCount = 15
+                    }
                 }
-            }
-        ).ToList();
+            ).ToList();
+    }
 
     public static Room CreateMockRoom(User admin)
     {

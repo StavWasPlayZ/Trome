@@ -106,8 +106,11 @@
         <Style Selector="^:nth-child(1) > controls|ScoredUserListEntry">
             <Setter Property="CornerRadius" Value="25 25 0 0"/>
         </Style>
-        <Style Selector="^:nth-last-child(1) controls|ScoredUserListEntry">
+        <Style Selector="^:nth-last-child(1) > controls|ScoredUserListEntry">
             <Setter Property="CornerRadius" Value="0 0 25 25"/>
+        </Style>
+        <Style Selector="^:nth-child(1):nth-last-child(1) > controls|RoomUserListEntry">
+            <Setter Property="CornerRadius" Value="25 25 25 25"/>
         </Style>
     </Style>
 </Styles>
