@@ -35,17 +35,9 @@ RequestResult LoginRequestHandler::login(const RequestInfo &info, const LoginReq
     const ProtocolResponse *const response = this->m_handlerFactory.getLoginManager().login(info, request);
 
     if (response->id == ResponseCode::ERROR)
-    {
-        const OBuffer serialized = JsonResponsePacketSerializer::serializeResponse(*static_cast<const ErrorResponse*>(response));
-        delete response;
+        return RequestResult(response, new LoginRequestHandler(*this));
 
-        return RequestResult(serialized, new LoginRequestHandler(*this));
-    }
-
-    const OBuffer serialized = JsonResponsePacketSerializer::serializeResponse(*static_cast<const LoginResponse*>(response));
-    delete response;
-
-    return RequestResult(serialized, new MenuRequestHandler(this->m_handlerFactory));
+    return RequestResult(response, new MenuRequestHandler(this->m_handlerFactory));
 }
 
 RequestResult LoginRequestHandler::signup(const RequestInfo &info, const SignupRequest &request) const
@@ -53,15 +45,7 @@ RequestResult LoginRequestHandler::signup(const RequestInfo &info, const SignupR
     const ProtocolResponse *const response = this->m_handlerFactory.getLoginManager().signup(info, request);
 
     if (response->id == ResponseCode::ERROR)
-    {
-        const OBuffer serialized = JsonResponsePacketSerializer::serializeResponse(*static_cast<const ErrorResponse*>(response));
-        delete response;
+        return RequestResult(response, new LoginRequestHandler(*this));
 
-        return RequestResult(serialized, new LoginRequestHandler(*this));
-    }
-
-    const OBuffer serialized = JsonResponsePacketSerializer::serializeResponse(*static_cast<const SignupResponse*>(response));
-    delete response;
-
-    return RequestResult(serialized, new MenuRequestHandler(this->m_handlerFactory));
+    return RequestResult(response, new MenuRequestHandler(this->m_handlerFactory));
 }

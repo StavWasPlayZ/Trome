@@ -11,7 +11,6 @@ LoginManager::LoginManager(const IDatabase& database) :
 	m_database(database)
 {}
 
-//TODO: Use RAII pointers instead.
 ProtocolResponse *LoginManager::signup(const RequestInfo &info, const SignupRequest &request)
 {
 	try

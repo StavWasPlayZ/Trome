@@ -50,10 +50,7 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo &info, const Protoc
     if (!room)
     {
         return RequestResult(
-            JsonResponsePacketSerializer::serializeResponse(
-                ErrorResponse(ErrorStatus::ERROR_UNKNOWN_RESOURCE, info.id)
-            ),
-
+            new ErrorResponse(ErrorStatus::ERROR_UNKNOWN_RESOURCE, info.id),
             new MenuRequestHandler(*this)
         );
     }
@@ -61,9 +58,7 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo &info, const Protoc
     room.value()->addUser(getUserByInfo(info));
 
     return RequestResult(
-        JsonResponsePacketSerializer::serializeResponse(
-            JoinRoomResponse(*room.value(), room.value()->getAllUsers())
-        ),
+        new JoinRoomResponse(*room.value(), room.value()->getAllUsers()),
         new RoomMemberRequestHandler(this->m_handlerFactory, *room.value())
     );
 }
@@ -78,19 +73,13 @@ RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo &info, cons
     if (!room)
     {
         return RequestResult(
-            JsonResponsePacketSerializer::serializeResponse(
-                ErrorResponse(ErrorStatus::ERROR_UNKNOWN_RESOURCE, info.id)
-            ),
-
+            new ErrorResponse(ErrorStatus::ERROR_UNKNOWN_RESOURCE, info.id),
             new MenuRequestHandler(*this)
         );
     }
 
     return RequestResult(
-        JsonResponsePacketSerializer::serializeResponse(
-            GetPlayersInRoomResponse(room.value()->getAllUsers())
-        ),
-
+        new GetPlayersInRoomResponse(room.value()->getAllUsers()),
         new MenuRequestHandler(*this)
     );
 }
@@ -102,9 +91,7 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& info, const Prot
     const Room& room = rManager.createRoom(getUserByInfo(info), RoomData::ofDefaults());
 
     return RequestResult(
-        JsonResponsePacketSerializer::serializeResponse(
-            CreateRoomResponse(room.getId(), room.getData())
-        ),
+        new CreateRoomResponse(room.getId(), room.getData()),
 
         // TODO : make it RoomAdminRequestHandler when its implemented
         new MenuRequestHandler(*this)
@@ -116,10 +103,7 @@ RequestResult MenuRequestHandler::getRooms(const RequestInfo &, const ProtocolRe
     RoomManager &rManager = m_handlerFactory.getRoomManager();
 
     return RequestResult(
-        JsonResponsePacketSerializer::serializeResponse(
-            GetRoomsResponse(rManager.getRooms())
-        ),
-
+        new GetRoomsResponse(rManager.getRooms()),
         new MenuRequestHandler(*this)
     );
 }
@@ -129,10 +113,7 @@ RequestResult MenuRequestHandler::getHighScores(const RequestInfo &, const Proto
     const StatisticsManager &sManager = m_handlerFactory.getStatisticsManager();
 
     return RequestResult(
-        JsonResponsePacketSerializer::serializeResponse(
-            GetHighScoresResponse(sManager.getHighScores())
-        ),
-
+        new GetHighScoresResponse(sManager.getHighScores()),
         new MenuRequestHandler(*this)
     );
 }
@@ -142,11 +123,9 @@ RequestResult MenuRequestHandler::getPersonalStatistics(const RequestInfo& info,
     const StatisticsManager &sManager = m_handlerFactory.getStatisticsManager();
 
     return RequestResult(
-        JsonResponsePacketSerializer::serializeResponse(
-            GetPersonalStatisticsResponse(
-                sManager.getUserStatistics(
-                    getUserByInfo(info).getUsername()
-                )
+        new GetPersonalStatisticsResponse(
+            sManager.getUserStatistics(
+                getUserByInfo(info).getUsername()
             )
         ),
 
@@ -160,11 +139,5 @@ RequestResult MenuRequestHandler::logout(const RequestInfo &info, const Protocol
 
     uManager.logout(info.client);
 
-    return RequestResult(
-        JsonResponsePacketSerializer::serializeResponse(
-            LogoutResponse()
-        ),
-
-        new LoginRequestHandler(this->m_handlerFactory)
-    );
+    return RequestResult(new LogoutResponse(), new LoginRequestHandler(this->m_handlerFactory));
 }

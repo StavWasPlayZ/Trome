@@ -12,6 +12,46 @@
 #undef ERROR
 #endif
 
+OBuffer JsonResponsePacketSerializer::serializeResponse(const ProtocolResponse &response)
+{
+    switch (response.id)
+    {
+    case ResponseCode::ERROR:
+        return serializeResponse(static_cast<const ErrorResponse&>(response));
+    case ResponseCode::LOGIN:
+        return serializeResponse(static_cast<const LoginResponse&>(response));
+    case ResponseCode::SIGNUP:
+        return serializeResponse(static_cast<const SignupResponse&>(response));
+    case ResponseCode::LOGOUT:
+        return serializeResponse(static_cast<const LogoutResponse&>(response));
+    case ResponseCode::JOIN_ROOM:
+        return serializeResponse(static_cast<const JoinRoomResponse&>(response));
+    case ResponseCode::CREATE_ROOM:
+        return serializeResponse(static_cast<const CreateRoomResponse&>(response));
+    case ResponseCode::GET_ROOMS:
+        return serializeResponse(static_cast<const GetRoomsResponse&>(response));
+    case ResponseCode::GET_PLAYERS_IN_ROOM:
+        return serializeResponse(static_cast<const GetPlayersInRoomResponse&>(response));
+    case ResponseCode::GET_HIGH_SCORES:
+        return serializeResponse(static_cast<const GetHighScoresResponse&>(response));
+    case ResponseCode::GET_PERSONAL_STATISTICS:
+        return serializeResponse(static_cast<const GetPersonalStatisticsResponse&>(response));
+    case ResponseCode::CLOSE_ROOM:
+        return serializeResponse(static_cast<const CloseRoomResponse&>(response));
+    case ResponseCode::START_GAME:
+        return serializeResponse(static_cast<const StartGameResponse&>(response));
+    case ResponseCode::GET_ROOM_STATE:
+        return serializeResponse(static_cast<const GetRoomStateResponse&>(response));
+    case ResponseCode::LEAVE_ROOM:
+        return serializeResponse(static_cast<const LeaveRoomResponse&>(response));
+    case ResponseCode::UPDATE_ROOM_DATA:
+        return serializeResponse(static_cast<const UpdateRoomDataResponse&>(response));
+
+    default: throw std::invalid_argument("Invalid request ID");
+    }
+}
+
+
 OBuffer JsonResponsePacketSerializer::serializeResponse(const LoginResponse &response)
 {
 	nlohmann::json data;

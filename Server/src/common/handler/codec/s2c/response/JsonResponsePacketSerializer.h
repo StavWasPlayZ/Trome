@@ -19,6 +19,14 @@ public:
     JsonResponsePacketSerializer& operator=(JsonResponsePacketSerializer&&) = delete;
 
 
+    /**
+     * Returns: The serialized object.
+     *
+     * NOTE: The returned resource must be freed.
+     */
+    static OBuffer serializeResponse(const ProtocolResponse& response);
+
+
 	/**
 	 * Returns: The serialized object.
 	 * 

@@ -266,7 +266,7 @@ void CommonCommunicator::_handleClient(const SOCKET socket) const
         // 🫡
         delete handler;
 
-        responseBuffer = result->response;
+        responseBuffer = JsonResponsePacketSerializer::serializeResponse(*result->response);
         client->requestHandler = result->newHandler;
 
         delete result;
