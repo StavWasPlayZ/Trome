@@ -3,7 +3,7 @@
         xmlns:controls="using:Trivia.Controls"
         xmlns:generic="clr-namespace:System.Collections.Generic;assembly=System.Collections"
         xmlns:listEntries="clr-namespace:Trivia.Controls.ListEntries"
-        xmlns:raw="clr-namespace:Trivia.Models.Raw"
+        xmlns:user="clr-namespace:Trivia.Models.User"
         x:CompileBindings="True">
     <Design.PreviewWith>
         <Border Width="300"
@@ -12,18 +12,18 @@
                 <ListBox>
                 
                     <ListBox.ItemsSource>
-                        <generic:List x:TypeArguments="raw:User">
-                            <raw:User Username="USERNAME"/>
-                            <raw:User Username="USERNAME"/>
-                            <raw:User Username="USERNAME"/>
-                            <raw:User Username="USERNAME"/>
-                            <raw:User Username="USERNAME"/>
-                            <raw:User Username="USERNAME"/>
-                            <raw:User Username="USERNAME"/>
-                            <raw:User Username="USERNAME"/>
-                            <raw:User Username="USERNAME"/>
-                            <raw:User Username="USERNAME"/>
-                            <raw:User Username="USERNAME"/>
+                        <generic:List x:TypeArguments="user:RoomUserModel">
+                            <user:RoomUserModel Username="USERNAME"/>
+                            <user:RoomUserModel Username="USERNAME"/>
+                            <user:RoomUserModel Username="USERNAME"/>
+                            <user:RoomUserModel Username="USERNAME"/>
+                            <user:RoomUserModel Username="USERNAME"/>
+                            <user:RoomUserModel Username="USERNAME"/>
+                            <user:RoomUserModel Username="USERNAME"/>
+                            <user:RoomUserModel Username="USERNAME"/>
+                            <user:RoomUserModel Username="USERNAME"/>
+                            <user:RoomUserModel Username="USERNAME"/>
+                            <user:RoomUserModel Username="USERNAME"/>
                         </generic:List>
                     </ListBox.ItemsSource>
                     
