@@ -16,10 +16,30 @@ public:
     NotificationPacketSerializer& operator=(NotificationPacketSerializer&&) = delete;
 
 
+    /**
+     * Converts the provided notification into a writable resource,
+     * prepending the necessary binary headers.
+     *
+     * NOTE: The returned resource must be freed.
+     */
     static OBuffer serialize(const ProtocolNotification& notification);
 
 
+    /**
+     * Converts the provided notification into a writable resource,
+     * prepending the necessary binary headers.
+     *
+     * NOTE: The returned resource must be freed.
+     */
     static OBuffer serialize(const PlayerJoinedRoomNotification& notification);
+
+    /**
+     * Converts the provided notification into a writable resource,
+     * prepending the necessary binary headers.
+     *
+     * NOTE: The returned resource must be freed.
+     */
+    static OBuffer serialize(const PlayerLeftRoomNotification& notification);
 
 
 private:

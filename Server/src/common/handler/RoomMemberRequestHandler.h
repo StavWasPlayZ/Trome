@@ -1,8 +1,6 @@
 #pragma once
 
 #include "IRequestHandler.h"
-#include "infrastructure/Room.h"
-#include "manager/RoomManager.h"
 
 class RoomMemberRequestHandler : public IRequestHandler
 {

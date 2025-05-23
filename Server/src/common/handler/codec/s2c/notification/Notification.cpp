@@ -10,3 +10,8 @@ PlayerJoinedRoomNotification::PlayerJoinedRoomNotification(const LoggedUser &pla
     ProtocolNotification(NotificationCode::PLAYER_JOINED_ROOM),
     player(player)
 {}
+
+PlayerLeftRoomNotification::PlayerLeftRoomNotification(const unsigned int player) :
+    ProtocolNotification(NotificationCode::PLAYER_LEFT_ROOM),
+    playerId(player)
+{}
