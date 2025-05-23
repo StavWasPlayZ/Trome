@@ -12,23 +12,32 @@
                 
                     <ListBox.ItemsSource>
                         <generic:List x:TypeArguments="user:RoomUserModel">
+                            <user:RoomUserModel Username="USERNAME"
+                                                IsCurrentUser="True"
+                                                IsAdmin="True"/>
+                            <user:RoomUserModel Username="USERNAME"
+                                                IsAdmin="True"/>
+                            <user:RoomUserModel Username="USERNAME"/>
+                            <user:RoomUserModel Username="USERNAME"
+                                                IsCurrentUser="True"/>
                             <user:RoomUserModel Username="USERNAME"/>
                             <user:RoomUserModel Username="USERNAME"/>
-                            <user:RoomUserModel Username="USERNAME"/>
-                            <user:RoomUserModel Username="USERNAME"/>
-                            <user:RoomUserModel Username="USERNAME"/>
-                            <user:RoomUserModel Username="USERNAME"/>
-                            <user:RoomUserModel Username="USERNAME"/>
-                            <user:RoomUserModel Username="USERNAME"/>
-                            <user:RoomUserModel Username="USERNAME"/>
-                            <user:RoomUserModel Username="USERNAME"/>
-                            <user:RoomUserModel Username="USERNAME"/>
+                            <x:Null/>
+                            <x:Null/>
+                            <x:Null/>
+                            <x:Null/>
+                            <x:Null/>
                         </generic:List>
                     </ListBox.ItemsSource>
                     
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <controls:RoomUserListEntry User="{Binding}"/>
+                            <controls:RoomUserListEntry User="{Binding}"
+                                                        IsAdmin="{Binding IsAdmin}"
+                                                        IsCurrentUser="{Binding IsCurrentUser}"
+                                                        IsEmptySlot="{Binding
+                                                            Converter={x:Static ObjectConverters.IsNull}
+                                                        }"/>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                     
@@ -51,21 +60,22 @@
                     
                     <StackPanel Orientation="Horizontal">
             
-                        <Border Background="#ffbcf8"
+                        <Border x:Name="PART_PfpWrapper"
+                                Background="#ffbcf8"
                                 Height="50"
                                 Width="50"
                                 Padding="6"
                                 CornerRadius="10"
                                 Margin="10 0 15 0">
                             
-                            <Svg Path="avares://Trivia/Assets/Icons/person.svg"
-                                 Css="* { fill: #813e7a; }"/>
+                            <Svg/>
                         </Border>
             
                         <TextBlock VerticalAlignment="Center"
                                    FontSize="30"
                                    Text="{Binding User.Username,
-                                       RelativeSource={RelativeSource TemplatedParent}
+                                       RelativeSource={RelativeSource TemplatedParent},
+                                       FallbackValue=EMPTY
                                    }"/>
             
                     </StackPanel>
@@ -82,6 +92,78 @@
         <Style Selector="^:pressed > controls|RoomUserListEntry">
             <Setter Property="Background" Value="#85437D"/>
         </Style>
+        
+        <Style Selector="^ > controls|RoomUserListEntry Svg">
+            <Setter Property="Path" Value="avares://Trivia/Assets/Icons/person.svg"/>
+            <Setter Property="Css" Value="* { fill: #813e7a; }"/>
+        </Style>
+        
+        
+        <Style Selector="^ > controls|RoomUserListEntry[IsAdmin=True]">
+            <Setter Property="Background" Value="#C55AA2"/>
+            
+            <Style Selector="^ TextBlock">
+                <Setter Property="Foreground" Value="#FDD4E2"/>
+            </Style>
+            
+            <Style Selector="^ Border#PART_PfpWrapper">
+                <Setter Property="Background" Value="#FFA0A2"/>
+                
+                <Style Selector="^ > Svg">
+                    <Setter Property="Path" Value="avares://Trivia/Assets/Icons/crown.svg"/>
+                    <Setter Property="Css" Value="* { fill: #ec6200; }"/>
+                </Style>
+            </Style>
+        </Style>
+        
+        <Style Selector="^:pointerover > controls|RoomUserListEntry[IsAdmin=True]">
+            <Setter Property="Background" Value="#DC5DB8"/>
+        </Style>
+        <Style Selector="^:pressed > controls|RoomUserListEntry[IsAdmin=True]">
+            <Setter Property="Background" Value="#BA5699"/>
+        </Style>
+        
+        
+        <Style Selector="^ > controls|RoomUserListEntry[IsCurrentUser=True]">
+            <Setter Property="Background" Value="#98398e"/>
+        </Style>
+        <Style Selector="^:pointerover > controls|RoomUserListEntry[IsCurrentUser=True]">
+            <Setter Property="Background" Value="#AB40A0"/>
+        </Style>
+        <Style Selector="^:pressed > controls|RoomUserListEntry[IsCurrentUser=True]">
+            <Setter Property="Background" Value="#8A3481"/>
+        </Style>
+        
+        
+        <Style Selector="^ > controls|RoomUserListEntry[IsAdmin=True][IsCurrentUser=True]">
+            <Setter Property="Background" Value="#DF66B8"/>
+            
+            <Style Selector="^ Border#PART_PfpWrapper">
+                <Setter Property="Background" Value="#FFB8BC"/>
+            </Style>
+        </Style>
+        <Style Selector="^:pointerover > controls|RoomUserListEntry[IsAdmin=True][IsCurrentUser=True]">
+            <Setter Property="Background" Value="#ED6CC4"/>
+        </Style>
+        <Style Selector="^:pressed > controls|RoomUserListEntry[IsAdmin=True][IsCurrentUser=True]">
+            <Setter Property="Background" Value="#C85FA4"/>
+        </Style>
+        
+        
+        <Style Selector="^ > controls|RoomUserListEntry[IsEmptySlot=True]">
+            <Setter Property="Background" Value="#582c54"/>
+            
+            <Style Selector="^ Border#PART_PfpWrapper">
+                <Setter Property="Background" Value="#b580b0"/>
+                
+                <Style Selector="^ > Svg">
+                    <Setter Property="Path" Value="avares://Trivia/Assets/Icons/three-squares.svg"/>
+                    <Setter Property="Css" Value="* { fill: #d8bcd5; }"/>
+                    <Setter Property="Margin" Value="6"/>
+                </Style>
+            </Style>
+        </Style>
+        
         
         <!--
         We do the roundings here and not at the parent Trivia list because

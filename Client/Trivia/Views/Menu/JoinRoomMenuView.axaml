@@ -111,6 +111,7 @@
                         </ListBox.ItemTemplate>
                         
                         <ListBox.Styles>
+                            
                             <Style Selector="ListBox > ListBoxItem">
                                 <Setter Property="Background" Value="#A52151"/>
                                 <Setter Property="Margin" Value="0 2"/>
