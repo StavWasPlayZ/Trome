@@ -1,9 +1,9 @@
 #include "ProtocolPacketSerializer.h"
 
 #include "Constants.h"
+#include "infrastructure/CommonCommunicator.h"
 
 #include <cstring>
-#include <netinet/in.h>
 
 OBuffer ProtocolPacketSerializer::serialize(const S2CPacketType packetType, const ResponseCode msgCode, const nlohmann::json &data)
 {
