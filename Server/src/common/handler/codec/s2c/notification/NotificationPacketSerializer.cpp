@@ -29,7 +29,7 @@ OBuffer NotificationPacketSerializer::serialize(const PlayerLeftRoomNotification
 {
     nlohmann::json data;
 
-    data["playerId"] = notification.playerId;
+    data["player_id"] = notification.playerId;
 
     return serialize(notification.id, data);
 }
