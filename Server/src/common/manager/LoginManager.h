@@ -38,6 +38,8 @@ public:
 	bool isLoggedIn(const Client &client) const;
     LoggedUser& getUserByClient(const Client& client) const;
 
+    bool isLoggedIn(unsigned int id) const;
+
 private:
 	const IDatabase& m_database;
 	/**
@@ -45,8 +47,11 @@ private:
 	 * Mapping as such because the keys are based, for some reason, on usernames only.
 	 * 
 	 * TODO: Ask if it may be done with IDs.
+	 *
+	 * (...Or not because we do it anyways below anyways.)
 	 */
 	std::unordered_map<std::string, LoggedUser> m_loggedUsers;
 
+    std::unordered_map<unsigned int, LoggedUser*> m_loggedUsersById;
     std::unordered_map<const Client*, LoggedUser*> m_clientToLoggedUser;
 };
