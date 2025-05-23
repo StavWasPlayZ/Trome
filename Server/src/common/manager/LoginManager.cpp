@@ -67,7 +67,8 @@ ProtocolResponse *LoginManager::login(const RequestInfo &info, const LoginReques
         return new ErrorResponse(ErrorStatus::FAILED_INVALID_CREDENTIALS, info.id);
 	}
 
-	if (isLoggedIn(info.client))
+    // If either the client is logged in or the requested user is logged in
+	if (isLoggedIn(info.client) || isLoggedIn(userId))
 	{
         return new ErrorResponse(ErrorStatus::FAILED_ALREADY_LOGGED_IN, info.id);
 	}
@@ -78,6 +79,7 @@ ProtocolResponse *LoginManager::login(const RequestInfo &info, const LoginReques
 	);
 
     this->m_clientToLoggedUser.emplace(&info.client, &result.first->second);
+    this->m_loggedUsersById.emplace(userId, &result.first->second);
 
 	return new LoginResponse(userId);
 }
@@ -92,8 +94,11 @@ bool LoginManager::logout(const Client &client)
         return false;
     }
 
-    this->m_loggedUsers.erase(it->second->getUsername());
     this->m_clientToLoggedUser.erase(&client);
+    this->m_loggedUsersById.erase(it->second->getId());
+
+    // This one actually contains the user resource
+    this->m_loggedUsers.erase(it->second->getUsername());
 
     return true;
 }
@@ -106,4 +111,9 @@ bool LoginManager::isLoggedIn(const Client &client) const
 LoggedUser &LoginManager::getUserByClient(const Client &client) const
 {
     return *this->m_clientToLoggedUser.at(&client);
+}
+
+bool LoginManager::isLoggedIn(const unsigned int id) const
+{
+    return this->m_loggedUsersById.contains(id);
 }
