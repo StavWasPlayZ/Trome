@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using Newtonsoft.Json;
 using Trivia.Codec.S2C.Notification;
+using Trivia.Codec.S2C.Notification.Packets;
 using Trivia.Codec.S2C.Response;
 using Trivia.Codec.S2C.Response.Packets;
 
@@ -36,6 +37,7 @@ public static class PacketDeserializer
     {
         return code switch
         {
+            NotificationCode.PlayerJoinedRoom => Deserialize<PlayerJoinedRoomNotification>(json),
             _ => null
         };
     }
@@ -72,7 +74,7 @@ public static class PacketDeserializer
         return result;
     }
     
-    private static ProtocolResponse? Deserialize<T>(string json) where T : ProtocolResponse
+    private static T? Deserialize<T>(string json)
     {
         return JsonConvert.DeserializeObject<T>(json, CodecConstants.JsonSerializerSettings);
     }
