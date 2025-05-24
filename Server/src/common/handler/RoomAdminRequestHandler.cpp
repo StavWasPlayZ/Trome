@@ -27,20 +27,20 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo &info, co
     switch (info.id)
     {
     case RequestCode::START_GAME:
-        return startGame(info, request);
+        return startGame(info, static_cast<const StartGameRequest &>(request));
     case RequestCode::CLOSE_ROOM:
-        return closeRoom(info, request);
+        return closeRoom(info, static_cast<const CloseRoomRequest &>(request));
     case RequestCode::UPDATE_ROOM_DATA:
-        return updateRoomData(info, request);
+        return updateRoomData(info, static_cast<const UpdateRoomDataRequest &>(request));
 
     case RequestCode::GET_ROOM_STATE:
-        return getRoomState(info, request);
+        return getRoomState(info, static_cast<const GetRoomsRequest &>(request));
 
     default: throw std::invalid_argument("Unknown request ID");
     }
 }
 
-RequestResult RoomAdminRequestHandler::startGame(const RequestInfo &info, const ProtocolRequest &) const
+RequestResult RoomAdminRequestHandler::startGame(const RequestInfo &info, const StartGameRequest &) const
 {
     return RequestResult(
         new ErrorResponse(ErrorStatus::SERVER_UNIMPLEMENTED, info.id),
@@ -48,7 +48,7 @@ RequestResult RoomAdminRequestHandler::startGame(const RequestInfo &info, const 
     );
 }
 
-RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo &info, const ProtocolRequest &) const
+RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo &info, const CloseRoomRequest &) const
 {
     return RequestResult(
         new ErrorResponse(ErrorStatus::SERVER_UNIMPLEMENTED, info.id),
@@ -56,7 +56,7 @@ RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo &info, const 
     );
 }
 
-RequestResult RoomAdminRequestHandler::updateRoomData(const RequestInfo &info, const ProtocolRequest &) const
+RequestResult RoomAdminRequestHandler::updateRoomData(const RequestInfo &info, const UpdateRoomDataRequest &) const
 {
     return RequestResult(
         new ErrorResponse(ErrorStatus::SERVER_UNIMPLEMENTED, info.id),
@@ -64,7 +64,7 @@ RequestResult RoomAdminRequestHandler::updateRoomData(const RequestInfo &info, c
     );
 }
 
-RequestResult RoomAdminRequestHandler::getRoomState(const RequestInfo &, const ProtocolRequest &) const
+RequestResult RoomAdminRequestHandler::getRoomState(const RequestInfo &, const GetRoomsRequest &) const
 {
     return RequestResult(new GetRoomStateResponse(m_room), new RoomAdminRequestHandler(*this));
 }
