@@ -3,7 +3,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.LogicalTree;
-using ReactiveUI;
 using Trivia.Models.Raw;
 using Trivia.ViewModels.Menu;
 
@@ -16,9 +15,7 @@ public partial class JoinRoomMenuView : PageViewControl<JoinRoomMenuViewModel>
     
     public JoinRoomMenuView()
     {
-        InitializeComponent();
-        
-        this.WhenActivated(_ => { });        
+        InitializeComponent();        
     }
 
     private void OnAttachedToVisualTree(object? sender, VisualTreeAttachmentEventArgs e)

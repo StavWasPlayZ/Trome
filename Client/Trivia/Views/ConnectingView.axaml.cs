@@ -1,15 +1,11 @@
-using Avalonia.ReactiveUI;
-using ReactiveUI;
 using Trivia.ViewModels;
 
 namespace Trivia.Views;
 
-public partial class ConnectingView : ReactiveUserControl<ConnectingViewModel>
+public partial class ConnectingView : PageViewControl<ConnectingViewModel>
 {
     public ConnectingView()
     {
         InitializeComponent();
-
-        this.WhenActivated(_ => { });
     }
 }

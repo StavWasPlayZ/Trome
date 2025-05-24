@@ -1,4 +1,7 @@
-﻿using System.Reactive;
+﻿using System;
+using System.Reactive;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using ReactiveUI;
 using Trivia.Codec.C2S.Request.Packets;
 using Trivia.Codec.S2C.Response.Packets;
@@ -8,6 +11,8 @@ namespace Trivia.ViewModels.Game;
 
 public class CreateRoomViewModel : RoomViewModel
 {
+    private static readonly TimeSpan RoomDataUpdateDelay = TimeSpan.FromMicroseconds(300);
+
     public ReactiveCommand<Unit, Unit> CloseRoomCommand { get; }
 
     public CreateRoomViewModel(IScreen hostScreen, Room room) : base(hostScreen, room)
@@ -23,6 +28,23 @@ public class CreateRoomViewModel : RoomViewModel
             
             NavigateBackCommand!.Execute();
         });
+
+        
+        this.WhenActivated(disposables =>
+        {
+            this
+                .WhenAnyValue(
+                    x => x.Name,
+                    x => x.Questions,
+                    x => x.SecsPerQuestion,
+                    x => x.MaxPlayers
+                )
+                .Skip(1) // Skip initialization invocation
+                .DistinctUntilChanged()
+                .Throttle(RoomDataUpdateDelay)
+                .Subscribe(_ => SendRoomData())
+                .DisposeWith(disposables);
+        });
     }
 
     public CreateRoomViewModel()
@@ -35,6 +57,19 @@ public class CreateRoomViewModel : RoomViewModel
         CloseRoomCommand = NoOpCommand;
     }
 
+
+    private void SendRoomData()
+    {
+        Room.Data = new RoomData
+        {
+            Name = _name,
+            QuestionsCount = _questions,
+            MaxPlayers = _maxPlayers,
+            TimePerQuestionSecs = _secsPerQuestion
+        };
+        
+        Comm.SendRequest(new UpdateRoomDataRequest(Room.Data));
+    }
 
 
     private string _name;
