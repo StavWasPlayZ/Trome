@@ -1,6 +1,7 @@
 #include "Notification.h"
 
-ProtocolNotification::ProtocolNotification(const NotificationCode id) : id(id)
+ProtocolNotification::ProtocolNotification(const NotificationCode id) :
+    id(id)
 {}
 
 ProtocolNotification::~ProtocolNotification() = default;
@@ -18,4 +19,9 @@ PlayerLeftRoomNotification::PlayerLeftRoomNotification(const unsigned int player
 
 RoomClosedNotification::RoomClosedNotification() :
     ProtocolNotification(NotificationCode::ROOM_CLOSED)
+{}
+
+RoomDataUpdatedNotification::RoomDataUpdatedNotification(const RoomData &data) :
+    ProtocolNotification(NotificationCode::ROOM_DATA_UPDATED),
+    data(data)
 {}

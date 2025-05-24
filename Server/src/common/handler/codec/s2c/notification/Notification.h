@@ -1,11 +1,14 @@
 #pragma once
 #include "manager/LoggedUser.h"
 
+struct RoomData;
+
 enum class NotificationCode : unsigned char
 {
     PLAYER_JOINED_ROOM,
     PLAYER_LEFT_ROOM,
-    ROOM_CLOSED
+    ROOM_CLOSED,
+    ROOM_DATA_UPDATED
 };
 
 
@@ -35,4 +38,11 @@ struct PlayerLeftRoomNotification : ProtocolNotification
 struct RoomClosedNotification : ProtocolNotification
 {
     RoomClosedNotification();
+};
+
+struct RoomDataUpdatedNotification : ProtocolNotification
+{
+    explicit RoomDataUpdatedNotification(const RoomData& data);
+
+    const RoomData& data;
 };
