@@ -48,9 +48,8 @@
 
                     <controls:TriviaTextBox Grid.Row="0"
                                             ClipToBounds="False">
-                        <TextBox FontSize="65">
-                            ROOM NAME
-                        </TextBox>
+                        <TextBox FontSize="65"
+                                 Text="{Binding Name}"/>
                     </controls:TriviaTextBox>
                     
                     <Grid Grid.Row="1"
@@ -110,7 +109,7 @@
                                     TickFrequency="1"
                                     IsSnapToTickEnabled="True"
                                     Foreground="#e87dd3"
-                                    Value="20">
+                                    Value="{Binding Questions}">
                                 
                                 <Slider.Resources>
                                     <!-- ReSharper disable once Xaml.RedundantResource -->
@@ -156,7 +155,7 @@
                         <controls:TriviaTextBox Grid.Row="2"
                                                 Grid.Column="2"
                                                 ClipToBounds="False">
-                            <TextBox>10</TextBox>
+                            <TextBox Text="{Binding SecsPerQuestion}"/>
                         </controls:TriviaTextBox>
                         
                         <TextBlock Grid.Row="4"
@@ -167,7 +166,7 @@
                         </TextBlock>
                         <controls:TriviaTextBox Grid.Row="4"
                                                 Grid.Column="2">
-                            <TextBox>10</TextBox>
+                            <TextBox Text="{Binding MaxPlayers}"/>
                         </controls:TriviaTextBox>
                     </Grid>
                     
