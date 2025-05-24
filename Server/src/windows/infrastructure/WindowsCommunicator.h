@@ -13,7 +13,8 @@ public:
     WindowsCommunicator(const WindowsCommunicator&) = delete;
     void operator=(const WindowsCommunicator&) = delete;
 
-    static WindowsCommunicator& getInstance(const RequestHandlerFactory& handlerFactory);
+    static WindowsCommunicator &getAndInitiateInstance(const RequestHandlerFactory *handlerFactory);
+    static WindowsCommunicator &getInstance();
 
 	/**
 	* Binds this instance to the program port, and begins to listen for new clients.
@@ -39,5 +40,5 @@ protected:
 	void throwPlatformError(const std::string &msg) const override;
 
 private:
-    WindowsCommunicator(const RequestHandlerFactory& handlerFactory);
+    WindowsCommunicator(const RequestHandlerFactory *handlerFactory);
 };

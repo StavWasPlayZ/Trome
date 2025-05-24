@@ -1,5 +1,7 @@
 #include "Game.h"
 
+#include <stdexcept>
+
 Game::Game(Room &room, const IDatabase &database) : m_database(database), m_room(room), m_questionsRotation(0)
 {}
 
