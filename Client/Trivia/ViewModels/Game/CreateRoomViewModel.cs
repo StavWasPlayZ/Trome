@@ -11,7 +11,7 @@ namespace Trivia.ViewModels.Game;
 
 public class CreateRoomViewModel : RoomViewModel
 {
-    private static readonly TimeSpan RoomDataUpdateDelay = TimeSpan.FromMicroseconds(300);
+    private static readonly TimeSpan RoomDataUpdateDelay = TimeSpan.FromMilliseconds(300);
 
     public ReactiveCommand<Unit, Unit> CloseRoomCommand { get; }
 
