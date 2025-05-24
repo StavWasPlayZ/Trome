@@ -31,12 +31,25 @@ public class JoinedRoomViewModel : RoomViewModel
 
     protected override void CommOnPacketReceived(IS2CPacket packet)
     {
-        if (packet is RoomClosedNotification)
+        switch (packet)
         {
-            NavigateBackCommand!.Execute();
-            return;
+            case RoomClosedNotification:
+                NavigateBackCommand!.Execute();
+                break;
+            
+            case RoomDataUpdatedNotification roomDataNotif:
+                HandleRoomDataUpdated(roomDataNotif);
+                break;
+            
+            default:
+                base.CommOnPacketReceived(packet);
+                break;
         }
-        
-        base.CommOnPacketReceived(packet);
+    }
+
+    private void HandleRoomDataUpdated(RoomDataUpdatedNotification roomDataNotif)
+    {
+        Room.Data = roomDataNotif.Data;
+        this.RaisePropertyChanged(nameof(Room));
     }
 }

@@ -11,6 +11,7 @@ public static class NotificationDeserializer
             NotificationCode.PlayerJoinedRoom => PacketDeserializer.Deserialize<PlayerJoinedRoomNotification>(json),
             NotificationCode.PlayerLeftRoom => PacketDeserializer.Deserialize<PlayerLeftRoomNotification>(json),
             NotificationCode.RoomClosed => PacketDeserializer.Deserialize<RoomClosedNotification>(json),
+            NotificationCode.RoomDataUpdated => PacketDeserializer.Deserialize<RoomDataUpdatedNotification>(json),
             _ => null
         };
     }
