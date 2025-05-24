@@ -12,13 +12,10 @@ bool RoomAdminRequestHandler::isRequestRelevant(const RequestInfo &info) const
 {
     switch (info.id)
     {
-	case RequestCode::JOIN_ROOM:
-    case RequestCode::GET_PLAYERS_IN_ROOM:
-    case RequestCode::CREATE_ROOM:
-    case RequestCode::GET_ROOMS:
-    case RequestCode::GET_HIGH_SCORES:
-    case RequestCode::GET_PERSONAL_STATISTICS:
-    case RequestCode::LOGOUT:
+	case RequestCode::START_GAME:
+    case RequestCode::CLOSE_ROOM:
+    case RequestCode::UPDATE_ROOM_DATA:
+    case RequestCode::GET_ROOM_STATE:
         return true;
 
     default: return false;
@@ -33,6 +30,8 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo &info, co
         return startGame(info, request);
     case RequestCode::CLOSE_ROOM:
         return closeRoom(info, request);
+    case RequestCode::UPDATE_ROOM_DATA:
+        return updateRoomData(info, request);
 
     case RequestCode::GET_ROOM_STATE:
         return getRoomState(info, request);
@@ -57,7 +56,7 @@ RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo &info, const 
     );
 }
 
-RequestResult RoomAdminRequestHandler::setRoomState(const RequestInfo &info, const ProtocolRequest &) const
+RequestResult RoomAdminRequestHandler::updateRoomData(const RequestInfo &info, const ProtocolRequest &) const
 {
     return RequestResult(
         new ErrorResponse(ErrorStatus::SERVER_UNIMPLEMENTED, info.id),
@@ -65,7 +64,7 @@ RequestResult RoomAdminRequestHandler::setRoomState(const RequestInfo &info, con
     );
 }
 
-RequestResult RoomAdminRequestHandler::getRoomState(const RequestInfo &info, const ProtocolRequest &) const
+RequestResult RoomAdminRequestHandler::getRoomState(const RequestInfo &, const ProtocolRequest &) const
 {
     return RequestResult(new GetRoomStateResponse(m_room), new RoomAdminRequestHandler(*this));
 }

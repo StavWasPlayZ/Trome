@@ -17,7 +17,7 @@ private:
     RequestResult startGame(const RequestInfo & info, const ProtocolRequest & request) const;
     RequestResult closeRoom(const RequestInfo & info, const ProtocolRequest & request) const;
 
-    RequestResult setRoomState(const RequestInfo & info, const ProtocolRequest & request) const;
+    RequestResult updateRoomData(const RequestInfo & info, const ProtocolRequest & request) const;
 
     [[deprecated(
         "The Noftifications system has been set in place to allow for automatic, non-polling updates of any "
