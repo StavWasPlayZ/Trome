@@ -86,7 +86,11 @@ struct GetRoomsResponse : ProtocolResponse
 	const std::vector<Room*> rooms;
 };
 
-struct GetPlayersInRoomResponse : ProtocolResponse
+struct [[deprecated(
+    "The Noftifications system has been set in place to allow for automatic, non-polling updates of any "
+    "room state changes."
+    " This request/response is therefore useless and should not be used."
+)]] GetPlayersInRoomResponse : ProtocolResponse
 {
     explicit GetPlayersInRoomResponse(const std::vector<LoggedUser*> &players);
 
@@ -122,7 +126,11 @@ struct LeaveRoomResponse : ProtocolResponse
     LeaveRoomResponse();
 };
 
-struct GetRoomStateResponse : ProtocolResponse
+struct [[deprecated(
+    "The Noftifications system has been set in place to allow for automatic, non-polling updates of any "
+    "room state changes."
+    " This request/response is therefore useless and should not be used."
+)]] GetRoomStateResponse : ProtocolResponse
 {
     explicit GetRoomStateResponse(const Room& room);
 

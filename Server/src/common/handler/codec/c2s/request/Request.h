@@ -67,7 +67,11 @@ struct LogoutRequest : ProtocolRequest
 {
 };
 
-struct GetPlayersInRoomRequest : ProtocolRequest
+struct [[deprecated(
+    "The Noftifications system has been set in place to allow for automatic, non-polling updates of any "
+    "room state changes."
+    " This request/response is therefore useless and should not be used."
+)]] GetPlayersInRoomRequest : ProtocolRequest
 {
     explicit GetPlayersInRoomRequest(unsigned int roomID);
 
@@ -105,7 +109,11 @@ struct StartGameRequest : ProtocolRequest
 {
 };
 
-struct GetRoomStateRequest : ProtocolRequest
+struct [[deprecated(
+    "The Noftifications system has been set in place to allow for automatic, non-polling updates of any "
+    "room state changes."
+    " This request/response is therefore useless and should not be used."
+)]] GetRoomStateRequest : ProtocolRequest
 {
 };
 
