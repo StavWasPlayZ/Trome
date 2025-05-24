@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Reactive.Disposables;
 using ReactiveUI;
 using Trivia.Codec.S2C;
 using Trivia.Codec.S2C.Notification.Packets;
@@ -10,10 +9,8 @@ using Trivia.Models.User;
 
 namespace Trivia.ViewModels.Game;
 
-public abstract class RoomViewModel : PageViewModel, IActivatableViewModel
-{
-    public ViewModelActivator Activator { get; } = new();
-    
+public abstract class RoomViewModel : PageViewModel
+{    
     public Room Room { get; }
     public ObservableCollection<RoomUserModel?> Players { get; }
 
@@ -55,14 +52,6 @@ public abstract class RoomViewModel : PageViewModel, IActivatableViewModel
         {
             Players.Add(null);
         }
-        
-        
-        this.WhenActivated(disposables =>
-        {
-            Disposable
-                .Create(() => Comm.PacketReceived -= CommOnPacketReceived)
-                .DisposeWith(disposables);
-        });
     }
 
     protected RoomViewModel()
@@ -86,14 +75,9 @@ public abstract class RoomViewModel : PageViewModel, IActivatableViewModel
                 })
         );
     }
+    
 
-
-    public void SubToServerEvents()
-    {
-        Comm.PacketReceived += CommOnPacketReceived;
-    }
-
-    private void CommOnPacketReceived(IS2CPacket packet)
+    protected override void CommOnPacketReceived(IS2CPacket packet)
     {
         switch (packet)
         {

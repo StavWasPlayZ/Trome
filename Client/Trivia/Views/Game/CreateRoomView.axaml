@@ -8,9 +8,7 @@
              mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
              x:CompileBindings="True"
              x:Class="Trivia.Views.Game.CreateRoomView"
-             x:DataType="game:CreateRoomViewModel"
-             
-             AttachedToLogicalTree="OnAttachedToLogicalTree">
+             x:DataType="game:CreateRoomViewModel">
     
     <Design.DataContext>
         <game:CreateRoomViewModel/>

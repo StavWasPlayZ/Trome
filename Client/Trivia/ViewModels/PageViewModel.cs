@@ -1,14 +1,18 @@
 using System;
 using System.Reactive;
+using System.Reactive.Disposables;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using ReactiveUI;
+using Trivia.Codec.S2C;
 using Trivia.Services;
 
 namespace Trivia.ViewModels;
 
-public abstract class PageViewModel : ViewModelBase, IRoutableViewModel
+public abstract class PageViewModel : ViewModelBase, IRoutableViewModel, IActivatableViewModel
 {
+    public ViewModelActivator Activator { get; } = new();
+
     protected static readonly Communicator Comm = Communicator.Instance;
     
     public IScreen HostScreen { get; }
@@ -16,11 +20,28 @@ public abstract class PageViewModel : ViewModelBase, IRoutableViewModel
     
     public ApplicationService AppService { get; }
     
+    
     protected PageViewModel(IScreen hostScreen)
     {
         AppService = App.AppService;
         HostScreen = hostScreen;
+        
+        this.WhenActivated(disposables =>
+        {
+            Disposable
+                .Create(() => Comm.PacketReceived -= CommOnPacketReceived)
+                .DisposeWith(disposables);
+        });
     }
+
+    
+    public void SubToServerEvents()
+    {
+        Comm.PacketReceived += CommOnPacketReceived;
+    }
+
+    protected virtual void CommOnPacketReceived(IS2CPacket packet) { }
+    
     
     // Mock implementations
     protected PageViewModel()
