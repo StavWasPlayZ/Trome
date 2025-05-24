@@ -6,6 +6,7 @@
 #endif
 
 #include "exception/RegexViolationException.h"
+#include "handler/codec/s2c/response/ErrorResponse.h"
 
 LoginManager::LoginManager(const IDatabase& database) :
 	m_database(database)

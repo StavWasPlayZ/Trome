@@ -2,6 +2,8 @@
 
 #include "IRequestHandler.h"
 
+class Room;
+
 class RoomMemberRequestHandler : public IRequestHandler
 {
 public:
