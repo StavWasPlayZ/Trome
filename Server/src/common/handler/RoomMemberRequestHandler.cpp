@@ -26,33 +26,27 @@ RequestResult RoomMemberRequestHandler::handleRequest(const RequestInfo &info, c
     switch (info.id)
     {
     case RequestCode::LEAVE_ROOM:
-        return leaveRoom(info, request);
+        return leaveRoom(info, static_cast<const LeaveRoomRequest &>(request));
     case RequestCode::GET_ROOM_STATE:
-        return getRoomState(info, request);
+        return getRoomState(info, static_cast<const GetRoomStateRequest &>(request));
 
     default:
         throw std::invalid_argument("Unknown request ID");
     }
 }
 
-RequestResult RoomMemberRequestHandler::leaveRoom(const RequestInfo &info, const ProtocolRequest &) const
+RequestResult RoomMemberRequestHandler::leaveRoom(const RequestInfo &info, const LeaveRoomRequest &) const
 {
-    const LoggedUser& user = getUserByInfo(info);
-
+    LoggedUser& user = getUserByInfo(info);
     m_room.removeUser(user);
 
     return RequestResult(
         new LeaveRoomResponse(),
-        new MenuRequestHandler(this->m_handlerFactory),
-
-        new NotificationPayload(
-            new PlayerLeftRoomNotification(user.getId()),
-            m_room.getAllUsers()
-        )
+        new MenuRequestHandler(this->m_handlerFactory)
     );
 }
 
-RequestResult RoomMemberRequestHandler::getRoomState(const RequestInfo &, const ProtocolRequest &) const
+RequestResult RoomMemberRequestHandler::getRoomState(const RequestInfo &, const GetRoomStateRequest &) const
 {
     return RequestResult(new GetRoomStateResponse(m_room), new RoomMemberRequestHandler(*this));
 }

@@ -4,7 +4,8 @@
 enum class NotificationCode : unsigned char
 {
     PLAYER_JOINED_ROOM,
-    PLAYER_LEFT_ROOM
+    PLAYER_LEFT_ROOM,
+    ROOM_CLOSED
 };
 
 
@@ -24,10 +25,14 @@ struct PlayerJoinedRoomNotification : ProtocolNotification
     const LoggedUser& player;
 };
 
-
 struct PlayerLeftRoomNotification : ProtocolNotification
 {
     explicit PlayerLeftRoomNotification(unsigned int player);
 
     const unsigned int playerId;
+};
+
+struct RoomClosedNotification : ProtocolNotification
+{
+    RoomClosedNotification();
 };

@@ -24,6 +24,7 @@
 #include <netinet/in.h>
 #endif
 
+struct OBuffer;
 
 class CommonCommunicator
 {
@@ -37,10 +38,12 @@ public:
 	 */
 	virtual void bindAndListen();
 
+	void sendMsg(Client& client, const OBuffer& buffer) const;
+
 	void close();
 
 protected:
-    CommonCommunicator(SOCKET defaultSocket, const RequestHandlerFactory& handlerFactory);
+    CommonCommunicator(SOCKET defaultSocket, const RequestHandlerFactory *handlerFactory);
     virtual ~CommonCommunicator();
 
     CommonCommunicator(const CommonCommunicator&) = delete;
@@ -60,7 +63,7 @@ protected:
 
 	sockaddr_in _serverSockAddr;
 
-	std::mutex m_clients_mutex;
+	std::mutex m_clientsMutex;
 	// Holding Client pointers because futures are immovable.
 	/**
 	 * Contains all active clients.
@@ -96,8 +99,6 @@ protected:
 	 */
 	virtual void receiveMsg(SOCKET socket, void* buffer, int length) const = 0;
 
-	void sendMsg(SOCKET socket, const unsigned char* buffer, int length) const;
-
 	/**
 	 * Platform-specific method for closing the server communication.
 	 */
@@ -122,23 +123,23 @@ private:
 	std::list<SOCKET> _disconnectingClients;
 
 	std::condition_variable _disconnectedClientConditionalVariable;
-	std::mutex _disconnectedClient_mutex;
+	std::mutex _disconnectedClientCV_mutex;
 
 	//SECTION Thread Functions
 
 	void _serverThreadFunc();
-	void _clientThreadFunc(SOCKET socket);
+	void _clientThreadFunc(Client& client);
 
 	//ANCHOR Actual client processing function.
-	void _handleClient(SOCKET socket) const;
+	void _handleClient(Client& client);
 
     /**
      * Sends the relevant fields of the provided RequestResult,
      * freeing any that are no longer necessary.
      */
-    void _dispatchRequestResults(SOCKET socket, const RequestResult& requestResult) const;
+    void _dispatchResponse(Client &client, const ProtocolResponse &response) const;
 
-	RequestInfo _waitForClientRequest(SOCKET socket) const;
+	RequestInfo _waitForClientRequest(const Client& client);
 	void _clientCleanerThreadFunc();
 
 	//!SECTION

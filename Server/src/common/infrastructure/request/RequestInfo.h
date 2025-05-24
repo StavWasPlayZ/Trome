@@ -8,9 +8,9 @@ class Client;
 
 struct RequestInfo
 {
-    RequestInfo(const Client& client, RequestCode id, std::time_t receivalTime, const nlohmann::json& data);
+    RequestInfo(Client& client, RequestCode id, std::time_t receivalTime, const nlohmann::json& data);
 
-    const Client& client;
+    Client& client;
 
     const RequestCode id;
     const std::time_t receivalTime;

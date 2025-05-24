@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia.Controls;
 using Avalonia.Threading;
 using Trivia.Codec.C2S.Request;
 using Trivia.Codec.S2C;
@@ -136,6 +137,10 @@ public class Communicator : IDisposable
 
     public async Task Connect(IPEndPoint? endpoint = null)
     {
+        // Just to make sure
+        if (Design.IsDesignMode)
+            return;
+        
         endpoint ??= DefaultEndpoint;
         
         Log($"Establishing connection to {endpoint}...");

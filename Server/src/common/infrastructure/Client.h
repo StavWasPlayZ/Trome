@@ -3,6 +3,7 @@
 #include "handler/IRequestHandler.h"
 #include <future>
 #include <functional>
+#include <mutex>
 
 #ifndef _WIN32
 // In Unix, socket = int.
@@ -12,6 +13,7 @@
 #include <WinSock2.h>
 #endif
 
+struct ProtocolNotification;
 class IRequestHandler;
 
 /**
@@ -25,13 +27,36 @@ public:
 	~Client();
 
     const SOCKET socket;
-	const IRequestHandler* requestHandler;
+    std::unique_lock<std::mutex> acquireSocketWriterLock();
+
+
+    const IRequestHandler* getRequestHandler() const;
+    /**
+     * Does not lock other threads from using the handler.
+     */
+    void setRequestHandlerUnsafe(const IRequestHandler* requestHandler);
+    /**
+     * Locks other threads from using the handler.
+     */
+    void setRequestHandlerSafe(const IRequestHandler* requestHandler);
+
+    std::unique_lock<std::mutex> acquireRequestHandlerLock();
+
 
     const std::future<void>& getThread() const;
     void setAndStartThread(const std::function<void()>& threadFunc);
+
+
+    void sendNotification(const ProtocolNotification& notification);
+
 
     void handleDisconnecting() const;
 
 private:
 	const std::future<void>* thread;
+
+    std::mutex requestHandlerMutex;
+	const IRequestHandler* requestHandler;
+
+    std::mutex socketWriterMutex;
 };

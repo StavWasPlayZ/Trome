@@ -2,6 +2,8 @@
 using System.Reactive;
 using ReactiveUI;
 using Trivia.Codec.C2S.Request.Packets;
+using Trivia.Codec.S2C;
+using Trivia.Codec.S2C.Notification.Packets;
 using Trivia.Codec.S2C.Response.Packets;
 using Trivia.Models.Raw;
 
@@ -24,5 +26,17 @@ public class JoinedRoomViewModel : RoomViewModel
     public JoinedRoomViewModel()
     {
         LeaveRoomCommand = NoOpCommand;
+    }
+
+
+    protected override void CommOnPacketReceived(IS2CPacket packet)
+    {
+        if (packet is RoomClosedNotification)
+        {
+            NavigateBackCommand!.Execute();
+            return;
+        }
+        
+        base.CommOnPacketReceived(packet);
     }
 }

@@ -11,11 +11,9 @@ using Trivia.ViewModels.Game;
 
 namespace Trivia.ViewModels.Menu;
 
-public class JoinRoomMenuViewModel : PageViewModel, IActivatableViewModel
+public class JoinRoomMenuViewModel : PageViewModel
 {
     private const int RefreshTime = 3000;
-    
-    public ViewModelActivator Activator { get; } = new();
     
     
     public ReactiveCommand<Unit, Unit> NewRoomButtonCommand { get; }

@@ -37,7 +37,6 @@ add_executable (Server
   "src/common/Constants.h"
 
   "src/common/handler/IRequestHandler.h"
-  "src/common/handler/IRequestHandler.tpp"
   "src/common/handler/IRequestHandler.cpp"
   "src/common/handler/RequestHandlerFactory.h"
   "src/common/handler/RequestHandlerFactory.cpp"
@@ -99,6 +98,9 @@ add_executable (Server
   "src/common/handler/codec/s2c/notification/NotificationPacketSerializer.h"
   "src/common/handler/codec/s2c/notification/Notification.cpp"
   "src/common/handler/codec/s2c/notification/Notification.h"
+
+  "src/common/handler/RoomAdminRequestHandler.cpp"
+  "src/common/handler/RoomAdminRequestHandler.h"
 )
 
 # Platform-specific sources

@@ -25,6 +25,8 @@ public:
 
 
     LoginManager& getLoginManager();
+    RequestHandlerFactory& getRequestHandlerFactory();
+    RoomManager& getRoomManager();
 
 
 private:

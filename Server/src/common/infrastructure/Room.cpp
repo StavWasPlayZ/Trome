@@ -1,22 +1,44 @@
 #include "Room.h"
 
+#include "Client.h"
+#include "Server.h"
+
 #include <list>
 
 #include "db/IDatabase.h"
+#include "handler/IRequestHandler.h"
+#include "handler/MenuRequestHandler.h"
 
 unsigned int Room::globalId = 0;
 
-Room::Room(LoggedUser &admin, const RoomData &data, const IDatabase& database, const RoomStatus status) :
-    id(globalId++),
+Room::Room(const unsigned int id, LoggedUser &admin, const RoomData &data,
+           const IDatabase &database, const RoomStatus status) :
+    id(id),
     // REVIEW: Perhaps could be initialized directly.
     // On this condition that Not Found it not set.
     status(status),
     m_admin(&admin),
     m_metadata(data),
-    m_database(database)
+    m_database(database),
+    m_handlerFactory(Server::getInstance().getRequestHandlerFactory())
 {
     // Add the admin to the room
     addUser(admin);
+}
+
+Room::~Room()
+{
+    // This assumes that the room was deleted as a result of the admin deleting it.
+    // It thus does not alter the admin's handler.
+    //
+    // Hence, we will simply simulate the admin leaving the room, thus gracefully closing
+    // it and kicking all others:
+    removeUser(getAdmin());
+}
+
+unsigned int Room::generateId()
+{
+    return globalId++;
 }
 
 std::optional<Game *> Room::getCurrentGame() const
@@ -32,19 +54,37 @@ void Room::setCurrentGame(Game &game)
 void Room::addUser(LoggedUser &user)
 {
     this->m_users.push_back(&user);
+    user.setCurrentRoom(*this);
 }
 
-void Room::removeUser(const LoggedUser &user)
+void Room::removeUser(LoggedUser &user)
 {
     const auto it = std::ranges::find(this->m_users, &user);
 
-    if (it != m_users.end())
+    if (it == m_users.end())
+        return;
+
+    m_users.erase(it);
+    user.removeFromRoom();
+
+
+    // Release all other players from the RoomMemberRequestHandler state
+    for (const LoggedUser* player : getAllUsers())
     {
-        m_users.erase(it);
+        player->getClient().setRequestHandlerSafe(new MenuRequestHandler(m_handlerFactory));
+    }
+
+    if (user == getAdmin())
+    {
+        handleAdminLeft(user);
+    }
+    else
+    {
+        handleGuestLeft(user);
     }
 }
 
-const std::vector<LoggedUser *>& Room::getAllUsers() const
+const std::vector<LoggedUser *> &Room::getAllUsers() const
 {
     return this->m_users;
 }
@@ -84,4 +124,26 @@ RoomStatus Room::getStatus() const
 void Room::setStatus(const RoomStatus status)
 {
     this->status = status;
+}
+
+void Room::handleGuestLeft(const LoggedUser &guest) const
+{
+    IRequestHandler::dispatchNotification(
+        PlayerLeftRoomNotification(guest.getId()),
+        getAllUsers()
+    );
+}
+
+void Room::handleAdminLeft(const LoggedUser &) const
+{
+    // Also disconnect all other players
+    for (LoggedUser* player : getAllUsers())
+    {
+        player->removeFromRoom();
+    }
+
+    IRequestHandler::dispatchNotification(
+        RoomClosedNotification(),
+        getAllUsers()
+    );
 }

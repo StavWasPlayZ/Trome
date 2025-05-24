@@ -15,3 +15,7 @@ PlayerLeftRoomNotification::PlayerLeftRoomNotification(const unsigned int player
     ProtocolNotification(NotificationCode::PLAYER_LEFT_ROOM),
     playerId(player)
 {}
+
+RoomClosedNotification::RoomClosedNotification() :
+    ProtocolNotification(NotificationCode::ROOM_CLOSED)
+{}

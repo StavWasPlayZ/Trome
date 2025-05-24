@@ -47,7 +47,7 @@ public class LoginViewModel : AuthViewModel
     }
 
 
-    protected override void UpdateMayAuthenticate()
+    private void UpdateMayAuthenticate()
     {
         MayAuthenticate =
             !string.IsNullOrEmpty(Username)
