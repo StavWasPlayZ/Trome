@@ -2,6 +2,7 @@
 
 #include "RequestHandlerFactory.h"
 #include "codec/c2s/request/Request.h"
+#include "codec/s2c/notification/Notification.h"
 #include "codec/s2c/response/ErrorResponse.h"
 #include "manager/RoomManager.h"
 
@@ -86,7 +87,12 @@ RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo &info, const 
 
     return RequestResult(
         new ErrorResponse(ErrorStatus::SERVER_UNIMPLEMENTED, info.id),
-        new RoomAdminRequestHandler(*this)
+        new RoomAdminRequestHandler(*this),
+
+        new NotificationPayload(
+            new RoomClosedNotification(),
+            usersNoAdmin
+        )
     );
 }
 
