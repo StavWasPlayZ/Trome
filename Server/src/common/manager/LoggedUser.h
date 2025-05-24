@@ -6,17 +6,17 @@
 class LoggedUser
 {
 public:
-    LoggedUser(unsigned int id, const std::string& username, const Client& client);
+    LoggedUser(unsigned int id, const std::string& username, Client& client);
 
     const std::string& getUsername() const;
     unsigned int getId() const;
     bool operator==(const LoggedUser &other) const;
 
-    const Client& getClient() const;
+    Client& getClient() const;
     
 private:
     const unsigned int m_id;
     std::string m_username;
 
-    const Client& m_client;
+    Client& m_client;
 };
