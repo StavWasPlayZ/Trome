@@ -56,12 +56,12 @@ void CommonCommunicator::close()
     this->_disconnectedClientConditionalVariable.notify_all();
 
     // Wait for 'em to close
-    this->m_clients_mutex.lock();
+    this->m_clientsMutex.lock();
     for (const auto& client : this->m_clients)
     {
         client.second->getThread().wait();
     }
-    this->m_clients_mutex.unlock();
+    this->m_clientsMutex.unlock();
 
     platformClose();
 
@@ -161,10 +161,15 @@ void CommonCommunicator::startServerThreads()
     std::cout << "Listening on port " << PORT << "..." << std::endl;
 }
 
-void CommonCommunicator::sendMsg(const SOCKET socket, const unsigned char* buffer, const int length) const
+void CommonCommunicator::sendMsg(const SOCKET socket, const unsigned char* buffer, const int length)
 {
+    std::unique_lock clientsLock(this->m_clientsMutex);
+    Client *const client = this->m_clients.at(socket);
+    clientsLock.unlock();
+
     bool didError;
 
+    std::unique_lock<std::mutex> writerLock = client->acquireSocketWriterLock();
     try
     {
         // Casting for crybaby Windows
@@ -175,6 +180,7 @@ void CommonCommunicator::sendMsg(const SOCKET socket, const unsigned char* buffe
     {
         didError = true;
     }
+    writerLock.unlock();
 
     if (didError)
     {
@@ -236,13 +242,15 @@ void CommonCommunicator::_clientThreadFunc(const SOCKET socket)
 }
 
 //ANCHOR Actual client processing function.
-void CommonCommunicator::_handleClient(const SOCKET socket) const
+void CommonCommunicator::_handleClient(const SOCKET socket)
 {
     const RequestInfo info = _waitForClientRequest(socket);
 
+    std::unique_lock clientsLock(this->m_clientsMutex);
     Client *const client = this->m_clients.at(socket);
+    clientsLock.unlock();
 
-    client->lockRequestHandler();
+    std::unique_lock<std::mutex> handlerLock = client->acquireRequestHandlerLock();
     const IRequestHandler *const handler = client->getRequestHandler();
 
     if (!handler->isRequestRelevant(info))
@@ -252,12 +260,22 @@ void CommonCommunicator::_handleClient(const SOCKET socket) const
             handler
         ));
 
-        client->releaseRequestHandler();
         return;
     }
 
+    const ProtocolRequest *request = nullptr;
+    try
+    {
+        request = ProtocolRequest::fromRequest(info);
+    } catch (const std::invalid_argument &)
+    {
+        _dispatchRequestResults(socket, RequestResult(
+            new ErrorResponse(ErrorStatus::ILLEGAL_REQUEST, info.id),
+            handler
+        ));
 
-    const ProtocolRequest *const request = ProtocolRequest::fromRequest(info);
+        return;
+    }
 
     const RequestResult *result = nullptr;
 
@@ -268,8 +286,6 @@ void CommonCommunicator::_handleClient(const SOCKET socket) const
     catch (const std::exception &)
     {
         delete request;
-
-        client->releaseRequestHandler();
         throw;
     }
 
@@ -279,14 +295,15 @@ void CommonCommunicator::_handleClient(const SOCKET socket) const
     // 🫡
     delete handler;
     client->setRequestHandler(result->newHandler);
-    client->releaseRequestHandler();
+    handlerLock.unlock();
 
     _dispatchRequestResults(socket, *result);
     delete result;
 }
 
-void CommonCommunicator::_dispatchRequestResults(const SOCKET socket, const RequestResult &requestResult) const
+void CommonCommunicator::_dispatchRequestResults(const SOCKET socket, const RequestResult &requestResult)
 {
+    //TODO: Move notification dispatching to Client
     const OBuffer responseBuffer = JsonResponsePacketSerializer::serializeResponse(*requestResult.response);
     delete requestResult.response;
 
@@ -300,7 +317,6 @@ void CommonCommunicator::_dispatchRequestResults(const SOCKET socket, const Requ
 
         for (const LoggedUser *const receiver : notifPayload.clients)
         {
-
             sendMsg(receiver->getClient().socket, notificationBuffer.contents, notificationBuffer.length);
         }
 
@@ -308,7 +324,7 @@ void CommonCommunicator::_dispatchRequestResults(const SOCKET socket, const Requ
     }
 }
 
-RequestInfo CommonCommunicator::_waitForClientRequest(const SOCKET socket) const
+RequestInfo CommonCommunicator::_waitForClientRequest(const SOCKET socket)
 {
     unsigned char reqCode;
     receiveMsg(socket, &reqCode, SIZE_CODE);
@@ -331,6 +347,8 @@ RequestInfo CommonCommunicator::_waitForClientRequest(const SOCKET socket) const
     try
     {
         receiveMsg(socket, data, jsonLen);
+
+        std::lock_guard lock(this->m_clientsMutex);
 
         info = new RequestInfo(
             *this->m_clients.at(socket),
@@ -358,7 +376,7 @@ RequestInfo CommonCommunicator::_waitForClientRequest(const SOCKET socket) const
 
 void CommonCommunicator::_clientCleanerThreadFunc()
 {
-	std::unique_lock lock(this->_disconnectedClient_mutex);
+	std::unique_lock lock(this->_disconnectedClientCV_mutex);
 	
 	while (this->_running)
 	{
@@ -385,8 +403,8 @@ void CommonCommunicator::_enqueueDisconnectClient(const SOCKET socket)
 
 void CommonCommunicator::_freeDisconnectedClients()
 {
-	this->_disconnectingClients_mutex.lock();
-	this->m_clients_mutex.lock();
+    std::unique_lock disconnectingClientsLock(this->_disconnectingClients_mutex);
+    std::unique_lock clientsLock(this->m_clientsMutex);
 
 	for (const auto& clientSock : this->_disconnectingClients)
 	{
@@ -394,8 +412,8 @@ void CommonCommunicator::_freeDisconnectedClients()
 		m_clients.erase(clientSock);
 	}
 
-	this->m_clients_mutex.unlock();
+	clientsLock.unlock();
 	
 	this->_disconnectingClients.clear();
-	this->_disconnectingClients_mutex.unlock();
+	disconnectingClientsLock.unlock();
 }

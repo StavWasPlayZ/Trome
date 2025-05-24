@@ -60,7 +60,7 @@ protected:
 
 	sockaddr_in _serverSockAddr;
 
-	std::mutex m_clients_mutex;
+	std::mutex m_clientsMutex;
 	// Holding Client pointers because futures are immovable.
 	/**
 	 * Contains all active clients.
@@ -96,7 +96,7 @@ protected:
 	 */
 	virtual void receiveMsg(SOCKET socket, void* buffer, int length) const = 0;
 
-	void sendMsg(SOCKET socket, const unsigned char* buffer, int length) const;
+	void sendMsg(SOCKET socket, const unsigned char* buffer, int length);
 
 	/**
 	 * Platform-specific method for closing the server communication.
@@ -122,7 +122,7 @@ private:
 	std::list<SOCKET> _disconnectingClients;
 
 	std::condition_variable _disconnectedClientConditionalVariable;
-	std::mutex _disconnectedClient_mutex;
+	std::mutex _disconnectedClientCV_mutex;
 
 	//SECTION Thread Functions
 
@@ -130,15 +130,15 @@ private:
 	void _clientThreadFunc(SOCKET socket);
 
 	//ANCHOR Actual client processing function.
-	void _handleClient(SOCKET socket) const;
+	void _handleClient(SOCKET socket);
 
     /**
      * Sends the relevant fields of the provided RequestResult,
      * freeing any that are no longer necessary.
      */
-    void _dispatchRequestResults(SOCKET socket, const RequestResult& requestResult) const;
+    void _dispatchRequestResults(SOCKET socket, const RequestResult& requestResult);
 
-	RequestInfo _waitForClientRequest(SOCKET socket) const;
+	RequestInfo _waitForClientRequest(SOCKET socket);
 	void _clientCleanerThreadFunc();
 
 	//!SECTION

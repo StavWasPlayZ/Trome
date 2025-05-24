@@ -10,9 +10,13 @@ Client::Client(const SOCKET socket, const IRequestHandler *const requestHandler)
 
 Client::~Client()
 {
-    this->releaseRequestHandler();
     delete this->requestHandler;
     delete this->thread;
+}
+
+std::unique_lock<std::mutex> Client::acquireSocketWriterLock()
+{
+    return std::unique_lock(this->socketWriterMutex);
 }
 
 const IRequestHandler *Client::getRequestHandler() const
@@ -25,14 +29,9 @@ void Client::setRequestHandler(const IRequestHandler *const requestHandler)
     this->requestHandler = requestHandler;
 }
 
-void Client::lockRequestHandler()
+std::unique_lock<std::mutex> Client::acquireRequestHandlerLock()
 {
-    this->requestHandlerMutex.lock();
-}
-
-void Client::releaseRequestHandler()
-{
-    this->requestHandlerMutex.unlock();
+    return std::unique_lock(this->requestHandlerMutex);
 }
 
 const std::future<void> &Client::getThread() const

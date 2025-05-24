@@ -26,16 +26,15 @@ public:
 	~Client();
 
     const SOCKET socket;
+    std::unique_lock<std::mutex> acquireSocketWriterLock();
 
     const IRequestHandler* getRequestHandler() const;
     void setRequestHandler(const IRequestHandler* requestHandler);
-
-    void lockRequestHandler();
-    void releaseRequestHandler();
-
+    std::unique_lock<std::mutex> acquireRequestHandlerLock();
 
     const std::future<void>& getThread() const;
     void setAndStartThread(const std::function<void()>& threadFunc);
+
 
     void handleDisconnecting() const;
 
@@ -44,4 +43,6 @@ private:
 
     std::mutex requestHandlerMutex;
 	const IRequestHandler* requestHandler;
+
+    std::mutex socketWriterMutex;
 };

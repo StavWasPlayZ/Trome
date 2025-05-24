@@ -75,12 +75,10 @@ RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo &info, const 
     for (const LoggedUser* player : usersNoAdmin)
     {
         Client& client = player->getClient();
-        client.lockRequestHandler();
+        std::unique_lock<std::mutex> handlerLock = client.acquireRequestHandlerLock();
 
         delete client.getRequestHandler();
         client.setRequestHandler(new MenuRequestHandler(m_handlerFactory));
-
-        client.releaseRequestHandler();
     }
 
     rManager.deleteRoom(m_room.getId());
