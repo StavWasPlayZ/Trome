@@ -5,6 +5,8 @@
 #include "codec/s2c/response/ErrorResponse.h"
 #include "manager/RoomManager.h"
 
+#include <algorithm>
+
 RoomAdminRequestHandler::RoomAdminRequestHandler(const RequestHandlerFactory &handlerFactory, Room& room) :
     IRequestHandler(handlerFactory),
     m_room(room)
@@ -56,7 +58,29 @@ RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo &info, const 
 {
     RoomManager &rManager = m_handlerFactory.getRoomManager();
 
+    const LoggedUser &user = getUserByInfo(info);
     const std::vector<LoggedUser*>& players = m_room.getAllUsers();
+
+    std::vector<LoggedUser*> usersNoAdmin;
+
+    std::ranges::copy_if(
+        players, std::back_inserter(usersNoAdmin),
+        [&user](const LoggedUser* player) {
+            return *player != user;
+        }
+    );
+
+    // Release all players from the RoomMemberRequestHandler state
+    for (const LoggedUser* player : usersNoAdmin)
+    {
+        Client& client = player->getClient();
+        client.lockRequestHandler();
+
+        delete client.getRequestHandler();
+        client.setRequestHandler(new MenuRequestHandler(m_handlerFactory));
+
+        client.releaseRequestHandler();
+    }
 
     rManager.deleteRoom(m_room.getId());
 

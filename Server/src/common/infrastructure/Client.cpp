@@ -10,6 +10,7 @@ Client::Client(const SOCKET socket, const IRequestHandler *const requestHandler)
 
 Client::~Client()
 {
+    this->releaseRequestHandler();
     delete this->requestHandler;
     delete this->thread;
 }
