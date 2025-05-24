@@ -59,19 +59,19 @@ ProtocolRequest *ProtocolRequest::fromRequest(const RequestInfo &info) {
         JsonRequestPacketDeserializer::deserializeGetPersonalStatisticsRequest(info.data)
     );
     case RequestCode::CLOSE_ROOM: return new CloseRoomRequest(
-            JsonRequestPacketDeserializer::deserializeCloseRoomRequest(info.data)
+        JsonRequestPacketDeserializer::deserializeCloseRoomRequest(info.data)
     );
     case RequestCode::START_GAME:return new StartGameRequest(
-            JsonRequestPacketDeserializer::deserializeStartGameRequest(info.data)
+        JsonRequestPacketDeserializer::deserializeStartGameRequest(info.data)
     );
     case RequestCode::GET_ROOM_STATE: return new GetRoomStateRequest(
-            JsonRequestPacketDeserializer::deserializeGetRoomStateRequest(info.data)
+        JsonRequestPacketDeserializer::deserializeGetRoomStateRequest(info.data)
     );
     case RequestCode::LEAVE_ROOM: return new LeaveRoomRequest(
-            JsonRequestPacketDeserializer::deserializeLeaveRoomRequest(info.data)
+        JsonRequestPacketDeserializer::deserializeLeaveRoomRequest(info.data)
     );
     case RequestCode::UPDATE_ROOM_DATA: return new UpdateRoomDataRequest(
-            JsonRequestPacketDeserializer::deserializeUpdateRoomDataRequest(info.data)
+        JsonRequestPacketDeserializer::deserializeUpdateRoomDataRequest(info.data)
     );
 
     default: throw std::invalid_argument("Invalid request ID");

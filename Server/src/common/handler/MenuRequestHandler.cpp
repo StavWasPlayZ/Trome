@@ -1,9 +1,11 @@
 #include "MenuRequestHandler.h"
 
 #include "RequestHandlerFactory.h"
+#include "RoomAdminRequestHandler.h"
 #include "RoomMemberRequestHandler.h"
 #include "codec/c2s/request/Request.h"
 #include "codec/s2c/notification/Notification.h"
+#include "codec/s2c/response/ErrorResponse.h"
 
 MenuRequestHandler::MenuRequestHandler(const RequestHandlerFactory &handlerFactory) : IRequestHandler(handlerFactory)
 {}
@@ -97,13 +99,11 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& info, const Prot
 {
     RoomManager &rManager = m_handlerFactory.getRoomManager();
 
-    const Room& room = rManager.createRoom(getUserByInfo(info), RoomData::ofDefaults());
+    Room& room = rManager.createRoom(getUserByInfo(info), RoomData::ofDefaults());
 
     return RequestResult(
         new CreateRoomResponse(room.getId(), room.getData()),
-
-        // TODO : make it RoomAdminRequestHandler when its implemented
-        new MenuRequestHandler(*this)
+        new RoomAdminRequestHandler(m_handlerFactory, room)
     );
 }
 

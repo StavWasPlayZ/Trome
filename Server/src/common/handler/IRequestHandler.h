@@ -20,12 +20,6 @@ public:
     virtual bool isRequestRelevant(const RequestInfo& info) const = 0;
     virtual RequestResult handleRequest(const RequestInfo& info, const ProtocolRequest& request) const = 0;
 
-    /**
-     * T - The current handler type
-     */
-    template <typename T>
-    RequestResult errorUnimplementedResult(RequestCode reqId) const;
-
 protected:
     const RequestHandlerFactory& m_handlerFactory;
 
@@ -34,6 +28,3 @@ protected:
    */
     LoggedUser & getUserByInfo(const RequestInfo& info) const;
 };
-
-
-#include "IRequestHandler.tpp"
