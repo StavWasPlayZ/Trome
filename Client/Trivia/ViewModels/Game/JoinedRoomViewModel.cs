@@ -21,11 +21,23 @@ public class JoinedRoomViewModel : RoomViewModel
             
             NavigateBackCommand!.Execute();
         });
+
+        _data = Room.Data;
     }
 
     public JoinedRoomViewModel()
     {
         LeaveRoomCommand = NoOpCommand;
+        _data = Room.Data;
+    }
+
+
+    private RoomData _data;
+
+    public RoomData Data
+    {
+        get => _data;
+        set => this.RaiseAndSetIfChanged(ref _data, value);
     }
 
 
@@ -49,7 +61,6 @@ public class JoinedRoomViewModel : RoomViewModel
 
     private void HandleRoomDataUpdated(RoomDataUpdatedNotification roomDataNotif)
     {
-        Room.Data = roomDataNotif.Data;
-        this.RaisePropertyChanged(nameof(Room));
+        Data = Room.Data = roomDataNotif.Data;
     }
 }
