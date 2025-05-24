@@ -18,7 +18,7 @@ public static class ResponseDeserializer
             ResponseCode.GetPlayersInRoom => PacketDeserializer.Deserialize<GetPlayersInRoomResponse>(json),
             ResponseCode.GetHighScores => PacketDeserializer.Deserialize<GetHighScoresResponse>(json),
             ResponseCode.GetPersonalStatistics => PacketDeserializer.Deserialize<GetPersonalStatisticsResponse>(json),
-            ResponseCode.CloseGame => PacketDeserializer.Deserialize<CloseGameResponse>(json),
+            ResponseCode.CloseGame => PacketDeserializer.Deserialize<CloseRoomResponse>(json),
             ResponseCode.StartGame => PacketDeserializer.Deserialize<StartGameResponse>(json),
             ResponseCode.GetRoomState => PacketDeserializer.Deserialize<GetRoomStateResponse>(json),
             ResponseCode.LeaveRoom => PacketDeserializer.Deserialize<LeaveRoomResponse>(json),

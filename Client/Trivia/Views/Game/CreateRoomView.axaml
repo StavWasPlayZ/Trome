@@ -178,7 +178,7 @@
                           Height="65">
                             
                         <Button Grid.Column="0"
-                                Command="{Binding NavigateBackCommand}"
+                                Command="{Binding CloseRoomCommand}"
                                 
                                 VerticalAlignment="Stretch"
                                 Width="90"
