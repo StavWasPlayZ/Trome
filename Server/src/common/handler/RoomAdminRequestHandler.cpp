@@ -4,9 +4,11 @@
 #include "codec/c2s/request/Request.h"
 #include "codec/s2c/notification/Notification.h"
 #include "codec/s2c/response/ErrorResponse.h"
+#include "infrastructure/Client.h"
 #include "manager/RoomManager.h"
 
 #include <algorithm>
+#include <mutex>
 
 RoomAdminRequestHandler::RoomAdminRequestHandler(const RequestHandlerFactory &handlerFactory, Room& room) :
     IRequestHandler(handlerFactory),
@@ -83,14 +85,15 @@ RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo &info, const 
 
     rManager.deleteRoom(m_room.getId());
 
+
+    dispatchNotification(
+        RoomClosedNotification(),
+        usersNoAdmin
+    );
+
     return RequestResult(
         new CloseRoomResponse(),
-        new MenuRequestHandler(m_handlerFactory),
-
-        new NotificationPayload(
-            new RoomClosedNotification(),
-            usersNoAdmin
-        )
+        new MenuRequestHandler(m_handlerFactory)
     );
 }
 

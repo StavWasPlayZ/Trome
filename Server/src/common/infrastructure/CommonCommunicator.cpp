@@ -251,11 +251,7 @@ void CommonCommunicator::_handleClient(const SOCKET socket)
 
     if (!handler->isRequestRelevant(info))
     {
-        _dispatchRequestResults(client, RequestResult(
-            new ErrorResponse(ErrorStatus::ILLEGAL_REQUEST, info.id),
-            handler
-        ));
-
+        _dispatchResponse(client, ErrorResponse(ErrorStatus::ILLEGAL_REQUEST, info.id));
         return;
     }
 
@@ -265,11 +261,7 @@ void CommonCommunicator::_handleClient(const SOCKET socket)
         request = ProtocolRequest::fromRequest(info);
     } catch (const std::invalid_argument &)
     {
-        _dispatchRequestResults(client, RequestResult(
-            new ErrorResponse(ErrorStatus::ILLEGAL_REQUEST, info.id),
-            handler
-        ));
-
+        _dispatchResponse(client, ErrorResponse(ErrorStatus::ILLEGAL_REQUEST, info.id));
         return;
     }
 
@@ -293,31 +285,13 @@ void CommonCommunicator::_handleClient(const SOCKET socket)
     client.setRequestHandler(result->newHandler);
     handlerLock.unlock();
 
-    _dispatchRequestResults(client, *result);
+    _dispatchResponse(client, *result->response);
     delete result;
 }
 
-void CommonCommunicator::_dispatchRequestResults(Client &client, const RequestResult &requestResult) const
+void CommonCommunicator::_dispatchResponse(Client &client, const ProtocolResponse &response) const
 {
-    //TODO: Move notification dispatching to Client
-    const OBuffer responseBuffer = JsonResponsePacketSerializer::serializeResponse(*requestResult.response);
-    delete requestResult.response;
-
-    sendMsg(client, responseBuffer);
-
-
-    if (requestResult.notificationPayload != std::nullopt)
-    {
-        const NotificationPayload& notifPayload = *requestResult.notificationPayload.value();
-        const OBuffer notificationBuffer = NotificationPacketSerializer::serialize(*notifPayload.notification);
-
-        for (const LoggedUser *const receiver : notifPayload.clients)
-        {
-            sendMsg(receiver->getClient(), notificationBuffer);
-        }
-
-        delete requestResult.notificationPayload.value();
-    }
+    sendMsg(client, JsonResponsePacketSerializer::serializeResponse(response));
 }
 
 RequestInfo CommonCommunicator::_waitForClientRequest(const SOCKET socket)

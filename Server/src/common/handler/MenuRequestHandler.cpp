@@ -70,14 +70,15 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo &info, const JoinRo
     LoggedUser& user = getUserByInfo(info);
     room.value()->addUser(user);
 
+
+    dispatchNotification(
+        PlayerJoinedRoomNotification(user),
+        usersBeforeNew
+    );
+
     return RequestResult(
         new JoinRoomResponse(*room.value(), usersBeforeNew),
-        new RoomMemberRequestHandler(this->m_handlerFactory, *room.value()),
-
-        new NotificationPayload(
-            new PlayerJoinedRoomNotification(user),
-            usersBeforeNew
-        )
+        new RoomMemberRequestHandler(this->m_handlerFactory, *room.value())
     );
 }
 

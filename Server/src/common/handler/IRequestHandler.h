@@ -1,5 +1,6 @@
 #pragma once
 
+#include "codec/s2c/notification/Notification.h"
 #include "infrastructure/request/RequestInfo.h"
 #include "infrastructure/request/RequestResult.h"
 
@@ -23,8 +24,13 @@ public:
 protected:
     const RequestHandlerFactory& m_handlerFactory;
 
-  /**
-   * Utility method to get the current session user
-   */
+    /**
+     * Utility method to get the current session user
+     */
     LoggedUser & getUserByInfo(const RequestInfo& info) const;
+
+    /**
+     * Utility method to dispatch the provided notifications to all given users
+     */
+    static void dispatchNotification(const ProtocolNotification &notification, const std::vector<LoggedUser *> &users);
 };

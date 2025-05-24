@@ -1,7 +1,8 @@
 #pragma once
 
 #include <string>
-#include "infrastructure/Client.h"
+
+class Client;
 
 class LoggedUser
 {

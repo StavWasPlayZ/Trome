@@ -38,17 +38,16 @@ RequestResult RoomMemberRequestHandler::handleRequest(const RequestInfo &info, c
 RequestResult RoomMemberRequestHandler::leaveRoom(const RequestInfo &info, const LeaveRoomRequest &) const
 {
     const LoggedUser& user = getUserByInfo(info);
-
     m_room.removeUser(user);
+
+    dispatchNotification(
+        PlayerLeftRoomNotification(user.getId()),
+        m_room.getAllUsers()
+    );
 
     return RequestResult(
         new LeaveRoomResponse(),
-        new MenuRequestHandler(this->m_handlerFactory),
-
-        new NotificationPayload(
-            new PlayerLeftRoomNotification(user.getId()),
-            m_room.getAllUsers()
-        )
+        new MenuRequestHandler(this->m_handlerFactory)
     );
 }
 

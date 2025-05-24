@@ -137,7 +137,7 @@ private:
      * Sends the relevant fields of the provided RequestResult,
      * freeing any that are no longer necessary.
      */
-    void _dispatchRequestResults(Client &client, const RequestResult &requestResult) const;
+    void _dispatchResponse(Client &client, const ProtocolResponse &response) const;
 
 	RequestInfo _waitForClientRequest(SOCKET socket);
 	void _clientCleanerThreadFunc();

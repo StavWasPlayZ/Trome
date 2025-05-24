@@ -13,6 +13,7 @@
 #include <WinSock2.h>
 #endif
 
+struct ProtocolNotification;
 class IRequestHandler;
 
 /**
