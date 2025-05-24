@@ -68,9 +68,4 @@ public abstract class AuthViewModel : PageViewModel
         get => _mayAuthenticate;
         set => this.RaiseAndSetIfChanged(ref _mayAuthenticate, value);
     }
-
-
-    //NOTE: We may do client-side validations here.
-    // But meh.
-    protected abstract void UpdateMayAuthenticate();
 }

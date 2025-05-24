@@ -61,7 +61,7 @@ public class SignupViewModel : AuthViewModel
     }
 
 
-    protected override void UpdateMayAuthenticate()
+    private void UpdateMayAuthenticate()
     {
         DoPasswordsMatch = Password == RepPassword;
         

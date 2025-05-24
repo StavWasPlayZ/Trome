@@ -2,48 +2,12 @@
 using System.Diagnostics;
 using Newtonsoft.Json;
 using Trivia.Codec.S2C.Notification;
-using Trivia.Codec.S2C.Notification.Packets;
 using Trivia.Codec.S2C.Response;
-using Trivia.Codec.S2C.Response.Packets;
 
 namespace Trivia.Codec.S2C;
 
 public static class PacketDeserializer
-{    
-    private static ProtocolResponse? DeserializeResponse(ResponseCode code, string json)
-    {
-        return code switch
-        {
-            ResponseCode.Error => Deserialize<ErrorResponse>(json),
-            ResponseCode.Login => Deserialize<LoginResponse>(json),
-            ResponseCode.Signup => Deserialize<SignupResponse>(json),
-            ResponseCode.Logout => Deserialize<LogoutResponse>(json),
-            ResponseCode.JoinRoom => Deserialize<JoinRoomResponse>(json),
-            ResponseCode.CreateRoom => Deserialize<CreateRoomResponse>(json),
-            ResponseCode.GetRooms => Deserialize<GetRoomsResponse>(json),
-            ResponseCode.GetPlayersInRoom => Deserialize<GetPlayersInRoomResponse>(json),
-            ResponseCode.GetHighScores => Deserialize<GetHighScoresResponse>(json),
-            ResponseCode.GetPersonalStatistics => Deserialize<GetPersonalStatisticsResponse>(json),
-            ResponseCode.CloseGame => Deserialize<CloseGameResponse>(json),
-            ResponseCode.StartGame => Deserialize<StartGameResponse>(json),
-            ResponseCode.GetRoomState => Deserialize<GetRoomStateResponse>(json),
-            ResponseCode.LeaveRoom => Deserialize<LeaveRoomResponse>(json),
-            ResponseCode.UpdateRoomData => Deserialize<UpdateRoomDataResponse>(json),
-            _ => null
-        };
-    }
-
-    private static ProtocolNotification? DeserializeNotification(NotificationCode code, string json)
-    {
-        return code switch
-        {
-            NotificationCode.PlayerJoinedRoom => Deserialize<PlayerJoinedRoomNotification>(json),
-            NotificationCode.PlayerLeftRoom => Deserialize<PlayerLeftRoomNotification>(json),
-            _ => null
-        };
-    }
-    
-    
+{   
     public static IS2CPacket? Deserialize(S2CPacketType packetType, byte code, string json)
     {
         IS2CPacket? result;
@@ -52,12 +16,12 @@ public static class PacketDeserializer
         {
             case S2CPacketType.Response:
                 VerboseLog($"Received response of code {code}: {json}");
-                result = DeserializeResponse((ResponseCode) code, json);
+                result = ResponseDeserializer.Deserialize((ResponseCode) code, json);
                 break;
             
             case S2CPacketType.Notification:
                 VerboseLog($"Received notification of code {code}: {json}");
-                result = DeserializeNotification((NotificationCode) code, json);
+                result = NotificationDeserializer.Deserialize((NotificationCode) code, json);
                 break;
             
             default:
@@ -75,7 +39,7 @@ public static class PacketDeserializer
         return result;
     }
     
-    private static T? Deserialize<T>(string json)
+    public static T? Deserialize<T>(string json)
     {
         return JsonConvert.DeserializeObject<T>(json, CodecConstants.JsonSerializerSettings);
     }
