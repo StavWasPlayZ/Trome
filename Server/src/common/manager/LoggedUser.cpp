@@ -48,12 +48,21 @@ void LoggedUser::removeFromRoom()
 
 void LoggedUser::handleDisconnecting()
 {
+    Server& server = Server::getInstance();
+
     const std::optional<Room *> room = getCurrentRoom();
 
     if (room.has_value())
     {
-        room.value()->removeUser(*this);
+        if (*this == room.value()->getAdmin())
+        {
+            server.getRoomManager().deleteRoom(room.value()->getId());
+        }
+        else
+        {
+            room.value()->removeUser(*this);
+        }
     }
 
-    Server::getInstance().getLoginManager().logout(this->getClient());
+    server.getLoginManager().logout(this->getClient());
 }

@@ -108,3 +108,8 @@ RequestHandlerFactory &Server::getRequestHandlerFactory()
 {
     return this->m_handlerFactory;
 }
+
+RoomManager &Server::getRoomManager()
+{
+    return this->m_roomManager;
+}
