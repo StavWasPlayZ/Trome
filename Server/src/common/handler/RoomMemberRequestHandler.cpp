@@ -40,11 +40,6 @@ RequestResult RoomMemberRequestHandler::leaveRoom(const RequestInfo &info, const
     LoggedUser& user = getUserByInfo(info);
     m_room.removeUser(user);
 
-    dispatchNotification(
-        PlayerLeftRoomNotification(user.getId()),
-        m_room.getAllUsers()
-    );
-
     return RequestResult(
         new LeaveRoomResponse(),
         new MenuRequestHandler(this->m_handlerFactory)

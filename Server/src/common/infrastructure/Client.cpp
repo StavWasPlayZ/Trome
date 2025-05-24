@@ -25,9 +25,17 @@ const IRequestHandler *Client::getRequestHandler() const
     return this->requestHandler;
 }
 
-void Client::setRequestHandler(const IRequestHandler *const requestHandler)
+void Client::setRequestHandlerUnsafe(const IRequestHandler *const requestHandler)
 {
     this->requestHandler = requestHandler;
+}
+
+void Client::setRequestHandlerSafe(const IRequestHandler *requestHandler)
+{
+    std::unique_lock<std::mutex> handlerLock = acquireRequestHandlerLock();
+
+    delete getRequestHandler();
+    setRequestHandlerUnsafe(requestHandler);
 }
 
 std::unique_lock<std::mutex> Client::acquireRequestHandlerLock()
@@ -59,5 +67,5 @@ void Client::sendNotification(const ProtocolNotification& notification)
 
 void Client::handleDisconnecting() const
 {
-    Server::getInstance().getLoginManager().logout(*this);
+    Server::getInstance().getLoginManager().getUserByClient(*this).handleDisconnecting();
 }

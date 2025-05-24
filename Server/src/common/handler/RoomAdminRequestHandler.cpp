@@ -59,37 +59,7 @@ RequestResult RoomAdminRequestHandler::startGame(const RequestInfo &info, const 
 
 RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo &info, const CloseRoomRequest &) const
 {
-    RoomManager &rManager = m_handlerFactory.getRoomManager();
-
-    const LoggedUser &user = getUserByInfo(info);
-    const std::vector<LoggedUser*>& players = m_room.getAllUsers();
-
-    std::vector<LoggedUser*> usersNoAdmin;
-
-    std::ranges::copy_if(
-        players, std::back_inserter(usersNoAdmin),
-        [&user](const LoggedUser* player) {
-            return *player != user;
-        }
-    );
-
-    // Release all players from the RoomMemberRequestHandler state
-    for (const LoggedUser* player : usersNoAdmin)
-    {
-        Client& client = player->getClient();
-        std::unique_lock<std::mutex> handlerLock = client.acquireRequestHandlerLock();
-
-        delete client.getRequestHandler();
-        client.setRequestHandler(new MenuRequestHandler(m_handlerFactory));
-    }
-
-    rManager.deleteRoom(m_room.getId());
-
-
-    dispatchNotification(
-        RoomClosedNotification(),
-        usersNoAdmin
-    );
+    m_handlerFactory.getRoomManager().deleteRoom(m_room.getId());
 
     return RequestResult(
         new CloseRoomResponse(),

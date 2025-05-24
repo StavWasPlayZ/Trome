@@ -103,3 +103,8 @@ LoginManager &Server::getLoginManager()
 {
     return this->m_loginManager;
 }
+
+RequestHandlerFactory &Server::getRequestHandlerFactory()
+{
+    return this->m_handlerFactory;
+}

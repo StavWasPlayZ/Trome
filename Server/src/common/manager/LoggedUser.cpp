@@ -1,5 +1,7 @@
 #include "LoggedUser.h"
 
+#include "infrastructure/Server.h"
+
 LoggedUser::LoggedUser(const unsigned int id, const std::string &username, Client &client) :
     m_client(client),
     m_id(id),
@@ -42,4 +44,16 @@ std::optional<Room *> LoggedUser::getCurrentRoom() const
 void LoggedUser::removeFromRoom()
 {
     this->m_currentRoom = nullptr;
+}
+
+void LoggedUser::handleDisconnecting()
+{
+    const std::optional<Room *> room = getCurrentRoom();
+
+    if (room.has_value())
+    {
+        room.value()->removeUser(*this);
+    }
+
+    Server::getInstance().getLoginManager().logout(this->getClient());
 }

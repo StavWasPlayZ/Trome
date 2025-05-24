@@ -29,9 +29,19 @@ public:
     const SOCKET socket;
     std::unique_lock<std::mutex> acquireSocketWriterLock();
 
+
     const IRequestHandler* getRequestHandler() const;
-    void setRequestHandler(const IRequestHandler* requestHandler);
+    /**
+     * Does not lock other threads from using the handler.
+     */
+    void setRequestHandlerUnsafe(const IRequestHandler* requestHandler);
+    /**
+     * Locks other threads from using the handler.
+     */
+    void setRequestHandlerSafe(const IRequestHandler* requestHandler);
+
     std::unique_lock<std::mutex> acquireRequestHandlerLock();
+
 
     const std::future<void>& getThread() const;
     void setAndStartThread(const std::function<void()>& threadFunc);

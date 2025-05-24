@@ -88,11 +88,8 @@ bool LoginManager::logout(const Client &client)
 {
     const auto it = this->m_clientToLoggedUser.find(&client);
 
-    if (it == m_clientToLoggedUser.end()) // if found
-    {
-        // return new ErrorResponse(ErrorStatus::FAILED_NOT_LOGGED_IN, info.id);
+    if (it == m_clientToLoggedUser.end())
         return false;
-    }
 
     this->m_clientToLoggedUser.erase(&client);
     this->m_loggedUsersById.erase(it->second->getId());

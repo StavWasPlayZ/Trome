@@ -22,6 +22,9 @@ public:
     std::optional<Room*> getCurrentRoom() const;
 
     void removeFromRoom();
+
+
+    void handleDisconnecting();
     
 private:
     Client& m_client;

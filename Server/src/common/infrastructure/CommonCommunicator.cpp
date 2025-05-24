@@ -280,7 +280,7 @@ void CommonCommunicator::_handleClient(Client& client)
     // The Handler did its job well.
     // 🫡
     delete handler;
-    client.setRequestHandler(result->newHandler);
+    client.setRequestHandlerUnsafe(result->newHandler);
     handlerLock.unlock();
 
     _dispatchResponse(client, *result->response);
