@@ -21,11 +21,11 @@
 #endif
 
 
-CommonCommunicator::CommonCommunicator(const SOCKET defaultSocket, const RequestHandlerFactory& handlerFactory) :
+CommonCommunicator::CommonCommunicator(const SOCKET defaultSocket, const RequestHandlerFactory *const handlerFactory) :
     _running(false),
     _serverSockAddr({}),
     m_serverSocket(defaultSocket),
-    m_handlerFactory(handlerFactory)
+    m_handlerFactory(*handlerFactory)
 {}
 
 CommonCommunicator::~CommonCommunicator()
@@ -161,7 +161,7 @@ void CommonCommunicator::startServerThreads()
     std::cout << "Listening on port " << PORT << "..." << std::endl;
 }
 
-void CommonCommunicator::sendMsg(Client& client, const unsigned char* buffer, const int length) const
+void CommonCommunicator::sendMsg(Client& client, const OBuffer& buffer) const
 {
     bool didError;
 
@@ -170,7 +170,7 @@ void CommonCommunicator::sendMsg(Client& client, const unsigned char* buffer, co
     {
         // Casting for crybaby Windows
         // ReSharper disable once CppRedundantCastExpression
-        didError = send(client.socket, (char*)buffer, length, 0) == -1;
+        didError = send(client.socket, reinterpret_cast<const char *>(buffer.contents), buffer.length, 0) == -1;
     }
     catch (...)
     {
@@ -303,7 +303,7 @@ void CommonCommunicator::_dispatchRequestResults(Client &client, const RequestRe
     const OBuffer responseBuffer = JsonResponsePacketSerializer::serializeResponse(*requestResult.response);
     delete requestResult.response;
 
-    sendMsg(client, responseBuffer.contents, responseBuffer.length);
+    sendMsg(client, responseBuffer);
 
 
     if (requestResult.notificationPayload != std::nullopt)
@@ -313,7 +313,7 @@ void CommonCommunicator::_dispatchRequestResults(Client &client, const RequestRe
 
         for (const LoggedUser *const receiver : notifPayload.clients)
         {
-            sendMsg(receiver->getClient(), notificationBuffer.contents, notificationBuffer.length);
+            sendMsg(receiver->getClient(), notificationBuffer);
         }
 
         delete requestResult.notificationPayload.value();

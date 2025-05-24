@@ -36,6 +36,9 @@ public:
     void setAndStartThread(const std::function<void()>& threadFunc);
 
 
+    void sendNotification(const ProtocolNotification& notification);
+
+
     void handleDisconnecting() const;
 
 private:

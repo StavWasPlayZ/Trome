@@ -12,7 +12,7 @@ Server::Server() :
     m_roomManager(m_database),
     m_statisticsManager(m_database),
     m_handlerFactory(this->m_loginManager, this->m_roomManager, this->m_statisticsManager, this->m_database),
-    m_communicator(Communicator::getInstance(this->m_handlerFactory))
+    m_communicator(Communicator::getAndInitiateInstance(&this->m_handlerFactory))
 {}
 
 void Server::populateQuestionsFromWeb(const int amount) const

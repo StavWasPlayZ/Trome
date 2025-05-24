@@ -10,14 +10,19 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
-UnixCommunicator::UnixCommunicator(const RequestHandlerFactory &handlerFactory) :
+UnixCommunicator::UnixCommunicator(const RequestHandlerFactory *const handlerFactory) :
     CommonCommunicator(0, handlerFactory)
 {}
 
-UnixCommunicator &UnixCommunicator::getInstance(const RequestHandlerFactory& handlerFactory)
+UnixCommunicator &UnixCommunicator::getAndInitiateInstance(const RequestHandlerFactory *const handlerFactory)
 {
+    // ReSharper disable once CppDFANullDereference
     static UnixCommunicator instance(handlerFactory);
     return instance;
+}
+UnixCommunicator &UnixCommunicator::getInstance()
+{
+    return getAndInitiateInstance(nullptr);
 }
 
 bool UnixCommunicator::isValidSocket(const int result) const

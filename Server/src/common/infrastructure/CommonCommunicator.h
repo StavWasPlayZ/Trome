@@ -24,6 +24,7 @@
 #include <netinet/in.h>
 #endif
 
+struct OBuffer;
 
 class CommonCommunicator
 {
@@ -37,10 +38,12 @@ public:
 	 */
 	virtual void bindAndListen();
 
+	void sendMsg(Client& client, const OBuffer& buffer) const;
+
 	void close();
 
 protected:
-    CommonCommunicator(SOCKET defaultSocket, const RequestHandlerFactory& handlerFactory);
+    CommonCommunicator(SOCKET defaultSocket, const RequestHandlerFactory *handlerFactory);
     virtual ~CommonCommunicator();
 
     CommonCommunicator(const CommonCommunicator&) = delete;
@@ -95,8 +98,6 @@ protected:
 	 * Returns true whether the message did not time out.
 	 */
 	virtual void receiveMsg(SOCKET socket, void* buffer, int length) const = 0;
-
-	void sendMsg(Client& client, const unsigned char* buffer, int length) const;
 
 	/**
 	 * Platform-specific method for closing the server communication.

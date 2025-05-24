@@ -1,11 +1,12 @@
 #include "Client.h"
 
 #include "Server.h"
+#include "handler/codec/s2c/notification/NotificationPacketSerializer.h"
 
 Client::Client(const SOCKET socket, const IRequestHandler *const requestHandler) :
     socket(socket),
-    requestHandler(requestHandler),
-    thread(nullptr)
+    thread(nullptr),
+    requestHandler(requestHandler)
 {}
 
 Client::~Client()
@@ -49,6 +50,12 @@ void Client::setAndStartThread(const std::function<void()> &threadFunc)
     this->thread = new std::future(std::async(std::launch::async, threadFunc));
 }
 
+void Client::sendNotification(const ProtocolNotification& notification)
+{
+    Communicator::getInstance().sendMsg(*this,
+        NotificationPacketSerializer::serialize(notification)
+    );
+}
 
 void Client::handleDisconnecting() const
 {

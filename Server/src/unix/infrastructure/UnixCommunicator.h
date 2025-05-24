@@ -8,7 +8,8 @@ public:
     UnixCommunicator(const UnixCommunicator&) = delete;
     void operator=(const UnixCommunicator&) = delete;
 
-    static UnixCommunicator& getInstance(const RequestHandlerFactory& handlerFactory);
+    static UnixCommunicator& getAndInitiateInstance(const RequestHandlerFactory *handlerFactory);
+    static UnixCommunicator& getInstance();
 
 protected:
 	bool isValidSocket(int result) const override;
@@ -26,5 +27,5 @@ protected:
 	void throwPlatformError(const std::string& msg) const override;
 
 private:
-    explicit UnixCommunicator(const RequestHandlerFactory& handlerFactory);
+    explicit UnixCommunicator(const RequestHandlerFactory *handlerFactory);
 };
