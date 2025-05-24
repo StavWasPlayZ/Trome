@@ -86,8 +86,8 @@ RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo &info, const 
     rManager.deleteRoom(m_room.getId());
 
     return RequestResult(
-        new ErrorResponse(ErrorStatus::SERVER_UNIMPLEMENTED, info.id),
-        new RoomAdminRequestHandler(*this),
+        new CloseRoomResponse(),
+        new MenuRequestHandler(m_handlerFactory),
 
         new NotificationPayload(
             new RoomClosedNotification(),
