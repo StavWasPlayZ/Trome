@@ -1,7 +1,9 @@
 #pragma once
 
+#include <optional>
 #include <string>
 
+class Room;
 class Client;
 
 class LoggedUser
@@ -14,10 +16,18 @@ public:
     bool operator==(const LoggedUser &other) const;
 
     Client& getClient() const;
+
+
+    void setCurrentRoom(Room& room);
+    std::optional<Room*> getCurrentRoom() const;
+
+    void removeFromRoom();
     
 private:
+    Client& m_client;
+
     const unsigned int m_id;
     std::string m_username;
 
-    Client& m_client;
+    Room* m_currentRoom;
 };

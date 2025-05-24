@@ -32,16 +32,18 @@ void Room::setCurrentGame(Game &game)
 void Room::addUser(LoggedUser &user)
 {
     this->m_users.push_back(&user);
+    user.setCurrentRoom(*this);
 }
 
-void Room::removeUser(const LoggedUser &user)
+void Room::removeUser(LoggedUser &user)
 {
     const auto it = std::ranges::find(this->m_users, &user);
 
-    if (it != m_users.end())
-    {
-        m_users.erase(it);
-    }
+    if (it == m_users.end())
+        return;
+
+    m_users.erase(it);
+    user.removeFromRoom();
 }
 
 const std::vector<LoggedUser *>& Room::getAllUsers() const

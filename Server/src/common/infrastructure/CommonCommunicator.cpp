@@ -112,15 +112,17 @@ void CommonCommunicator::commonSetup()
 
 void CommonCommunicator::registerClient(const SOCKET socket)
 {
+    std::unique_lock clientsLock(this->m_clientsMutex);
     Client* client = this->m_clients[socket] = new Client(
         socket,
         this->m_handlerFactory.createLoginRequestHandler()
     );
+    clientsLock.unlock();
 
     client->setAndStartThread(
-        [this, socket]()
+        [this, &client]()
         {
-            _clientThreadFunc(socket);
+            _clientThreadFunc(*client);
         }
     );
 
@@ -207,13 +209,13 @@ void CommonCommunicator::_serverThreadFunc()
     close();
 }
 
-void CommonCommunicator::_clientThreadFunc(const SOCKET socket)
+void CommonCommunicator::_clientThreadFunc(Client& client)
 {
     while (this->_running)
     {
         try
         {
-            _handleClient(socket);
+            _handleClient(client);
         }
         catch (const SocketTimeoutException&)
         {
@@ -232,19 +234,15 @@ void CommonCommunicator::_clientThreadFunc(const SOCKET socket)
         }
     }
 
-    this->m_clients.at(socket)->handleDisconnecting();
+    client.handleDisconnecting();
 
-    _enqueueDisconnectClient(socket);
+    _enqueueDisconnectClient(client.socket);
 }
 
 //ANCHOR Actual client processing function.
-void CommonCommunicator::_handleClient(const SOCKET socket)
+void CommonCommunicator::_handleClient(Client& client)
 {
-    const RequestInfo info = _waitForClientRequest(socket);
-
-    std::unique_lock clientsLock(this->m_clientsMutex);
-    Client& client = *this->m_clients.at(socket);
-    clientsLock.unlock();
+    const RequestInfo info = _waitForClientRequest(client);
 
     std::unique_lock<std::mutex> handlerLock = client.acquireRequestHandlerLock();
     const IRequestHandler *const handler = client.getRequestHandler();
@@ -294,13 +292,13 @@ void CommonCommunicator::_dispatchResponse(Client &client, const ProtocolRespons
     sendMsg(client, JsonResponsePacketSerializer::serializeResponse(response));
 }
 
-RequestInfo CommonCommunicator::_waitForClientRequest(const SOCKET socket)
+RequestInfo CommonCommunicator::_waitForClientRequest(const Client &client)
 {
     unsigned char reqCode;
-    receiveMsg(socket, &reqCode, SIZE_CODE);
+    receiveMsg(client.socket, &reqCode, SIZE_CODE);
 
     int jsonLen;
-    receiveMsg(socket, &jsonLen, SIZE_JSON_LEN);
+    receiveMsg(client.socket, &jsonLen, SIZE_JSON_LEN);
     jsonLen = ntohl(jsonLen) * sizeof(char);
 
     // We do this check here too to validify whether the json MAY be read.
@@ -316,12 +314,12 @@ RequestInfo CommonCommunicator::_waitForClientRequest(const SOCKET socket)
 
     try
     {
-        receiveMsg(socket, data, jsonLen);
+        receiveMsg(client.socket, data, jsonLen);
 
         std::lock_guard lock(this->m_clientsMutex);
 
         info = new RequestInfo(
-            *this->m_clients.at(socket),
+            *this->m_clients.at(client.socket),
 
             static_cast<RequestCode>(reqCode),
             std::chrono::system_clock::to_time_t(

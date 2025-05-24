@@ -37,7 +37,7 @@ RequestResult RoomMemberRequestHandler::handleRequest(const RequestInfo &info, c
 
 RequestResult RoomMemberRequestHandler::leaveRoom(const RequestInfo &info, const LeaveRoomRequest &) const
 {
-    const LoggedUser& user = getUserByInfo(info);
+    LoggedUser& user = getUserByInfo(info);
     m_room.removeUser(user);
 
     dispatchNotification(

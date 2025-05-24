@@ -24,7 +24,7 @@ public:
     void setCurrentGame(Game& game);
 
     void addUser(LoggedUser& user);
-    void removeUser(const LoggedUser& user);
+    void removeUser(LoggedUser& user);
     const std::vector<LoggedUser*>& getAllUsers() const;
 
     unsigned int getId() const;

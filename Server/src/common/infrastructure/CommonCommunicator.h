@@ -128,10 +128,10 @@ private:
 	//SECTION Thread Functions
 
 	void _serverThreadFunc();
-	void _clientThreadFunc(SOCKET socket);
+	void _clientThreadFunc(Client& client);
 
 	//ANCHOR Actual client processing function.
-	void _handleClient(SOCKET socket);
+	void _handleClient(Client& client);
 
     /**
      * Sends the relevant fields of the provided RequestResult,
@@ -139,7 +139,7 @@ private:
      */
     void _dispatchResponse(Client &client, const ProtocolResponse &response) const;
 
-	RequestInfo _waitForClientRequest(SOCKET socket);
+	RequestInfo _waitForClientRequest(const Client& client);
 	void _clientCleanerThreadFunc();
 
 	//!SECTION

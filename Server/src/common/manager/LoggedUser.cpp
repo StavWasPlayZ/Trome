@@ -1,9 +1,10 @@
 #include "LoggedUser.h"
 
 LoggedUser::LoggedUser(const unsigned int id, const std::string &username, Client &client) :
+    m_client(client),
     m_id(id),
     m_username(username),
-    m_client(client)
+    m_currentRoom(nullptr)
 {}
 
 const std::string &LoggedUser::getUsername() const
@@ -23,4 +24,22 @@ bool LoggedUser::operator==(const LoggedUser &other) const
 Client &LoggedUser::getClient() const
 {
     return this->m_client;
+}
+
+void LoggedUser::setCurrentRoom(Room &room)
+{
+    this->m_currentRoom = &room;
+}
+
+std::optional<Room *> LoggedUser::getCurrentRoom() const
+{
+    if (this->m_currentRoom == nullptr)
+        return std::nullopt;
+
+    return this->m_currentRoom;
+}
+
+void LoggedUser::removeFromRoom()
+{
+    this->m_currentRoom = nullptr;
 }
