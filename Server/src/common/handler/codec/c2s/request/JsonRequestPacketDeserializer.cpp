@@ -1,5 +1,7 @@
 #include "JsonRequestPacketDeserializer.h"
 
+#include <iostream>
+
 LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(const nlohmann::json &data)
 {
 	return LoginRequest(
@@ -87,12 +89,14 @@ LeaveRoomRequest JsonRequestPacketDeserializer::deserializeLeaveRoomRequest(cons
 
 UpdateRoomDataRequest JsonRequestPacketDeserializer::deserializeUpdateRoomDataRequest(const nlohmann::json &data)
 {
+    const nlohmann::json &roomDataObj = data.at("data");
+
     return UpdateRoomDataRequest(
         RoomData(
-            data.at("room_name"),
-            data.at("max_players"),
-            data.at("time_per_question"),
-            data.at("questions_count")
+            roomDataObj.at("name"),
+            roomDataObj.at("max_players"),
+            roomDataObj.at("time_per_question_secs"),
+            roomDataObj.at("questions_count")
         )
     );
 }
