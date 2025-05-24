@@ -3,6 +3,7 @@
 #include "handler/IRequestHandler.h"
 #include <future>
 #include <functional>
+#include <mutex>
 
 #ifndef _WIN32
 // In Unix, socket = int.
@@ -25,7 +26,13 @@ public:
 	~Client();
 
     const SOCKET socket;
-	const IRequestHandler* requestHandler;
+
+    const IRequestHandler* getRequestHandler() const;
+    void setRequestHandler(const IRequestHandler* requestHandler);
+
+    void lockRequestHandler();
+    void releaseRequestHandler();
+
 
     const std::future<void>& getThread() const;
     void setAndStartThread(const std::function<void()>& threadFunc);
@@ -34,4 +41,7 @@ public:
 
 private:
 	const std::future<void>* thread;
+
+    std::mutex requestHandlerMutex;
+	const IRequestHandler* requestHandler;
 };

@@ -14,6 +14,26 @@ Client::~Client()
     delete this->thread;
 }
 
+const IRequestHandler *Client::getRequestHandler() const
+{
+    return this->requestHandler;
+}
+
+void Client::setRequestHandler(const IRequestHandler *const requestHandler)
+{
+    this->requestHandler = requestHandler;
+}
+
+void Client::lockRequestHandler()
+{
+    this->requestHandlerMutex.lock();
+}
+
+void Client::releaseRequestHandler()
+{
+    this->requestHandlerMutex.unlock();
+}
+
 const std::future<void> &Client::getThread() const
 {
     return *this->thread;

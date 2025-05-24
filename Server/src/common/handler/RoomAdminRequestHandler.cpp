@@ -1,7 +1,9 @@
 #include "RoomAdminRequestHandler.h"
 
+#include "RequestHandlerFactory.h"
 #include "codec/c2s/request/Request.h"
 #include "codec/s2c/response/ErrorResponse.h"
+#include "manager/RoomManager.h"
 
 RoomAdminRequestHandler::RoomAdminRequestHandler(const RequestHandlerFactory &handlerFactory, Room& room) :
     IRequestHandler(handlerFactory),
@@ -42,6 +44,8 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo &info, co
 
 RequestResult RoomAdminRequestHandler::startGame(const RequestInfo &info, const StartGameRequest &) const
 {
+    //TODO: Implement
+
     return RequestResult(
         new ErrorResponse(ErrorStatus::SERVER_UNIMPLEMENTED, info.id),
         new RoomAdminRequestHandler(*this)
@@ -50,6 +54,12 @@ RequestResult RoomAdminRequestHandler::startGame(const RequestInfo &info, const 
 
 RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo &info, const CloseRoomRequest &) const
 {
+    RoomManager &rManager = m_handlerFactory.getRoomManager();
+
+    const std::vector<LoggedUser*>& players = m_room.getAllUsers();
+
+    rManager.deleteRoom(m_room.getId());
+
     return RequestResult(
         new ErrorResponse(ErrorStatus::SERVER_UNIMPLEMENTED, info.id),
         new RoomAdminRequestHandler(*this)

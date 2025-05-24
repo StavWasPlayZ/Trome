@@ -241,7 +241,9 @@ void CommonCommunicator::_handleClient(const SOCKET socket) const
     const RequestInfo info = _waitForClientRequest(socket);
 
     Client *const client = this->m_clients.at(socket);
-    const IRequestHandler *const handler = client->requestHandler;
+
+    client->lockRequestHandler();
+    const IRequestHandler *const handler = client->getRequestHandler();
 
     if (!handler->isRequestRelevant(info))
     {
@@ -250,6 +252,7 @@ void CommonCommunicator::_handleClient(const SOCKET socket) const
             handler
         ));
 
+        client->releaseRequestHandler();
         return;
     }
 
@@ -265,7 +268,8 @@ void CommonCommunicator::_handleClient(const SOCKET socket) const
     catch (const std::exception &)
     {
         delete request;
-        delete handler;
+
+        client->releaseRequestHandler();
         throw;
     }
 
@@ -274,7 +278,8 @@ void CommonCommunicator::_handleClient(const SOCKET socket) const
     // The Handler did its job well.
     // 🫡
     delete handler;
-    client->requestHandler = result->newHandler;
+    client->setRequestHandler(result->newHandler);
+    client->releaseRequestHandler();
 
     _dispatchRequestResults(socket, *result);
     delete result;
