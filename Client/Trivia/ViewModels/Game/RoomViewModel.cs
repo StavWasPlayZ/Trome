@@ -82,22 +82,22 @@ public abstract class RoomViewModel : PageViewModel
         switch (packet)
         {
             case PlayerJoinedRoomNotification playerJoinedRoomNotif:
-                CommOnPacketReceived(playerJoinedRoomNotif);
+                HandlePlayerJoined(playerJoinedRoomNotif);
                 break;
             
             case PlayerLeftRoomNotification playerLeftRoomNotif:
-                CommOnPacketReceived(playerLeftRoomNotif);
+                HandlePlayerLeft(playerLeftRoomNotif);
                 break;
         }
     }
 
-    private void CommOnPacketReceived(PlayerJoinedRoomNotification playerJoinedRoomNotif)
+    private void HandlePlayerJoined(PlayerJoinedRoomNotification playerJoinedRoomNotif)
     {
         Players[Room.PlayersCount] = RoomUserModel.FromUser(playerJoinedRoomNotif.Player, false, false);
         Room.PlayersCount++;
     }
 
-    private void CommOnPacketReceived(PlayerLeftRoomNotification playerLeftRoomNotif)
+    private void HandlePlayerLeft(PlayerLeftRoomNotification playerLeftRoomNotif)
     {
         for (var i = 0; i < Players.Count; i++)
         {
