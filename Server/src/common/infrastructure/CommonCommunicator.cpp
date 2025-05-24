@@ -161,20 +161,16 @@ void CommonCommunicator::startServerThreads()
     std::cout << "Listening on port " << PORT << "..." << std::endl;
 }
 
-void CommonCommunicator::sendMsg(const SOCKET socket, const unsigned char* buffer, const int length)
+void CommonCommunicator::sendMsg(Client& client, const unsigned char* buffer, const int length) const
 {
-    std::unique_lock clientsLock(this->m_clientsMutex);
-    Client *const client = this->m_clients.at(socket);
-    clientsLock.unlock();
-
     bool didError;
 
-    std::unique_lock<std::mutex> writerLock = client->acquireSocketWriterLock();
+    std::unique_lock<std::mutex> writerLock = client.acquireSocketWriterLock();
     try
     {
         // Casting for crybaby Windows
         // ReSharper disable once CppRedundantCastExpression
-        didError = send(socket, (char*)buffer, length, 0) == -1;
+        didError = send(client.socket, (char*)buffer, length, 0) == -1;
     }
     catch (...)
     {
@@ -184,7 +180,7 @@ void CommonCommunicator::sendMsg(const SOCKET socket, const unsigned char* buffe
 
     if (didError)
     {
-        throwPlatformError("Failed to send message to client socket " + std::to_string(socket));
+        throwPlatformError("Failed to send message to client socket " + std::to_string(client.socket));
         throw std::exception();
     }
 }
@@ -247,15 +243,15 @@ void CommonCommunicator::_handleClient(const SOCKET socket)
     const RequestInfo info = _waitForClientRequest(socket);
 
     std::unique_lock clientsLock(this->m_clientsMutex);
-    Client *const client = this->m_clients.at(socket);
+    Client& client = *this->m_clients.at(socket);
     clientsLock.unlock();
 
-    std::unique_lock<std::mutex> handlerLock = client->acquireRequestHandlerLock();
-    const IRequestHandler *const handler = client->getRequestHandler();
+    std::unique_lock<std::mutex> handlerLock = client.acquireRequestHandlerLock();
+    const IRequestHandler *const handler = client.getRequestHandler();
 
     if (!handler->isRequestRelevant(info))
     {
-        _dispatchRequestResults(socket, RequestResult(
+        _dispatchRequestResults(client, RequestResult(
             new ErrorResponse(ErrorStatus::ILLEGAL_REQUEST, info.id),
             handler
         ));
@@ -269,7 +265,7 @@ void CommonCommunicator::_handleClient(const SOCKET socket)
         request = ProtocolRequest::fromRequest(info);
     } catch (const std::invalid_argument &)
     {
-        _dispatchRequestResults(socket, RequestResult(
+        _dispatchRequestResults(client, RequestResult(
             new ErrorResponse(ErrorStatus::ILLEGAL_REQUEST, info.id),
             handler
         ));
@@ -294,20 +290,20 @@ void CommonCommunicator::_handleClient(const SOCKET socket)
     // The Handler did its job well.
     // 🫡
     delete handler;
-    client->setRequestHandler(result->newHandler);
+    client.setRequestHandler(result->newHandler);
     handlerLock.unlock();
 
-    _dispatchRequestResults(socket, *result);
+    _dispatchRequestResults(client, *result);
     delete result;
 }
 
-void CommonCommunicator::_dispatchRequestResults(const SOCKET socket, const RequestResult &requestResult)
+void CommonCommunicator::_dispatchRequestResults(Client &client, const RequestResult &requestResult) const
 {
     //TODO: Move notification dispatching to Client
     const OBuffer responseBuffer = JsonResponsePacketSerializer::serializeResponse(*requestResult.response);
     delete requestResult.response;
 
-    sendMsg(socket, responseBuffer.contents, responseBuffer.length);
+    sendMsg(client, responseBuffer.contents, responseBuffer.length);
 
 
     if (requestResult.notificationPayload != std::nullopt)
@@ -317,7 +313,7 @@ void CommonCommunicator::_dispatchRequestResults(const SOCKET socket, const Requ
 
         for (const LoggedUser *const receiver : notifPayload.clients)
         {
-            sendMsg(receiver->getClient().socket, notificationBuffer.contents, notificationBuffer.length);
+            sendMsg(receiver->getClient(), notificationBuffer.contents, notificationBuffer.length);
         }
 
         delete requestResult.notificationPayload.value();
@@ -360,7 +356,7 @@ RequestInfo CommonCommunicator::_waitForClientRequest(const SOCKET socket)
             JsonRequestPacketDeserializer::readJson(data, jsonLen)
         );
     }
-    catch (const std::exception& e)
+    catch (const std::exception &)
     {
         delete[] data;
         throw;

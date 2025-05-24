@@ -96,7 +96,7 @@ protected:
 	 */
 	virtual void receiveMsg(SOCKET socket, void* buffer, int length) const = 0;
 
-	void sendMsg(SOCKET socket, const unsigned char* buffer, int length);
+	void sendMsg(Client& client, const unsigned char* buffer, int length) const;
 
 	/**
 	 * Platform-specific method for closing the server communication.
@@ -136,7 +136,7 @@ private:
      * Sends the relevant fields of the provided RequestResult,
      * freeing any that are no longer necessary.
      */
-    void _dispatchRequestResults(SOCKET socket, const RequestResult& requestResult);
+    void _dispatchRequestResults(Client &client, const RequestResult &requestResult) const;
 
 	RequestInfo _waitForClientRequest(SOCKET socket);
 	void _clientCleanerThreadFunc();
