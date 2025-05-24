@@ -49,9 +49,8 @@
                     <TextBlock Grid.Row="0"
                                FontSize="65"
                                HorizontalAlignment="Center"
-                               Foreground="#4d264a">
-                        ROOM NAME
-                    </TextBlock>
+                               Foreground="#4d264a"
+                               Text="{Binding Data.Name}"/>
                     
                     <Grid Grid.Row="1"
                           RowDefinitions="50, 0, 50, 0, 50"
@@ -79,9 +78,8 @@
                         </TextBlock>
                         
                         <TextBlock Grid.Row="0"
-                                    Grid.Column="2">
-                            20
-                        </TextBlock>
+                                    Grid.Column="2"
+                                    Text="{Binding Data.QuestionsCount}"/>
                         
                         <TextBlock Grid.Row="2"
                                    Grid.Column="0"
@@ -90,9 +88,8 @@
                             SEC/Q
                         </TextBlock>
                         <TextBlock Grid.Row="2"
-                                   Grid.Column="2">
-                            15
-                        </TextBlock>
+                                   Grid.Column="2"
+                                   Text="{Binding Data.TimePerQuestionSecs}"/>
                         
                         <TextBlock Grid.Row="4"
                                    Grid.Column="0"
@@ -101,9 +98,8 @@
                             PLAYERS
                         </TextBlock>
                         <TextBlock Grid.Row="4"
-                                   Grid.Column="2">
-                            10
-                        </TextBlock>
+                                   Grid.Column="2"
+                                   Text="{Binding Data.MaxPlayers}"/>
                     </Grid>
                     
 

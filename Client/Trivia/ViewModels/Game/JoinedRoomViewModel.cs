@@ -21,22 +21,46 @@ public class JoinedRoomViewModel : RoomViewModel
             
             NavigateBackCommand!.Execute();
         });
+
+        _data = Room.Data;
     }
 
     public JoinedRoomViewModel()
     {
         LeaveRoomCommand = NoOpCommand;
+        _data = Room.Data;
+    }
+
+
+    private RoomData _data;
+
+    public RoomData Data
+    {
+        get => _data;
+        set => this.RaiseAndSetIfChanged(ref _data, value);
     }
 
 
     protected override void CommOnPacketReceived(IS2CPacket packet)
     {
-        if (packet is RoomClosedNotification)
+        switch (packet)
         {
-            NavigateBackCommand!.Execute();
-            return;
+            case RoomClosedNotification:
+                NavigateBackCommand!.Execute();
+                break;
+            
+            case RoomDataUpdatedNotification roomDataNotif:
+                HandleRoomDataUpdated(roomDataNotif);
+                break;
+            
+            default:
+                base.CommOnPacketReceived(packet);
+                break;
         }
-        
-        base.CommOnPacketReceived(packet);
+    }
+
+    private void HandleRoomDataUpdated(RoomDataUpdatedNotification roomDataNotif)
+    {
+        Data = Room.Data = roomDataNotif.Data;
     }
 }

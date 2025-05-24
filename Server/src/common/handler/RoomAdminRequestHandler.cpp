@@ -57,7 +57,7 @@ RequestResult RoomAdminRequestHandler::startGame(const RequestInfo &info, const 
     );
 }
 
-RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo &info, const CloseRoomRequest &) const
+RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo &, const CloseRoomRequest &) const
 {
     m_handlerFactory.getRoomManager().deleteRoom(m_room.getId());
 
@@ -67,10 +67,12 @@ RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo &info, const 
     );
 }
 
-RequestResult RoomAdminRequestHandler::updateRoomData(const RequestInfo &info, const UpdateRoomDataRequest &) const
+RequestResult RoomAdminRequestHandler::updateRoomData(const RequestInfo &, const UpdateRoomDataRequest &request) const
 {
+    m_room.setData(request.data);
+
     return RequestResult(
-        new ErrorResponse(ErrorStatus::SERVER_UNIMPLEMENTED, info.id),
+        new UpdateRoomDataResponse(),
         new RoomAdminRequestHandler(*this)
     );
 }

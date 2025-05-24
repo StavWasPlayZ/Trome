@@ -103,7 +103,17 @@ void Room::setData(const RoomData &newData)
 {
     this->m_metadata = newData;
 
-    //TODO: Notify clients
+    // Dispatch updates to all users.
+    // Assuming admin initiated the call.
+    const RoomDataUpdatedNotification notification(newData);
+
+    for (const LoggedUser *const player : getAllUsers())
+    {
+        if (*player == getAdmin())
+            continue;
+
+        player->getClient().sendNotification(notification);
+    }
 }
 
 LoggedUser &Room::getAdmin() const

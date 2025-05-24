@@ -4,5 +4,6 @@ public enum NotificationCode : byte
 {
     PlayerJoinedRoom,
     PlayerLeftRoom,
-    RoomClosed
+    RoomClosed,
+    RoomDataUpdated
 }
