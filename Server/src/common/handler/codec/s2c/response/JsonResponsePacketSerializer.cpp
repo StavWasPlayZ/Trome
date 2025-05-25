@@ -230,6 +230,14 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const SubmitAnswerRespon
 OBuffer JsonResponsePacketSerializer::serializeResponse(const GetGameResultResponse &response)
 {
     nlohmann::json data;
+    nlohmann::json resultArr = nlohmann::json::array();
+
+    for (const auto& r : response.results)
+    {
+        resultArr.push_back(ProtocolPacketSerializer::serializeAsJson(r));
+    }
+
+    data["results"] = resultArr;
 
     return serialize(response.id, data);
 }
