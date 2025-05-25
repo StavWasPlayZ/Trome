@@ -1,6 +1,7 @@
 #pragma once
 
 #include "infrastructure/UserStatistics.h"
+#include "infrastructure/PlayerResult.h"
 
 #include <infrastructure/RoomData.h>
 #include <string>
@@ -169,5 +170,7 @@ struct SubmitAnswerResponse : ProtocolResponse
 
 struct GetGameResultResponse : ProtocolResponse
 {
-    GetGameResultResponse();
+    GetGameResultResponse(const std::vector<PlayerResult> results);
+
+    const std::vector<PlayerResult> results;
 };

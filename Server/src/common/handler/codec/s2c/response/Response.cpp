@@ -87,6 +87,8 @@ SubmitAnswerResponse::SubmitAnswerResponse() :
     ProtocolResponse(ResponseCode::SUBMIT_ANSWER)
 {}
 
-GetGameResultResponse::GetGameResultResponse() : 
-    ProtocolResponse(ResponseCode::GET_GAME_RESULT)
+GetGameResultResponse::GetGameResultResponse(const std::vector<PlayerResult> results)
+    : 
+    ProtocolResponse(ResponseCode::GET_GAME_RESULT), 
+    results(results)
 {}
