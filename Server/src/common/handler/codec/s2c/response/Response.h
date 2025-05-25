@@ -149,3 +149,25 @@ struct UpdateRoomDataResponse : ProtocolResponse
 {
     UpdateRoomDataResponse();
 };
+
+struct LeaveGameResponse : ProtocolResponse
+{
+    LeaveGameResponse();
+};
+
+struct GetQuestionResponse : ProtocolResponse
+{
+    GetQuestionResponse(const int rotation);
+
+    const int rotation;
+};
+
+struct SubmitAnswerResponse : ProtocolResponse
+{
+    SubmitAnswerResponse();
+};
+
+struct GetGameResultResponse : ProtocolResponse
+{
+    GetGameResultResponse();
+};
