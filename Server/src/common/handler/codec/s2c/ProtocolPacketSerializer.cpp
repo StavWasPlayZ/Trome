@@ -76,6 +76,18 @@ nlohmann::json ProtocolPacketSerializer::serializeAsJson(const RoomData &room)
     return result;
 }
 
+nlohmann::json ProtocolPacketSerializer::serializeAsJson(const PlayerResult &result)
+{
+    nlohmann::json resultJson;
+
+    resultJson["username"] = result.username;
+    resultJson["correct_answer_count"] = result.correctAnswerCount;
+    resultJson["average_answer_time"] = result.averageAnswerTime;
+    resultJson["points"] = result.points;
+
+    return resultJson;
+}
+
 
 void ProtocolPacketSerializer::writeInt(int num, unsigned char *const buffer)
 {

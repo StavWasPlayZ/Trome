@@ -3,6 +3,7 @@
 #include "S2CPacketType.h"
 
 #include <nlohmann/json.hpp>
+#include <vector>
 
 #include "infrastructure/OBuffer.h"
 #include "response/Response.h"
@@ -30,6 +31,7 @@ public:
     static nlohmann::json serializeAsJson(const LoggedUser &player);
     static nlohmann::json serializeAsJson(const Room &room);
     static nlohmann::json serializeAsJson(const RoomData &room);
+    static nlohmann::json serializeAsJson(const PlayerResult &result);
 
 private:
     static void writeInt(int num, unsigned char* buffer);

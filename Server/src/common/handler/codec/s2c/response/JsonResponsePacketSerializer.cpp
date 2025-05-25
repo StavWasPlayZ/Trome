@@ -147,13 +147,15 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetHighScoresRespo
 
     for (const auto& [username, score] : response.stats)
     {
-        scoresArr.push_back({
-            {"username", username},
-            {"score", score}
-        });
+        scoresArr.push_back(
+            {
+                {"username", username},
+                {"score", score}
+            }
+        );
     }
 
-    data["high_scores"] = response.stats;
+    data["high_scores"] = scoresArr;
 
     return serialize(response.id, data);
 }
@@ -203,6 +205,34 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const UpdateRoomDataResp
     return serialize(response.id, nlohmann::json::object());
 }
 
+OBuffer JsonResponsePacketSerializer::serializeResponse(const LeaveGameResponse &response)
+{
+    return serialize(response.id, nlohmann::json::object());
+}
+
+OBuffer JsonResponsePacketSerializer::serializeResponse(const GetQuestionResponse &response)
+{
+    nlohmann::json data;
+
+    data["question"] = response.question.question;
+    data["answers"] = response.question.answers;
+    data["rotation"] = response.rotation;
+
+    return serialize(response.id, data);
+}
+
+OBuffer JsonResponsePacketSerializer::serializeResponse(const SubmitAnswerResponse &response)
+{
+    return serialize(response.id, nlohmann::json::object());
+}
+
+
+OBuffer JsonResponsePacketSerializer::serializeResponse(const GetGameResultResponse &response)
+{
+    nlohmann::json data;
+
+    return serialize(response.id, data);
+}
 
 OBuffer JsonResponsePacketSerializer::serialize(const ResponseCode msgCode, const nlohmann::json &data)
 {
