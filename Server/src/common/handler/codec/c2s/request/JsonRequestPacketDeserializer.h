@@ -87,6 +87,26 @@ public:
      */
     static UpdateRoomDataRequest deserializeUpdateRoomDataRequest(const nlohmann::json &data);
 
+    /**
+     * Returns: The deserialized object.
+     */
+    static LeaveGameRequest deserializeLeaveGameRequest(const nlohmann::json &data);
+
+    /**
+     * Returns: The deserialized object.
+     */
+    static GetQuestionRequest deserializeGetQuestionRequest(const nlohmann::json &data);
+
+    /**
+     * Returns: The deserialized object.
+     */
+    static SubmitAnswerRequest deserializeSubmitAnswerRequest(const nlohmann::json &data);
+
+    /**
+     * Returns: The deserialized object.
+     */
+    static GetGameResultRequest deserializeGetGameResultRequest(const nlohmann::json &data);
+
 private:
     /**
      * Parses the provided field from the data as an unsigned long.
