@@ -2,6 +2,7 @@
 
 #include "infrastructure/UserStatistics.h"
 #include "infrastructure/PlayerResult.h"
+#include "infrastructure/Question.h"
 
 #include <infrastructure/RoomData.h>
 #include <string>
@@ -158,8 +159,9 @@ struct LeaveGameResponse : ProtocolResponse
 
 struct GetQuestionResponse : ProtocolResponse
 {
-    GetQuestionResponse(const int rotation);
+    GetQuestionResponse(const int rotation, Question question);
 
+    Question question;
     const int rotation;
 };
 

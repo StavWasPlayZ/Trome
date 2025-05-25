@@ -79,8 +79,9 @@ LeaveGameResponse::LeaveGameResponse() :
     ProtocolResponse(ResponseCode::LEAVE_GAME)
 {}
 
-GetQuestionResponse::GetQuestionResponse(const int rotation) : 
-    ProtocolResponse(ResponseCode::GET_QUESTION), rotation(rotation)
+GetQuestionResponse::GetQuestionResponse(const int rotation, Question question)
+    : 
+    ProtocolResponse(ResponseCode::GET_QUESTION), rotation(rotation), question(question)
 {}
 
 SubmitAnswerResponse::SubmitAnswerResponse() : 
