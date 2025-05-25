@@ -83,6 +83,9 @@ add_executable (Server
 
   "src/common/infrastructure/UserStatistics.h"
   "src/common/infrastructure/UserStatistics.cpp"
+  
+  "src/common/infrastructure/PlayerResult.h"
+  "src/common/infrastructure/PlayerResult.cpp"
 
   "src/common/infrastructure/Question.cpp"
   "src/common/infrastructure/Question.h"
@@ -101,7 +104,7 @@ add_executable (Server
 
   "src/common/handler/RoomAdminRequestHandler.cpp"
   "src/common/handler/RoomAdminRequestHandler.h"
-)
+  )
 
 # Platform-specific sources
 if (WIN32)
