@@ -74,3 +74,19 @@ GetRoomStateResponse::GetRoomStateResponse(const Room& room)
 UpdateRoomDataResponse::UpdateRoomDataResponse() :
     ProtocolResponse(ResponseCode::UPDATE_ROOM_DATA)
 {}
+
+LeaveGameResponse::LeaveGameResponse() : 
+    ProtocolResponse(ResponseCode::LEAVE_GAME)
+{}
+
+GetQuestionResponse::GetQuestionResponse(const int rotation) : 
+    ProtocolResponse(ResponseCode::GET_QUESTION), rotation(rotation)
+{}
+
+SubmitAnswerResponse::SubmitAnswerResponse() : 
+    ProtocolResponse(ResponseCode::SUBMIT_ANSWER)
+{}
+
+GetGameResultResponse::GetGameResultResponse() : 
+    ProtocolResponse(ResponseCode::GET_GAME_RESULT)
+{}
