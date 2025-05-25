@@ -73,6 +73,18 @@ ProtocolRequest *ProtocolRequest::fromRequest(const RequestInfo &info) {
     case RequestCode::UPDATE_ROOM_DATA: return new UpdateRoomDataRequest(
         JsonRequestPacketDeserializer::deserializeUpdateRoomDataRequest(info.data)
     );
+    case RequestCode::LEAVE_GAME: return new LeaveGameRequest(
+        JsonRequestPacketDeserializer::deserializeLeaveGameRequest(info.data)
+    );
+    case RequestCode::GET_QUESTION: return new GetQuestionRequest(
+        JsonRequestPacketDeserializer::deserializeGetQuestionRequest(info.data)
+    );
+    case RequestCode::SUBMIT_ANSWER: return new SubmitAnswerRequest(
+        JsonRequestPacketDeserializer::deserializeSubmitAnswerRequest(info.data)
+    );
+    case RequestCode::GET_GAME_RESULT: return new GetGameResultRequest(
+        JsonRequestPacketDeserializer::deserializeGetGameResultRequest(info.data)
+    );
 
     default: throw std::invalid_argument("Invalid request ID");
     }

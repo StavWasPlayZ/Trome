@@ -101,6 +101,27 @@ UpdateRoomDataRequest JsonRequestPacketDeserializer::deserializeUpdateRoomDataRe
     );
 }
 
+LeaveGameRequest JsonRequestPacketDeserializer::deserializeLeaveGameRequest(const nlohmann::json &data)
+{
+    return LeaveGameRequest();
+}
+
+GetQuestionRequest JsonRequestPacketDeserializer::deserializeGetQuestionRequest(const nlohmann::json &data)
+{
+    return GetQuestionRequest();
+}
+
+// TODO: Implement this
+SubmitAnswerRequest JsonRequestPacketDeserializer::deserializeSubmitAnswerRequest(const nlohmann::json &data)
+{
+    return SubmitAnswerRequest();
+}
+
+GetGameResultRequest JsonRequestPacketDeserializer::deserializeGetGameResultRequest(const nlohmann::json &data)
+{
+    return GetGameResultRequest();
+}
+
 nlohmann::json JsonRequestPacketDeserializer::readJson(const unsigned char *data, const int jsonLen)
 {
 	// Avoid naughty buffer overflows

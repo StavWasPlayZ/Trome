@@ -22,7 +22,11 @@ enum class RequestCode : unsigned char
     START_GAME,
     GET_ROOM_STATE,
     LEAVE_ROOM,
-    UPDATE_ROOM_DATA
+    UPDATE_ROOM_DATA,
+	LEAVE_GAME,
+	GET_QUESTION,
+	SUBMIT_ANSWER,
+	GET_GAME_RESULT
 };
 
 struct ProtocolRequest
@@ -126,4 +130,21 @@ struct UpdateRoomDataRequest : ProtocolRequest
     explicit UpdateRoomDataRequest(const RoomData &data);
 
     const RoomData data;
+};
+
+struct LeaveGameRequest : ProtocolRequest
+{
+};
+
+struct GetQuestionRequest : ProtocolRequest
+{
+};
+
+// TODO: make this to get the answer
+struct SubmitAnswerRequest : ProtocolRequest
+{
+};
+
+struct GetGameResultRequest : ProtocolRequest
+{
 };
