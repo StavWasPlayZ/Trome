@@ -137,7 +137,7 @@ public:
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serializeResponse(const LeaveRoomResponse &response);
+    static OBuffer serializeResponse(const LeaveGameResponse &response);
 
     /**
      * Returns: The serialized object.
