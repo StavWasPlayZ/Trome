@@ -15,5 +15,9 @@ public enum RequestCode : byte
     StartGame,
     GetRoomState,
     LeaveRoom,
-    UpdateRoomData
+    UpdateRoomData,
+    LeaveGame,
+    GetQuestion,
+    SubmitAnswer,
+    GetGameResult
 }
