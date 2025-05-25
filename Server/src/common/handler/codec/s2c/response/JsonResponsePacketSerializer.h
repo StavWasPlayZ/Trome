@@ -132,6 +132,34 @@ public:
      */
     static OBuffer serializeResponse(const UpdateRoomDataResponse &response);
 
+    /**
+     * Returns: The serialized object.
+     *
+     * NOTE: The returned resource must be freed.
+     */
+    static OBuffer serializeResponse(const LeaveRoomResponse &response);
+
+    /**
+     * Returns: The serialized object.
+     *
+     * NOTE: The returned resource must be freed.
+     */
+    static OBuffer serializeResponse(const GetQuestionResponse &response);
+
+    /**
+     * Returns: The serialized object.
+     *
+     * NOTE: The returned resource must be freed.
+     */
+    static OBuffer serializeResponse(const SubmitAnswerResponse &response);
+
+    /**
+     * Returns: The serialized object.
+     *
+     * NOTE: The returned resource must be freed.
+     */
+    static OBuffer serializeResponse(const GetGameResultResponse &response);
+
 private:
     static OBuffer serialize(ResponseCode msgCode, const nlohmann::json &data);
 
