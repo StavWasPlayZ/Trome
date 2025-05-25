@@ -131,3 +131,20 @@ struct UpdateRoomDataRequest : ProtocolRequest
 
     const RoomData data;
 };
+
+struct LeaveGameRequest : ProtocolRequest
+{
+};
+
+// TODO: make this to get the answer
+struct SubmitAnswerRequest : ProtocolRequest
+{
+};
+
+struct LeaveGameRequest : ProtocolRequest
+{
+};
+
+struct LeaveGameRequest : ProtocolRequest
+{
+};
