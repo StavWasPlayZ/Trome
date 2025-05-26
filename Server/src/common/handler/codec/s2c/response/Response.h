@@ -1,6 +1,8 @@
 #pragma once
 
 #include "infrastructure/UserStatistics.h"
+#include "infrastructure/PlayerResult.h"
+#include "infrastructure/Question.h"
 
 #include <infrastructure/RoomData.h>
 #include <string>
@@ -29,7 +31,11 @@ enum class ResponseCode : unsigned char
 	START_GAME,
 	GET_ROOM_STATE,
 	LEAVE_ROOM,
-	UPDATE_ROOM_DATA
+	UPDATE_ROOM_DATA,
+    LEAVE_GAME,
+    GET_QUESTION,
+    SUBMIT_ANSWER,
+    GET_GAME_RESULT
 };
 
 
@@ -144,4 +150,29 @@ struct [[deprecated(
 struct UpdateRoomDataResponse : ProtocolResponse
 {
     UpdateRoomDataResponse();
+};
+
+struct LeaveGameResponse : ProtocolResponse
+{
+    LeaveGameResponse();
+};
+
+struct GetQuestionResponse : ProtocolResponse
+{
+    GetQuestionResponse(int rotation, const Question& question);
+
+    const Question question;
+    const int rotation;
+};
+
+struct SubmitAnswerResponse : ProtocolResponse
+{
+    SubmitAnswerResponse();
+};
+
+struct GetGameResultResponse : ProtocolResponse
+{
+    explicit GetGameResultResponse(const std::vector<PlayerResult>& results);
+
+    const std::vector<PlayerResult> results;
 };

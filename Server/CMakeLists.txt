@@ -83,6 +83,9 @@ add_executable (Server
 
   "src/common/infrastructure/UserStatistics.h"
   "src/common/infrastructure/UserStatistics.cpp"
+  
+  "src/common/infrastructure/PlayerResult.h"
+  "src/common/infrastructure/PlayerResult.cpp"
 
   "src/common/infrastructure/Question.cpp"
   "src/common/infrastructure/Question.h"

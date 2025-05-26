@@ -76,6 +76,27 @@ nlohmann::json ProtocolPacketSerializer::serializeAsJson(const RoomData &room)
     return result;
 }
 
+nlohmann::json ProtocolPacketSerializer::serializeAsJson(const PlayerResult &playerResult)
+{
+    nlohmann::json result;
+
+    result["username"] = playerResult.username;
+    result["correct_answer_count"] = playerResult.correctAnswerCount;
+    result["average_answer_time"] = playerResult.averageAnswerTime;
+    result["points"] = playerResult.points;
+
+    return result;
+}
+
+nlohmann::json ProtocolPacketSerializer::serializeAsJson(const Question &question, const int rotation)
+{
+    nlohmann::json result;
+
+    result["question"] = question.question;
+    result["answers"] = question.getAnswersRotated(rotation);
+
+    return result;
+}
 
 void ProtocolPacketSerializer::writeInt(int num, unsigned char *const buffer)
 {
