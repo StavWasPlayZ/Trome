@@ -1,3 +1,6 @@
 ﻿namespace Trivia.Codec.C2S.Request.Packets;
 
-public record LeaveRoomRequest() : ProtocolRequest(RequestCode.LeaveRoom);
+public readonly record struct LeaveRoomRequest() : IProtocolRequest
+{
+    public RequestCode Code { get; init; } = RequestCode.LeaveRoom;
+}

@@ -31,7 +31,7 @@ public class Communicator : IDisposable
     private bool _disposed;
     
     
-    private readonly Queue<ProtocolRequest> _outgoingRequests = [];
+    private readonly Queue<IProtocolRequest> _outgoingRequests = [];
     private readonly object _outgoingRequestsCv = new();
     
     /// <summary>
@@ -51,7 +51,7 @@ public class Communicator : IDisposable
     /// Sends the provided request to the server.
     /// </summary>
     /// <param name="request">The request to send to the server</param>
-    public void SendRequest(ProtocolRequest request)
+    public void SendRequest(IProtocolRequest request)
     {
         lock (_outgoingRequests)
         {
@@ -77,8 +77,8 @@ public class Communicator : IDisposable
     /// </param>
     /// 
     /// <typeparam name="T">The expected <see cref="IS2CPacket"/> type.</typeparam>
-    public void SendRequest<T>(ProtocolRequest request, Action<T> onResponse, Action<ErrorResponse>? onError = null)
-        where T : ProtocolResponse
+    public void SendRequest<T>(IProtocolRequest request, Action<T> onResponse, Action<ErrorResponse>? onError = null)
+        where T : IProtocolResponse
     {
         PacketReceived += OnPacketReceived;
         SendRequest(request);
@@ -109,7 +109,7 @@ public class Communicator : IDisposable
     /// <param name="request">The request to send to the server</param>
     /// 
     /// <typeparam name="T">The expected <see cref="IS2CPacket"/> type</typeparam>
-    public async Task<T> SendRequestAwaitResponse<T>(ProtocolRequest request) where T : ProtocolResponse
+    public async Task<T> SendRequestAwaitResponse<T>(IProtocolRequest request) where T : IProtocolResponse
     {
         var task = new TaskCompletionSource<T>();
         
@@ -235,7 +235,7 @@ public class Communicator : IDisposable
     {
         while (IsConnected)
         {
-            ProtocolRequest request;
+            IProtocolRequest request;
             
             lock (_outgoingRequestsCv)
             {

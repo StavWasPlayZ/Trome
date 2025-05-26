@@ -55,7 +55,7 @@ public class SignupViewModel : AuthViewModel
                 "17/06/2008"
             ),
             
-            HandleAuthResponse,
+            response => HandleAuthResponse(response),
             HandleErrorResponse
         );
     }

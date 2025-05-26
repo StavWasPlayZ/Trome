@@ -2,6 +2,6 @@ using Trivia.Models.Raw;
 
 namespace Trivia.Codec.S2C.Response.Packets;
 
-public record GetPersonalStatisticsResponse(
+public readonly record struct GetPersonalStatisticsResponse(
     UserStatistics Stats
-) : ProtocolResponse;
+) : IProtocolResponse;

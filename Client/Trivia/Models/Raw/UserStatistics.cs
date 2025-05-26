@@ -1,6 +1,6 @@
 ﻿namespace Trivia.Models.Raw;
 
-public class UserStatistics
+public readonly record struct UserStatistics
 {
     public required int Points { get; init; }
     public required int GamesPlayed { get; init; }

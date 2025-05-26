@@ -1,3 +1,6 @@
 namespace Trivia.Codec.C2S.Request.Packets;
 
-public record LogoutRequest() : ProtocolRequest(RequestCode.Logout);
+public readonly record struct LogoutRequest() : IProtocolRequest
+{
+    public RequestCode Code { get; init; } = RequestCode.Logout;
+}

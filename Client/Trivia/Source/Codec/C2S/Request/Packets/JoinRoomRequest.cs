@@ -1,5 +1,8 @@
 namespace Trivia.Codec.C2S.Request.Packets;
 
-public record JoinRoomRequest(
+public readonly record struct JoinRoomRequest(
     int RoomId
-) : ProtocolRequest(RequestCode.JoinRoom);
+) : IProtocolRequest
+{
+    public RequestCode Code { get; init; } = RequestCode.JoinRoom;
+}

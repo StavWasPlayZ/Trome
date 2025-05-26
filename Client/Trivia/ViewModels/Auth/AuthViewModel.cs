@@ -17,7 +17,7 @@ public abstract class AuthViewModel : PageViewModel
     }
     
     
-    protected void HandleAuthResponse(RegistrationResponse response)
+    protected void HandleAuthResponse(IRegistrationResponse response)
     {
         App.AppService.SessionUser = new User
         {

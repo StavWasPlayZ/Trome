@@ -1,6 +1,6 @@
 
 namespace Trivia.Codec.S2C.Response.Packets;
 
-public record SignupResponse(
+public readonly record struct SignupResponse(
     int UserId
-) : RegistrationResponse(UserId);
+) : IRegistrationResponse;

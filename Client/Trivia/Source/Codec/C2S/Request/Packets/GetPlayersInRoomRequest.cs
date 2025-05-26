@@ -1,5 +1,8 @@
 namespace Trivia.Codec.C2S.Request.Packets;
 
-public record GetPlayersInRoomRequest(
+public readonly record struct GetPlayersInRoomRequest(
     int RoomId
-) : ProtocolRequest(RequestCode.GetPlayersInRoom);
+) : IProtocolRequest
+{
+    public RequestCode Code { get; init; } = RequestCode.GetPlayersInRoom;
+}

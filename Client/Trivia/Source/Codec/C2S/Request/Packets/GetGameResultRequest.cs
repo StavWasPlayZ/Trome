@@ -1,3 +1,6 @@
 ﻿namespace Trivia.Codec.C2S.Request.Packets;
 
-public record GetGameResultRequest() : ProtocolRequest(RequestCode.GetGameResult);
+public readonly record struct GetGameResultRequest() : IProtocolRequest
+{
+    public RequestCode Code { get; init; } = RequestCode.GetGameResult;
+}

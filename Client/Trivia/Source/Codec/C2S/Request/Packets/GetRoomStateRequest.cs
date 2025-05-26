@@ -1,3 +1,6 @@
 ﻿namespace Trivia.Codec.C2S.Request.Packets;
 
-public record GetRoomStateRequest() : ProtocolRequest(RequestCode.GetRoomState);
+public readonly record struct GetRoomStateRequest() : IProtocolRequest
+{
+    public RequestCode Code { get; init; } = RequestCode.GetRoomState;
+}

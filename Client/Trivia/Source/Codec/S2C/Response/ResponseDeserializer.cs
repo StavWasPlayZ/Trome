@@ -4,7 +4,7 @@ namespace Trivia.Codec.S2C.Response;
 
 public static class ResponseDeserializer
 {
-    public static ProtocolResponse? Deserialize(ResponseCode code, string json)
+    public static IProtocolResponse? Deserialize(ResponseCode code, string json)
     {
         return code switch
         {

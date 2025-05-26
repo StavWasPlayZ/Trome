@@ -1,7 +1,8 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace Trivia.Codec.S2C.Response.Packets;
 
-public record GetHighScoresResponse(
-    List<KeyValuePair<string, int>> Stats
-) : ProtocolResponse;
+public readonly record struct GetHighScoresResponse(
+    ImmutableList<KeyValuePair<string, int>> Stats
+) : IProtocolResponse;

@@ -4,14 +4,14 @@ using Trivia.Codec;
 
 namespace Trivia.Models.Raw;
 
-public class Room : IdentifiableModel
+public record Room : IdentifiableModel
 {
-    public RoomStatus Status { get; set; } = RoomStatus.Waiting;
+    public RoomStatus Status { get; init; } = RoomStatus.Waiting;
     public required User Admin { get; init; }
     
-    public int PlayersCount { get; set; }
+    public int PlayersCount { get; init; }
     
-    public required RoomData Data { get; set; }
+    public required RoomData Data { get; init; }
 
 
     public static List<Room> GenerateMockRooms(int count)

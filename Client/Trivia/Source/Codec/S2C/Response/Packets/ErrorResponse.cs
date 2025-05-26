@@ -2,8 +2,8 @@ using Trivia.Codec.C2S.Request;
 
 namespace Trivia.Codec.S2C.Response.Packets;
 
-public record ErrorResponse(
+public readonly record struct ErrorResponse(
     ErrorStatus Status,
     RequestCode ReqCode,
     string? Context
-) : ProtocolResponse;
+) : IProtocolResponse;

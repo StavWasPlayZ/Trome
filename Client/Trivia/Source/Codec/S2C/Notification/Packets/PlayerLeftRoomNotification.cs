@@ -1,5 +1,5 @@
 namespace Trivia.Codec.S2C.Notification.Packets;
 
-public record PlayerLeftRoomNotification(
+public readonly record struct PlayerLeftRoomNotification(
     int PlayerId
-) : ProtocolNotification;
+) : IProtocolNotification;

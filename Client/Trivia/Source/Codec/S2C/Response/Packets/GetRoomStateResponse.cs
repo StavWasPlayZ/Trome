@@ -2,6 +2,6 @@
 
 namespace Trivia.Codec.S2C.Response.Packets;
 
-public record GetRoomStateResponse(
+public readonly record struct GetRoomStateResponse(
     Room Room
-) : ProtocolResponse;
+) : IProtocolResponse;
