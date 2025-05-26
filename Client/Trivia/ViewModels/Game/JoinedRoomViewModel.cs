@@ -50,17 +50,12 @@ public class JoinedRoomViewModel : RoomViewModel
                 break;
             
             case RoomDataUpdatedNotification roomDataNotif:
-                HandleRoomDataUpdated(roomDataNotif);
+                Data = Room.Data = roomDataNotif.Data;
                 break;
             
             default:
                 base.CommOnPacketReceived(packet);
                 break;
         }
-    }
-
-    private void HandleRoomDataUpdated(RoomDataUpdatedNotification roomDataNotif)
-    {
-        Data = Room.Data = roomDataNotif.Data;
     }
 }
