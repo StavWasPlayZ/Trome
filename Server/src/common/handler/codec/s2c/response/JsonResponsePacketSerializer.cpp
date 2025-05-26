@@ -214,9 +214,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetQuestionRespons
 {
     nlohmann::json data;
 
-    data["question"] = response.question.question;
-    data["answers"] = response.question.answers;
-    data["rotation"] = response.rotation;
+    data["question"] = ProtocolPacketSerializer::serializeAsJson(response.question, response.rotation);
 
     return serialize(response.id, data);
 }

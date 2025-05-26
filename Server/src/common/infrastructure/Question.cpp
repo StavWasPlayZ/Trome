@@ -3,8 +3,9 @@
 #include <algorithm>
 #include <stdexcept>
 
-Question::Question(const std::string &question, const std::vector<std::string> &answers)
-    : question(question), answers(answers)
+Question::Question(const std::string &question, const std::vector<std::string> &answers) :
+    question(question),
+    answers(answers)
 {}
 
 std::vector<std::string> Question::getAnswersRotated(const int rotation) const
