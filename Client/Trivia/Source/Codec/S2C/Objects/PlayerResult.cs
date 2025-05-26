@@ -2,7 +2,7 @@
 
 public record PlayerResult(
     string Username,
-    uint CorrectAnswerCount,
-    uint AverageAnswerTime,
-    uint Points
+    int CorrectAnswerCount,
+    int AverageAnswerTime,
+    int Points
 );
