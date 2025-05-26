@@ -92,7 +92,7 @@ nlohmann::json ProtocolPacketSerializer::serializeAsJson(const Question &questio
 {
     nlohmann::json result;
 
-    result["question"] = question.question;
+    result["prompt"] = question.prompt;
     result["answers"] = question.getAnswersRotated(rotation);
 
     return result;

@@ -8,7 +8,10 @@ struct Question {
 
     Question(const std::string &question, const std::vector<std::string> &answers);
 
-    const std::string question;
+    /**
+     * The actual question
+     */
+    const std::string prompt;
 
     /**
      * All the answers of this question. 4 total.

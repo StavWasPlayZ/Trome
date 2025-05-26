@@ -4,7 +4,7 @@
 #include <stdexcept>
 
 Question::Question(const std::string &question, const std::vector<std::string> &answers) :
-    question(question),
+    prompt(question),
     answers(answers)
 {}
 

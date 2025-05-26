@@ -242,7 +242,7 @@ void SqliteDatabase::addQuestions(std::vector<Question> questions, const std::op
 
         builder << "("
             << authorId << ", "
-            << '\'' << question.question << '\'';
+            << '\'' << question.prompt << '\'';
 
         for (const std::string &answer : question.answers)
         {
