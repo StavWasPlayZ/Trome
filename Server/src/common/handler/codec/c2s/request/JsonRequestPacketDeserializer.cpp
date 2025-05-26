@@ -62,7 +62,7 @@ GetPersonalStatisticsRequest JsonRequestPacketDeserializer::deserializeGetPerson
     return GetPersonalStatisticsRequest();
 }
 
-CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(const nlohmann::json &data)
+CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(const nlohmann::json &)
 {
     return CreateRoomRequest();
 }

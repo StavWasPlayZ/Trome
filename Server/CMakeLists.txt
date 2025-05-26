@@ -104,7 +104,7 @@ add_executable (Server
 
   "src/common/handler/RoomAdminRequestHandler.cpp"
   "src/common/handler/RoomAdminRequestHandler.h"
-  )
+)
 
 # Platform-specific sources
 if (WIN32)

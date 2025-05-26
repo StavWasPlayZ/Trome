@@ -159,7 +159,7 @@ struct LeaveGameResponse : ProtocolResponse
 
 struct GetQuestionResponse : ProtocolResponse
 {
-    GetQuestionResponse(const int rotation, Question question);
+    GetQuestionResponse(int rotation, Question question);
 
     Question question;
     const int rotation;
@@ -172,7 +172,7 @@ struct SubmitAnswerResponse : ProtocolResponse
 
 struct GetGameResultResponse : ProtocolResponse
 {
-    GetGameResultResponse(const std::vector<PlayerResult> results);
+    GetGameResultResponse(std::vector<PlayerResult> results);
 
     const std::vector<PlayerResult> results;
 };
