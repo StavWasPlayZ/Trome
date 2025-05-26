@@ -4,14 +4,14 @@
 struct PlayerResult
 {
     PlayerResult(
-        const std::string username,
-        const unsigned int correctAnswerCount,
-        const unsigned int averageAnswerTime,
-        const unsigned int points
+        const std::string& username,
+        int correctAnswerCount,
+        int averageAnswerTime,
+        int points
     );
 
     const std::string username;
-    const unsigned int correctAnswerCount;
-    const unsigned int averageAnswerTime;
-    const unsigned int points;
+    const int correctAnswerCount;
+    const int averageAnswerTime;
+    const int points;
 };
