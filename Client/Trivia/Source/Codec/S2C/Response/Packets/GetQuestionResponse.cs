@@ -1,9 +1,7 @@
-﻿using Trivia.Codec.S2C.Objects;
+﻿using Trivia.Models.Raw;
 
 namespace Trivia.Codec.S2C.Response.Packets;
 
 public record GetQuestionResponse(
-    string Question,
-    string[] Answers,
-    int Rotation
+    Question Question
 ) : ProtocolResponse;
