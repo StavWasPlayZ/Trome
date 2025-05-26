@@ -161,7 +161,7 @@ struct GetQuestionResponse : ProtocolResponse
 {
     GetQuestionResponse(int rotation, const Question& question);
 
-    Question question;
+    const Question question;
     const int rotation;
 };
 
