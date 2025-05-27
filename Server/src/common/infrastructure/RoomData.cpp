@@ -1,19 +1,20 @@
 #include "infrastructure/RoomData.h"
 
-unsigned int RoomData::globalId = 0;
-
-RoomData::RoomData(
-    const std::string &name,
-    const RoomStatus &status,
-    const int maxPlayers,
-    const int timePerQuestion,
-    const int questionsCount
-) :
+RoomData::RoomData(const std::string &name, const int maxPlayers, const int timePerQuestion, const int questionsCount) :
     name(name),
-    id(globalId++),
-    // REVIEW: Perhaps could be initialized directly.
-    status(status),
     maxPlayers(maxPlayers),
-    timePerQuestion(timePerQuestion),
+    timePerQuestionSecs(timePerQuestion),
     questionsCount(questionsCount)
-{}
+{
+}
+
+RoomData RoomData::ofDefaults()
+{
+    return RoomData(
+        //TODO: Generate some name from a list
+        "NEW ROOM",
+        5,
+        10,
+        25
+    );
+}

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "IRequestHandler.h"
-#include "codec/c2s/Request.h"
+#include "codec/c2s/request/Request.h"
 
 class RequestHandlerFactory;  // Circle dependency
 
@@ -15,6 +15,6 @@ public:
     RequestResult handleRequest(const RequestInfo& info, const ProtocolRequest& request) const override;
 
 private:
-    RequestResult login(const RequestInfo& context, const LoginRequest& request) const;
-    RequestResult signup(const RequestInfo& context, const SignupRequest& request) const;
+    RequestResult login(const RequestInfo &info, const LoginRequest &request) const;
+    RequestResult signup(const RequestInfo &info, const SignupRequest &request) const;
 };

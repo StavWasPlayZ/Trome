@@ -9,7 +9,7 @@ public:
     explicit RegexViolationException(const std::string& field);
     const char* what() const noexcept override;
 
-private:
     const std::string field;
+private:
     const std::string message;
 };

@@ -7,11 +7,8 @@ using Trivia.ViewModels.Auth;
 
 namespace Trivia.ViewModels;
 
-public class ConnectingViewModel : PageViewModel, IActivatableViewModel
+public class ConnectingViewModel : PageViewModel
 {
-    public ViewModelActivator Activator { get; } = new();
-    
-    
     public ConnectingViewModel(IScreen hostScreen) : base(hostScreen)
     {
         this.WhenActivated(disposables =>
@@ -25,6 +22,8 @@ public class ConnectingViewModel : PageViewModel, IActivatableViewModel
                 .DisposeWith(disposables);
         });
     }
+    
+    public ConnectingViewModel() { }
     
     
     private bool _connectionFailed;

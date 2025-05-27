@@ -1,7 +1,11 @@
 #include "MenuRequestHandler.h"
 
 #include "RequestHandlerFactory.h"
-#include "codec/c2s/Request.h"
+#include "RoomAdminRequestHandler.h"
+#include "RoomMemberRequestHandler.h"
+#include "codec/c2s/request/Request.h"
+#include "codec/s2c/notification/Notification.h"
+#include "codec/s2c/response/ErrorResponse.h"
 
 MenuRequestHandler::MenuRequestHandler(const RequestHandlerFactory &handlerFactory) : IRequestHandler(handlerFactory)
 {}
@@ -27,136 +31,97 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo &info, const P
 {
     switch (info.id)
     {
-    case RequestCode::JOIN_ROOM: return joinRoom(info, request);
-    case RequestCode::GET_PLAYERS_IN_ROOM: return getPlayersInRoom(info, request);
-    case RequestCode::CREATE_ROOM: return createRoom(info, request);
-    case RequestCode::GET_ROOMS: return getRooms(info, request);
-    case RequestCode::GET_HIGH_SCORES: return getHighScores(info, request);
-    case RequestCode::GET_PERSONAL_STATISTICS: return getPersonalStatistics(info, request);
-    case RequestCode::LOGOUT: return logout(info, request);
+    case RequestCode::JOIN_ROOM:
+        return joinRoom(info, static_cast<const JoinRoomRequest &>(request));
+    case RequestCode::CREATE_ROOM:
+        return createRoom(info, static_cast<const CreateRoomRequest &>(request));
+    case RequestCode::GET_ROOMS:
+        return getRooms(info, static_cast<const GetRoomsRequest &>(request));
+    case RequestCode::GET_HIGH_SCORES:
+        return getHighScores(info, static_cast<const GetHighScoresRequest &>(request));
+    case RequestCode::GET_PERSONAL_STATISTICS:
+        return getPersonalStatistics(info, static_cast<const GetPersonalStatisticsRequest &>(request));
+    case RequestCode::LOGOUT:
+        return logout(info, static_cast<const LogoutRequest &>(request));
+
+    case RequestCode::GET_PLAYERS_IN_ROOM:
+        return getPlayersInRoom(info, static_cast<const GetPlayersInRoomRequest &>(request));
 
     default: throw std::invalid_argument("Unknown request ID");
     }
 }
 
-RequestResult MenuRequestHandler::joinRoom(const RequestInfo &info, const ProtocolRequest &request) const
-{
-    const JoinRoomRequest &req = static_cast<const JoinRoomRequest &>(request);
-    const RoomManager &rManager = m_handlerFactory.getRoomManager();
-
-    const std::optional<Room*> room = rManager.getRoom(req.roomID);
-
-    if (!room)
-    {
-        return RequestResult(
-            JsonResponsePacketSerializer::serializeResponse(
-                JoinRoomResponse(ConsumingResponseStatus::ERROR_UNKNOWN_RESOURCE)
-            ),
-
-            new MenuRequestHandler(*this)
-        );
-    }
-
-    room.value()->addUser(getUserByInfo(info));
-
-    return RequestResult(
-        JsonResponsePacketSerializer::serializeResponse(
-            JoinRoomResponse(ConsumingResponseStatus::SUCCESS)
-        ),
-
-        //TODO: RoomHandler?
-        new MenuRequestHandler(*this)
-    );
-}
-
-RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo &, const ProtocolRequest &request) const
-{
-    const GetPlayersInRoomRequest &req = static_cast<const GetPlayersInRoomRequest &>(request);
-    const RoomManager &rManager = m_handlerFactory.getRoomManager();
-
-    const std::optional<Room*> room = rManager.getRoom(req.roomID);
-
-    if (!room)
-    {
-        return RequestResult(
-            JsonResponsePacketSerializer::serializeResponse(
-                GetPlayersInRoomResponse(ConsumingResponseStatus::ERROR_UNKNOWN_RESOURCE, std::nullopt)
-            ),
-
-            new MenuRequestHandler(*this)
-        );
-    }
-
-    return RequestResult(
-        JsonResponsePacketSerializer::serializeResponse(
-            GetPlayersInRoomResponse(ConsumingResponseStatus::SUCCESS, room.value()->getAllUsers())
-        ),
-
-        new MenuRequestHandler(*this)
-    );
-}
-
-RequestResult MenuRequestHandler::createRoom(const RequestInfo& info, const ProtocolRequest& request) const
+RequestResult MenuRequestHandler::joinRoom(const RequestInfo &info, const JoinRoomRequest &request) const
 {
     RoomManager &rManager = m_handlerFactory.getRoomManager();
 
-    const CreateRoomRequest &req = static_cast<const CreateRoomRequest &>(request);
+    const std::optional<Room*> room = rManager.getRoom(request.roomID);
 
-    const RoomData roomData = RoomData(
-        req.roomName,
-        RoomStatus::WAITING,
-        req.maxPlayers,
-        req.answerTimeout,
-        req.questionCount
+    if (!room)
+    {
+        return RequestResult(
+            new ErrorResponse(ErrorStatus::ERROR_UNKNOWN_RESOURCE, info.id),
+            new MenuRequestHandler(*this)
+        );
+    }
+
+    const std::vector<LoggedUser*> usersBeforeNew = room.value()->getAllUsers();
+
+    LoggedUser& user = getUserByInfo(info);
+    room.value()->addUser(user);
+
+
+    dispatchNotification(
+        PlayerJoinedRoomNotification(user),
+        usersBeforeNew
     );
 
-    rManager.createRoom(getUserByInfo(info), roomData);
-
     return RequestResult(
-        JsonResponsePacketSerializer::serializeResponse(
-            CreateRoomResponse(GenericResponseStatus::SUCCESS, roomData.id)
-        ),
-
-        new MenuRequestHandler(*this)
+        new JoinRoomResponse(*room.value(), usersBeforeNew),
+        new RoomMemberRequestHandler(this->m_handlerFactory, *room.value())
     );
 }
 
-RequestResult MenuRequestHandler::getRooms(const RequestInfo &, const ProtocolRequest &) const
+RequestResult MenuRequestHandler::createRoom(const RequestInfo& info, const CreateRoomRequest &) const
 {
-    const RoomManager &rManager = m_handlerFactory.getRoomManager();
+    RoomManager &rManager = m_handlerFactory.getRoomManager();
+
+    Room& room = rManager.createRoom(getUserByInfo(info), RoomData::ofDefaults());
 
     return RequestResult(
-        JsonResponsePacketSerializer::serializeResponse(
-            GetRoomsResponse(GenericResponseStatus::SUCCESS, rManager.getRooms())
-        ),
+        new CreateRoomResponse(room.getId(), room.getData()),
+        new RoomAdminRequestHandler(m_handlerFactory, room)
+    );
+}
 
+RequestResult MenuRequestHandler::getRooms(const RequestInfo &, const GetRoomsRequest &) const
+{
+    RoomManager &rManager = m_handlerFactory.getRoomManager();
+
+    return RequestResult(
+        new GetRoomsResponse(rManager.getRooms()),
         new MenuRequestHandler(*this)
     );
 }
 
-RequestResult MenuRequestHandler::getHighScores(const RequestInfo &, const ProtocolRequest &) const
+RequestResult MenuRequestHandler::getHighScores(const RequestInfo &, const GetHighScoresRequest &) const
 {
     const StatisticsManager &sManager = m_handlerFactory.getStatisticsManager();
 
     return RequestResult(
-        JsonResponsePacketSerializer::serializeResponse(
-            GetHighScoresResponse(GeneralStatsStatus::SUCCESS, sManager.getHighScores())
-        ),
-
+        new GetHighScoresResponse(sManager.getHighScores()),
         new MenuRequestHandler(*this)
     );
 }
 
-RequestResult MenuRequestHandler::getPersonalStatistics(const RequestInfo& info, const ProtocolRequest &) const
+RequestResult MenuRequestHandler::getPersonalStatistics(const RequestInfo& info, const GetPersonalStatisticsRequest &) const
 {
     const StatisticsManager &sManager = m_handlerFactory.getStatisticsManager();
 
     return RequestResult(
-        JsonResponsePacketSerializer::serializeResponse(
-            GetPersonalStatisticsResponse(GeneralStatsStatus::SUCCESS,
-                sManager.getUserStatistics(
-                    getUserByInfo(info).getUsername()
-                )
+        new GetPersonalStatisticsResponse(
+            sManager.getUserStatistics(
+                getUserByInfo(info).getUsername()
             )
         ),
 
@@ -164,22 +129,31 @@ RequestResult MenuRequestHandler::getPersonalStatistics(const RequestInfo& info,
     );
 }
 
-RequestResult MenuRequestHandler::logout(const RequestInfo &info, const ProtocolRequest &) const
+RequestResult MenuRequestHandler::logout(const RequestInfo &info, const LogoutRequest &) const
 {
     LoginManager &uManager = m_handlerFactory.getLoginManager();
 
-    uManager.logout(info, getUserByInfo(info).getUsername());
+    uManager.logout(info.client);
 
-    return RequestResult(
-        JsonResponsePacketSerializer::serializeResponse(
-            LogoutResponse(LogoutStatus::SUCCESS)
-        ),
-
-        new LoginRequestHandler(this->m_handlerFactory)
-    );
+    return RequestResult(new LogoutResponse(), new LoginRequestHandler(this->m_handlerFactory));
 }
 
-LoggedUser &MenuRequestHandler::getUserByInfo(const RequestInfo &info) const
+RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo &info, const GetPlayersInRoomRequest &request) const
 {
-    return m_handlerFactory.getLoginManager().getUserByClient(info.client);
+    RoomManager &rManager = m_handlerFactory.getRoomManager();
+
+    const std::optional<Room*> room = rManager.getRoom(request.roomID);
+
+    if (!room)
+    {
+        return RequestResult(
+            new ErrorResponse(ErrorStatus::ERROR_UNKNOWN_RESOURCE, info.id),
+            new MenuRequestHandler(*this)
+        );
+    }
+
+    return RequestResult(
+        new GetPlayersInRoomResponse(room.value()->getAllUsers()),
+        new MenuRequestHandler(*this)
+    );
 }

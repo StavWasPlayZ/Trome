@@ -3,12 +3,17 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
+using Trivia.Services;
 using Trivia.ViewModels;
 
 namespace Trivia;
 
 public partial class App : Application
 {
+    //TODO: Maybe maybe maybe make this a dependency injection
+    public static ApplicationService AppService { get; } = new();
+
+    
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);

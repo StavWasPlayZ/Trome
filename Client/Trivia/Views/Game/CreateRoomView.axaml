@@ -4,10 +4,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:Trivia.Controls"
              xmlns:game="clr-namespace:Trivia.ViewModels.Game"
+             xmlns:listEntries="clr-namespace:Trivia.Controls.ListEntries"
              mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
              x:CompileBindings="True"
              x:Class="Trivia.Views.Game.CreateRoomView"
              x:DataType="game:CreateRoomViewModel">
+    
+    <Design.DataContext>
+        <game:CreateRoomViewModel/>
+    </Design.DataContext>
+    
     <Panel>
         <Panel.Background>
             <ImageBrush Source="avares://Trivia/Assets/drool-d-b1608556d649b5b943136ecc0df0fe1bc7ff644f.png"
@@ -18,7 +24,20 @@
               Margin="35,35">
             
             <controls:TriviaUsersList Grid.Column="0">
-                <ListBox ItemsSource="gggggggggg"/>
+                <ListBox ItemsSource="{Binding Players}">
+                    
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <listEntries:RoomUserListEntry User="{Binding}"
+                                                           IsCurrentUser="{Binding IsCurrentUser}"
+                                                           IsAdmin="{Binding IsAdmin}"
+                                                           IsEmptySlot="{Binding
+                                                               Converter={x:Static ObjectConverters.IsNull}
+                                                           }"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    
+                </ListBox>
             </controls:TriviaUsersList>
 
             <Border Grid.Column="2"
@@ -29,9 +48,8 @@
 
                     <controls:TriviaTextBox Grid.Row="0"
                                             ClipToBounds="False">
-                        <TextBox FontSize="65">
-                            ROOM NAME
-                        </TextBox>
+                        <TextBox FontSize="65"
+                                 Text="{Binding Name}"/>
                     </controls:TriviaTextBox>
                     
                     <Grid Grid.Row="1"
@@ -91,7 +109,7 @@
                                     TickFrequency="1"
                                     IsSnapToTickEnabled="True"
                                     Foreground="#e87dd3"
-                                    Value="20">
+                                    Value="{Binding Questions}">
                                 
                                 <Slider.Resources>
                                     <!-- ReSharper disable once Xaml.RedundantResource -->
@@ -137,7 +155,7 @@
                         <controls:TriviaTextBox Grid.Row="2"
                                                 Grid.Column="2"
                                                 ClipToBounds="False">
-                            <TextBox>10</TextBox>
+                            <TextBox Text="{Binding SecsPerQuestion}"/>
                         </controls:TriviaTextBox>
                         
                         <TextBlock Grid.Row="4"
@@ -148,7 +166,7 @@
                         </TextBlock>
                         <controls:TriviaTextBox Grid.Row="4"
                                                 Grid.Column="2">
-                            <TextBox>10</TextBox>
+                            <TextBox Text="{Binding MaxPlayers}"/>
                         </controls:TriviaTextBox>
                     </Grid>
                     
@@ -159,7 +177,7 @@
                           Height="65">
                             
                         <Button Grid.Column="0"
-                                Command="{Binding NavigateBackCommand}"
+                                Command="{Binding CloseRoomCommand}"
                                 
                                 VerticalAlignment="Stretch"
                                 Width="90"

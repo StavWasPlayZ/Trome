@@ -8,6 +8,11 @@
              x:CompileBindings="True"
              x:Class="Trivia.Views.Auth.LoginView"
              x:DataType="auth:LoginViewModel">
+    
+    <Design.DataContext>
+        <auth:LoginViewModel/>
+    </Design.DataContext>
+    
     <Panel>
         <Panel.Background>
             <ImageBrush Source="avares://Trivia/Assets/blobs-l-b49caff1a7941d98b60902da64956ad85dfbe4f9.png"
@@ -17,15 +22,14 @@
         <controls:TriviaMenuPanel Title="LOGIN"
                                   DisplayBackButton="False"
                                   VerticalAlignment="Center"
-                                  HorizontalAlignment="Center">
+                                  HorizontalAlignment="Center"
+                                  Width="650">
             
-            <StackPanel Margin="40,40,40,10"
-                        HorizontalAlignment="Center"
+            <StackPanel Margin="50,40,50,10"
                         Spacing="20">
                 
                 <Grid RowDefinitions="55, 55"
                       ColumnDefinitions="Auto, *"
-                      HorizontalAlignment="Center"
                       Margin="10"
                       Classes="t-input-fields-container">
                     
@@ -64,10 +68,14 @@
                     </controls:TriviaTextBox>
                     
                 </Grid>
+                
+                <TextBlock Classes="warning-display"
+                           IsVisible="{Binding !!ErrorMessage}"
+                           Text="{Binding ErrorMessage}"/>
 
                 <StackPanel Spacing="5">
                     
-                    <controls:TriviaButton Command="{Binding AuthenticateCommand}"
+                    <controls:TriviaButton Command="{Binding LoginCommand}"
                                            HorizontalAlignment="Center"
                                            Text="LOGIN"
                                            Background="#362034"

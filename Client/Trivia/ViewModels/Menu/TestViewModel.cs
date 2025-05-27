@@ -1,10 +1,12 @@
-﻿using System.Reactive;
-using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
-using ReactiveUI;
+﻿using ReactiveUI;
 
 namespace Trivia.ViewModels.Menu;
 
-public class TestViewModel(IScreen hostScreen) : PageViewModel(hostScreen)
+public class TestViewModel : PageViewModel
 {
+    public TestViewModel(IScreen hostScreen) : base(hostScreen)
+    {
+    }
+    
+    public TestViewModel() { }
 }

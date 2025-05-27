@@ -37,7 +37,6 @@ add_executable (Server
   "src/common/Constants.h"
 
   "src/common/handler/IRequestHandler.h"
-  "src/common/handler/IRequestHandler.tpp"
   "src/common/handler/IRequestHandler.cpp"
   "src/common/handler/RequestHandlerFactory.h"
   "src/common/handler/RequestHandlerFactory.cpp"
@@ -47,17 +46,17 @@ add_executable (Server
   "src/common/handler/MenuRequestHandler.h"
   "src/common/handler/MenuRequestHandler.cpp"
 
-  "src/common/handler/codec/s2c/Response.h"
-  "src/common/handler/codec/s2c/Response.cpp"
-  "src/common/handler/codec/s2c/Response.tpp"
-  "src/common/handler/codec/s2c/JsonResponsePacketSerializer.h"
-  "src/common/handler/codec/s2c/JsonResponsePacketSerializer.cpp"
-  "src/common/handler/codec/s2c/JsonResponsePacketSerializer.tpp"
+  "src/common/handler/codec/s2c/response/Response.h"
+  "src/common/handler/codec/s2c/response/Response.cpp"
+  "src/common/handler/codec/s2c/response/ErrorResponse.h"
+  "src/common/handler/codec/s2c/response/ErrorResponse.cpp"
+  "src/common/handler/codec/s2c/response/JsonResponsePacketSerializer.h"
+  "src/common/handler/codec/s2c/response/JsonResponsePacketSerializer.cpp"
 
-  "src/common/handler/codec/c2s/Request.h"
-  "src/common/handler/codec/c2s/Request.cpp"
-  "src/common/handler/codec/c2s/JsonRequestPacketDeserializer.h"
-  "src/common/handler/codec/c2s/JsonRequestPacketDeserializer.cpp"
+  "src/common/handler/codec/c2s/request/Request.h"
+  "src/common/handler/codec/c2s/request/Request.cpp"
+  "src/common/handler/codec/c2s/request/JsonRequestPacketDeserializer.h"
+  "src/common/handler/codec/c2s/request/JsonRequestPacketDeserializer.cpp"
 
   "src/common/infrastructure/request/RequestInfo.h"
   "src/common/infrastructure/request/RequestInfo.cpp"
@@ -89,6 +88,19 @@ add_executable (Server
   "src/common/infrastructure/Question.h"
   "src/common/infrastructure/Game.h"
   "src/common/infrastructure/Game.cpp"
+  "src/common/handler/RoomMemberRequestHandler.h" 
+  "src/common/handler/RoomMemberRequestHandler.cpp"
+
+  "src/common/handler/codec/s2c/ProtocolPacketSerializer.cpp"
+  "src/common/handler/codec/s2c/ProtocolPacketSerializer.h"
+  "src/common/handler/codec/s2c/S2CPacketType.h"
+  "src/common/handler/codec/s2c/notification/NotificationPacketSerializer.cpp"
+  "src/common/handler/codec/s2c/notification/NotificationPacketSerializer.h"
+  "src/common/handler/codec/s2c/notification/Notification.cpp"
+  "src/common/handler/codec/s2c/notification/Notification.h"
+
+  "src/common/handler/RoomAdminRequestHandler.cpp"
+  "src/common/handler/RoomAdminRequestHandler.h"
 )
 
 # Platform-specific sources

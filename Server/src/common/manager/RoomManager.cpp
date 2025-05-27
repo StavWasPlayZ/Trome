@@ -4,10 +4,17 @@ RoomManager::RoomManager(const IDatabase &database) :
     m_database(database)
 {}
 
-void RoomManager::createRoom(LoggedUser &admin, const RoomData &data)
+Room &RoomManager::createRoom(LoggedUser &admin, const RoomData &data)
 {
-    Room room(admin, data, this->m_database);
-    this->m_rooms.emplace(data.id, room);
+    const unsigned int roomId = Room::generateId();
+
+    const auto [entry, _] = this->m_rooms.emplace(
+        std::piecewise_construct,
+        std::forward_as_tuple(roomId),
+        std::forward_as_tuple(roomId, admin, data, this->m_database, RoomStatus::WAITING)
+    );
+
+    return entry->second;
 }
 
 void RoomManager::deleteRoom(const int roomID)
@@ -24,12 +31,36 @@ RoomStatus RoomManager::getRoomStatus(const int roomID) const
         return RoomStatus::NOT_FOUND;
     }
 
-    return room.value()->getData().status;
+    return room.value()->getStatus();
 }
 
-std::vector<Room*> RoomManager::getRooms() const
+std::vector<Room*> RoomManager::getRooms()
 {
     std::vector<Room*> data;
+
+    for (auto& pair : this->m_rooms)
+    {
+        data.push_back(&pair.second);
+    }
+
+    return data;
+}
+
+std::optional<Room*> RoomManager::getRoom(const int roomID)
+{
+    const auto it = m_rooms.find(roomID);
+
+    if (it != m_rooms.end())
+    {
+        return &it->second;
+    }
+
+    return std::nullopt;
+}
+
+std::vector<const Room*> RoomManager::getRooms() const
+{
+    std::vector<const Room*> data;
 
     for (const auto& pair : this->m_rooms)
     {
@@ -39,9 +70,10 @@ std::vector<Room*> RoomManager::getRooms() const
     return data;
 }
 
-std::optional<Room*> RoomManager::getRoom(const int roomID) const
+std::optional<const Room*> RoomManager::getRoom(const int roomID) const
 {
     const auto it = m_rooms.find(roomID);
+
     if (it != m_rooms.end())
     {
         return &it->second;

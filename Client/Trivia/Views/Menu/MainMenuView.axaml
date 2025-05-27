@@ -9,6 +9,10 @@
              x:Class="Trivia.Views.Menu.MainMenuView"
              x:DataType="vmmenu:MainMenuViewModel">
 
+    <Design.DataContext>
+        <vmmenu:MainMenuViewModel/>
+    </Design.DataContext>
+    
     <Panel>
         <Panel.Background>
             <ImageBrush Source="avares://Trivia/Assets/blobs-l-b49caff1a7941d98b60902da64956ad85dfbe4f9.png"
@@ -98,7 +102,7 @@
             
             <!-- TODO: Maybe add SVG border -->
             
-            <Button Command="{Binding SignOutCommand}"
+            <Button Command="{Binding LogOutCommand}"
                     Padding="0"
                     Theme="{StaticResource EmptyButton}">
                 
@@ -126,7 +130,8 @@
                 
                 <controls:Underlined>
                     <TextBlock
-                        FontSize="30">Username</TextBlock>
+                        FontSize="30"
+                        Text="{Binding AppService.SessionUser.Username}"/>
                 </controls:Underlined>
                 
             </Button>

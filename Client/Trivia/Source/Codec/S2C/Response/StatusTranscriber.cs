@@ -1,0 +1,46 @@
+using System;
+using System.Collections.Generic;
+using Trivia.Codec.S2C.Response.Packets;
+
+namespace Trivia.Codec.S2C.Response;
+
+public static class StatusTranscriber
+{
+    private static readonly Dictionary<object, Func<ErrorResponse, string>> Transcriptions = new()
+    {            
+        [ErrorStatus.FailedInvalidCredentials] = _ =>
+            "Invalid username or password. Please try again.",
+        [ErrorStatus.FailedAlreadyLoggedIn] = _ =>
+            "User is already logged in. Log out of the other game session and try again.",
+        [ErrorStatus.Internal] = _ =>
+            "The server faulted",
+        
+        
+        [ErrorStatus.FailedInvalidArgument] = response =>
+            $"Invalid {response.Context} format",
+        [ErrorStatus.FailedUsernameTaken] = _ =>
+            "Username Taken",
+        
+        
+        [ErrorStatus.IllegalRequest] = response =>
+            $"Illegal request: {response.Context}",
+        [ErrorStatus.ServerUnimplemented] = response =>
+            $"Unimplemented server request used: {response.Context}",
+        
+        
+        [ErrorStatus.FailedNotLoggedIn] = _ =>
+            "The user isn't logged in",
+        
+        [ErrorStatus.ErrorUnknownResource] = _ =>
+            "The requested resource could not be found"
+    };
+
+    public static string Transcribe(this ErrorResponse response)
+    {
+        return (
+            Transcriptions.TryGetValue(response.Status, out var transcriber)
+                ? transcriber(response)
+                : "Untranscribable error occured"
+        ).ToUpper();
+    }
+}

@@ -1,13 +1,17 @@
 #pragma once
 
-#include "infrastructure/OBuffer.h"
-
+struct ProtocolResponse;
 class IRequestHandler;
 
 struct RequestResult
 {
-    RequestResult(const OBuffer& response, const IRequestHandler* newHandler);
+    RequestResult(const ProtocolResponse* response, const IRequestHandler* newHandler);
+    ~RequestResult();
 
-    const OBuffer response;
+    const ProtocolResponse* response;
+
+    /**
+     * NOTE: THIS RESOURCE MUST BE FREED
+     */
     const IRequestHandler* const newHandler;
 };

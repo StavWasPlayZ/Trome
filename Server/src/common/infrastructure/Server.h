@@ -23,6 +23,12 @@ public:
 
 	bool isRunning() const;
 
+
+    LoginManager& getLoginManager();
+    RequestHandlerFactory& getRequestHandlerFactory();
+    RoomManager& getRoomManager();
+
+
 private:
     Server();
 

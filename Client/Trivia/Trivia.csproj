@@ -50,7 +50,7 @@
         <DependentUpon>SignupView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\Menu\JoinMenuView.axaml.cs">
+      <Compile Update="Views\Menu\JoinRoomMenuView.axaml.cs">
         <DependentUpon>JoinMenuView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>

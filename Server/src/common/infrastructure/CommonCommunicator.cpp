@@ -9,17 +9,23 @@
 #include "exception/SocketDisconnectionException.h"
 #include "exception/SocketTimeoutException.h"
 
-#include "handler/codec/s2c/Response.h"
+#include "handler/codec/s2c/response/Response.h"
 
-#include "handler/codec/c2s/JsonRequestPacketDeserializer.h"
-#include "handler/codec/s2c/JsonResponsePacketSerializer.h"
+#include "../handler/codec/c2s/request/JsonRequestPacketDeserializer.h"
+#include "../handler/codec/s2c/response/JsonResponsePacketSerializer.h"
+#include "handler/codec/s2c/notification/NotificationPacketSerializer.h"
+
+#ifdef _WIN32
+#else
+#include <arpa/inet.h>
+#endif
 
 
-CommonCommunicator::CommonCommunicator(const SOCKET defaultSocket, const RequestHandlerFactory& handlerFactory) :
+CommonCommunicator::CommonCommunicator(const SOCKET defaultSocket, const RequestHandlerFactory *const handlerFactory) :
     _running(false),
     _serverSockAddr({}),
     m_serverSocket(defaultSocket),
-    m_handlerFactory(handlerFactory)
+    m_handlerFactory(*handlerFactory)
 {}
 
 CommonCommunicator::~CommonCommunicator()
@@ -50,12 +56,12 @@ void CommonCommunicator::close()
     this->_disconnectedClientConditionalVariable.notify_all();
 
     // Wait for 'em to close
-    this->m_clients_mutex.lock();
+    this->m_clientsMutex.lock();
     for (const auto& client : this->m_clients)
     {
         client.second->getThread().wait();
     }
-    this->m_clients_mutex.unlock();
+    this->m_clientsMutex.unlock();
 
     platformClose();
 
@@ -75,6 +81,9 @@ void CommonCommunicator::commonSetup()
 
     // The timeout for the recv method
     // Set in place to allow refreshing the value of _running.
+    //TODO: Make it so that the client is required to send a ping every RECV_REFRESH_TIMEOUT_MS,
+    // otherwise disconnect.
+    // This helps against the phantom ports issues of C#.
     setRecvTimeout(RECV_REFRESH_TIMEOUT_MS);
 
     // Set server address information
@@ -103,19 +112,34 @@ void CommonCommunicator::commonSetup()
 
 void CommonCommunicator::registerClient(const SOCKET socket)
 {
+    std::unique_lock clientsLock(this->m_clientsMutex);
     Client* client = this->m_clients[socket] = new Client(
         socket,
         this->m_handlerFactory.createLoginRequestHandler()
     );
+    clientsLock.unlock();
 
     client->setAndStartThread(
-        [this, socket]()
+        [this, &client]()
         {
-            _clientThreadFunc(socket);
+            _clientThreadFunc(*client);
         }
     );
 
-    std::cout << "Connection accepted from " + std::to_string(socket) << std::endl;
+#ifdef _WIN32
+    std::cout << "Connection accepted from " + std::to_string(socket);
+#else
+    // Get the IP of the remote to display it
+    socklen_t addrLen = sizeof(this->_serverSockAddr);
+    char ipStr[INET_ADDRSTRLEN] = {};
+
+    if (getpeername(socket, reinterpret_cast<sockaddr*>(&this->_serverSockAddr), &addrLen) == 0)
+    {
+        inet_ntop(AF_INET, &this->_serverSockAddr.sin_addr, ipStr, sizeof(ipStr));
+    }
+
+    std::cout << "Connection accepted from " + std::to_string(socket) << " (" << ipStr << ")" << std::endl;
+#endif
 }
 
 void CommonCommunicator::startServerThreads()
@@ -139,24 +163,26 @@ void CommonCommunicator::startServerThreads()
     std::cout << "Listening on port " << PORT << "..." << std::endl;
 }
 
-void CommonCommunicator::sendMsg(const SOCKET socket, const unsigned char* buffer, const int length) const
+void CommonCommunicator::sendMsg(Client& client, const OBuffer& buffer) const
 {
     bool didError;
 
+    std::unique_lock<std::mutex> writerLock = client.acquireSocketWriterLock();
     try
     {
         // Casting for crybaby Windows
         // ReSharper disable once CppRedundantCastExpression
-        didError = send(socket, (char*)buffer, length, 0) == -1;
+        didError = send(client.socket, reinterpret_cast<const char *>(buffer.contents), buffer.length, 0) == -1;
     }
     catch (...)
     {
         didError = true;
     }
+    writerLock.unlock();
 
     if (didError)
     {
-        throwPlatformError("Failed to send message to client socket " + std::to_string(socket));
+        throwPlatformError("Failed to send message to client socket " + std::to_string(client.socket));
         throw std::exception();
     }
 }
@@ -183,13 +209,13 @@ void CommonCommunicator::_serverThreadFunc()
     close();
 }
 
-void CommonCommunicator::_clientThreadFunc(const SOCKET socket)
+void CommonCommunicator::_clientThreadFunc(Client& client)
 {
     while (this->_running)
     {
         try
         {
-            _handleClient(socket);
+            _handleClient(client);
         }
         catch (const SocketTimeoutException&)
         {
@@ -208,70 +234,78 @@ void CommonCommunicator::_clientThreadFunc(const SOCKET socket)
         }
     }
 
-    _enqueueDisconnectClient(socket);
+    client.handleDisconnecting();
+
+    _enqueueDisconnectClient(client.socket);
 }
 
 //ANCHOR Actual client processing function.
-void CommonCommunicator::_handleClient(const SOCKET socket) const
+void CommonCommunicator::_handleClient(Client& client)
 {
-    const RequestInfo info = _waitForClientRequest(socket);
+    const RequestInfo info = _waitForClientRequest(client);
 
-    Client* const client = this->m_clients.at(socket);
-    const IRequestHandler* const handler = client->requestHandler;
-
-    OBuffer responseBuffer;
+    std::unique_lock<std::mutex> handlerLock = client.acquireRequestHandlerLock();
+    const IRequestHandler *const handler = client.getRequestHandler();
 
     if (!handler->isRequestRelevant(info))
     {
-        responseBuffer = JsonResponsePacketSerializer::serializeResponse(
-            ErrorResponse(ErrorStatus::ILLEGAL_REQUEST, "Illegal request")
-        );
+        _dispatchResponse(client, ErrorResponse(ErrorStatus::ILLEGAL_REQUEST, info.id));
+        return;
     }
-    else
+
+    const ProtocolRequest *request = nullptr;
+    try
     {
-        const RequestResult* result = nullptr;
-
-        const ProtocolRequest* const request = ProtocolRequest::fromRequest(info);
-
-        try
-        {
-            result = new RequestResult(handler->handleRequest(info, *request));
-        }
-        catch (const std::exception &)
-        {
-            delete request;
-            delete handler;
-            throw;
-        }
-
-        delete request;
-
-        // The Handler did its job well.
-        // 🫡
-        delete handler;
-
-        responseBuffer = result->response;
-        client->requestHandler = result->newHandler;
-
-        delete result;
+        request = ProtocolRequest::fromRequest(info);
+    } catch (const std::invalid_argument &)
+    {
+        _dispatchResponse(client, ErrorResponse(ErrorStatus::ILLEGAL_REQUEST, info.id));
+        return;
     }
 
-    sendMsg(socket, responseBuffer.contents, responseBuffer.length);
-    responseBuffer.freeContents();
+    const RequestResult *result = nullptr;
+
+    try
+    {
+        result = new RequestResult(handler->handleRequest(info, *request));
+    }
+    catch (const std::exception &)
+    {
+        delete request;
+        throw;
+    }
+
+    delete request;
+
+    // The Handler did its job well.
+    // 🫡
+    delete handler;
+    client.setRequestHandlerUnsafe(result->newHandler);
+    handlerLock.unlock();
+
+    _dispatchResponse(client, *result->response);
+    delete result;
 }
 
-RequestInfo CommonCommunicator::_waitForClientRequest(const SOCKET socket) const
+void CommonCommunicator::_dispatchResponse(Client &client, const ProtocolResponse &response) const
+{
+    sendMsg(client, JsonResponsePacketSerializer::serializeResponse(response));
+}
+
+RequestInfo CommonCommunicator::_waitForClientRequest(const Client &client)
 {
     unsigned char reqCode;
-    receiveMsg(socket, &reqCode, SIZE_CODE);
+    receiveMsg(client.socket, &reqCode, SIZE_CODE);
 
     int jsonLen;
-    receiveMsg(socket, &jsonLen, SIZE_JSON_LEN);
+    receiveMsg(client.socket, &jsonLen, SIZE_JSON_LEN);
     jsonLen = ntohl(jsonLen) * sizeof(char);
 
+    // We do this check here too to validify whether the json MAY be read.
+    // This is NOT a part of parsing.
     if (jsonLen <= 0)
     {
-        throw std::runtime_error("Invalid JSON length");
+        throw std::runtime_error("Invalid JSON length: Reading phase");
     }
 
     const RequestInfo* info = nullptr;
@@ -280,10 +314,12 @@ RequestInfo CommonCommunicator::_waitForClientRequest(const SOCKET socket) const
 
     try
     {
-        receiveMsg(socket, data, jsonLen);
+        receiveMsg(client.socket, data, jsonLen);
+
+        std::lock_guard lock(this->m_clientsMutex);
 
         info = new RequestInfo(
-            *this->m_clients.at(socket),
+            *this->m_clients.at(client.socket),
 
             static_cast<RequestCode>(reqCode),
             std::chrono::system_clock::to_time_t(
@@ -292,7 +328,7 @@ RequestInfo CommonCommunicator::_waitForClientRequest(const SOCKET socket) const
             JsonRequestPacketDeserializer::readJson(data, jsonLen)
         );
     }
-    catch (const std::exception& e)
+    catch (const std::exception &)
     {
         delete[] data;
         throw;
@@ -308,12 +344,15 @@ RequestInfo CommonCommunicator::_waitForClientRequest(const SOCKET socket) const
 
 void CommonCommunicator::_clientCleanerThreadFunc()
 {
-	std::unique_lock lock(this->_disconnectedClient_mutex);
+	std::unique_lock lock(this->_disconnectedClientCV_mutex);
 	
 	while (this->_running)
 	{
-		// Waits for _enqueueDisconnectClient to be called
-		this->_disconnectedClientConditionalVariable.wait(lock);
+	    if (this->_disconnectingClients.empty())
+	    {
+		    // Wait for _enqueueDisconnectClient to be called
+		    this->_disconnectedClientConditionalVariable.wait(lock);
+	    }
 
 		_freeDisconnectedClients();
 	}
@@ -332,8 +371,8 @@ void CommonCommunicator::_enqueueDisconnectClient(const SOCKET socket)
 
 void CommonCommunicator::_freeDisconnectedClients()
 {
-	this->_disconnectingClients_mutex.lock();
-	this->m_clients_mutex.lock();
+    std::unique_lock disconnectingClientsLock(this->_disconnectingClients_mutex);
+    std::unique_lock clientsLock(this->m_clientsMutex);
 
 	for (const auto& clientSock : this->_disconnectingClients)
 	{
@@ -341,8 +380,8 @@ void CommonCommunicator::_freeDisconnectedClients()
 		m_clients.erase(clientSock);
 	}
 
-	this->m_clients_mutex.unlock();
+	clientsLock.unlock();
 	
 	this->_disconnectingClients.clear();
-	this->_disconnectingClients_mutex.unlock();
+	disconnectingClientsLock.unlock();
 }

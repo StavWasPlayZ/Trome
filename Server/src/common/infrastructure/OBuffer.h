@@ -1,5 +1,7 @@
 #pragma once
 
+// This is for size_t
+// ReSharper disable once CppUnusedIncludeDirective
 #include <cstddef>
 
 /**
@@ -8,9 +10,7 @@
 struct OBuffer
 {
     OBuffer(const unsigned char* contents, size_t length);
-    OBuffer();
-
-    void freeContents();
+    ~OBuffer();
 
     const unsigned char* contents;
     size_t length;

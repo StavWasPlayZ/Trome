@@ -4,9 +4,9 @@
 
 #include "LoggedUser.h"
 
+#include "../handler/codec/c2s/request/Request.h"
+#include "../handler/codec/s2c/response/Response.h"
 #include "infrastructure/db/IDatabase.h"
-#include "handler/codec/s2c/Response.h"
-#include "handler/codec/c2s/Request.h"
 
 class LoginManager
 {
@@ -15,20 +15,30 @@ public:
 
 	/**
 	 * Signs up a new user, then registers them as logged in.
+	 *
+	 * NOTE: THE RETURNED RESOURCE MUST BE FREED
 	 */
-	SignupResponse signup(const RequestInfo& context, const SignupRequest& request);
+	ProtocolResponse* signup(const RequestInfo &info, const SignupRequest &request);
 
 	/**
 	 * Registers the provided user as logged in, provided their credentials match.
+	 *
+	 * NOTE: THE RETURNED RESOURCE MUST BE FREED
 	 */
-	LoginResponse login(const RequestInfo& context, const LoginRequest& request);
+	ProtocolResponse* login(const RequestInfo &info, const LoginRequest &request);
 
 	/**
 	 * Unregisters the user as being signed in.
+	 *
+	 * Returns: True if the user has successfully logged out, or false if they
+	 * weren't logged in to begin with.
 	 */
-	LogoutResponse logout(const RequestInfo& context, const std::string& username);
+	bool logout(const Client &client);
 
+	bool isLoggedIn(const Client &client) const;
     LoggedUser& getUserByClient(const Client& client) const;
+
+    bool isLoggedIn(unsigned int id) const;
 
 private:
 	const IDatabase& m_database;
@@ -37,8 +47,11 @@ private:
 	 * Mapping as such because the keys are based, for some reason, on usernames only.
 	 * 
 	 * TODO: Ask if it may be done with IDs.
+	 *
+	 * (...Or not because we do it anyways below anyways.)
 	 */
 	std::unordered_map<std::string, LoggedUser> m_loggedUsers;
 
-    std::unordered_map<const Client*, LoggedUser*> clientToLoggedUser;
+    std::unordered_map<unsigned int, LoggedUser*> m_loggedUsersById;
+    std::unordered_map<const Client*, LoggedUser*> m_clientToLoggedUser;
 };

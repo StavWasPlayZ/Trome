@@ -2,32 +2,23 @@
 
 #include <string>
 
-enum class RoomStatus : unsigned int
-{
-    WAITING = 0,
-    PLAYING = 1,
-    NOT_FOUND = 2
-};
-
+/**
+ * Represents all fields of a Room customizable by its admin
+ */
 struct RoomData
 {
     RoomData(
         const std::string &name,
-        const RoomStatus &status,
         int maxPlayers,
         int timePerQuestion,
         int questionsCount
     );
 
-    std::string name;
-    unsigned int id;
+    static RoomData ofDefaults();
 
-    RoomStatus status;
+    std::string name;
 
     int maxPlayers;
-    int timePerQuestion;
+    int timePerQuestionSecs;
     int questionsCount;
-
-private:
-    static unsigned int globalId;
 };

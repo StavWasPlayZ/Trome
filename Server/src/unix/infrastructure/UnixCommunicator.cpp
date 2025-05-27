@@ -5,19 +5,24 @@
 #include "exception/SocketDisconnectionException.h"
 #include "exception/SocketTimeoutException.h"
 
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <unistd.h>
 #include <errno.h>
+#include <fcntl.h>
+#include <sys/socket.h>
+#include <unistd.h>
 
-UnixCommunicator::UnixCommunicator(const RequestHandlerFactory &handlerFactory) :
+UnixCommunicator::UnixCommunicator(const RequestHandlerFactory *const handlerFactory) :
     CommonCommunicator(0, handlerFactory)
 {}
 
-UnixCommunicator &UnixCommunicator::getInstance(const RequestHandlerFactory& handlerFactory)
+UnixCommunicator &UnixCommunicator::getAndInitiateInstance(const RequestHandlerFactory *const handlerFactory)
 {
+    // ReSharper disable once CppDFANullDereference
     static UnixCommunicator instance(handlerFactory);
     return instance;
+}
+UnixCommunicator &UnixCommunicator::getInstance()
+{
+    return getAndInitiateInstance(nullptr);
 }
 
 bool UnixCommunicator::isValidSocket(const int result) const
@@ -60,7 +65,7 @@ void UnixCommunicator::acceptClients()
     socklen_t addrLen = sizeof(this->_serverSockAddr);
     //NOTE: When closing with closesocket in Windows, this immediately terminates the accept operation.
     // It is not the same under Unix.
-    const int newSocket = accept(this->m_serverSocket, (struct sockaddr*)&_serverSockAddr, &addrLen);
+    const int newSocket = accept(this->m_serverSocket, reinterpret_cast<struct sockaddr *>(&_serverSockAddr), &addrLen);
 
     if (newSocket < 0)
     {

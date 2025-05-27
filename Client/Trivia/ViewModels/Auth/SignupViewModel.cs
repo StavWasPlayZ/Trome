@@ -2,17 +2,25 @@
 using System.ComponentModel.DataAnnotations;
 using System.Reactive;
 using ReactiveUI;
+using Trivia.Codec.C2S.Request.Packets;
+using Trivia.Codec.S2C.Response.Packets;
 
 namespace Trivia.ViewModels.Auth;
 
 public class SignupViewModel : AuthViewModel
 {
     public ReactiveCommand<Unit, IRoutableViewModel> ToLoginCommand { get; }
+    public ReactiveCommand<Unit, Unit> SignupCommand { get; }
     
     public SignupViewModel(IScreen hostScreen) : base(hostScreen)
     {
         ToLoginCommand = NavigateAndResetReactiveCommand(
             () => new LoginViewModel(hostScreen)
+        );
+        
+        SignupCommand = ReactiveCommand.Create(
+            DoSignup,
+            this.WhenAnyValue(vm => vm.MayAuthenticate)
         );
 
         this
@@ -27,8 +35,33 @@ public class SignupViewModel : AuthViewModel
             .Subscribe(_ => UpdateMayAuthenticate());
     }
 
+    public SignupViewModel()
+    {
+        ToLoginCommand = NoOpNavCommand;
+        SignupCommand = NoOpCommand;
+    }
+    
 
-    protected override void UpdateMayAuthenticate()
+    private void DoSignup()
+    {
+        Comm.SendRequest<SignupResponse>(
+            new SignupRequest(
+                Username!,
+                Password!,
+                Email!,
+                Phone!.Replace(" ", ""),
+                //TODO: Re-add Address and Birthdate fields; Add scroller in View.
+                Address,
+                "17/06/2008"
+            ),
+            
+            HandleAuthResponse,
+            HandleErrorResponse
+        );
+    }
+
+
+    private void UpdateMayAuthenticate()
     {
         DoPasswordsMatch = Password == RepPassword;
         
@@ -52,15 +85,6 @@ public class SignupViewModel : AuthViewModel
     }
     
     
-    private string? _username;
-
-    [Required]
-    public string? Username
-    {
-        get => _username;
-        set => this.RaiseAndSetIfChanged(ref _username, value);
-    }
-    
     private string? _email;
 
     [Required]
@@ -69,15 +93,6 @@ public class SignupViewModel : AuthViewModel
     {
         get => _email;
         set => this.RaiseAndSetIfChanged(ref _email, value);
-    }
-    
-    private string? _password;
-
-    [Required]
-    public string? Password
-    {
-        get => _password;
-        set => this.RaiseAndSetIfChanged(ref _password, value);
     }
     
     private string? _repPassword;

@@ -4,10 +4,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:Trivia.Controls"
              xmlns:game="clr-namespace:Trivia.ViewModels.Game"
+             xmlns:listEntries="clr-namespace:Trivia.Controls.ListEntries"
              mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
              x:CompileBindings="True"
              x:Class="Trivia.Views.Game.JoinedRoomView"
              x:DataType="game:JoinedRoomViewModel">
+    
+    <Design.DataContext>
+        <game:JoinedRoomViewModel/>
+    </Design.DataContext>
+    
     <Panel>
         <Panel.Background>
             <ImageBrush Source="avares://Trivia/Assets/drool-d-b1608556d649b5b943136ecc0df0fe1bc7ff644f.png"
@@ -18,7 +24,20 @@
               Margin="35,35">
             
             <controls:TriviaUsersList Grid.Column="0">
-                <ListBox ItemsSource="gggggggggg"/>
+                <ListBox ItemsSource="{Binding Players}">
+                    
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <listEntries:RoomUserListEntry User="{Binding}"
+                                                           IsCurrentUser="{Binding IsCurrentUser}"
+                                                           IsAdmin="{Binding IsAdmin}"
+                                                           IsEmptySlot="{Binding
+                                                               Converter={x:Static ObjectConverters.IsNull}
+                                                           }"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    
+                </ListBox>
             </controls:TriviaUsersList>
 
             <Border Grid.Column="2"
@@ -30,9 +49,8 @@
                     <TextBlock Grid.Row="0"
                                FontSize="65"
                                HorizontalAlignment="Center"
-                               Foreground="#4d264a">
-                        ROOM NAME
-                    </TextBlock>
+                               Foreground="#4d264a"
+                               Text="{Binding Data.Name}"/>
                     
                     <Grid Grid.Row="1"
                           RowDefinitions="50, 0, 50, 0, 50"
@@ -60,9 +78,8 @@
                         </TextBlock>
                         
                         <TextBlock Grid.Row="0"
-                                    Grid.Column="2">
-                            20
-                        </TextBlock>
+                                    Grid.Column="2"
+                                    Text="{Binding Data.QuestionsCount}"/>
                         
                         <TextBlock Grid.Row="2"
                                    Grid.Column="0"
@@ -71,9 +88,8 @@
                             SEC/Q
                         </TextBlock>
                         <TextBlock Grid.Row="2"
-                                   Grid.Column="2">
-                            15
-                        </TextBlock>
+                                   Grid.Column="2"
+                                   Text="{Binding Data.TimePerQuestionSecs}"/>
                         
                         <TextBlock Grid.Row="4"
                                    Grid.Column="0"
@@ -82,9 +98,8 @@
                             PLAYERS
                         </TextBlock>
                         <TextBlock Grid.Row="4"
-                                   Grid.Column="2">
-                            10
-                        </TextBlock>
+                                   Grid.Column="2"
+                                   Text="{Binding Data.MaxPlayers}"/>
                     </Grid>
                     
 
@@ -93,7 +108,7 @@
                           Margin="50 0">
                             
                         <Button Grid.Column="0"
-                                Command="{Binding NavigateBackCommand}"
+                                Command="{Binding LeaveRoomCommand}"
                                 
                                 VerticalAlignment="Stretch"
                                 Width="90"

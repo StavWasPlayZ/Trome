@@ -8,6 +8,11 @@
              x:CompileBindings="True"
              x:Class="Trivia.Views.Auth.SignupView"
              x:DataType="auth:SignupViewModel">
+    
+    <Design.DataContext>
+        <auth:SignupViewModel/>
+    </Design.DataContext>
+    
     <Panel>
         <Panel.Background>
             <ImageBrush Source="avares://Trivia/Assets/blobs-l-b49caff1a7941d98b60902da64956ad85dfbe4f9.png"
@@ -17,15 +22,14 @@
         <controls:TriviaMenuPanel Title="SIGNUP"
                                   DisplayBackButton="False"
                                   VerticalAlignment="Center"
-                                  HorizontalAlignment="Center">
+                                  HorizontalAlignment="Center"
+                                  Width="700">
             
-            <StackPanel Margin="40,40,40,10"
-                        HorizontalAlignment="Center"
+            <StackPanel Margin="50,40,50,10"
                         Spacing="20">
                 
-                <Grid RowDefinitions="55, 55, 55, 55, 55, 55"
+                <Grid RowDefinitions="55, 55, 55, 55, 55"
                       ColumnDefinitions="Auto, *"
-                      HorizontalAlignment="Center"
                       Margin="10"
                       Classes="t-input-fields-container">
                     
@@ -118,20 +122,27 @@
                                        Text="{Binding Phone}"/>
                         
                     </controls:TriviaTextBox>
+                   
+                    <!--NOTE: Address field is causing unnecessary overflow. -->
+                    <!-- Too lazy to make it a scrollable. -->
                     
-                    <TextBlock Grid.Row="5"
-                               Grid.Column="0">
-                        ADDRESS
-                    </TextBlock>
-                    <controls:TriviaTextBox Grid.Row="5"
-                               Grid.Column="1">
-                        <TextBox Text="{Binding Address}"/>
-                    </controls:TriviaTextBox>
+                    <!-- <TextBlock Grid.Row="5" -->
+                    <!--            Grid.Column="0"> -->
+                    <!--     ADDRESS -->
+                    <!-- </TextBlock> -->
+                    <!-- <controls:TriviaTextBox Grid.Row="5" -->
+                    <!--            Grid.Column="1"> -->
+                    <!--     <TextBox Text="{Binding Address}"/> -->
+                    <!-- </controls:TriviaTextBox> -->
                     
                 </Grid>
+                
+                <TextBlock Classes="warning-display"
+                           IsVisible="{Binding !!ErrorMessage}"
+                           Text="{Binding ErrorMessage}"/>
 
                 <StackPanel Spacing="5">
-                    <controls:TriviaButton Command="{Binding AuthenticateCommand}"
+                    <controls:TriviaButton Command="{Binding SignupCommand}"
                                            HorizontalAlignment="Center"
                                            Text="SIGNUP"
                                            Background="#362034"
