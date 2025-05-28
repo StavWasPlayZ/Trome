@@ -44,14 +44,13 @@ UserQuestion Game::getQuestionForUser(const LoggedUser &user) const
     );
 }
 
-UserQuestion Game::generateNewQuestionForUser(const LoggedUser &user)
+bool Game::generateNewQuestionForUser(const LoggedUser &user)
 {
     GameData &data = this->m_playersData.at(&user);
 
-    data.currentQuestionIndex++;
-    data.rotateAnswers();
+    data.nextQuestion();
 
-    return getQuestionForUser(user);
+    return data.currentQuestionIndex < this->m_questions.size();
 }
 
 void Game::initPlayersData()

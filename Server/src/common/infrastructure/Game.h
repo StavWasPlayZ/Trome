@@ -26,7 +26,12 @@ public:
     void endGame() const;
 
     UserQuestion getQuestionForUser(const LoggedUser& user) const;
-    UserQuestion generateNewQuestionForUser(const LoggedUser& user);
+    /**
+     * Returns true whether a new question was generated, false otherwise.
+     *
+     * A question may not be generated if the user has finished answering all set questions.
+     */
+    bool generateNewQuestionForUser(const LoggedUser& user);
 
 private:
     const IDatabase &m_database;

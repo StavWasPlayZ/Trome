@@ -11,7 +11,14 @@ struct GameData
 {
     GameData();
 
+    void rotateAnswers();
+    void updateTimeSinceQuestionRoll();
+
+    void nextQuestion();
+
+
     size_t currentQuestionIndex;
+    std::chrono::milliseconds timeSinceQuestionRoll;
 
     int correctAnswerCount;
     int points;
@@ -23,5 +30,13 @@ struct GameData
      */
     int answersRotation;
 
-    void rotateAnswers();
+private:
+    void calculateRoundPoints();
+
+    /**
+     * Sets and updates both GameData::roundTime and GameData::averageAnswerTime.
+     */
+    void calculateRoundTime();
+
+    std::chrono::milliseconds roundTime;
 };
