@@ -1,3 +1,3 @@
 ﻿namespace Trivia.Codec.S2C.Response.Packets;
 
-public record SubmitAnswerResponse() : ProtocolResponse;
+public readonly record struct SubmitAnswerResponse : IProtocolResponse;

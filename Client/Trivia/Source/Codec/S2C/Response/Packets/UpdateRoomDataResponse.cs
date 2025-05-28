@@ -1,4 +1,4 @@
 ﻿
 namespace Trivia.Codec.S2C.Response.Packets;
 
-public record UpdateRoomDataResponse : ProtocolResponse;
+public readonly record struct UpdateRoomDataResponse : IProtocolResponse;

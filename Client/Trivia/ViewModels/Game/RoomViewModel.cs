@@ -10,9 +10,17 @@ using Trivia.Models.User;
 namespace Trivia.ViewModels.Game;
 
 public abstract class RoomViewModel : PageViewModel
-{    
-    public Room Room { get; }
+{
     public ObservableCollection<RoomUserModel?> Players { get; }
+    
+    private Room _room;
+
+    public Room Room
+    {
+        get => _room;
+        set => this.RaiseAndSetIfChanged(ref _room, value);
+    }
+
 
     /// <summary>
     /// </summary>
@@ -24,7 +32,7 @@ public abstract class RoomViewModel : PageViewModel
     /// </param>
     protected RoomViewModel(IScreen hostScreen, Room room, List<User>? players = null) : base(hostScreen)
     {
-        Room = room;
+        _room = room;
 
         var isRoomAdmin = room.Admin == AppService.SessionUser!;
         
@@ -56,7 +64,7 @@ public abstract class RoomViewModel : PageViewModel
 
     protected RoomViewModel()
     {
-        Room = Room.CreateMockRoom(AppService.SessionUser!);
+        _room = Room.CreateMockRoom(AppService.SessionUser!);
         
         Players = new ObservableCollection<RoomUserModel?>(
             Enumerable.Range(1, 10)
@@ -94,7 +102,11 @@ public abstract class RoomViewModel : PageViewModel
     private void HandlePlayerJoined(PlayerJoinedRoomNotification playerJoinedRoomNotif)
     {
         Players[Room.PlayersCount] = RoomUserModel.FromUser(playerJoinedRoomNotif.Player, false, false);
-        Room.PlayersCount++;
+        
+        Room = Room with
+        {
+            PlayersCount = _room.PlayersCount + 1
+        };
     }
 
     private void HandlePlayerLeft(PlayerLeftRoomNotification playerLeftRoomNotif)
@@ -110,6 +122,9 @@ public abstract class RoomViewModel : PageViewModel
         
         Players.Add(null);
         
-        Room.PlayersCount--;
+        Room = Room with
+        {
+            PlayersCount = _room.PlayersCount - 1
+        };
     }
 }

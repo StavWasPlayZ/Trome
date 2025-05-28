@@ -4,7 +4,7 @@ namespace Trivia.Codec.S2C.Notification;
 
 public static class NotificationDeserializer
 {
-    public static ProtocolNotification? Deserialize(NotificationCode code, string json)
+    public static IProtocolNotification? Deserialize(NotificationCode code, string json)
     {
         return code switch
         {

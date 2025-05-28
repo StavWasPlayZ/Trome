@@ -2,6 +2,6 @@ using Trivia.Models.Raw;
 
 namespace Trivia.Codec.S2C.Notification.Packets;
 
-public record PlayerJoinedRoomNotification(
+public readonly record struct PlayerJoinedRoomNotification(
     User Player
-) : ProtocolNotification;
+) : IProtocolNotification;

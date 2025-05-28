@@ -67,13 +67,6 @@ void Room::removeUser(LoggedUser &user)
     m_users.erase(it);
     user.removeFromRoom();
 
-
-    // Release all other players from the RoomMemberRequestHandler state
-    for (const LoggedUser* player : getAllUsers())
-    {
-        player->getClient().setRequestHandlerSafe(new MenuRequestHandler(m_handlerFactory));
-    }
-
     if (user == getAdmin())
     {
         handleAdminLeft(user);
@@ -149,6 +142,7 @@ void Room::handleAdminLeft(const LoggedUser &) const
     // Also disconnect all other players
     for (LoggedUser* player : getAllUsers())
     {
+        player->getClient().setRequestHandlerSafe(new MenuRequestHandler(m_handlerFactory));
         player->removeFromRoom();
     }
 

@@ -2,6 +2,9 @@
 
 namespace Trivia.Codec.C2S.Request.Packets;
 
-public record UpdateRoomDataRequest(
+public readonly record struct UpdateRoomDataRequest(
     RoomData Data
-) : ProtocolRequest(RequestCode.UpdateRoomData);
+) : IProtocolRequest
+{
+    public RequestCode Code { get; init; } = RequestCode.UpdateRoomData;
+}

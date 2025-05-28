@@ -41,7 +41,7 @@ public class LoginViewModel : AuthViewModel
     {
         Comm.SendRequest<LoginResponse>(
             new LoginRequest(Username!, Password!),
-            HandleAuthResponse,
+            response => HandleAuthResponse(response),
             HandleErrorResponse
         );
     }

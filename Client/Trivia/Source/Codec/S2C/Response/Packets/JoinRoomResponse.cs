@@ -1,9 +1,9 @@
-using System.Collections.Generic;
+using System.Collections.Immutable;
 using Trivia.Models.Raw;
 
 namespace Trivia.Codec.S2C.Response.Packets;
 
-public record JoinRoomResponse(
+public readonly record struct JoinRoomResponse(
     Room Room,
-    List<User> Players
-) : ProtocolResponse;
+    ImmutableList<User> Players
+) : IProtocolResponse;

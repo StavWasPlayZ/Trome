@@ -4,10 +4,10 @@ using Newtonsoft.Json;
 
 namespace Trivia.Codec.C2S.Request;
 
-public abstract record ProtocolRequest(
-    RequestCode Code
-)
+public interface IProtocolRequest
 {
+    RequestCode Code { get; init; }
+    
     public byte[] Serialize()
     {
         return SerializeToProtocol(

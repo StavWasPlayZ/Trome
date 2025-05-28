@@ -2,6 +2,6 @@
 
 namespace Trivia.Codec.S2C.Response.Packets;
 
-public record GetQuestionResponse(
+public readonly record struct GetQuestionResponse(
     Question Question
-) : ProtocolResponse;
+) : IProtocolResponse;

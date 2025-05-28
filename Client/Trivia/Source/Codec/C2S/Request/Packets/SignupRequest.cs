@@ -1,10 +1,13 @@
 namespace Trivia.Codec.C2S.Request.Packets;
 
-public record SignupRequest(
+public readonly record struct SignupRequest(
     string Username,
     string Password,
     string Email,
     string Phone,
     string? Address,
     string Birthdate
-) : ProtocolRequest(RequestCode.Signup);
+) : IProtocolRequest
+{
+    public RequestCode Code { get; init; } = RequestCode.Signup;
+}

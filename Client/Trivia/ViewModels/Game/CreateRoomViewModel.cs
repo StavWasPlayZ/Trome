@@ -60,13 +60,16 @@ public class CreateRoomViewModel : RoomViewModel
 
     private void SendRoomData()
     {
-        Room.Data = new RoomData
+        Room = Room with
         {
-            Name = _name,
-            QuestionsCount = _questions,
-            MaxPlayers = _maxPlayers,
-            TimePerQuestionSecs = _secsPerQuestion
-        };
+            Data = new RoomData
+            {
+                Name = _name,
+                QuestionsCount = _questions,
+                MaxPlayers = _maxPlayers,
+                TimePerQuestionSecs = _secsPerQuestion
+            }
+        }; 
         
         Comm.SendRequest(new UpdateRoomDataRequest(Room.Data));
     }
