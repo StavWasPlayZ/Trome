@@ -46,6 +46,8 @@ private:
     std::unordered_map<const LoggedUser*, GameData> m_playersData;
 
     std::vector<Question> m_questions;
+
+    void submitGameStatsToDB(const GameData &data);
 };
 
 struct UserQuestion
