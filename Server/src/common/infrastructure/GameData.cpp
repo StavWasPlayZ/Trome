@@ -6,7 +6,8 @@
 #include <cstdlib>
 #include <cmath>
 
-GameData::GameData(const Game& game) : currentQuestionIndex(0),
+GameData::GameData(const Game& game) :
+    currentQuestionIndex(0),
     correctAnswerCount(0),
     averageAnswerTime(0),
     answersRotation(0),
