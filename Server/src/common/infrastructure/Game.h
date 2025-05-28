@@ -25,6 +25,8 @@ public:
     void startGame();
     void endGame() const;
 
+    const Room& getRoom() const;
+
     UserQuestion getQuestionForUser(const LoggedUser& user) const;
     /**
      * Returns true whether a new question was generated, false otherwise.

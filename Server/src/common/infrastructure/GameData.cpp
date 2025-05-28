@@ -1,14 +1,16 @@
 #include "GameData.h"
 
+#include "Game.h"
 #include "Question.h"
 
 #include <cstdlib>
 #include <cmath>
 
-GameData::GameData() : currentQuestionIndex(0),
+GameData::GameData(const Game& game) : currentQuestionIndex(0),
     correctAnswerCount(0),
     averageAnswerTime(0),
-    answersRotation(0)
+    answersRotation(0),
+    game(game)
 {
     rotateAnswers();
     updateTimeSinceQuestionRoll();
@@ -44,7 +46,7 @@ void GameData::nextQuestion()
 
 void GameData::calculateRoundPoints()
 {
-    const int maxTime = this->room.getData().timePerQuestionSecs;
+    const int maxTime = this->game.getRoom().getData().timePerQuestionSecs;
     const double time = static_cast<double>(this->roundTime.count());
 
     const double result =

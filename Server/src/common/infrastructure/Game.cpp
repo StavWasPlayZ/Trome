@@ -34,6 +34,11 @@ void Game::endGame() const
     // TODO: Self-remove from GameManager
 }
 
+const Room &Game::getRoom() const
+{
+    return this->m_room;
+}
+
 UserQuestion Game::getQuestionForUser(const LoggedUser &user) const
 {
     const GameData &data = this->m_playersData.at(&user);
@@ -57,7 +62,7 @@ void Game::initPlayersData()
 {
     for (const LoggedUser* user : this->m_room.getAllUsers())
     {
-        this->m_playersData.emplace(user, GameData());
+        this->m_playersData.emplace(user, GameData(*this));
     }
 }
 

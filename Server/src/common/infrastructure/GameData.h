@@ -10,7 +10,7 @@ struct Question;
  */
 struct GameData
 {
-    GameData();
+    explicit GameData(const Game& game);
 
     void rotateAnswers();
     void updateTimeSinceQuestionRoll();
@@ -43,5 +43,5 @@ private:
 
     std::chrono::milliseconds roundTime;
 
-    Room &room;
+    const Game &game;
 };
