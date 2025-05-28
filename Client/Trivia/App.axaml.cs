@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -10,6 +11,8 @@ namespace Trivia;
 
 public partial class App : Application
 {
+    public static readonly Random Random = new Random((int)DateTime.Now.Ticks);
+    
     //TODO: Maybe maybe maybe make this a dependency injection
     public static ApplicationService AppService { get; } = new();
 
