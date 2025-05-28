@@ -48,7 +48,7 @@ private:
 	 * 
 	 * TODO: Ask if it may be done with IDs.
 	 *
-	 * (...Or not because we do it anyways below anyways.)
+	 * (...Or not because we do it below anyways.)
 	 */
 	std::unordered_map<std::string, LoggedUser> m_loggedUsers;
 
