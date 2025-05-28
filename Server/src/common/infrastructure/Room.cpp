@@ -53,8 +53,15 @@ void Room::setCurrentGame(Game &game)
 
 void Room::addUser(LoggedUser &user)
 {
+    const std::vector<LoggedUser*> usersBeforeNew = getAllUsers();
+
     this->m_users.push_back(&user);
     user.setCurrentRoom(*this);
+
+    IRequestHandler::dispatchNotification(
+        PlayerJoinedRoomNotification(user),
+        usersBeforeNew
+    );
 }
 
 void Room::removeUser(LoggedUser &user)
