@@ -25,7 +25,7 @@ void GameData::rotateAnswers()
 void GameData::updateTimeSinceQuestionRoll()
 {
     //TODO: Move this method to a utils method.
-    // This is done twice throughout this document.
+    // This is done twice throughout this document, and once more in Game.
     this->timeSinceQuestionRoll = std::chrono::duration_cast<std::chrono::milliseconds>(
         std::chrono::steady_clock::now().time_since_epoch()
     );

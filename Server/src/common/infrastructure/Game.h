@@ -3,6 +3,7 @@
 #include "GameData.h"
 
 #include <unordered_map>
+#include <chrono>
 
 #include "Room.h"
 #include "db/IDatabase.h"
@@ -36,25 +37,28 @@ public:
     bool generateNewQuestionForUser(const LoggedUser& user);
 
 private:
-    const IDatabase &m_database;
-
     void initPlayersData();
     void populateQuestions();
+
+    void submitGameStatsToDB(const LoggedUser &user) const;
+
+    /**
+     * Removes the provided player's data from the game.
+     * Used for when the player finished the game (early) (probably).
+     */
+    void removePlayer(const LoggedUser& player);
+
+    const IDatabase &m_database;
+
+    std::chrono::milliseconds m_startTime;
 
     // Here, you can already find the room ID (sufficient itself as the game ID)
     Room &m_room;
     std::unordered_map<const LoggedUser*, GameData> m_playersData;
 
     std::vector<Question> m_questions;
-
-    void submitGameStatsToDB(const GameData &data) const;
-
-    /**
-     * Removes the provided player's data from the game.
-     * Used for when the player finished the game (early). //TODO
-     */
-    void removePlayer(const LoggedUser& player);
 };
+
 
 struct UserQuestion
 {
