@@ -44,13 +44,13 @@ void GameData::nextQuestion()
 
 void GameData::calculateRoundPoints()
 {
-    int maxTime = this->room.getData().timePerQuestionSecs;
-    double time = static_cast<double>(this->roundTime.count());
+    const int maxTime = this->room.getData().timePerQuestionSecs;
+    const double time = static_cast<double>(this->roundTime.count());
 
-    double result = 
-        (4 * questionPoints / pow(maxTime, 3)) * pow(time, 3) -
-        (6 * questionPoints / pow(maxTime, 2)) * pow(time, 2) +
-        (3 * questionPoints / maxTime) * time;
+    const double result =
+        (4 * QUESTION_POINTS / pow(maxTime, 3)) * pow(time, 3) -
+        (6 * QUESTION_POINTS / pow(maxTime, 2)) * pow(time, 2) +
+        (3 * QUESTION_POINTS / maxTime) * time;
 
     this->points += static_cast<int>(ceil(result));
 }

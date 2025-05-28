@@ -32,6 +32,8 @@ struct GameData
     int answersRotation;
 
 private:
+    static constexpr int QUESTION_POINTS = 500;
+
     void calculateRoundPoints();
 
     /**
@@ -42,6 +44,4 @@ private:
     std::chrono::milliseconds roundTime;
 
     Room &room;
-
-    static const int questionPoints = 500;
 };
