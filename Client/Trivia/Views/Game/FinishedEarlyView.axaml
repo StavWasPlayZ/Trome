@@ -3,17 +3,16 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:game="clr-namespace:Trivia.ViewModels.Game"
-             xmlns:controls="clr-namespace:Trivia.Controls"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
              x:Class="Trivia.Views.Game.FinishedEarlyView"
              x:DataType="game:FinishedEarlyViewModel">
     <Panel>
         <Panel.Background>
             <ImageBrush Source="avares://Trivia/Assets/drool-d-b1608556d649b5b943136ecc0df0fe1bc7ff644f.png"
-                        Stretch="UniformToFill" />
+                        Stretch="UniformToFill"/>
         </Panel.Background>
         
-        <Panel>
+        <Panel Background="rgba(0, 0, 0, .3)">
             
             <Border
                 Padding="2,5,6,5"
@@ -21,6 +20,7 @@
                 VerticalAlignment="Top"
                 CornerRadius="0,0,10,0"
                 Background="rgba(0, 0, 0, .3)">
+                
                 <Grid ColumnDefinitions="*, Auto">
                     
                     <Svg Grid.Column="0"
@@ -31,25 +31,35 @@
                     
                     <TextBlock Grid.Column="1">username</TextBlock>
                 </Grid>
+                
             </Border>
             
-            <controls:TriviaMenuPanel Title=""
-                                      DisplayBackButton="False">
-                <Grid RowDefinitions="*,*">
-                    <TextBlock Grid.Row="0"
-                        VerticalAlignment="Bottom"
-                        HorizontalAlignment="Center"
-                        Margin="0,0,0,5">
+            <Border
+                Background="rgba(0, 0, 0, .3)"
+                Margin="20 70 20 25"
+                CornerRadius="25"
+                BoxShadow="0 5 0 0 #1f000000">
+                
+                <StackPanel VerticalAlignment="Center">
+                    <StackPanel.Styles>
+                        <Style Selector="TextBlock">
+                            <Setter Property="FontSize" Value="40"/>
+                        </Style>
+                    </StackPanel.Styles>
+                    
+                    <TextBlock VerticalAlignment="Bottom"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,5">
                         FINISHED EARLY.
                     </TextBlock>
-                    <TextBlock Grid.Row="1"
-                               VerticalAlignment="Top"
+                    <TextBlock VerticalAlignment="Top"
                                HorizontalAlignment="Center"
                                Margin="0,20,0,0">
-                        "Is that all?" you think to yourself...
+                        "Is that all?," you think to yourself...
                     </TextBlock>
-                </Grid>
-            </controls:TriviaMenuPanel>
+                </StackPanel>
+                
+            </Border>
         </Panel>
         
     </Panel>
