@@ -9,7 +9,9 @@ GameData::GameData() : currentQuestionIndex(0),
     wrongAnswerCount(0),
     averageAnswerTime(0),
     answersRotation(0)
-{}
+{
+    rotateAnswers();
+}
 
 void GameData::rotateAnswers()
 {

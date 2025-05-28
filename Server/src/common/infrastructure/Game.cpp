@@ -12,6 +12,11 @@ Game::~Game()
     endGame();
 }
 
+unsigned int Game::getId() const
+{
+    return this->m_room.getId();
+}
+
 void Game::startGame()
 {
     if (m_room.getStatus() == RoomStatus::PLAYING)
@@ -26,12 +31,27 @@ void Game::startGame()
 void Game::endGame() const
 {
     m_room.setStatus(RoomStatus::WAITING);
-    //TODO: Self-remove from GameManager
+    // TODO: Self-remove from GameManager
 }
 
-unsigned int Game::getId() const
+UserQuestion Game::getQuestionForUser(const LoggedUser &user) const
 {
-    return this->m_room.getId();
+    const GameData &data = this->m_playersData.at(&user);
+
+    return UserQuestion(
+        this->m_questions.at(data.currentQuestionIndex),
+        data.answersRotation
+    );
+}
+
+UserQuestion Game::generateNewQuestionForUser(const LoggedUser &user)
+{
+    GameData &data = this->m_playersData.at(&user);
+
+    data.currentQuestionIndex++;
+    data.rotateAnswers();
+
+    return getQuestionForUser(user);
 }
 
 void Game::initPlayersData()
@@ -47,3 +67,8 @@ void Game::populateQuestions()
     const std::list<Question> questions = this->m_database.queryQuestions(m_room.getData().questionsCount);
     this->m_questions = std::vector(questions.begin(), questions.end());
 }
+
+UserQuestion::UserQuestion(const Question &question, const int rotation) :
+    question(question),
+    rotation(rotation)
+{}

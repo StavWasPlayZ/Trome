@@ -9,11 +9,15 @@
 
 #include "infrastructure/Question.h"
 
+struct UserQuestion;
+
 class Game
 {
 public:
     Game(Room &room, const IDatabase &database);
     ~Game();
+
+    unsigned int getId() const;
 
     /**
      * Starts the game for this room, populating it with questions.
@@ -21,7 +25,8 @@ public:
     void startGame();
     void endGame() const;
 
-    unsigned int getId() const;
+    UserQuestion getQuestionForUser(const LoggedUser& user) const;
+    UserQuestion generateNewQuestionForUser(const LoggedUser& user);
 
 private:
     const IDatabase &m_database;
@@ -34,4 +39,12 @@ private:
     std::unordered_map<const LoggedUser*, GameData> m_playersData;
 
     std::vector<Question> m_questions;
+};
+
+struct UserQuestion
+{
+    UserQuestion(const Question& question, int rotation);
+
+    const Question& question;
+    int rotation;
 };
