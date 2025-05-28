@@ -6,7 +6,6 @@
 
 GameData::GameData() : currentQuestionIndex(0),
     correctAnswerCount(0),
-    wrongAnswerCount(0),
     averageAnswerTime(0),
     answersRotation(0)
 {

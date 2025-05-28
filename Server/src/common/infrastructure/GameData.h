@@ -1,5 +1,7 @@
 #pragma once
 
+#include <chrono>
+
 struct Question;
 
 /**
@@ -12,8 +14,9 @@ struct GameData
     size_t currentQuestionIndex;
 
     int correctAnswerCount;
-    int wrongAnswerCount;
-    int averageAnswerTime;
+    int points;
+
+    std::chrono::seconds averageAnswerTime;
 
     /**
      * The amount of which to offset the answers' IDs provided to the client.
