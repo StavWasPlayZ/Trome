@@ -91,11 +91,13 @@ bool LoginManager::logout(const Client &client)
     if (it == m_clientToLoggedUser.end())
         return false;
 
+    const unsigned int userId = it->second->getId();
+
     // This one actually contains the user resource
     this->m_loggedUsers.erase(it->second->getUsername());
 
     this->m_clientToLoggedUser.erase(&client);
-    this->m_loggedUsersById.erase(it->second->getId());
+    this->m_loggedUsersById.erase(userId);
 
     return true;
 }
