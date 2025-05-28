@@ -15,6 +15,9 @@ public:
     JsonRequestPacketDeserializer& operator=(JsonRequestPacketDeserializer&&) = delete;
 
 
+    static ProtocolRequest *deserialize(const RequestInfo &info);
+
+
 	static nlohmann::json readJson(const unsigned char* data, int jsonLen);
 
 	/**

@@ -2,6 +2,69 @@
 
 #include <iostream>
 
+ProtocolRequest *JsonRequestPacketDeserializer::deserialize(const RequestInfo &info)
+{
+    switch (info.id)
+    {
+    case RequestCode::LOGIN: return new LoginRequest(
+        deserializeLoginRequest(info.data)
+    );
+    case RequestCode::SIGNUP: return new SignupRequest(
+        deserializeSignupRequest(info.data)
+    );
+    case RequestCode::LOGOUT: return new LogoutRequest(
+        deserializeLogoutRequest(info.data)
+    );
+    case RequestCode::GET_PLAYERS_IN_ROOM: return new GetPlayersInRoomRequest(
+        deserializeGetPlayersInRoomRequest(info.data)
+    );
+    case RequestCode::JOIN_ROOM: return new JoinRoomRequest(
+        deserializeJoinRoomRequest(info.data)
+    );
+    case RequestCode::CREATE_ROOM: return new CreateRoomRequest(
+        deserializeCreateRoomRequest(info.data)
+    );
+    case RequestCode::GET_ROOMS: return new GetRoomsRequest(
+        deserializeGetRoomsRequest(info.data)
+    );
+    case RequestCode::GET_HIGH_SCORES: return new GetHighScoresRequest(
+        deserializeGetHighScoresRequest(info.data)
+    );
+    case RequestCode::GET_PERSONAL_STATISTICS: return new GetPersonalStatisticsRequest(
+        deserializeGetPersonalStatisticsRequest(info.data)
+    );
+    case RequestCode::CLOSE_ROOM: return new CloseRoomRequest(
+        deserializeCloseRoomRequest(info.data)
+    );
+    case RequestCode::START_GAME:return new StartGameRequest(
+        deserializeStartGameRequest(info.data)
+    );
+    case RequestCode::GET_ROOM_STATE: return new GetRoomStateRequest(
+        deserializeGetRoomStateRequest(info.data)
+    );
+    case RequestCode::LEAVE_ROOM: return new LeaveRoomRequest(
+        deserializeLeaveRoomRequest(info.data)
+    );
+    case RequestCode::UPDATE_ROOM_DATA: return new UpdateRoomDataRequest(
+        deserializeUpdateRoomDataRequest(info.data)
+    );
+    case RequestCode::LEAVE_GAME: return new LeaveGameRequest(
+        deserializeLeaveGameRequest(info.data)
+    );
+    case RequestCode::GET_QUESTION: return new GetQuestionRequest(
+        deserializeGetQuestionRequest(info.data)
+    );
+    case RequestCode::SUBMIT_ANSWER: return new SubmitAnswerRequest(
+        deserializeSubmitAnswerRequest(info.data)
+    );
+    case RequestCode::GET_GAME_RESULT: return new GetGameResultRequest(
+        deserializeGetGameResultRequest(info.data)
+    );
+
+    default: throw std::invalid_argument("Invalid request ID");
+    }
+}
+
 LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(const nlohmann::json &data)
 {
 	return LoginRequest(

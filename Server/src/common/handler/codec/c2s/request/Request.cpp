@@ -29,65 +29,7 @@ GetPlayersInRoomRequest::GetPlayersInRoomRequest(const unsigned int roomID) : ro
 ProtocolRequest::~ProtocolRequest() = default;
 
 ProtocolRequest *ProtocolRequest::fromRequest(const RequestInfo &info) {
-    switch (info.id)
-    {
-    case RequestCode::LOGIN: return new LoginRequest(
-        JsonRequestPacketDeserializer::deserializeLoginRequest(info.data)
-    );
-    case RequestCode::SIGNUP: return new SignupRequest(
-        JsonRequestPacketDeserializer::deserializeSignupRequest(info.data)
-    );
-    case RequestCode::LOGOUT: return new LogoutRequest(
-        JsonRequestPacketDeserializer::deserializeLogoutRequest(info.data)
-    );
-    case RequestCode::GET_PLAYERS_IN_ROOM: return new GetPlayersInRoomRequest(
-        JsonRequestPacketDeserializer::deserializeGetPlayersInRoomRequest(info.data)
-    );
-    case RequestCode::JOIN_ROOM: return new JoinRoomRequest(
-        JsonRequestPacketDeserializer::deserializeJoinRoomRequest(info.data)
-    );
-    case RequestCode::CREATE_ROOM: return new CreateRoomRequest(
-        JsonRequestPacketDeserializer::deserializeCreateRoomRequest(info.data)
-    );
-    case RequestCode::GET_ROOMS: return new GetRoomsRequest(
-        JsonRequestPacketDeserializer::deserializeGetRoomsRequest(info.data)
-    );
-    case RequestCode::GET_HIGH_SCORES: return new GetHighScoresRequest(
-        JsonRequestPacketDeserializer::deserializeGetHighScoresRequest(info.data)
-    );
-    case RequestCode::GET_PERSONAL_STATISTICS: return new GetPersonalStatisticsRequest(
-        JsonRequestPacketDeserializer::deserializeGetPersonalStatisticsRequest(info.data)
-    );
-    case RequestCode::CLOSE_ROOM: return new CloseRoomRequest(
-        JsonRequestPacketDeserializer::deserializeCloseRoomRequest(info.data)
-    );
-    case RequestCode::START_GAME:return new StartGameRequest(
-        JsonRequestPacketDeserializer::deserializeStartGameRequest(info.data)
-    );
-    case RequestCode::GET_ROOM_STATE: return new GetRoomStateRequest(
-        JsonRequestPacketDeserializer::deserializeGetRoomStateRequest(info.data)
-    );
-    case RequestCode::LEAVE_ROOM: return new LeaveRoomRequest(
-        JsonRequestPacketDeserializer::deserializeLeaveRoomRequest(info.data)
-    );
-    case RequestCode::UPDATE_ROOM_DATA: return new UpdateRoomDataRequest(
-        JsonRequestPacketDeserializer::deserializeUpdateRoomDataRequest(info.data)
-    );
-    case RequestCode::LEAVE_GAME: return new LeaveGameRequest(
-        JsonRequestPacketDeserializer::deserializeLeaveGameRequest(info.data)
-    );
-    case RequestCode::GET_QUESTION: return new GetQuestionRequest(
-        JsonRequestPacketDeserializer::deserializeGetQuestionRequest(info.data)
-    );
-    case RequestCode::SUBMIT_ANSWER: return new SubmitAnswerRequest(
-        JsonRequestPacketDeserializer::deserializeSubmitAnswerRequest(info.data)
-    );
-    case RequestCode::GET_GAME_RESULT: return new GetGameResultRequest(
-        JsonRequestPacketDeserializer::deserializeGetGameResultRequest(info.data)
-    );
-
-    default: throw std::invalid_argument("Invalid request ID");
-    }
+    return JsonRequestPacketDeserializer::deserialize(info);
 }
 
 JoinRoomRequest::JoinRoomRequest(const unsigned int roomID) : roomID(roomID)
