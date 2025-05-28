@@ -44,11 +44,11 @@ public:
 	void addQuestions(std::vector<Question> questions, const std::optional<std::string>& authorName) const override;
 
 
-    void addTime(const std::string &username, int time) override;
-    void addTotalAns(const std::string &username, int ans = 1) override;
-    void addCorrectAns(const std::string &username, int ans = 1) override;
-    void addGamesPlayed(const std::string &username, int games = 1) override;
-    void addPoints(const std::string &username, int points) override;
+    void addTime(const std::string &username, int time) const override;
+    void addTotalAns(const std::string &username, int ans = 1) const override;
+    void addCorrectAns(const std::string &username, int ans = 1) const override;
+    void addGamesPlayed(const std::string &username, int games = 1) const override;
+    void addPoints(const std::string &username, int points) const override;
 
     int queryTime(const std::string &username) const override;
     int queryTotalAns(const std::string &username) const override;
@@ -62,7 +62,7 @@ public:
 
 protected:
 	unsigned int queryIdOfUser(const std::string &username) const override;
-    void addToColumn(const std::string &username, const std::string &column, int n, const std::string &table) override;
+    void addToColumn(const std::string &username, const std::string &column, int n, const std::string &table) const override;
 
 private:
 	SqliteDatabase();
