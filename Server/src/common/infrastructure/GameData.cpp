@@ -3,6 +3,7 @@
 #include "Question.h"
 
 #include <cstdlib>
+#include <cmath>
 
 GameData::GameData() : currentQuestionIndex(0),
     correctAnswerCount(0),
@@ -43,8 +44,15 @@ void GameData::nextQuestion()
 
 void GameData::calculateRoundPoints()
 {
-    //TODO: Calculate & add round points for user here.
-    //NOTE: this->roundTime for the time this current round has taken the user to complete.
+    int maxTime = this->room.getData().timePerQuestionSecs;
+    double time = static_cast<double>(this->roundTime.count());
+
+    double result = 
+        (4 * questionPoints / pow(maxTime, 3)) * pow(time, 3) -
+        (6 * questionPoints / pow(maxTime, 2)) * pow(time, 2) +
+        (3 * questionPoints / maxTime) * time;
+
+    this->points += static_cast<int>(ceil(result));
 }
 
 void GameData::calculateRoundTime()

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <chrono>
+#include "infrastructure/Room.h"
 
 struct Question;
 
@@ -39,4 +40,8 @@ private:
     void calculateRoundTime();
 
     std::chrono::milliseconds roundTime;
+
+    Room &room;
+
+    static const int questionPoints = 500;
 };
