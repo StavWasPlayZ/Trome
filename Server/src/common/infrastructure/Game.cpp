@@ -72,9 +72,14 @@ void Game::populateQuestions()
     this->m_questions = std::vector(questions.begin(), questions.end());
 }
 
-void Game::submitGameStatsToDB(const GameData &data)
+void Game::submitGameStatsToDB(const GameData &data) const
 {
-    //TODO: Implement
+    // TODO: Implement
+}
+
+void Game::removePlayer(const LoggedUser &player)
+{
+    m_playersData.erase(&player);
 }
 
 UserQuestion::UserQuestion(const Question &question, const int rotation) :

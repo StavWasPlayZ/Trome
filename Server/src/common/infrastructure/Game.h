@@ -47,7 +47,13 @@ private:
 
     std::vector<Question> m_questions;
 
-    void submitGameStatsToDB(const GameData &data);
+    void submitGameStatsToDB(const GameData &data) const;
+
+    /**
+     * Removes the provided player's data from the game.
+     * Used for when the player finished the game (early). //TODO
+     */
+    void removePlayer(const LoggedUser& player);
 };
 
 struct UserQuestion
