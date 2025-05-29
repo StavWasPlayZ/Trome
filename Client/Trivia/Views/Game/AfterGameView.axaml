@@ -238,12 +238,22 @@
                         Padding="0 15">
                     <!--TODO: This is copied directly from StatisticsView. Make it its own control -->
                     <controls:TriviaUsersList Margin="50 0"
-                                              CornerRadius="30"
-                                              MaxHeight="400">
+                                              CornerRadius="30">
                         <ListBox>
                             <ListBox.Items>
                                 <x:Int32>4</x:Int32>
                                 <x:Int32>5</x:Int32>
+                                <x:Int32>6</x:Int32>
+                                <x:Int32>7</x:Int32>
+                                <x:Int32>8</x:Int32>
+                                <x:Int32>9</x:Int32>
+                                <x:Int32>10</x:Int32>
+                                <x:Int32>10</x:Int32>
+                                <x:Int32>10</x:Int32>
+                                <x:Int32>10</x:Int32>
+                                <x:Int32>10</x:Int32>
+                                <x:Int32>10</x:Int32>
+                                <x:Int32>10</x:Int32>
                             </ListBox.Items>
                                     
                             <ListBox.ItemTemplate>
@@ -266,7 +276,7 @@
                 
                 <controls:TriviaButton Text="RETURN TO LOBBY"
                                        Width="335"
-                                       Margin="0 0 0 25"
+                                       Margin="0 0 0 30"
                                        Background="#362034"
                                        BorderBrush="#b92e2b"
                                        IconColor="#ffbbbb"
