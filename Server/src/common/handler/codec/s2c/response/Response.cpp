@@ -79,14 +79,16 @@ LeaveGameResponse::LeaveGameResponse() :
     ProtocolResponse(ResponseCode::LEAVE_GAME)
 {}
 
-GetQuestionResponse::GetQuestionResponse(const int rotation, const Question& question) :
+GetQuestionResponse::GetQuestionResponse(const Question &question, const int rotation) :
     ProtocolResponse(ResponseCode::GET_QUESTION),
     question(question),
     rotation(rotation)
 {}
 
-SubmitAnswerResponse::SubmitAnswerResponse() : 
-    ProtocolResponse(ResponseCode::SUBMIT_ANSWER)
+SubmitAnswerResponse::SubmitAnswerResponse(const std::optional<Question *> &newQuestion, const int rotation) :
+    ProtocolResponse(ResponseCode::SUBMIT_ANSWER),
+    newQuestion(newQuestion),
+    rotation(rotation)
 {}
 
 GetGameResultResponse::GetGameResultResponse(const std::vector<PlayerResult>& results) :

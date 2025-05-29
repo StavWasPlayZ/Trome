@@ -1,10 +1,11 @@
 #pragma once
 
-#include "infrastructure/UserStatistics.h"
 #include "infrastructure/PlayerResult.h"
 #include "infrastructure/Question.h"
+#include "infrastructure/UserStatistics.h"
 
 #include <infrastructure/RoomData.h>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -161,15 +162,21 @@ struct [[deprecated(
     "SubmitAnswerResponse already returns the next question."
 )]] GetQuestionResponse : ProtocolResponse
 {
-    GetQuestionResponse(int rotation, const Question& question);
+    GetQuestionResponse(const Question& question, int rotation);
 
-    const Question question;
+    const Question& question;
     const int rotation;
 };
 
 struct SubmitAnswerResponse : ProtocolResponse
 {
-    SubmitAnswerResponse();
+    SubmitAnswerResponse(const std::optional<Question *>& newQuestion, int rotation);
+
+    /**
+     * Empty for if there are no more questions.
+     */
+    const std::optional<Question *> newQuestion;
+    const int rotation;
 };
 
 struct [[deprecated(
