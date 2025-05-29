@@ -32,7 +32,7 @@ struct GameData
 
 private:
     static constexpr int QUESTION_POINTS = 500;
-    static constexpr int FAILURE_PENALTY = QUESTION_POINTS * (1/4);
+    static constexpr int FAILURE_PENALTY = QUESTION_POINTS / 4;
 
     void calculateRoundPoints(bool didFail);
 
