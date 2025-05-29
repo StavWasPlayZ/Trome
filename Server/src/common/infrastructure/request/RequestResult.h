@@ -1,11 +1,15 @@
 #pragma once
 
+#include <optional>
+
 struct ProtocolResponse;
 class IRequestHandler;
 
 struct RequestResult
 {
-    RequestResult(const ProtocolResponse* response, const IRequestHandler* newHandler);
+    explicit RequestResult(const ProtocolResponse* response,
+        const std::optional<const IRequestHandler*>& newHandler = std::nullopt);
+
     ~RequestResult();
 
     const ProtocolResponse* response;
@@ -13,5 +17,5 @@ struct RequestResult
     /**
      * NOTE: THIS RESOURCE MUST BE FREED
      */
-    const IRequestHandler* const newHandler;
+    const std::optional<const IRequestHandler*> newHandler;
 };

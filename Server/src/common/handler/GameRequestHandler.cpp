@@ -44,31 +44,27 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo &info, const P
 RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const SubmitAnswerRequest &) const
 {
     return RequestResult(
-        new ErrorResponse(ErrorStatus::SERVER_UNIMPLEMENTED, info.id),
-        new GameRequestHandler(*this)
+        new ErrorResponse(ErrorStatus::SERVER_UNIMPLEMENTED, info.id)
     );
 }
 
 RequestResult GameRequestHandler::leaveGame(const RequestInfo &info, const LeaveGameRequest &) const
 {
     return RequestResult(
-        new ErrorResponse(ErrorStatus::SERVER_UNIMPLEMENTED, info.id),
-        new GameRequestHandler(*this)
+        new ErrorResponse(ErrorStatus::SERVER_UNIMPLEMENTED, info.id)
     );
 }
 
 RequestResult GameRequestHandler::getQuestion(const RequestInfo &info, const GetQuestionRequest &) const
 {
     return RequestResult(
-        new ErrorResponse(ErrorStatus::SERVER_UNIMPLEMENTED, info.id),
-        new GameRequestHandler(*this)
+        new ErrorResponse(ErrorStatus::SERVER_UNIMPLEMENTED, info.id)
     );
 }
 
 RequestResult GameRequestHandler::getGameResults(const RequestInfo &info, const GetGameResultRequest &) const
 {
     return RequestResult(
-        new ErrorResponse(ErrorStatus::SERVER_UNIMPLEMENTED, info.id),
-        new GameRequestHandler(*this)
+        new ErrorResponse(ErrorStatus::SERVER_UNIMPLEMENTED, info.id)
     );
 }

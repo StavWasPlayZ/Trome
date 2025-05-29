@@ -2,13 +2,9 @@
 
 #include "RequestHandlerFactory.h"
 #include "codec/c2s/request/Request.h"
-#include "codec/s2c/notification/Notification.h"
 #include "codec/s2c/response/ErrorResponse.h"
 #include "infrastructure/Client.h"
 #include "manager/RoomManager.h"
-
-#include <algorithm>
-#include <mutex>
 
 RoomAdminRequestHandler::RoomAdminRequestHandler(const RequestHandlerFactory &handlerFactory, Room& room) :
     IRequestHandler(handlerFactory),
@@ -52,8 +48,7 @@ RequestResult RoomAdminRequestHandler::startGame(const RequestInfo &info, const 
     //TODO: Implement
 
     return RequestResult(
-        new ErrorResponse(ErrorStatus::SERVER_UNIMPLEMENTED, info.id),
-        new RoomAdminRequestHandler(*this)
+        new ErrorResponse(ErrorStatus::SERVER_UNIMPLEMENTED, info.id)
     );
 }
 
@@ -72,12 +67,11 @@ RequestResult RoomAdminRequestHandler::updateRoomData(const RequestInfo &, const
     m_room.setData(request.data);
 
     return RequestResult(
-        new UpdateRoomDataResponse(),
-        new RoomAdminRequestHandler(*this)
+        new UpdateRoomDataResponse()
     );
 }
 
 RequestResult RoomAdminRequestHandler::getRoomState(const RequestInfo &, const GetRoomsRequest &) const
 {
-    return RequestResult(new GetRoomStateResponse(m_room), new RoomAdminRequestHandler(*this));
+    return RequestResult(new GetRoomStateResponse(m_room));
 }

@@ -48,5 +48,5 @@ RequestResult RoomMemberRequestHandler::leaveRoom(const RequestInfo &info, const
 
 RequestResult RoomMemberRequestHandler::getRoomState(const RequestInfo &, const GetRoomStateRequest &) const
 {
-    return RequestResult(new GetRoomStateResponse(m_room), new RoomMemberRequestHandler(*this));
+    return RequestResult(new GetRoomStateResponse(m_room));
 }

@@ -3,7 +3,7 @@
 #include "IRequestHandler.h"
 #include "codec/c2s/request/Request.h"
 
-class RequestHandlerFactory;  // Circle dependency
+class RequestHandlerFactory;
 
 class GameRequestHandler : public IRequestHandler
 {

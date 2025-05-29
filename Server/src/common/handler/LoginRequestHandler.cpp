@@ -37,7 +37,7 @@ RequestResult LoginRequestHandler::login(const RequestInfo &info, const LoginReq
     const ProtocolResponse *const response = this->m_handlerFactory.getLoginManager().login(info, request);
 
     if (response->id == ResponseCode::ERROR)
-        return RequestResult(response, new LoginRequestHandler(*this));
+        return RequestResult(response);
 
     return RequestResult(response, new MenuRequestHandler(this->m_handlerFactory));
 }
@@ -47,7 +47,7 @@ RequestResult LoginRequestHandler::signup(const RequestInfo &info, const SignupR
     const ProtocolResponse *const response = this->m_handlerFactory.getLoginManager().signup(info, request);
 
     if (response->id == ResponseCode::ERROR)
-        return RequestResult(response, new LoginRequestHandler(*this));
+        return RequestResult(response);
 
     return RequestResult(response, new MenuRequestHandler(this->m_handlerFactory));
 }
