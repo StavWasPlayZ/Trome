@@ -52,9 +52,19 @@
                                     RenderTransform="translateY(-10px)"
                                     CornerRadius="20">
                                 
-                                <Svg Path="avares://Trivia/Assets/Icons/person.svg"
-                                     Stretch="Uniform"
-                                     Css="* { fill: #c9731e; } " />
+                                <Panel>
+                                    <Svg Path="avares://Trivia/Assets/Icons/person.svg"
+                                         Stretch="Uniform"
+                                         Css="* { fill: #c9731e; } " />
+                                    
+                                    <Svg Path="avares://Trivia/Assets/Icons/crown.svg"
+                                         Stretch="Uniform"
+                                         Css="* { fill: #ffb43a; } "
+                                         Height="50"
+                                         VerticalAlignment="Top"
+                                         HorizontalAlignment="Right"
+                                         RenderTransform="rotate(20deg) translate(10px, -25px)"/>
+                                </Panel>
                                 
                             </Border>
                             
