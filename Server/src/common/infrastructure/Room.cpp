@@ -51,6 +51,11 @@ void Room::setCurrentGame(Game &game)
     this->m_currentGame = &game;
 }
 
+void Room::unsetCurrentGame()
+{
+    this->m_currentGame = nullptr;
+}
+
 void Room::addUser(LoggedUser &user)
 {
     const std::vector<LoggedUser*> usersBeforeNew = getAllUsers();

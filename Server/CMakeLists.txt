@@ -106,7 +106,10 @@ add_executable (Server
   "src/common/handler/RoomAdminRequestHandler.h"
 
   "src/common/infrastructure/GameData.cpp"
-  "src/common/infrastructure/GameData.h"
+  "src/common/infrastructure/GameData.h" 
+
+  "src/common/manager/GameManager.h" 
+  "src/common/manager/GameManager.cpp"
 )
 
 # Platform-specific sources
