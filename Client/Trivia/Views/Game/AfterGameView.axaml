@@ -244,17 +244,6 @@
                             <ListBox.Items>
                                 <x:Int32>4</x:Int32>
                                 <x:Int32>5</x:Int32>
-                                <x:Int32>6</x:Int32>
-                                <x:Int32>7</x:Int32>
-                                <x:Int32>8</x:Int32>
-                                <x:Int32>9</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
                             </ListBox.Items>
                                     
                             <ListBox.ItemTemplate>
@@ -275,6 +264,26 @@
                     </controls:TriviaUsersList>
                 </Border>
                 
+                <controls:TriviaButton Text="RETURN TO LOBBY"
+                                       Width="335"
+                                       Margin="0 0 0 25"
+                                       Background="#362034"
+                                       BorderBrush="#b92e2b"
+                                       IconColor="#ffbbbb"
+                                       BorderBrushSelected="#D93040"
+                                       BorderBrushPressed="#AA2C2F"
+                                       BorderThickness="5"
+                                       BorderThicknessSelected="6"
+                                       IconSvgPath="avares://Trivia/Assets/Icons/play_arrow.svg"
+                                       IconMargin="0 7 -10 7">
+                    
+                    <controls:TriviaButton.Styles>
+                        <Style Selector="controls|TriviaButton /template/ Button /template/ ContentPresenter">
+                            <Setter Property="BoxShadow" Value="0 6 7 0 #3f000000"/>
+                        </Style>
+                    </controls:TriviaButton.Styles>
+                    
+                </controls:TriviaButton>
 
             </StackPanel>
         </ScrollViewer>
