@@ -142,9 +142,11 @@ struct [[deprecated(
 {
 };
 
-// TODO: make this to get the answer
 struct SubmitAnswerRequest : ProtocolRequest
 {
+    explicit SubmitAnswerRequest(int answer);
+
+    int answer;
 };
 
 struct [[deprecated(
