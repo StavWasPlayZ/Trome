@@ -49,9 +49,10 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
     const UserQuestion question = m_game.getQuestionForUser(user);
 
     //TODO: Check if the question was submitted in time (+1sec for server delay).
-    // If so, refuse to answer if an error response.
-    // The user is responsible for fetching a new question for that matter, under the now-not-deprecated
+    // If so, refuse to answer with an error response.
+    // The user is the one responsible for fetching a new question for that matter, under the now-not-deprecated
     // GetQuestionRequest (or a new request ig).
+
 
     // If the returned answer is 0 unrotated, it must be correct.
     // This is because the first answer is always the correct one.
@@ -68,7 +69,7 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
 
     return RequestResult(
         new SubmitAnswerResponse(newQuestion)
-        //TODO: If did not generate (finished early), hold on waiting handler or something.
+        //TODO: If did not generate (finished early), return a waiting handler or something.
     );
 }
 
