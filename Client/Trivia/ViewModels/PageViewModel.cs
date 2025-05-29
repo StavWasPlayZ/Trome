@@ -1,8 +1,6 @@
 using System;
 using System.Reactive;
 using System.Reactive.Disposables;
-using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
 using ReactiveUI;
 using Trivia.Codec.S2C;
 using Trivia.Services;
@@ -61,8 +59,7 @@ public abstract class PageViewModel : ViewModelBase, IRoutableViewModel, IActiva
 
 
     protected static MainWindowViewModel? MainWindowViewModel =>
-        (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)
-            ?.MainWindow?.DataContext as MainWindowViewModel;
+        MainWindow.Instance?.DataContext as MainWindowViewModel;
 
     protected static IObservable<IRoutableViewModel>? NavigateTo(PageViewModel pageViewModel)
     {

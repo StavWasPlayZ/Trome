@@ -1,6 +1,4 @@
 ﻿using System.Reactive;
-using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
 using ReactiveUI;
 using Trivia.Codec.C2S.Request.Packets;
 using Trivia.Codec.S2C.Response.Packets;
@@ -42,7 +40,6 @@ public class MainMenuViewModel : PageViewModel
 
     public ReactiveCommand<Unit, Unit> ExitCommand { get; } = ReactiveCommand.Create(() =>
     {
-        (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)
-            ?.Shutdown();
+        MainWindow.ApplicationLifetime?.Shutdown();
     });
 }

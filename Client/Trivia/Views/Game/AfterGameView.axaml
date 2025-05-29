@@ -1,0 +1,93 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:game="clr-namespace:Trivia.ViewModels.Game"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
+             x:Class="Trivia.Views.Game.AfterGameView"
+             x:DataType="game:AfterGameViewModel"
+             
+             LayoutUpdated="OnLayoutUpdated">
+    
+    <Design.DataContext>
+        <game:AfterGameViewModel/>
+    </Design.DataContext>
+    
+    <Panel>
+        <Panel.Background>
+            <ImageBrush Source="avares://Trivia/Assets/drool-d-b1608556d649b5b943136ecc0df0fe1bc7ff644f.png"
+                        Stretch="UniformToFill"/>
+        </Panel.Background>
+        
+        <StackPanel>
+
+            <Border x:Name="HalfHeight">
+            
+                <Border Background="#ffb43a"
+                        VerticalAlignment="Bottom"
+                        CornerRadius="20"
+                        Width="700">
+                    
+                    <!--
+                    For the top margin:
+                    
+                    The tb margin is 10.
+                    The PFP thus hovers an additional 10px.
+                    The PFP is of size 100, hovering with half its size.
+                    
+                    10 - 100/2 = -40.
+                    -->
+                    <StackPanel HorizontalAlignment="Center"
+                                Margin="0 -40 0 20">
+                        <StackPanel.Styles>
+                            <Style Selector="TextBlock">
+                                <Setter Property="TextAlignment" Value="Center"/>
+                            </Style>
+                        </StackPanel.Styles>
+                        
+                        <Border Background="#ffdbb8"
+                                Width="100"
+                                Height="100"
+                                RenderTransform="translateY(-10px)"
+                                CornerRadius="20">
+                            
+                            <Svg Path="avares://Trivia/Assets/Icons/person.svg"
+                                 Stretch="Uniform"
+                                 Css="* { fill: #c9731e; } " />
+                            
+                        </Border>
+                        
+                        <StackPanel>
+                            <StackPanel.Styles>
+                                <Style Selector="TextBlock">
+                                    <Setter Property="Foreground" Value="#ac631b"/>
+                                    <Setter Property="LineHeight" Value="50"/>
+                                </Style>
+                            </StackPanel.Styles>
+                            
+                            <TextBlock FontSize="80">WINNER</TextBlock>
+                            <TextBlock FontSize="45">USERNAME</TextBlock>
+                        </StackPanel>
+                        
+                        <Panel Height="2"/>
+                        
+                        <StackPanel>
+                            <StackPanel.Styles>
+                                <Style Selector="TextBlock">
+                                    <Setter Property="Foreground" Value="#B7722D"/>
+                                </Style>
+                            </StackPanel.Styles>
+                            
+                            <TextBlock FontSize="30">69420</TextBlock>
+                            <TextBlock FontSize="25">2:45 • 7/10 CORRECT</TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                        
+                </Border>
+                
+            </Border>
+
+        </StackPanel>
+        
+    </Panel>
+</UserControl>
