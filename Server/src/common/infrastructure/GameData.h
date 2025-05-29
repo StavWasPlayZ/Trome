@@ -19,7 +19,6 @@ struct GameData
 
 
     size_t currentQuestionIndex;
-    std::chrono::milliseconds timeSinceQuestionRoll;
 
     int correctAnswerCount;
     int points;
@@ -42,6 +41,7 @@ private:
     void calculateRoundTime();
 
     std::chrono::milliseconds roundTime;
+    std::chrono::milliseconds timeSinceQuestionRoll;
 
     const Game &game;
 };
