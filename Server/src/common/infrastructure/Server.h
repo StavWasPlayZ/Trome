@@ -2,6 +2,9 @@
 
 #include "Communicator.h"
 #include "manager/LoginManager.h"
+#include "manager/RoomManager.h"
+#include "manager/StatisticsManager.h"
+#include "manager/GameManager.h"
 #include "handler/RequestHandlerFactory.h"
 #include "db/IDatabase.h"
 
@@ -27,6 +30,8 @@ public:
     LoginManager& getLoginManager();
     RequestHandlerFactory& getRequestHandlerFactory();
     RoomManager& getRoomManager();
+    StatisticsManager& getStatisticsManager();
+    GameManager& getGameManager();
 
 
 private:
@@ -43,6 +48,7 @@ private:
 	LoginManager m_loginManager;
     RoomManager m_roomManager;
     StatisticsManager m_statisticsManager;
+    GameManager m_gameManager;
 	
 	RequestHandlerFactory m_handlerFactory;
 	Communicator& m_communicator;

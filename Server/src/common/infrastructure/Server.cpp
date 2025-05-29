@@ -11,6 +11,7 @@ Server::Server() :
     m_loginManager(m_database),
     m_roomManager(m_database),
     m_statisticsManager(m_database),
+    m_gameManager(m_database),
     m_handlerFactory(this->m_loginManager, this->m_roomManager, this->m_statisticsManager, this->m_database),
     m_communicator(Communicator::getAndInitiateInstance(&this->m_handlerFactory))
 {}
@@ -112,4 +113,14 @@ RequestHandlerFactory &Server::getRequestHandlerFactory()
 RoomManager &Server::getRoomManager()
 {
     return this->m_roomManager;
+}
+
+StatisticsManager &Server::getStatisticsManager()
+{
+    return this->m_statisticsManager;
+}
+
+GameManager &Server::getGameManager()
+{
+    return this->m_gameManager;
 }
