@@ -5,7 +5,9 @@
 #include "handler/RequestHandlerFactory.h"
 
 
-GameRequestHandler::GameRequestHandler(const RequestHandlerFactory &handlerFactory) : IRequestHandler(handlerFactory)
+GameRequestHandler::GameRequestHandler(Game& game, const RequestHandlerFactory &handlerFactory) :
+    IRequestHandler(handlerFactory),
+    m_game(game)
 {}
 
 bool GameRequestHandler::isRequestRelevant(const RequestInfo &info) const
@@ -57,8 +59,10 @@ RequestResult GameRequestHandler::leaveGame(const RequestInfo &info, const Leave
 
 RequestResult GameRequestHandler::getQuestion(const RequestInfo &info, const GetQuestionRequest &) const
 {
+    const UserQuestion question = m_game.getQuestionForUser(getUserByInfo(info));
+
     return RequestResult(
-        new ErrorResponse(ErrorStatus::SERVER_UNIMPLEMENTED, info.id)
+        new GetQuestionResponse(question.question, question.rotation)
     );
 }
 

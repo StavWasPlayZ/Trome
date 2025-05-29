@@ -3,12 +3,13 @@
 #include "IRequestHandler.h"
 #include "codec/c2s/request/Request.h"
 
+class Game;
 class RequestHandlerFactory;
 
 class GameRequestHandler : public IRequestHandler
 {
 public:
-    explicit GameRequestHandler(const RequestHandlerFactory& handlerFactory);
+    explicit GameRequestHandler(Game& game, const RequestHandlerFactory& handlerFactory);
 
     bool isRequestRelevant(const RequestInfo& info) const override;
 
@@ -29,4 +30,6 @@ private:
         " This method is therefore useless and should not be used."
     )]]
     RequestResult getGameResults(const RequestInfo &info, const GetGameResultRequest &request) const;
+
+    Game& m_game;
 };
