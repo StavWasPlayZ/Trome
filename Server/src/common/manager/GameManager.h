@@ -1,6 +1,6 @@
 #pragma once
 
-#include <vector>
+#include <unordered_map>
 
 #include "infrastructure/db/IDatabase.h"
 #include "infrastructure/Game.h"
@@ -11,13 +11,13 @@ class GameManager
 public:
     explicit GameManager(const IDatabase& m_database);
 
-	Game& createGame(Room &room);
+	Game &createGame(Room &room);
 
-	Game& getGameByRoom(const Room &room);
+    static Game &getGameByRoom(const Room &room);
 
 	void deleteGame(Room &room);
 
 private:
 	const IDatabase& m_database;
-	std::vector<Game &> m_games;
+	std::unordered_map<unsigned int, Game> m_games;
 };

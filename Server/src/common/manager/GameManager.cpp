@@ -5,35 +5,30 @@ GameManager::GameManager(const IDatabase& m_database) : m_database(m_database)
 
 Game& GameManager::createGame(Room &room)
 {
-    Game game(room, this->m_database);
+    const auto [result, _] = this->m_games.emplace(
+        std::piecewise_construct,
+        std::forward_as_tuple(room.getId()),
+        std::forward_as_tuple(room, m_database)
+    );
+
+    Game& game = result->second;
+
     room.setCurrentGame(game);
-    this->m_games.emplace_back(game);
     return game;
 }
 
 Game &GameManager::getGameByRoom(const Room &room)
 {
-    for (auto& game : this->m_games)
-    {
-        if (game.getId() == room.getId())
-        {
-            return game;
-        }
-    }
+    const std::optional<Game*> game = room.getCurrentGame();
 
-    throw std::runtime_error("Game not found");
+    if (!game.has_value())
+        throw std::runtime_error("Game not found");
+
+    return *game.value();
 }
 
 void GameManager::deleteGame(Room &room)
 {
-    for (auto it = m_games.begin(); it != m_games.end(); ++it)
-    {
-        if (it->getId() == room.getId())
-        {
-            // TODO: make this to set the room's game to be null
-            // game.getRoom().setCurrentGame(...);
-            m_games.erase(it); // erase returns iterator to the next element
-            break;
-        }
-    }
+    room.unsetCurrentGame();
+    this->m_games.erase(room.getId());
 }

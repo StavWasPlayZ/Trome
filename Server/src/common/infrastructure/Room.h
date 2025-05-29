@@ -27,6 +27,7 @@ public:
 
     std::optional<Game*> getCurrentGame() const;
     void setCurrentGame(Game& game);
+    void unsetCurrentGame();
 
     void addUser(LoggedUser& user);
     void removeUser(LoggedUser& user);
