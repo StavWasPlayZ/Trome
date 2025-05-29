@@ -6,11 +6,13 @@ RequestHandlerFactory::RequestHandlerFactory(
     LoginManager& loginManager,
     RoomManager& roomManager,
     StatisticsManager& statisticsManager,
+    GameManager& gameManager,
     const IDatabase& database
 ) :
     m_loginManager(loginManager),
     m_roomManager(roomManager),
     m_statisticsManager(statisticsManager),
+    m_gameManager(gameManager),
     m_database(database)
 {}
 
@@ -25,6 +27,11 @@ RoomManager &RequestHandlerFactory::getRoomManager() const
 StatisticsManager &RequestHandlerFactory::getStatisticsManager() const
 {
     return this->m_statisticsManager;
+}
+
+GameManager &RequestHandlerFactory::getGameManager() const
+{
+    this->m_gameManager;
 }
 
 const LoginRequestHandler *RequestHandlerFactory::createLoginRequestHandler() const
