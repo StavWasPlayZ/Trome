@@ -20,282 +20,286 @@
         </Panel.Background>
         
         <ScrollViewer>
-            <StackPanel>
-
-                <Border Height="315">
+            <Panel>
+                <controls:TriviaBackButton Command="{Binding NavigateBackCommand}"/>
                 
-                    <Border Background="#ffb43a"
-                            VerticalAlignment="Bottom"
-                            CornerRadius="20"
-                            Width="700"
-                            Height="230">
-                        
-                        <Panel>
+                <StackPanel>
+
+                    <Border Height="315">
+                    
+                        <Border Background="#ffb43a"
+                                VerticalAlignment="Bottom"
+                                CornerRadius="20"
+                                Width="700"
+                                Height="230">
                             
-                            <Panel ClipToBounds="True">
+                            <Panel>
                                 
-                                <!-- Back trophy -->
+                                <Panel ClipToBounds="True">
+                                    
+                                    <!-- Back trophy -->
+                                    
+                                    <Svg Path="avares://Trivia/Assets/Icons/trophy.svg"
+                                         Stretch="Uniform"
+                                         Css="* { fill: #ffbc53; } "
+                                         Height="350"/>
+                                    
+                                    <!-- Left trophy -->
+                                    
+                                    <Svg Path="avares://Trivia/Assets/Icons/trophy.svg"
+                                         Stretch="Fill"
+                                         Css="* { fill: #ffc266; } "
+                                         Width="200"
+                                         Height="200"
+                                         VerticalAlignment="Bottom"
+                                         HorizontalAlignment="Left"
+                                         RenderTransform="rotate(-20deg) translate(-35px, 50px)"/>
+                                    
+                                    <!-- Right trophy -->
+                                    
+                                    <Svg Path="avares://Trivia/Assets/Icons/trophy.svg"
+                                         Stretch="Fill"
+                                         Css="* { fill: #ffc266; } "
+                                         Width="200"
+                                         Height="200"
+                                         VerticalAlignment="Bottom"
+                                         HorizontalAlignment="Right"
+                                         RenderTransform="rotate(20deg) translate(35px, 50px)"/>
+                                    
+                                </Panel>
                                 
-                                <Svg Path="avares://Trivia/Assets/Icons/trophy.svg"
-                                     Stretch="Uniform"
-                                     Css="* { fill: #ffbc53; } "
-                                     Height="350"/>
+                                <!--
+                                For the top margin:
                                 
-                                <!-- Left trophy -->
+                                The tb margin is 10.
+                                The PFP thus hovers an additional 10px.
+                                The PFP is of size 100, hovering with half its size.
                                 
-                                <Svg Path="avares://Trivia/Assets/Icons/trophy.svg"
-                                     Stretch="Fill"
-                                     Css="* { fill: #ffc266; } "
-                                     Width="200"
-                                     Height="200"
-                                     VerticalAlignment="Bottom"
-                                     HorizontalAlignment="Left"
-                                     RenderTransform="rotate(-20deg) translate(-35px, 50px)"/>
-                                
-                                <!-- Right trophy -->
-                                
-                                <Svg Path="avares://Trivia/Assets/Icons/trophy.svg"
-                                     Stretch="Fill"
-                                     Css="* { fill: #ffc266; } "
-                                     Width="200"
-                                     Height="200"
-                                     VerticalAlignment="Bottom"
-                                     HorizontalAlignment="Right"
-                                     RenderTransform="rotate(20deg) translate(35px, 50px)"/>
+                                10 - 100/2 = -40.
+                                -->
+                                <StackPanel HorizontalAlignment="Center"
+                                            Margin="0 -40 0 20">
+                                    <StackPanel.Styles>
+                                        <Style Selector="TextBlock">
+                                            <Setter Property="TextAlignment" Value="Center"/>
+                                        </Style>
+                                    </StackPanel.Styles>
+                                    
+                                    <Border Background="#ffdbb8"
+                                            Width="100"
+                                            Height="100"
+                                            RenderTransform="translateY(-10px)"
+                                            CornerRadius="20">
+                                        
+                                        <Panel>
+                                            <Svg Path="avares://Trivia/Assets/Icons/person.svg"
+                                                 Stretch="Uniform"
+                                                 Css="* { fill: #c9731e; } " />
+                                            
+                                            <Svg Path="avares://Trivia/Assets/Icons/crown.svg"
+                                                 Stretch="Uniform"
+                                                 Css="* { fill: #ffb43a; } "
+                                                 Height="50"
+                                                 VerticalAlignment="Top"
+                                                 HorizontalAlignment="Right"
+                                                 RenderTransform="rotate(20deg) translate(10px, -27px)"/>
+                                        </Panel>
+                                        
+                                    </Border>
+                                    
+                                    <StackPanel>
+                                        <StackPanel.Styles>
+                                            <Style Selector="TextBlock">
+                                                <Setter Property="Foreground" Value="#ac631b"/>
+                                                <Setter Property="LineHeight" Value="50"/>
+                                            </Style>
+                                        </StackPanel.Styles>
+                                        
+                                        <TextBlock FontSize="80">WINNER</TextBlock>
+                                        <TextBlock FontSize="45">USERNAME</TextBlock>
+                                    </StackPanel>
+                                    
+                                    <Panel Height="2"/>
+                                    
+                                    <StackPanel>
+                                        <StackPanel.Styles>
+                                            <Style Selector="TextBlock">
+                                                <Setter Property="Foreground" Value="#B7722D"/>
+                                            </Style>
+                                        </StackPanel.Styles>
+                                        
+                                        <TextBlock FontSize="30">69420</TextBlock>
+                                        <TextBlock FontSize="25">2:45 • 7/10 CORRECT</TextBlock>
+                                    </StackPanel>
+                                </StackPanel>
                                 
                             </Panel>
-                            
-                            <!--
-                            For the top margin:
-                            
-                            The tb margin is 10.
-                            The PFP thus hovers an additional 10px.
-                            The PFP is of size 100, hovering with half its size.
-                            
-                            10 - 100/2 = -40.
-                            -->
-                            <StackPanel HorizontalAlignment="Center"
-                                        Margin="0 -40 0 20">
-                                <StackPanel.Styles>
-                                    <Style Selector="TextBlock">
-                                        <Setter Property="TextAlignment" Value="Center"/>
-                                    </Style>
-                                </StackPanel.Styles>
                                 
-                                <Border Background="#ffdbb8"
-                                        Width="100"
-                                        Height="100"
-                                        RenderTransform="translateY(-10px)"
-                                        CornerRadius="20">
-                                    
-                                    <Panel>
-                                        <Svg Path="avares://Trivia/Assets/Icons/person.svg"
-                                             Stretch="Uniform"
-                                             Css="* { fill: #c9731e; } " />
-                                        
-                                        <Svg Path="avares://Trivia/Assets/Icons/crown.svg"
-                                             Stretch="Uniform"
-                                             Css="* { fill: #ffb43a; } "
-                                             Height="50"
-                                             VerticalAlignment="Top"
-                                             HorizontalAlignment="Right"
-                                             RenderTransform="rotate(20deg) translate(10px, -27px)"/>
-                                    </Panel>
-                                    
-                                </Border>
-                                
-                                <StackPanel>
-                                    <StackPanel.Styles>
-                                        <Style Selector="TextBlock">
-                                            <Setter Property="Foreground" Value="#ac631b"/>
-                                            <Setter Property="LineHeight" Value="50"/>
-                                        </Style>
-                                    </StackPanel.Styles>
-                                    
-                                    <TextBlock FontSize="80">WINNER</TextBlock>
-                                    <TextBlock FontSize="45">USERNAME</TextBlock>
-                                </StackPanel>
-                                
-                                <Panel Height="2"/>
-                                
-                                <StackPanel>
-                                    <StackPanel.Styles>
-                                        <Style Selector="TextBlock">
-                                            <Setter Property="Foreground" Value="#B7722D"/>
-                                        </Style>
-                                    </StackPanel.Styles>
-                                    
-                                    <TextBlock FontSize="30">69420</TextBlock>
-                                    <TextBlock FontSize="25">2:45 • 7/10 CORRECT</TextBlock>
-                                </StackPanel>
-                            </StackPanel>
-                            
-                        </Panel>
-                            
+                        </Border>
+                        
                     </Border>
                     
-                </Border>
-                
-                <controls:TriviaUsersList Background="#FFCCA2"
-                                          Width="450"
-                                          Margin="0 15">
-                    <ListBox>
-                        <ListBox.Items>
-                            <x:Int32>2</x:Int32>
-                            <x:Int32>3</x:Int32>
-                        </ListBox.Items>
-                        
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <listEntries:ScoredUserListEntry NumberedPlace="{Binding}"/>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-
-                    <!--FIXME: These styles are copy-pasted from StatisticsView. -->
-                    <!-- Find a way to DRY it. -->
-                    <controls:TriviaUsersList.Styles>
-                        
-                        <Style Selector="TextBlock.secondary-text">
-                            <Setter Property="FontSize" Value="30" />
-                        </Style>
-                        
-                        <Style Selector="ListBoxItem">
-                            <Setter Property="Padding" Value="0 3"/>
-                        </Style>
-                        <Style Selector="listEntries|ScoredUserListEntry">
-                            <Setter Property="Padding" Value="10 10"/>
-                        </Style>
-                        
-                        <Style Selector="listEntries|ScoredUserListEntry Border#PART_Pfp">
-                            <Setter Property="Width" Value="56"/>
-                            <Setter Property="Height" Value="56"/>
-                        </Style>
-                        
-                        <Style Selector="ListBoxItem:nth-child(1)">
-                            <Style Selector="^ > listEntries|ScoredUserListEntry">
-                                <Setter Property="Background" Value="#b4483a"/>
-                                
-                                <Style Selector="^ Border#PART_Pfp">
-                                    <Setter Property="Background" Value="#ffa69a"/>
-                                
-                                    <Style Selector="^ > Svg">
-                                        <Setter Property="Css" Value="* { fill: #9d4236; }"/>
-                                    </Style>
-                                </Style>
-                                
-                                <Style Selector="^ TextBlock.primary-text">
-                                    <Setter Property="Foreground" Value="#ffa69a"/>
-                                </Style>
-                                <Style Selector="^ TextBlock.secondary-text">
-                                    <Setter Property="Foreground" Value="#712e25"/>
-                                </Style>
-                            </Style>
-                            
-                            <Style Selector="^:pointerover > listEntries|ScoredUserListEntry">
-                                <Setter Property="Background" Value="#B45C46"/>
-                            </Style>
-                            <Style Selector="^:pressed listEntries|ScoredUserListEntry">
-                                <Setter Property="Background" Value="#A74336"/>
-                            </Style>
-                        </Style>
-                        
-                        <Style Selector="ListBoxItem:nth-child(2)">
-                            <Style Selector="^ > listEntries|ScoredUserListEntry">
-                                <Setter Property="Background" Value="#d29188"/>
-                                                
-                                <Style Selector="^ Border#PART_Pfp">
-                                    <Setter Property="Background" Value="#ffcdc7"/>
-                                                
-                                    <Style Selector="^ > Svg">
-                                        <Setter Property="Css" Value="* { fill: #ae6e65; }"/>
-                                    </Style>
-                                </Style>
-                                                
-                                <Style Selector="^ TextBlock.primary-text">
-                                    <Setter Property="Foreground" Value="White"/>
-                                </Style>
-                                <Style Selector="^ TextBlock.secondary-text">
-                                    <Setter Property="Foreground" Value="#975f58"/>
-                                </Style>
-                            </Style>
-                                            
-                            <Style Selector="^:pointerover > listEntries|ScoredUserListEntry">
-                                <Setter Property="Background" Value="#D29C97"/>
-                            </Style>
-                            <Style Selector="^:pressed listEntries|ScoredUserListEntry">
-                                <Setter Property="Background" Value="#C3867E"/>
-                            </Style>
-                        </Style>
-                        
-                    </controls:TriviaUsersList.Styles>
-                    
-                </controls:TriviaUsersList>
-                
-                <Border Background="rgba(0, 0, 0, 0.3)"
-                        CornerRadius="30"
-                        Margin="50 35"
-                        Padding="0 15">
-                    <!--TODO: This is copied directly from StatisticsView. Make it its own control -->
-                    <controls:TriviaUsersList Margin="50 0"
-                                              CornerRadius="30">
+                    <controls:TriviaUsersList Background="#FFCCA2"
+                                              Width="450"
+                                              Margin="0 15">
                         <ListBox>
                             <ListBox.Items>
-                                <x:Int32>4</x:Int32>
-                                <x:Int32>5</x:Int32>
-                                <x:Int32>6</x:Int32>
-                                <x:Int32>7</x:Int32>
-                                <x:Int32>8</x:Int32>
-                                <x:Int32>9</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
+                                <x:Int32>2</x:Int32>
+                                <x:Int32>3</x:Int32>
                             </ListBox.Items>
-                                    
+                            
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <listEntries:ScoredUserListEntry NumberedPlace="{Binding}"/>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
-                        
+
+                        <!--FIXME: These styles are copy-pasted from StatisticsView. -->
+                        <!-- Find a way to DRY it. -->
                         <controls:TriviaUsersList.Styles>
-                            <Style Selector="Border#PART_Pfp">
-                                <Setter Property="Width" Value="30"/>
-                                <Setter Property="Height" Value="30"/>
-                                <Setter Property="Padding" Value="3"/>
+                            
+                            <Style Selector="TextBlock.secondary-text">
+                                <Setter Property="FontSize" Value="30" />
                             </Style>
+                            
+                            <Style Selector="ListBoxItem">
+                                <Setter Property="Padding" Value="0 3"/>
+                            </Style>
+                            <Style Selector="listEntries|ScoredUserListEntry">
+                                <Setter Property="Padding" Value="10 10"/>
+                            </Style>
+                            
+                            <Style Selector="listEntries|ScoredUserListEntry Border#PART_Pfp">
+                                <Setter Property="Width" Value="56"/>
+                                <Setter Property="Height" Value="56"/>
+                            </Style>
+                            
+                            <Style Selector="ListBoxItem:nth-child(1)">
+                                <Style Selector="^ > listEntries|ScoredUserListEntry">
+                                    <Setter Property="Background" Value="#b4483a"/>
+                                    
+                                    <Style Selector="^ Border#PART_Pfp">
+                                        <Setter Property="Background" Value="#ffa69a"/>
+                                    
+                                        <Style Selector="^ > Svg">
+                                            <Setter Property="Css" Value="* { fill: #9d4236; }"/>
+                                        </Style>
+                                    </Style>
+                                    
+                                    <Style Selector="^ TextBlock.primary-text">
+                                        <Setter Property="Foreground" Value="#ffa69a"/>
+                                    </Style>
+                                    <Style Selector="^ TextBlock.secondary-text">
+                                        <Setter Property="Foreground" Value="#712e25"/>
+                                    </Style>
+                                </Style>
+                                
+                                <Style Selector="^:pointerover > listEntries|ScoredUserListEntry">
+                                    <Setter Property="Background" Value="#B45C46"/>
+                                </Style>
+                                <Style Selector="^:pressed listEntries|ScoredUserListEntry">
+                                    <Setter Property="Background" Value="#A74336"/>
+                                </Style>
+                            </Style>
+                            
+                            <Style Selector="ListBoxItem:nth-child(2)">
+                                <Style Selector="^ > listEntries|ScoredUserListEntry">
+                                    <Setter Property="Background" Value="#d29188"/>
+                                                    
+                                    <Style Selector="^ Border#PART_Pfp">
+                                        <Setter Property="Background" Value="#ffcdc7"/>
+                                                    
+                                        <Style Selector="^ > Svg">
+                                            <Setter Property="Css" Value="* { fill: #ae6e65; }"/>
+                                        </Style>
+                                    </Style>
+                                                    
+                                    <Style Selector="^ TextBlock.primary-text">
+                                        <Setter Property="Foreground" Value="White"/>
+                                    </Style>
+                                    <Style Selector="^ TextBlock.secondary-text">
+                                        <Setter Property="Foreground" Value="#975f58"/>
+                                    </Style>
+                                </Style>
+                                                
+                                <Style Selector="^:pointerover > listEntries|ScoredUserListEntry">
+                                    <Setter Property="Background" Value="#D29C97"/>
+                                </Style>
+                                <Style Selector="^:pressed listEntries|ScoredUserListEntry">
+                                    <Setter Property="Background" Value="#C3867E"/>
+                                </Style>
+                            </Style>
+                            
                         </controls:TriviaUsersList.Styles>
                         
                     </controls:TriviaUsersList>
-                </Border>
-                
-                <controls:TriviaButton Text="RETURN TO LOBBY"
-                                       Width="335"
-                                       Margin="0 0 0 30"
-                                       Background="#362034"
-                                       BorderBrush="#b92e2b"
-                                       IconColor="#ffbbbb"
-                                       BorderBrushSelected="#D93040"
-                                       BorderBrushPressed="#AA2C2F"
-                                       BorderThickness="5"
-                                       BorderThicknessSelected="6"
-                                       IconSvgPath="avares://Trivia/Assets/Icons/play_arrow.svg"
-                                       IconMargin="0 7 -10 7">
                     
-                    <controls:TriviaButton.Styles>
-                        <Style Selector="controls|TriviaButton /template/ Button /template/ ContentPresenter">
-                            <Setter Property="BoxShadow" Value="0 6 7 0 #3f000000"/>
-                        </Style>
-                    </controls:TriviaButton.Styles>
+                    <Border Background="rgba(0, 0, 0, 0.3)"
+                            CornerRadius="30"
+                            Margin="50 35"
+                            Padding="0 15">
+                        <!--TODO: This is copied directly from StatisticsView. Make it its own control -->
+                        <controls:TriviaUsersList Margin="50 0"
+                                                  CornerRadius="30">
+                            <ListBox>
+                                <ListBox.Items>
+                                    <x:Int32>4</x:Int32>
+                                    <x:Int32>5</x:Int32>
+                                    <x:Int32>6</x:Int32>
+                                    <x:Int32>7</x:Int32>
+                                    <x:Int32>8</x:Int32>
+                                    <x:Int32>9</x:Int32>
+                                    <x:Int32>10</x:Int32>
+                                    <x:Int32>10</x:Int32>
+                                    <x:Int32>10</x:Int32>
+                                    <x:Int32>10</x:Int32>
+                                    <x:Int32>10</x:Int32>
+                                    <x:Int32>10</x:Int32>
+                                    <x:Int32>10</x:Int32>
+                                </ListBox.Items>
+                                        
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <listEntries:ScoredUserListEntry NumberedPlace="{Binding}"/>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            
+                            <controls:TriviaUsersList.Styles>
+                                <Style Selector="Border#PART_Pfp">
+                                    <Setter Property="Width" Value="30"/>
+                                    <Setter Property="Height" Value="30"/>
+                                    <Setter Property="Padding" Value="3"/>
+                                </Style>
+                            </controls:TriviaUsersList.Styles>
+                            
+                        </controls:TriviaUsersList>
+                    </Border>
                     
-                </controls:TriviaButton>
+                    <controls:TriviaButton Text="RETURN TO LOBBY"
+                                           Width="335"
+                                           Margin="0 0 0 30"
+                                           Background="#362034"
+                                           BorderBrush="#b92e2b"
+                                           IconColor="#ffbbbb"
+                                           BorderBrushSelected="#D93040"
+                                           BorderBrushPressed="#AA2C2F"
+                                           BorderThickness="5"
+                                           BorderThicknessSelected="6"
+                                           IconSvgPath="avares://Trivia/Assets/Icons/play_arrow.svg"
+                                           IconMargin="0 7 -10 7">
+                        
+                        <controls:TriviaButton.Styles>
+                            <Style Selector="controls|TriviaButton /template/ Button /template/ ContentPresenter">
+                                <Setter Property="BoxShadow" Value="0 6 7 0 #3f000000"/>
+                            </Style>
+                        </controls:TriviaButton.Styles>
+                        
+                    </controls:TriviaButton>
 
-            </StackPanel>
+                </StackPanel>
+            </Panel>
         </ScrollViewer>
         
     </Panel>

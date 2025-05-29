@@ -41,6 +41,7 @@
             <Setter Property="Margin" Value="0 -5 0 0"/>
         </Style>
 
+        <StyleInclude Source="avares://Trivia/Controls/TriviaBackButton.axaml"/>
         <StyleInclude Source="avares://Trivia/Controls/TriviaButton.axaml"/>
         <StyleInclude Source="avares://Trivia/Controls/Underlined.axaml"/>
         <StyleInclude Source="avares://Trivia/Controls/TriviaMenuPanel.axaml"/>
