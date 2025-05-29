@@ -26,7 +26,7 @@ public:
     void startGame();
     void endGame() const;
 
-    const Room& getRoom() const;
+    Room& getRoom() const;
 
     UserQuestion getQuestionForUser(const LoggedUser& user) const;
     /**
@@ -36,6 +36,8 @@ public:
      */
     bool generateNewQuestionForUser(const LoggedUser& user);
 
+    void handleUserLeft(const LoggedUser& user);
+
 private:
     void initPlayersData();
     void populateQuestions();
@@ -44,7 +46,6 @@ private:
 
     /**
      * Removes the provided player's data from the game.
-     * Used for when the player finished the game (early) (probably).
      */
     void removePlayer(const LoggedUser& player);
 

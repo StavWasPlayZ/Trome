@@ -52,8 +52,11 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
 
 RequestResult GameRequestHandler::leaveGame(const RequestInfo &info, const LeaveGameRequest &) const
 {
+    m_game.getRoom().removeUser(getUserByInfo(info));
+
     return RequestResult(
-        new ErrorResponse(ErrorStatus::SERVER_UNIMPLEMENTED, info.id)
+        new LeaveRoomResponse(),
+        new MenuRequestHandler(m_handlerFactory)
     );
 }
 

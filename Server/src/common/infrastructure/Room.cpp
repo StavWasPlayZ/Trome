@@ -79,6 +79,13 @@ void Room::removeUser(LoggedUser &user)
     m_users.erase(it);
     user.removeFromRoom();
 
+
+    if (getCurrentGame().has_value())
+    {
+        getCurrentGame().value()->handleUserLeft(user);
+    }
+
+
     if (user == getAdmin())
     {
         handleAdminLeft(user);
@@ -156,6 +163,11 @@ void Room::handleAdminLeft(const LoggedUser &) const
     {
         player->getClient().setRequestHandlerSafe(new MenuRequestHandler(m_handlerFactory));
         player->removeFromRoom();
+    }
+
+    if (getCurrentGame().has_value())
+    {
+        getCurrentGame().value()->endGame();
     }
 
     IRequestHandler::dispatchNotification(
