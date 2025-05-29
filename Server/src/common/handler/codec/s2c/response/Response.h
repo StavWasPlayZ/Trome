@@ -157,7 +157,9 @@ struct LeaveGameResponse : ProtocolResponse
     LeaveGameResponse();
 };
 
-struct GetQuestionResponse : ProtocolResponse
+struct [[deprecated(
+    "SubmitAnswerResponse already returns the next question."
+)]] GetQuestionResponse : ProtocolResponse
 {
     GetQuestionResponse(int rotation, const Question& question);
 
@@ -170,7 +172,11 @@ struct SubmitAnswerResponse : ProtocolResponse
     SubmitAnswerResponse();
 };
 
-struct GetGameResultResponse : ProtocolResponse
+struct [[deprecated(
+    "The Noftifications system has been set in place to allow for automatic, non-polling updates of any "
+    "room state changes."
+    " This method is therefore useless and should not be used."
+)]] GetGameResultResponse : ProtocolResponse
 {
     explicit GetGameResultResponse(const std::vector<PlayerResult>& results);
 

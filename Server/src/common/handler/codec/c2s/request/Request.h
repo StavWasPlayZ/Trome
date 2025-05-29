@@ -136,7 +136,9 @@ struct LeaveGameRequest : ProtocolRequest
 {
 };
 
-struct GetQuestionRequest : ProtocolRequest
+struct [[deprecated(
+    "SubmitAnswerResponse already returns the next question."
+)]] GetQuestionRequest : ProtocolRequest
 {
 };
 
@@ -145,6 +147,10 @@ struct SubmitAnswerRequest : ProtocolRequest
 {
 };
 
-struct GetGameResultRequest : ProtocolRequest
+struct [[deprecated(
+    "The Noftifications system has been set in place to allow for automatic, non-polling updates of any "
+    "room state changes."
+    " This method is therefore useless and should not be used."
+)]] GetGameResultRequest : ProtocolRequest
 {
 };
