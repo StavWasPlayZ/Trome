@@ -27,72 +27,119 @@
                     <Border Background="#ffb43a"
                             VerticalAlignment="Bottom"
                             CornerRadius="20"
-                            Width="700">
+                            Width="700"
+                            Height="230">
                         
-                        <!--
-                        For the top margin:
-                        
-                        The tb margin is 10.
-                        The PFP thus hovers an additional 10px.
-                        The PFP is of size 100, hovering with half its size.
-                        
-                        10 - 100/2 = -40.
-                        -->
-                        <StackPanel HorizontalAlignment="Center"
-                                    Margin="0 -40 0 20">
-                            <StackPanel.Styles>
-                                <Style Selector="TextBlock">
-                                    <Setter Property="TextAlignment" Value="Center"/>
-                                </Style>
-                            </StackPanel.Styles>
+                        <Panel>
                             
-                            <Border Background="#ffdbb8"
-                                    Width="100"
-                                    Height="100"
-                                    RenderTransform="translateY(-10px)"
-                                    CornerRadius="20">
+                            <Panel ClipToBounds="True">
                                 
-                                <Panel>
-                                    <Svg Path="avares://Trivia/Assets/Icons/person.svg"
-                                         Stretch="Uniform"
-                                         Css="* { fill: #c9731e; } " />
+                                <!-- Back trophy -->
+                                
+                                <Svg Path="avares://Trivia/Assets/Icons/trophy.svg"
+                                     Stretch="Uniform"
+                                     Css="* { fill: #ffbc53; } "
+                                     Height="350"/>
+                                
+                                <!-- Left trophy -->
+                                
+                                <Svg Path="avares://Trivia/Assets/Icons/trophy.svg"
+                                     Stretch="Fill"
+                                     Css="* { fill: #ffc266; } "
+                                     Width="200"
+                                     Height="200"
+                                     VerticalAlignment="Bottom"
+                                     HorizontalAlignment="Left"
+                                     RenderTransform="rotate(-20deg) translate(-35px, 50px)"/>
+                                
+                                <!-- Right trophy -->
+                                
+                                <Svg Path="avares://Trivia/Assets/Icons/trophy.svg"
+                                     Stretch="Fill"
+                                     Css="* { fill: #ffc266; } "
+                                     Width="200"
+                                     Height="200"
+                                     VerticalAlignment="Bottom"
+                                     HorizontalAlignment="Right"
+                                     RenderTransform="rotate(20deg) translate(35px, 50px)"/>
+                                
+                                <!-- <Svg Path="avares://Trivia/Assets/Icons/trophy.svg" -->
+                                <!--      Stretch="Fill" -->
+                                <!--      Css="* { fill: #ffc46d; } " -->
+                                <!--      Width="250" -->
+                                <!--      Height="275" -->
+                                <!--      VerticalAlignment="Bottom" -->
+                                <!--      HorizontalAlignment="Right" -->
+                                <!--      RenderTransform="rotate(20deg) translate(50px, 50px)"/> -->
+                                
+                            </Panel>
+                            
+                            <!--
+                            For the top margin:
+                            
+                            The tb margin is 10.
+                            The PFP thus hovers an additional 10px.
+                            The PFP is of size 100, hovering with half its size.
+                            
+                            10 - 100/2 = -40.
+                            -->
+                            <StackPanel HorizontalAlignment="Center"
+                                        Margin="0 -40 0 20">
+                                <StackPanel.Styles>
+                                    <Style Selector="TextBlock">
+                                        <Setter Property="TextAlignment" Value="Center"/>
+                                    </Style>
+                                </StackPanel.Styles>
+                                
+                                <Border Background="#ffdbb8"
+                                        Width="100"
+                                        Height="100"
+                                        RenderTransform="translateY(-10px)"
+                                        CornerRadius="20">
                                     
-                                    <Svg Path="avares://Trivia/Assets/Icons/crown.svg"
-                                         Stretch="Uniform"
-                                         Css="* { fill: #ffb43a; } "
-                                         Height="50"
-                                         VerticalAlignment="Top"
-                                         HorizontalAlignment="Right"
-                                         RenderTransform="rotate(20deg) translate(10px, -25px)"/>
-                                </Panel>
+                                    <Panel>
+                                        <Svg Path="avares://Trivia/Assets/Icons/person.svg"
+                                             Stretch="Uniform"
+                                             Css="* { fill: #c9731e; } " />
+                                        
+                                        <Svg Path="avares://Trivia/Assets/Icons/crown.svg"
+                                             Stretch="Uniform"
+                                             Css="* { fill: #ffb43a; } "
+                                             Height="50"
+                                             VerticalAlignment="Top"
+                                             HorizontalAlignment="Right"
+                                             RenderTransform="rotate(20deg) translate(10px, -27px)"/>
+                                    </Panel>
+                                    
+                                </Border>
                                 
-                            </Border>
-                            
-                            <StackPanel>
-                                <StackPanel.Styles>
-                                    <Style Selector="TextBlock">
-                                        <Setter Property="Foreground" Value="#ac631b"/>
-                                        <Setter Property="LineHeight" Value="50"/>
-                                    </Style>
-                                </StackPanel.Styles>
+                                <StackPanel>
+                                    <StackPanel.Styles>
+                                        <Style Selector="TextBlock">
+                                            <Setter Property="Foreground" Value="#ac631b"/>
+                                            <Setter Property="LineHeight" Value="50"/>
+                                        </Style>
+                                    </StackPanel.Styles>
+                                    
+                                    <TextBlock FontSize="80">WINNER</TextBlock>
+                                    <TextBlock FontSize="45">USERNAME</TextBlock>
+                                </StackPanel>
                                 
-                                <TextBlock FontSize="80">WINNER</TextBlock>
-                                <TextBlock FontSize="45">USERNAME</TextBlock>
+                                <Panel Height="2"/>
+                                
+                                <StackPanel>
+                                    <StackPanel.Styles>
+                                        <Style Selector="TextBlock">
+                                            <Setter Property="Foreground" Value="#B7722D"/>
+                                        </Style>
+                                    </StackPanel.Styles>
+                                    
+                                    <TextBlock FontSize="30">69420</TextBlock>
+                                    <TextBlock FontSize="25">2:45 • 7/10 CORRECT</TextBlock>
+                                </StackPanel>
                             </StackPanel>
                             
-                            <Panel Height="2"/>
-                            
-                            <StackPanel>
-                                <StackPanel.Styles>
-                                    <Style Selector="TextBlock">
-                                        <Setter Property="Foreground" Value="#B7722D"/>
-                                    </Style>
-                                </StackPanel.Styles>
-                                
-                                <TextBlock FontSize="30">69420</TextBlock>
-                                <TextBlock FontSize="25">2:45 • 7/10 CORRECT</TextBlock>
-                            </StackPanel>
-                        </StackPanel>
+                        </Panel>
                             
                     </Border>
                     
