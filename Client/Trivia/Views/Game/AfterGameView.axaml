@@ -31,7 +31,7 @@
                                 VerticalAlignment="Bottom"
                                 CornerRadius="20"
                                 Width="700"
-                                Height="230">
+                                Height="235">
                             
                             <Panel>
                                 
@@ -111,7 +111,7 @@
                                         <StackPanel.Styles>
                                             <Style Selector="TextBlock">
                                                 <Setter Property="Foreground" Value="#ac631b"/>
-                                                <Setter Property="LineHeight" Value="50"/>
+                                                <Setter Property="LineHeight" Value="58"/>
                                             </Style>
                                         </StackPanel.Styles>
                                         
