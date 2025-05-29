@@ -1,4 +1,5 @@
 using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
 using Avalonia.LogicalTree;
 using Avalonia.ReactiveUI;
@@ -9,6 +10,12 @@ namespace Trivia;
 
 public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 {
+    public static IClassicDesktopStyleApplicationLifetime? ApplicationLifetime =>
+        Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
+    
+    public static MainWindow? Instance => ApplicationLifetime?.MainWindow as MainWindow;
+    
+    
     public MainWindow()
     {
         this.WhenActivated(_ =>

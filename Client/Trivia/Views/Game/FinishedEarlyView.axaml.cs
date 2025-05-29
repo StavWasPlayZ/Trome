@@ -1,10 +1,8 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
+﻿using Trivia.ViewModels.Game;
 
 namespace Trivia.Views.Game;
 
-public partial class FinishedEarlyView : UserControl
+public partial class FinishedEarlyView : PageViewControl<FinishedEarlyViewModel>
 {
     public FinishedEarlyView()
     {

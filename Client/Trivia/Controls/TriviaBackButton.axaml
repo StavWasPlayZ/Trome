@@ -1,0 +1,27 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:Trivia.Controls">
+    <Design.PreviewWith>
+        <controls:TriviaBackButton />
+    </Design.PreviewWith>
+
+    <Style Selector="controls|TriviaBackButton">
+        <!-- Set Defaults -->
+        <Setter Property="Template">
+            <ControlTemplate>
+            
+                <Button Command="{TemplateBinding Command}"
+                        Theme="{StaticResource EmptyButton}"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Left"
+                        Padding="5"
+                        Margin="15 5">
+                        
+                    <TextBlock
+                        FontSize="50">&lt;</TextBlock>
+                </Button>
+                
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

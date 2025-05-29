@@ -41,18 +41,8 @@
             <ControlTemplate>
             
                 <Panel>
-                    <Button
-                        Command="{TemplateBinding BackButtonCommand}"
-                        Theme="{StaticResource EmptyButton}"
-                        VerticalAlignment="Top"
-                        HorizontalAlignment="Left"
-                        Padding="5"
-                        Margin="15 5"
-                        IsVisible="{TemplateBinding DisplayBackButton}">
-                        
-                        <TextBlock
-                            FontSize="50">&lt;</TextBlock>
-                    </Button>
+                    <controls:TriviaBackButton Command="{TemplateBinding BackButtonCommand}"
+                                               IsVisible="{TemplateBinding DisplayBackButton}"/>
                     
                     <Border
                         Background="rgba(0, 0, 0, .3)"
