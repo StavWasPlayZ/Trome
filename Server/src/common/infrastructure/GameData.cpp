@@ -33,18 +33,29 @@ void GameData::updateTimeSinceQuestionRoll()
     this->roundTime = std::chrono::milliseconds::zero();
 }
 
-void GameData::nextQuestion()
+void GameData::nextQuestion(const bool didFail)
 {
+    if (!didFail)
+    {
+        this->correctAnswerCount++;
+    }
+
     calculateRoundTime();
 
     this->currentQuestionIndex++;
 
-    calculateRoundPoints();
+    calculateRoundPoints(didFail);
     rotateAnswers();
 }
 
-void GameData::calculateRoundPoints()
+void GameData::calculateRoundPoints(const bool didFail)
 {
+    if (didFail)
+    {
+        this->points -= FAILURE_PENALTY;
+        return;
+    }
+
     const int maxTime = this->game.getRoom().getData().timePerQuestionSecs;
     const double time = static_cast<double>(this->roundTime.count());
 

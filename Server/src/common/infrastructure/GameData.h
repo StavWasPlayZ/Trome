@@ -15,7 +15,7 @@ struct GameData
     void rotateAnswers();
     void updateTimeSinceQuestionRoll();
 
-    void nextQuestion();
+    void nextQuestion(bool didFail);
 
 
     size_t currentQuestionIndex;
@@ -32,8 +32,9 @@ struct GameData
 
 private:
     static constexpr int QUESTION_POINTS = 500;
+    static constexpr int FAILURE_PENALTY = QUESTION_POINTS * (1/4);
 
-    void calculateRoundPoints();
+    void calculateRoundPoints(bool didFail);
 
     /**
      * Updates how long the current round has taken into GameData::roundTime.

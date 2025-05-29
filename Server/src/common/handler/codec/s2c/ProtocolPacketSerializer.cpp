@@ -88,12 +88,12 @@ nlohmann::json ProtocolPacketSerializer::serializeAsJson(const PlayerResult &pla
     return result;
 }
 
-nlohmann::json ProtocolPacketSerializer::serializeAsJson(const Question &question, const int rotation)
+nlohmann::json ProtocolPacketSerializer::serializeAsJson(const UserQuestion &question)
 {
     nlohmann::json result;
 
-    result["prompt"] = question.prompt;
-    result["answers"] = question.getAnswersRotated(rotation);
+    result["prompt"] = question.question.prompt;
+    result["answers"] = question.question.getAnswersRotated(question.rotation);
 
     return result;
 }

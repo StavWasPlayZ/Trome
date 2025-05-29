@@ -1,7 +1,7 @@
 #pragma once
 
+#include "infrastructure/Game.h"
 #include "infrastructure/PlayerResult.h"
-#include "infrastructure/Question.h"
 #include "infrastructure/UserStatistics.h"
 
 #include <infrastructure/RoomData.h>
@@ -162,21 +162,19 @@ struct [[deprecated(
     "SubmitAnswerResponse already returns the next question."
 )]] GetQuestionResponse : ProtocolResponse
 {
-    GetQuestionResponse(const Question& question, int rotation);
+    explicit GetQuestionResponse(const UserQuestion& question);
 
-    const Question& question;
-    const int rotation;
+    const UserQuestion question;
 };
 
 struct SubmitAnswerResponse : ProtocolResponse
 {
-    SubmitAnswerResponse(const std::optional<Question *>& newQuestion, int rotation);
+    explicit SubmitAnswerResponse(const std::optional<UserQuestion>& newQuestion);
 
     /**
      * Empty for if there are no more questions.
      */
-    const std::optional<Question *> newQuestion;
-    const int rotation;
+    const std::optional<UserQuestion> newQuestion;
 };
 
 struct [[deprecated(

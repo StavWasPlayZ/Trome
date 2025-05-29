@@ -34,9 +34,9 @@ public:
      *
      * A question may not be generated if the user has finished answering all set questions.
      */
-    bool generateNewQuestionForUser(const LoggedUser& user);
+    bool generateNewQuestionForUser(const LoggedUser& user, bool didFail);
 
-    void handleUserLeft(const LoggedUser& user);
+    void handleUserLeft(const LoggedUser& user) const;
 
 private:
     void initPlayersData();
@@ -66,5 +66,5 @@ struct UserQuestion
     UserQuestion(const Question& question, int rotation);
 
     const Question& question;
-    int rotation;
+    const int rotation;
 };

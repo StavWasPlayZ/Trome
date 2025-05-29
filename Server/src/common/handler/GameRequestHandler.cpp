@@ -43,10 +43,32 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo &info, const P
     }
 }
 
-RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const SubmitAnswerRequest &) const
+RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const SubmitAnswerRequest &request) const
 {
+    const LoggedUser& user = getUserByInfo(info);
+    const UserQuestion question = m_game.getQuestionForUser(user);
+
+    //TODO: Check if the question was submitted in time (+1sec for server delay).
+    // If so, refuse to answer if an error response.
+    // The user is responsible for fetching a new question for that matter, under the now-not-deprecated
+    // GetQuestionRequest (or a new request ig).
+
+    // If the returned answer is 0 unrotated, it must be correct.
+    // This is because the first answer is always the correct one.
+    const bool didFail = request.answer - question.rotation == 0;
+
+    std::optional<UserQuestion> newQuestion = std::nullopt;
+    // ReSharper disable once CppTooWideScope
+    const bool didGenerate = m_game.generateNewQuestionForUser(user, didFail);
+
+    if (didGenerate)
+    {
+        newQuestion.emplace(m_game.getQuestionForUser(user));
+    }
+
     return RequestResult(
-        new ErrorResponse(ErrorStatus::SERVER_UNIMPLEMENTED, info.id)
+        new SubmitAnswerResponse(newQuestion)
+        //TODO: If did not generate (finished early), hold on waiting handler or something.
     );
 }
 
@@ -62,10 +84,8 @@ RequestResult GameRequestHandler::leaveGame(const RequestInfo &info, const Leave
 
 RequestResult GameRequestHandler::getQuestion(const RequestInfo &info, const GetQuestionRequest &) const
 {
-    const UserQuestion question = m_game.getQuestionForUser(getUserByInfo(info));
-
     return RequestResult(
-        new GetQuestionResponse(question.question, question.rotation)
+        new GetQuestionResponse(m_game.getQuestionForUser(getUserByInfo(info)))
     );
 }
 

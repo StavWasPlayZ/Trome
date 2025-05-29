@@ -52,25 +52,24 @@ UserQuestion Game::getQuestionForUser(const LoggedUser &user) const
     );
 }
 
-bool Game::generateNewQuestionForUser(const LoggedUser &user)
+bool Game::generateNewQuestionForUser(const LoggedUser &user, const bool didFail)
 {
     GameData &data = this->m_playersData.at(&user);
 
-    data.nextQuestion();
+    data.nextQuestion(didFail);
     const bool finished = data.currentQuestionIndex < this->m_questions.size();
 
     if (finished)
     {
         submitGameStatsToDB(user);
-        // removePlayer(user);
     }
 
     return finished;
 }
 
-void Game::handleUserLeft(const LoggedUser &user)
+void Game::handleUserLeft(const LoggedUser &user) const
 {
-    removePlayer(user);
+    // removePlayer(user);
 
     // Think you can get away?
     // ehe~
@@ -91,6 +90,10 @@ void Game::handleUserLeft(const LoggedUser &user)
     // ⠀⠀⠀⠀⠃⡰⠁⡠⠊⠀⠀⠀⠇⠑⡤⣉⣒⡂⠅⠊⡇⠀⠙⠐⡴⢂⢀⠇⠀⠀
     // ⠀⠀⠀⠀⠎⠀⠎⠀⠀⠀⢀⠔⠃⡞⢀⠁⠇⡇⢱⠀⢇⡀⠀⢰⠀⢾⠃⠀⠀⠀
     // ⠀⠀⠈⠀⠄⡚⠀⢀⣠⠤⢈⣢⡔⠀⡘⠀⠀⢁⠀⢢⣘⣁⣀⣸⡴⠜⢧⢀⡀⠀
+
+
+    //NOTE: We do not remove the player in question, but wait until the game truly finishes.
+    // This is so that said player may still be shown in the after game view.
 }
 
 void Game::initPlayersData()
