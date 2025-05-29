@@ -36,7 +36,9 @@ private:
     void calculateRoundPoints();
 
     /**
-     * Sets and updates both GameData::roundTime and GameData::averageAnswerTime.
+     * Updates how long the current round has taken into GameData::roundTime.
+     *
+     * Also updates GameData::averageAnswerTime and GameData::timeSinceQuestionRoll accordingly.
      */
     void calculateRoundTime();
 
