@@ -277,7 +277,8 @@
                         </controls:TriviaUsersList>
                     </Border>
                     
-                    <controls:TriviaButton Text="RETURN TO LOBBY"
+                    <controls:TriviaButton Command="{Binding NavigateBackCommand}"
+                                           Text="RETURN TO LOBBY"
                                            Width="335"
                                            Margin="0 0 0 30"
                                            Background="#362034"
