@@ -11,7 +11,7 @@
 class LoginManager
 {
 public:
-	explicit LoginManager(const IDatabase& m_database);
+	explicit LoginManager(const IDatabase& database);
 
 	/**
 	 * Signs up a new user, then registers them as logged in.
