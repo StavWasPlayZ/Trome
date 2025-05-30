@@ -27,7 +27,7 @@ ProtocolResponse *LoginManager::signup(const RequestInfo &info, const SignupRequ
 	}
     catch (const RegexViolationException &e)
     {
-        return new ErrorResponse(ErrorStatus::FAILED_INVALID_ARGUMENT, info.id, e.field);
+        return new ErrorResponse(ErrorStatus::INVALID_ARGUMENT, info.id, e.field);
     }
 	catch (const std::runtime_error& e)
 	{
@@ -37,10 +37,10 @@ ProtocolResponse *LoginManager::signup(const RequestInfo &info, const SignupRequ
 
         if (std::strstr(e.what(), "UNIQUE") != nullptr)
         {
-            return new ErrorResponse(ErrorStatus::FAILED_USERNAME_TAKEN, info.id);
+            return new ErrorResponse(ErrorStatus::USERNAME_TAKEN, info.id);
         }
 
-        return new ErrorResponse(ErrorStatus::FAILED_INVALID_ARGUMENT, info.id, e.what());
+        return new ErrorResponse(ErrorStatus::INVALID_ARGUMENT, info.id, e.what());
 	}
 
 	const ProtocolResponse *const loginRes = this->login(info, request);
@@ -64,13 +64,13 @@ ProtocolResponse *LoginManager::login(const RequestInfo &info, const LoginReques
 
 	if (userId == -1)
 	{
-        return new ErrorResponse(ErrorStatus::FAILED_INVALID_CREDENTIALS, info.id);
+        return new ErrorResponse(ErrorStatus::INVALID_CREDENTIALS, info.id);
 	}
 
     // If either the client is logged in or the requested user is logged in
 	if (isLoggedIn(info.client) || isLoggedIn(userId))
 	{
-        return new ErrorResponse(ErrorStatus::FAILED_ALREADY_LOGGED_IN, info.id);
+        return new ErrorResponse(ErrorStatus::ALREADY_LOGGED_IN, info.id);
 	}
 
 	const auto result = this->m_loggedUsers.emplace(

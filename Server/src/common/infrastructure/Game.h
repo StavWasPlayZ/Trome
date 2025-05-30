@@ -28,6 +28,9 @@ public:
 
     Room& getRoom() const;
 
+
+    const GameData& getDataOf(const LoggedUser& user) const;
+
     /**
      * Returns the active question of the current user, if one exists.
      *

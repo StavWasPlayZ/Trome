@@ -43,9 +43,14 @@ Room &Game::getRoom() const
     return this->m_room;
 }
 
+const GameData &Game::getDataOf(const LoggedUser &user) const
+{
+    return this->m_playersData.at(&user);
+}
+
 std::optional<UserQuestion> Game::getQuestionForUser(const LoggedUser &user) const
 {
-    const GameData &data = this->m_playersData.at(&user);
+    const GameData &data = getDataOf(user);
 
     if (data.isFinished)
         return std::nullopt;

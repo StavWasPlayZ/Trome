@@ -19,18 +19,18 @@ struct GameData
     void nextQuestion(bool didFail);
 
 
+    std::chrono::milliseconds getTimeSinceQuestionRoll() const;
+    std::chrono::seconds getAverageAnswerTime() const;
+    int getAnswersRotation() const;
+
+    std::chrono::milliseconds getRoundTime() const;
+
+
     size_t currentQuestionIndex;
     bool isFinished;
 
     int correctAnswerCount;
     int points;
-
-    std::chrono::seconds averageAnswerTime;
-
-    /**
-     * The amount of which to offset the answers' IDs provided to the client.
-     */
-    int answersRotation;
 
 private:
     static constexpr int QUESTION_POINTS = 500;
@@ -43,7 +43,15 @@ private:
      *
      * Also updates GameData::averageAnswerTime and GameData::timeSinceQuestionRoll accordingly.
      */
-    void calculateRoundTime();
+    void submitRoundTime();
+
+
+    std::chrono::seconds averageAnswerTime;
+
+    /**
+     * The amount of which to offset the answers' IDs provided to the client.
+     */
+    int answersRotation;
 
     std::chrono::milliseconds roundTime;
     std::chrono::milliseconds timeSinceQuestionRoll;

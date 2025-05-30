@@ -1,5 +1,6 @@
 #pragma once
 
+#include <chrono>
 #include <string>
 
 /**
@@ -21,4 +22,6 @@ struct RoomData
     int maxPlayers;
     int timePerQuestionSecs;
     int questionsCount;
+
+    std::chrono::milliseconds getTimePerQuestionMs() const;
 };

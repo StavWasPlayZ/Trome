@@ -59,7 +59,7 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo &info, const JoinRo
     if (!room)
     {
         return RequestResult(
-            new ErrorResponse(ErrorStatus::ERROR_UNKNOWN_RESOURCE, info.id)
+            new ErrorResponse(ErrorStatus::UNKNOWN_RESOURCE, info.id)
         );
     }
 
@@ -135,7 +135,7 @@ RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo &info, cons
     if (!room)
     {
         return RequestResult(
-            new ErrorResponse(ErrorStatus::ERROR_UNKNOWN_RESOURCE, info.id)
+            new ErrorResponse(ErrorStatus::UNKNOWN_RESOURCE, info.id)
         );
     }
 

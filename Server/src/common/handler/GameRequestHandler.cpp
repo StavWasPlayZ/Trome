@@ -1,9 +1,9 @@
 #include "GameRequestHandler.h"
 
-#include "codec/s2c/response/Response.h"
+#include "Utils.h"
 #include "codec/s2c/response/JsonResponsePacketSerializer.h"
+#include "codec/s2c/response/Response.h"
 #include "handler/RequestHandlerFactory.h"
-
 
 GameRequestHandler::GameRequestHandler(Game& game, const RequestHandlerFactory &handlerFactory) :
     IRequestHandler(handlerFactory),
@@ -46,12 +46,17 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo &info, const P
 RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const SubmitAnswerRequest &request) const
 {
     const LoggedUser& user = getUserByInfo(info);
-    const UserQuestion question = m_game.getQuestionForUser(user).value();
 
-    //TODO: Check if the question was submitted in time (+1sec for server delay).
-    // If so, refuse to answer with an error response.
-    // The user is the one responsible for fetching a new question for that matter, under the now-not-deprecated
-    // GetQuestionRequest (or a new request ig).
+    // Check if the question was submitted in time (+1sec for server delay).
+    // (The user is the one responsible for fetching a new question for that matter)
+    if (m_game.getDataOf(user).getRoundTime() > m_game.getRoom().getData().getTimePerQuestionMs())
+    {
+        return RequestResult(
+            new ErrorResponse(ErrorStatus::QUESTION_OUTDATED, info.id)
+        );
+    }
+
+    const UserQuestion question = m_game.getQuestionForUser(user).value();
 
 
     // If the returned answer is 0 unrotated, it must be correct.

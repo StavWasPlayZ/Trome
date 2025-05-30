@@ -36,12 +36,31 @@ void GameData::nextQuestion(const bool didFail)
         this->correctAnswerCount++;
     }
 
-    calculateRoundTime();
+    submitRoundTime();
 
     this->currentQuestionIndex++;
 
     calculateRoundPoints(didFail);
     rotateAnswers();
+}
+std::chrono::milliseconds GameData::getTimeSinceQuestionRoll() const
+{
+    return this->timeSinceQuestionRoll;
+}
+
+std::chrono::seconds GameData::getAverageAnswerTime() const
+{
+    return this->averageAnswerTime;
+}
+
+int GameData::getAnswersRotation() const
+{
+    return this->answersRotation;
+}
+
+std::chrono::milliseconds GameData::getRoundTime() const
+{
+    return utils::getCurrTimeMillis() - this->timeSinceQuestionRoll;
 }
 
 void GameData::calculateRoundPoints(const bool didFail)
@@ -63,9 +82,9 @@ void GameData::calculateRoundPoints(const bool didFail)
     this->points += static_cast<int>(ceil(result));
 }
 
-void GameData::calculateRoundTime()
+void GameData::submitRoundTime()
 {
-    this->roundTime = utils::getCurrTimeMillis() - this->timeSinceQuestionRoll;
+    this->roundTime = getRoundTime();
     updateTimeSinceQuestionRoll();
 
     this->averageAnswerTime = std::chrono::duration_cast<std::chrono::seconds>(

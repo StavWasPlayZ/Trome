@@ -32,16 +32,19 @@ enum class ErrorStatus : unsigned int
     // May be of any type.
     //
     // E.g: User not found.
-    ERROR_UNKNOWN_RESOURCE,
+    UNKNOWN_RESOURCE,
 
     // Login
-    FAILED_INVALID_CREDENTIALS,
-    FAILED_ALREADY_LOGGED_IN,
+    INVALID_CREDENTIALS,
+    ALREADY_LOGGED_IN,
 
     // Signup
-    FAILED_USERNAME_TAKEN,
-    FAILED_INVALID_ARGUMENT,
+    USERNAME_TAKEN,
+    INVALID_ARGUMENT,
 
     // Logout
-    FAILED_NOT_LOGGED_IN
+    NOT_LOGGED_IN,
+
+    // Game
+    QUESTION_OUTDATED
 };
