@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reactive;
+using System.Reactive.Disposables;
 using ReactiveUI;
 using Trivia.Codec.C2S.Request.Packets;
 using Trivia.Codec.S2C;
@@ -20,6 +22,14 @@ public class JoinedRoomViewModel : RoomViewModel
             await Comm.SendRequestAwaitResponse<LeaveRoomResponse>(new LeaveRoomRequest());
             
             NavigateBackCommand!.Execute();
+        });
+        
+        this.WhenActivated(disposables =>
+        {
+            this
+                .WhenAnyValue(x => x.Room)
+                .Subscribe(_ => MaxPlayers = Room.Data.MaxPlayers)
+                .DisposeWith(disposables);
         });
     }
 

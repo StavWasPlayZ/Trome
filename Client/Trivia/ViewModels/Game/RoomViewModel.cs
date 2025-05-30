@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive.Disposables;
 using ReactiveUI;
 using Trivia.Codec.S2C;
 using Trivia.Codec.S2C.Notification.Packets;
@@ -60,6 +62,15 @@ public abstract class RoomViewModel : PageViewModel
         {
             Players.Add(null);
         }
+        
+        
+        this.WhenActivated(disposables =>
+        {
+            this
+                .WhenAnyValue(x => x.MaxPlayers)
+                .Subscribe(_ => UpdatePlayersList())
+                .DisposeWith(disposables);
+        });
     }
 
     protected RoomViewModel()
@@ -82,6 +93,38 @@ public abstract class RoomViewModel : PageViewModel
                     };
                 })
         );
+    }
+    
+    
+    private int _maxPlayers;
+
+    public int MaxPlayers
+    {
+        get => _maxPlayers;
+        set => this.RaiseAndSetIfChanged(ref _maxPlayers, value);
+    }
+    
+    
+    private void UpdatePlayersList()
+    {
+        if (MaxPlayers == Players.Count)
+            return;
+
+        while (MaxPlayers > Players.Count)
+        {
+            Players.Add(null);
+        }
+        
+        while (MaxPlayers < Players.Count)
+        {
+            var current = Players.Last();
+            
+            // If we're about to destroy a player, just don't.
+            if (current is not null)
+                break;
+
+            Players.Remove(current);
+        }
     }
     
 
@@ -120,7 +163,11 @@ public abstract class RoomViewModel : PageViewModel
             break;
         }
         
-        Players.Add(null);
+        // Return the missing player slot (if necessary)
+        if (Players.Count == MaxPlayers - 1)
+        {
+            Players.Add(null);
+        }
         
         Room = Room with
         {
