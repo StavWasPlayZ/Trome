@@ -83,9 +83,30 @@ RequestResult GameRequestHandler::leaveGame(const RequestInfo &info, const Leave
 
 RequestResult GameRequestHandler::getQuestion(const RequestInfo &info, const GetQuestionRequest &) const
 {
-    return RequestResult(
-        new GetQuestionResponse(m_game.getQuestionForUser(getUserByInfo(info)))
-    );
+    //NOTE: A known vulnerability here is that the user can just never send this request and deadlock everyone
+    // in the room.
+    //
+    // The fix is to make a server-bound timer for every user that will invoke a version of this method on timeout,
+    // and notify the clients of the new question.
+    //
+    // However that is slightly too complex to implement since we would also need a cancellation token in hand for
+    // if the user has ceased, plus sleeping threads etc.
+    //
+    // TODO: (probably never) fix
+
+    const LoggedUser& user = getUserByInfo(info);
+
+    // User has already finished; Just return nothing
+    if (m_game.getDataOf(user).isFinished)
+    {
+        return RequestResult(new GetQuestionResponse(std::nullopt));
+    }
+
+    // Getting here means the user has either skipped the question or that the time has passed.
+    // Either of which will prompt  the failure of the current round.
+    const std::optional<UserQuestion> newQuestion = m_game.generateNewQuestionForUser(user, true);
+
+    return RequestResult(new GetQuestionResponse(newQuestion));
 }
 
 RequestResult GameRequestHandler::getGameResults(const RequestInfo &info, const GetGameResultRequest &) const
