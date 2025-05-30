@@ -57,7 +57,7 @@ std::optional<UserQuestion> Game::getQuestionForUser(const LoggedUser &user) con
 
     return UserQuestion(
         this->m_questions.at(data.currentQuestionIndex),
-        data.answersRotation
+        data.getAnswersRotation()
     );
 }
 
