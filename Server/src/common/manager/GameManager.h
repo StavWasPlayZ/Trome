@@ -11,8 +11,8 @@ class GameManager
 public:
     explicit GameManager(const IDatabase& m_database);
 
-    /*
-     * Creates a new game, and automatically associates it to the provided room
+  /*
+     * PLEASE CALL VIA Room::createNewGame.
      */
     Game &createGame(Room &room);
 

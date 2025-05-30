@@ -3,8 +3,6 @@
 #include "Client.h"
 #include "Server.h"
 
-#include <list>
-
 #include "db/IDatabase.h"
 #include "handler/IRequestHandler.h"
 #include "handler/MenuRequestHandler.h"
@@ -46,9 +44,14 @@ std::optional<Game *> Room::getCurrentGame() const
     return this->m_currentGame;
 }
 
-void Room::setCurrentGame(Game &game)
+Game &Room::createNewGame(GameManager &gameManager)
 {
-    this->m_currentGame = &game;
+    if (getCurrentGame().has_value())
+        throw std::runtime_error("Game already in process");
+
+    this->m_currentGame = &gameManager.createGame(*this);
+
+    return *this->m_currentGame;
 }
 
 void Room::unsetCurrentGame()

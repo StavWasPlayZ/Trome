@@ -7,6 +7,7 @@
 #include <optional>
 #include <vector>
 
+class GameManager;
 class RequestHandlerFactory;
 enum class RoomStatus : unsigned int;
 class Game;
@@ -26,7 +27,7 @@ public:
 
 
     std::optional<Game*> getCurrentGame() const;
-    void setCurrentGame(Game& game);
+    Game &createNewGame(GameManager& gameManager);
     void unsetCurrentGame();
 
     void addUser(LoggedUser& user);
