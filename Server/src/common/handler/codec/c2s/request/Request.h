@@ -136,9 +136,7 @@ struct LeaveGameRequest : ProtocolRequest
 {
 };
 
-struct [[deprecated(
-    "SubmitAnswerResponse already returns the next question."
-)]] GetQuestionRequest : ProtocolRequest
+struct GetQuestionRequest : ProtocolRequest
 {
 };
 

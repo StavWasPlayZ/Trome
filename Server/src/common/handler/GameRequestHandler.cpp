@@ -32,9 +32,9 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo &info, const P
         return submitAnswer(info, static_cast<const SubmitAnswerRequest &>(request));
     case RequestCode::LEAVE_GAME:
         return leaveGame(info, static_cast<const LeaveGameRequest &>(request));
-
     case RequestCode::GET_QUESTION:
         return getQuestion(info, static_cast<const GetQuestionRequest &>(request));
+
     case RequestCode::GET_GAME_RESULT:
         return getGameResults(info, static_cast<const GetGameResultRequest &>(request));
 

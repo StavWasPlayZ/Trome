@@ -158,9 +158,7 @@ struct LeaveGameResponse : ProtocolResponse
     LeaveGameResponse();
 };
 
-struct [[deprecated(
-    "SubmitAnswerResponse already returns the next question."
-)]] GetQuestionResponse : ProtocolResponse
+struct GetQuestionResponse : ProtocolResponse
 {
     explicit GetQuestionResponse(const UserQuestion& question);
 

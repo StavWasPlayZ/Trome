@@ -19,9 +19,9 @@ private:
     RequestResult submitAnswer(const RequestInfo &info, const SubmitAnswerRequest &request) const;
     RequestResult leaveGame(const RequestInfo &info, const LeaveGameRequest &request) const;
 
-    [[deprecated(
-        "SubmitAnswerResponse already returns the next question."
-    )]]
+    /**
+     * Invalidates the current, active (or inactive) question, replacing it with the next one.
+     */
     RequestResult getQuestion(const RequestInfo &info, const GetQuestionRequest &request) const;
 
     [[deprecated(
