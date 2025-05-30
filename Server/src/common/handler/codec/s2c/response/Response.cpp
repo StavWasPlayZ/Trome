@@ -86,9 +86,10 @@ GetQuestionResponse::GetQuestionResponse(const std::optional<UserQuestion>& ques
     question(question)
 {}
 
-SubmitAnswerResponse::SubmitAnswerResponse(const std::optional<UserQuestion> &newQuestion) :
+SubmitAnswerResponse::SubmitAnswerResponse(const std::optional<UserQuestion> &newQuestion, const bool wasLastPlayer) :
     ProtocolResponse(ResponseCode::SUBMIT_ANSWER),
-    newQuestion(newQuestion)
+    newQuestion(newQuestion),
+    wasLastPlayer(wasLastPlayer)
 {}
 
 GetGameResultResponse::GetGameResultResponse(const std::vector<PlayerResult>& results) :

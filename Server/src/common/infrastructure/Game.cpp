@@ -7,7 +7,8 @@
 Game::Game(Room &room, const IDatabase &database) :
     m_database(database),
     m_startTime(0),
-    m_room(room)
+    m_room(room),
+    playersRemaining(0)
 {}
 
 Game::~Game()
@@ -35,12 +36,16 @@ void Game::startGame()
 void Game::endGame() const
 {
     m_room.setStatus(RoomStatus::WAITING);
-    // TODO: Self-remove from GameManager
 }
 
 Room &Game::getRoom() const
 {
     return this->m_room;
+}
+
+bool Game::isGameComplete() const
+{
+    return this->playersRemaining == 0;
 }
 
 const GameData &Game::getDataOf(const LoggedUser &user) const
@@ -65,19 +70,24 @@ std::optional<UserQuestion> Game::generateNewQuestionForUser(const LoggedUser &u
 {
     GameData &data = this->m_playersData.at(&user);
 
+    if (data.isFinished)
+        return std::nullopt;
+
+
     data.nextQuestion(didFail);
     data.isFinished = data.currentQuestionIndex < this->m_questions.size();
 
     if (data.isFinished)
     {
-        submitGameStatsToDB(user);
+        handleUserLeft(user);
         return std::nullopt;
     }
+
 
     return getQuestionForUser(user);
 }
 
-void Game::handleUserLeft(const LoggedUser &user) const
+void Game::handleUserLeft(const LoggedUser &user)
 {
     // removePlayer(user);
 
@@ -102,8 +112,10 @@ void Game::handleUserLeft(const LoggedUser &user) const
     // ⠀⠀⠈⠀⠄⡚⠀⢀⣠⠤⢈⣢⡔⠀⡘⠀⠀⢁⠀⢢⣘⣁⣀⣸⡴⠜⢧⢀⡀⠀
 
 
-    //NOTE: We do not remove the player in question, but wait until the game truly finishes.
-    // This is so that said player may still be shown in the after game view.
+    //NOTE: We do not actually remove the player in question, but wait until the game truly finishes.
+    // This is so that said player may still be shown in the after-game view.
+
+    playersRemaining--;
 }
 
 void Game::initPlayersData()

@@ -28,6 +28,11 @@ public:
 
     Room& getRoom() const;
 
+    /**
+     * Returns whether all players have answered all questions
+     */
+    bool isGameComplete() const;
+
 
     const GameData& getDataOf(const LoggedUser& user) const;
 
@@ -44,7 +49,7 @@ public:
      */
     std::optional<UserQuestion> generateNewQuestionForUser(const LoggedUser& user, bool didFail);
 
-    void handleUserLeft(const LoggedUser& user) const;
+    void handleUserLeft(const LoggedUser& user);
 
 private:
     void initPlayersData();
@@ -66,4 +71,6 @@ private:
     std::unordered_map<const LoggedUser*, GameData> m_playersData;
 
     std::vector<Question> m_questions;
+
+    int playersRemaining;
 };

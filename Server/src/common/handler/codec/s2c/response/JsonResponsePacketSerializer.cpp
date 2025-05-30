@@ -231,6 +231,8 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const SubmitAnswerRespon
         data["new_question"] = ProtocolPacketSerializer::serializeAsJson(response.newQuestion.value());
     }
 
+    data["was_last_player"] = response.wasLastPlayer;
+
     return serialize(response.id, data);
 }
 

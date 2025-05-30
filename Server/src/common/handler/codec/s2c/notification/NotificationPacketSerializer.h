@@ -65,6 +65,14 @@ public:
      */
     static OBuffer serialize(const GameStartedNotification& notification);
 
+    /**
+     * Converts the provided notification into a writable resource,
+     * prepending the necessary binary headers.
+     *
+     * NOTE: The returned resource must be freed.
+     */
+    static OBuffer serialize(const GameEndedNotification& notification);
+
 
 private:
     static OBuffer serialize(NotificationCode msgCode, const nlohmann::json &data);

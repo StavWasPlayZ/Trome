@@ -1,8 +1,11 @@
 #include "GameRequestHandler.h"
 
+#include "RoomAdminRequestHandler.h"
+#include "RoomMemberRequestHandler.h"
 #include "codec/s2c/response/JsonResponsePacketSerializer.h"
 #include "codec/s2c/response/Response.h"
 #include "handler/RequestHandlerFactory.h"
+#include "infrastructure/Client.h"
 
 GameRequestHandler::GameRequestHandler(const RequestHandlerFactory &handlerFactory, Game& game) :
     IRequestHandler(handlerFactory),
@@ -45,31 +48,58 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo &info, const P
 RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const SubmitAnswerRequest &request) const
 {
     const LoggedUser& user = getUserByInfo(info);
+    Room& room = this->m_game.getRoom();
 
     // Check if the question was submitted in time (+1sec for server delay).
     // (The user is the one responsible for fetching a new question for that matter)
-    if (m_game.getDataOf(user).getRoundTime() > m_game.getRoom().getData().getTimePerQuestionMs())
+    if (m_game.getDataOf(user).getRoundTime() > room.getData().getTimePerQuestionMs())
     {
         return RequestResult(
             new ErrorResponse(ErrorStatus::QUESTION_OUTDATED, info.id)
         );
     }
 
-    const UserQuestion question = m_game.getQuestionForUser(user).value();
+    const UserQuestion question = this->m_game.getQuestionForUser(user).value();
 
 
     // If the returned answer is 0 unrotated, it must be correct.
     // This is because the first answer is always the correct one.
     const bool didFail = request.answer - question.rotation == 0;
 
-    const std::optional<UserQuestion> newQuestion = m_game.generateNewQuestionForUser(user, didFail);
+    const std::optional<UserQuestion> newQuestion = this->m_game.generateNewQuestionForUser(user, didFail);
 
-    //TODO: If this is the last player to have answered a question, release everyone from the waiting room state
-    // (into the Room handler), and dispatch an according notification.
-    // (See an example of such in Room::handleAdminLeft)
+    if (this->m_game.isGameComplete())
+    {
+        //TODO: Add optional parameter to dispatchNotification for player exclusion & handler setter
+        // (Many use this kind of variation)
+        for (const LoggedUser* player : room.getAllUsers())
+        {
+            if (*player == user)
+                continue;
+
+            Client& client = player->getClient();
+
+            client.setRequestHandlerSafe(
+                room.getAdmin() == *player
+                    ? new RoomAdminRequestHandler(m_handlerFactory, room)
+                    : new RoomMemberRequestHandler(m_handlerFactory, room)
+            );
+
+            //TODO: Provide game results
+            client.sendNotification(GameEndedNotification());
+        }
+
+        return RequestResult(
+            new SubmitAnswerResponse(newQuestion, true),
+
+            room.getAdmin() == user
+                ? new RoomAdminRequestHandler(m_handlerFactory, room)
+                : new RoomMemberRequestHandler(m_handlerFactory, room)
+        );
+    }
 
     return RequestResult(
-        new SubmitAnswerResponse(newQuestion)
+        new SubmitAnswerResponse(newQuestion, false)
         //TODO: If did not generate (finished early), return a waiting handler.
     );
 }
