@@ -6,6 +6,7 @@
 
 Game::Game(Room &room, const IDatabase &database) :
     m_database(database),
+    m_startTime(0),
     m_room(room)
 {}
 
