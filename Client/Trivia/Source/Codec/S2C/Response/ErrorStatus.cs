@@ -12,16 +12,19 @@ public enum ErrorStatus
     /// May be of any type.
     ///
     /// E.g: User not found.
-    ErrorUnknownResource,
+    UnknownResource,
 
     // Login
-    FailedInvalidCredentials,
-    FailedAlreadyLoggedIn,
+    InvalidCredentials,
+    AlreadyLoggedIn,
 
     // Signup
-    FailedUsernameTaken,
-    FailedInvalidArgument,
+    UsernameTaken,
+    InvalidArgument,
 
     // Logout
-    FailedNotLoggedIn
+    NotLoggedIn,
+    
+    // Game
+    QuestionOutdated
 }

@@ -23,6 +23,10 @@ public static class ResponseDeserializer
             ResponseCode.GetRoomState => PacketDeserializer.Deserialize<GetRoomStateResponse>(json),
             ResponseCode.LeaveRoom => PacketDeserializer.Deserialize<LeaveRoomResponse>(json),
             ResponseCode.UpdateRoomData => PacketDeserializer.Deserialize<UpdateRoomDataResponse>(json),
+            ResponseCode.LeaveGame => PacketDeserializer.Deserialize<LeaveGameResponse>(json),
+            ResponseCode.GetGameResult => PacketDeserializer.Deserialize<GetGameResultResponse>(json),
+            ResponseCode.GetQuestion => PacketDeserializer.Deserialize<GetQuestionResponse>(json),
+            ResponseCode.SubmitAnswer => PacketDeserializer.Deserialize<SubmitAnswerResponse>(json),
             _ => null
         };
     }
