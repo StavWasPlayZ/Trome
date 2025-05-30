@@ -31,7 +31,7 @@ StatisticsManager &RequestHandlerFactory::getStatisticsManager() const
 
 GameManager &RequestHandlerFactory::getGameManager() const
 {
-    this->m_gameManager;
+    return this->m_gameManager;
 }
 
 const LoginRequestHandler *RequestHandlerFactory::createLoginRequestHandler() const
