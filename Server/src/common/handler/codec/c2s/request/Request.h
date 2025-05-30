@@ -111,6 +111,9 @@ struct CloseRoomRequest : ProtocolRequest
 
 struct StartGameRequest : ProtocolRequest
 {
+    explicit StartGameRequest(const RoomData &data);
+
+    const RoomData data;
 };
 
 struct [[deprecated(

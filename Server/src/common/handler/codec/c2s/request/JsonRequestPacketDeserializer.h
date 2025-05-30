@@ -109,10 +109,4 @@ public:
      * Returns: The deserialized object.
      */
     static GetGameResultRequest deserializeGetGameResultRequest(const nlohmann::json &data);
-
-private:
-    /**
-     * Parses the provided field from the data as an unsigned long.
-     */
-    static unsigned int toUL(int n);
 };

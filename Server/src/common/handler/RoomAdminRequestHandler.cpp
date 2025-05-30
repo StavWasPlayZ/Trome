@@ -44,7 +44,7 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo &info, co
     }
 }
 
-RequestResult RoomAdminRequestHandler::startGame(const RequestInfo &info, const StartGameRequest &) const
+RequestResult RoomAdminRequestHandler::startGame(const RequestInfo &info, const StartGameRequest &request) const
 {
     Game& game = this->m_room.createNewGame(this->m_handlerFactory.getGameManager());
 
@@ -54,7 +54,7 @@ RequestResult RoomAdminRequestHandler::startGame(const RequestInfo &info, const 
         },
 
         this->m_room.getAllUsers(),
-        GameStartedNotification(),
+        GameStartedNotification(request.data),
         &getUserByInfo(info)
     );
 

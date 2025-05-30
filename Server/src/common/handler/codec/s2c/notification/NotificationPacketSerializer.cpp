@@ -58,7 +58,11 @@ OBuffer NotificationPacketSerializer::serialize(const RoomDataUpdatedNotificatio
 
 OBuffer NotificationPacketSerializer::serialize(const GameStartedNotification &notification)
 {
-    return serialize(notification.id, nlohmann::json::object());
+    nlohmann::json data;
+
+    data["data"] = ProtocolPacketSerializer::serializeAsJson(notification.data);
+
+    return serialize(notification.id, data);
 }
 
 OBuffer NotificationPacketSerializer::serialize(const GameEndedNotification &notification)

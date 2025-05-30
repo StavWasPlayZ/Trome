@@ -52,7 +52,9 @@ struct RoomDataUpdatedNotification : ProtocolNotification
 
 struct GameStartedNotification : ProtocolNotification
 {
-    GameStartedNotification();
+    explicit GameStartedNotification(const RoomData& data);
+
+    const RoomData& data;
 };
 
 struct GameEndedNotification : ProtocolNotification

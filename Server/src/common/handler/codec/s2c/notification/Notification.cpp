@@ -26,8 +26,9 @@ RoomDataUpdatedNotification::RoomDataUpdatedNotification(const RoomData &data) :
     data(data)
 {}
 
-GameStartedNotification::GameStartedNotification() :
-    ProtocolNotification(NotificationCode::GAME_STARTED)
+GameStartedNotification::GameStartedNotification(const RoomData &data) :
+    ProtocolNotification(NotificationCode::GAME_STARTED),
+    data(data)
 {}
 
 GameEndedNotification::GameEndedNotification() :

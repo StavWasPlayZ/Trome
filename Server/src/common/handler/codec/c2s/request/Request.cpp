@@ -33,7 +33,12 @@ ProtocolRequest *ProtocolRequest::fromRequest(const RequestInfo &info) {
 }
 
 JoinRoomRequest::JoinRoomRequest(const unsigned int roomID) : roomID(roomID)
-{}
+{
+}
+
+StartGameRequest::StartGameRequest(const RoomData &data) : data(data)
+{
+}
 
 UpdateRoomDataRequest::UpdateRoomDataRequest(const RoomData &data) : data(data)
 {

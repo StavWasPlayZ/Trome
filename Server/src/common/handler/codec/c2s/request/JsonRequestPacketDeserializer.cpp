@@ -1,5 +1,7 @@
 #include "JsonRequestPacketDeserializer.h"
 
+#include "ProtocolPacketDeserializer.h"
+
 #include <iostream>
 
 ProtocolRequest *JsonRequestPacketDeserializer::deserialize(const RequestInfo &info)
@@ -107,12 +109,12 @@ GetRoomsRequest JsonRequestPacketDeserializer::deserializeGetRoomsRequest(const 
 
 GetPlayersInRoomRequest JsonRequestPacketDeserializer::deserializeGetPlayersInRoomRequest(const nlohmann::json &data)
 {
-    return GetPlayersInRoomRequest(toUL(data.at("room_id")));
+    return GetPlayersInRoomRequest(ProtocolPacketDeserializer::toUL(data.at("room_id")));
 }
 
 JoinRoomRequest JsonRequestPacketDeserializer::deserializeJoinRoomRequest(const nlohmann::json &data)
 {
-    return JoinRoomRequest(toUL(data.at("room_id")));
+    return JoinRoomRequest(ProtocolPacketDeserializer::toUL(data.at("room_id")));
 }
 
 GetHighScoresRequest JsonRequestPacketDeserializer::deserializeGetHighScoresRequest(const nlohmann::json &)
@@ -135,9 +137,11 @@ CloseRoomRequest JsonRequestPacketDeserializer::deserializeCloseRoomRequest(cons
     return CloseRoomRequest();
 }
 
-StartGameRequest JsonRequestPacketDeserializer::deserializeStartGameRequest(const nlohmann::json &)
+StartGameRequest JsonRequestPacketDeserializer::deserializeStartGameRequest(const nlohmann::json &data)
 {
-    return StartGameRequest();
+    return StartGameRequest(
+        ProtocolPacketDeserializer::deserialize(data.at("data"))
+    );
 }
 
 GetRoomStateRequest JsonRequestPacketDeserializer::deserializeGetRoomStateRequest(const nlohmann::json &)
@@ -152,15 +156,8 @@ LeaveRoomRequest JsonRequestPacketDeserializer::deserializeLeaveRoomRequest(cons
 
 UpdateRoomDataRequest JsonRequestPacketDeserializer::deserializeUpdateRoomDataRequest(const nlohmann::json &data)
 {
-    const nlohmann::json &roomDataObj = data.at("data");
-
     return UpdateRoomDataRequest(
-        RoomData(
-            roomDataObj.at("name"),
-            roomDataObj.at("max_players"),
-            roomDataObj.at("time_per_question_secs"),
-            roomDataObj.at("questions_count")
-        )
+        ProtocolPacketDeserializer::deserialize(data.at("data"))
     );
 }
 
@@ -199,14 +196,4 @@ nlohmann::json JsonRequestPacketDeserializer::readJson(const unsigned char *data
 
     delete[] jsonRaw;
     return result;
-}
-
-unsigned int JsonRequestPacketDeserializer::toUL(const int n)
-{
-    if (n < 0)
-    {
-        throw std::runtime_error("Invalid room ID");
-    }
-
-    return static_cast<unsigned int>(n);
 }
