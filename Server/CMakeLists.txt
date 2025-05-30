@@ -115,6 +115,9 @@ add_executable (Server
 
   "src/common/Utils.cpp"
   "src/common/Utils.h"
+
+  "src/common/handler/FinishedGameEarlyRequestHandler.h" 
+  "src/common/handler/FinishedGameEarlyRequestHandler.cpp"
 )
 
 # Platform-specific sources
