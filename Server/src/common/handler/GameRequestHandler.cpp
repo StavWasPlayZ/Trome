@@ -2,6 +2,7 @@
 
 #include "RoomAdminRequestHandler.h"
 #include "RoomMemberRequestHandler.h"
+#include "FinishedGameEarlyRequestHandler.h"
 #include "codec/s2c/response/JsonResponsePacketSerializer.h"
 #include "codec/s2c/response/Response.h"
 #include "handler/RequestHandlerFactory.h"
@@ -93,10 +94,19 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
         );
     }
 
-    return RequestResult(
-        new SubmitAnswerResponse(newQuestion, false)
-        //TODO: If newQuestion is empty (finished early), return a waiting handler.
-    );
+    if (newQuestion.has_value())
+    {
+        return RequestResult(
+            new SubmitAnswerResponse(newQuestion, false)
+        );
+    }
+    else
+    {
+        return RequestResult(
+            new SubmitAnswerResponse(newQuestion, false), 
+            static_cast<const IRequestHandler*>(new FinishedGameEarlyRequestHandler(m_handlerFactory, m_game))
+        );
+    }
 }
 
 RequestResult GameRequestHandler::leaveGame(const RequestInfo &info, const LeaveGameRequest &) const
