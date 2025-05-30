@@ -2,8 +2,8 @@
 
 #include "Game.h"
 #include "Question.h"
+#include "Utils.h"
 
-#include <cstdlib>
 #include <cmath>
 
 GameData::GameData(const Game& game) :
@@ -24,12 +24,7 @@ void GameData::rotateAnswers()
 
 void GameData::updateTimeSinceQuestionRoll()
 {
-    //TODO: Move this method to a utils method.
-    // This is done twice throughout this document, and once more in Game.
-    this->timeSinceQuestionRoll = std::chrono::duration_cast<std::chrono::milliseconds>(
-        std::chrono::steady_clock::now().time_since_epoch()
-    );
-
+    this->timeSinceQuestionRoll = utils::getCurrTimeMillis();
     this->roundTime = std::chrono::milliseconds::zero();
 }
 
@@ -69,11 +64,7 @@ void GameData::calculateRoundPoints(const bool didFail)
 
 void GameData::calculateRoundTime()
 {
-    const std::chrono::milliseconds timeNow = std::chrono::duration_cast<std::chrono::milliseconds>(
-        std::chrono::steady_clock::now().time_since_epoch()
-    );
-
-    this->roundTime = timeNow - this->timeSinceQuestionRoll;
+    this->roundTime = utils::getCurrTimeMillis() - this->timeSinceQuestionRoll;
     updateTimeSinceQuestionRoll();
 
     this->averageAnswerTime = std::chrono::duration_cast<std::chrono::seconds>(

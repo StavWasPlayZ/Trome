@@ -1,5 +1,7 @@
 #include "Game.h"
 
+#include "Utils.h"
+
 #include <stdexcept>
 
 Game::Game(Room &room, const IDatabase &database) :
@@ -25,9 +27,7 @@ void Game::startGame()
     populateQuestions();
     initPlayersData();
 
-    m_startTime = std::chrono::duration_cast<std::chrono::milliseconds>(
-        std::chrono::steady_clock::now().time_since_epoch()
-    );
+    m_startTime = utils::getCurrTimeMillis();
     m_room.setStatus(RoomStatus::PLAYING);
 }
 
@@ -115,11 +115,8 @@ void Game::submitGameStatsToDB(const LoggedUser &user) const
     const GameData &data = this->m_playersData.at(&user);
     const std::string &username = user.getUsername();
 
-    const std::chrono::milliseconds currTime = std::chrono::duration_cast<std::chrono::milliseconds>(
-        std::chrono::steady_clock::now().time_since_epoch()
-    );
     const std::chrono::seconds gameplayTime = std::chrono::duration_cast<std::chrono::seconds>(
-        currTime - this->m_startTime
+        utils::getCurrTimeMillis() - this->m_startTime
     );
 
     m_database.addTime(username, gameplayTime.count());
