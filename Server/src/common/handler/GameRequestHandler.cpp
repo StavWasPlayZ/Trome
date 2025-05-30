@@ -86,11 +86,21 @@ RequestResult GameRequestHandler::getQuestion(const RequestInfo &info, const Get
     //NOTE: A known vulnerability here is that the user can just never send this request and deadlock everyone
     // in the room.
     //
-    // The fix is to make a server-bound timer for every user that will invoke a version of this method on timeout,
+    // The fix is to make a server-bound timer for every player that will invoke a version of this method on timeout,
     // and notify the clients of the new question.
     //
-    // However that is slightly too complex to implement since we would also need a cancellation token in hand for
-    // if the user has ceased, plus sleeping threads etc.
+    // However that is slightly too complex to implement, since not only do we need to time our function
+    // but also require a cancellation token in hand for if the user has actually answered.
+    //
+    // Of course, a simple std::thread per player per question could work but will surely bombard the server
+    // to oblivion.
+    //
+    // A more realistic solution would probably be to use a single-threaded round timeouts handler that does
+    // all the above, much like in JS.
+    //
+    // That is to say, **Asio (preferable)** or *LibUV (uv-cpp)*.
+    //
+    // Another option is a thread per player with the same concept in mind, but I firmly believe that is just wasteful.
     //
     // TODO: (probably never) fix
 
