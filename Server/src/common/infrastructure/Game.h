@@ -26,15 +26,30 @@ public:
     void startGame();
     void endGame() const;
 
-    const Room& getRoom() const;
+    Room& getRoom() const;
 
-    UserQuestion getQuestionForUser(const LoggedUser& user) const;
     /**
-     * Returns true whether a new question was generated, false otherwise.
-     *
-     * A question may not be generated if the user has finished answering all set questions.
+     * Returns whether all players have answered all questions
      */
-    bool generateNewQuestionForUser(const LoggedUser& user);
+    bool isGameComplete() const;
+
+
+    const GameData& getDataOf(const LoggedUser& user) const;
+
+    /**
+     * Returns the active question of the current user, if one exists.
+     *
+     * A question may not exist if the user has already finished answering them all.
+     */
+    std::optional<UserQuestion> getQuestionForUser(const LoggedUser& user) const;
+    /**
+     * Generates a new question for the user and returns the new, active question of the current user, if one exists.
+     *
+     * A question may not exist if the user has already finished answering them all.
+     */
+    std::optional<UserQuestion> generateNewQuestionForUser(const LoggedUser& user, bool didFail);
+
+    void handleUserLeft(const LoggedUser& user);
 
 private:
     void initPlayersData();
@@ -44,7 +59,6 @@ private:
 
     /**
      * Removes the provided player's data from the game.
-     * Used for when the player finished the game (early) (probably).
      */
     void removePlayer(const LoggedUser& player);
 
@@ -57,13 +71,6 @@ private:
     std::unordered_map<const LoggedUser*, GameData> m_playersData;
 
     std::vector<Question> m_questions;
-};
 
-
-struct UserQuestion
-{
-    UserQuestion(const Question& question, int rotation);
-
-    const Question& question;
-    int rotation;
+    int playersRemaining;
 };

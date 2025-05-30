@@ -1,3 +1,3 @@
 namespace Trivia.Codec.S2C.Notification.Packets;
 
-public record RoomClosedNotification : IProtocolNotification;
+public readonly record struct RoomClosedNotification : IProtocolNotification;

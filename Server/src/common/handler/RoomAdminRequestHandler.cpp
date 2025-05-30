@@ -1,14 +1,11 @@
 #include "RoomAdminRequestHandler.h"
 
+#include "GameRequestHandler.h"
 #include "RequestHandlerFactory.h"
 #include "codec/c2s/request/Request.h"
-#include "codec/s2c/notification/Notification.h"
 #include "codec/s2c/response/ErrorResponse.h"
 #include "infrastructure/Client.h"
 #include "manager/RoomManager.h"
-
-#include <algorithm>
-#include <mutex>
 
 RoomAdminRequestHandler::RoomAdminRequestHandler(const RequestHandlerFactory &handlerFactory, Room& room) :
     IRequestHandler(handlerFactory),
@@ -49,11 +46,23 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo &info, co
 
 RequestResult RoomAdminRequestHandler::startGame(const RequestInfo &info, const StartGameRequest &) const
 {
-    //TODO: Implement
+    Game& game = this->m_room.createNewGame(this->m_handlerFactory.getGameManager());
+
+    const LoggedUser& user = getUserByInfo(info);
+
+    for (const LoggedUser* player : this->m_room.getAllUsers())
+    {
+        if (*player == user)
+            continue;
+
+        Client& client = player->getClient();
+        client.setRequestHandlerSafe(new GameRequestHandler(m_handlerFactory, game));
+        client.sendNotification(GameStartedNotification());
+    }
 
     return RequestResult(
-        new ErrorResponse(ErrorStatus::SERVER_UNIMPLEMENTED, info.id),
-        new RoomAdminRequestHandler(*this)
+        new StartGameResponse(),
+        new GameRequestHandler(m_handlerFactory, game)
     );
 }
 
@@ -72,12 +81,11 @@ RequestResult RoomAdminRequestHandler::updateRoomData(const RequestInfo &, const
     m_room.setData(request.data);
 
     return RequestResult(
-        new UpdateRoomDataResponse(),
-        new RoomAdminRequestHandler(*this)
+        new UpdateRoomDataResponse()
     );
 }
 
 RequestResult RoomAdminRequestHandler::getRoomState(const RequestInfo &, const GetRoomsRequest &) const
 {
-    return RequestResult(new GetRoomStateResponse(m_room), new RoomAdminRequestHandler(*this));
+    return RequestResult(new GetRoomStateResponse(m_room));
 }

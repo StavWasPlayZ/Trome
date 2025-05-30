@@ -214,14 +214,26 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetQuestionRespons
 {
     nlohmann::json data;
 
-    data["question"] = ProtocolPacketSerializer::serializeAsJson(response.question, response.rotation);
+    if (response.question.has_value())
+    {
+        data["question"] = ProtocolPacketSerializer::serializeAsJson(response.question.value());
+    }
 
     return serialize(response.id, data);
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const SubmitAnswerResponse &response)
 {
-    return serialize(response.id, nlohmann::json::object());
+    nlohmann::json data;
+
+    if (response.newQuestion.has_value())
+    {
+        data["new_question"] = ProtocolPacketSerializer::serializeAsJson(response.newQuestion.value());
+    }
+
+    data["was_last_player"] = response.wasLastPlayer;
+
+    return serialize(response.id, data);
 }
 
 

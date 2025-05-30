@@ -1,4 +1,5 @@
 #pragma once
+
 #include <string>
 
 struct PlayerResult
@@ -10,6 +11,7 @@ struct PlayerResult
         int points
     );
 
+    //TODO: Change to User type
     const std::string username;
     const int correctAnswerCount;
     const int averageAnswerTime;

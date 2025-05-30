@@ -4,8 +4,6 @@
 #include "exception/SocketDisconnectionException.h"
 #include "exception/SocketTimeoutException.h"
 
-#include "handler/LoginRequestHandler.h"
-
 #include <iostream>
 
 WindowsCommunicator::WindowsCommunicator(const RequestHandlerFactory *handlerFactory) :

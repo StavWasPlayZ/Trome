@@ -140,11 +140,17 @@ struct GetQuestionRequest : ProtocolRequest
 {
 };
 
-// TODO: make this to get the answer
 struct SubmitAnswerRequest : ProtocolRequest
 {
+    explicit SubmitAnswerRequest(int answer);
+
+    int answer;
 };
 
-struct GetGameResultRequest : ProtocolRequest
+struct [[deprecated(
+    "The Noftifications system has been set in place to allow for automatic, non-polling updates of any "
+    "room state changes."
+    " This method is therefore useless and should not be used."
+)]] GetGameResultRequest : ProtocolRequest
 {
 };

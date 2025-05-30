@@ -3,8 +3,6 @@
 #include "Client.h"
 #include "Server.h"
 
-#include <list>
-
 #include "db/IDatabase.h"
 #include "handler/IRequestHandler.h"
 #include "handler/MenuRequestHandler.h"
@@ -19,6 +17,7 @@ Room::Room(const unsigned int id, LoggedUser &admin, const RoomData &data,
     status(status),
     m_admin(&admin),
     m_metadata(data),
+    m_currentGame(nullptr),
     m_database(database),
     m_handlerFactory(Server::getInstance().getRequestHandlerFactory())
 {
@@ -43,12 +42,20 @@ unsigned int Room::generateId()
 
 std::optional<Game *> Room::getCurrentGame() const
 {
+    if (this->m_currentGame == nullptr)
+        return std::nullopt;
+
     return this->m_currentGame;
 }
 
-void Room::setCurrentGame(Game &game)
+Game &Room::createNewGame(GameManager &gameManager)
 {
-    this->m_currentGame = &game;
+    if (getCurrentGame().has_value())
+        throw std::runtime_error("Game already in process");
+
+    this->m_currentGame = &gameManager.createGame(*this);
+
+    return *this->m_currentGame;
 }
 
 void Room::unsetCurrentGame()
@@ -78,6 +85,13 @@ void Room::removeUser(LoggedUser &user)
 
     m_users.erase(it);
     user.removeFromRoom();
+
+
+    if (getCurrentGame().has_value())
+    {
+        getCurrentGame().value()->handleUserLeft(user);
+    }
+
 
     if (user == getAdmin())
     {
@@ -156,6 +170,11 @@ void Room::handleAdminLeft(const LoggedUser &) const
     {
         player->getClient().setRequestHandlerSafe(new MenuRequestHandler(m_handlerFactory));
         player->removeFromRoom();
+    }
+
+    if (getCurrentGame().has_value())
+    {
+        getCurrentGame().value()->endGame();
     }
 
     IRequestHandler::dispatchNotification(

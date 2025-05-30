@@ -7,6 +7,7 @@
 #include <optional>
 #include <vector>
 
+class GameManager;
 class RequestHandlerFactory;
 enum class RoomStatus : unsigned int;
 class Game;
@@ -26,7 +27,7 @@ public:
 
 
     std::optional<Game*> getCurrentGame() const;
-    void setCurrentGame(Game& game);
+    Game &createNewGame(GameManager& gameManager);
     void unsetCurrentGame();
 
     void addUser(LoggedUser& user);
@@ -52,8 +53,8 @@ private:
     // Made a pointer such that if we'd like to change it in the future
     LoggedUser* m_admin;
 
-    void handleGuestLeft(const LoggedUser & guest) const;
-    void handleAdminLeft(const LoggedUser& admin) const;
+    void handleGuestLeft(const LoggedUser &guest) const;
+    void handleAdminLeft(const LoggedUser &admin) const;
 
     RoomData m_metadata;
     std::vector<LoggedUser*> m_users;

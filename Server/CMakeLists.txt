@@ -110,6 +110,11 @@ add_executable (Server
 
   "src/common/manager/GameManager.h" 
   "src/common/manager/GameManager.cpp"
+  "src/common/handler/GameRequestHandler.cpp"
+  "src/common/handler/GameRequestHandler.h"
+
+  "src/common/Utils.cpp"
+  "src/common/Utils.h"
 )
 
 # Platform-specific sources

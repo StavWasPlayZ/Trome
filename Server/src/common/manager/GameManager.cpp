@@ -11,10 +11,7 @@ Game& GameManager::createGame(Room &room)
         std::forward_as_tuple(room, m_database)
     );
 
-    Game& game = result->second;
-
-    room.setCurrentGame(game);
-    return game;
+    return result->second;
 }
 
 Game &GameManager::getGameByRoom(const Room &room)

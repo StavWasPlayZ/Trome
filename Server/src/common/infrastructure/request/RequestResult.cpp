@@ -2,7 +2,8 @@
 
 #include "handler/codec/s2c/response/Response.h"
 
-RequestResult::RequestResult(const ProtocolResponse *const response, const IRequestHandler *const newHandler) :
+RequestResult::RequestResult(const ProtocolResponse *const response,
+        const std::optional<const IRequestHandler *>& newHandler) :
     response(response),
     newHandler(newHandler)
 {}

@@ -1,10 +1,11 @@
 #pragma once
 
-#include "infrastructure/UserStatistics.h"
+#include "infrastructure/Game.h"
 #include "infrastructure/PlayerResult.h"
-#include "infrastructure/Question.h"
+#include "infrastructure/UserStatistics.h"
 
 #include <infrastructure/RoomData.h>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -159,18 +160,30 @@ struct LeaveGameResponse : ProtocolResponse
 
 struct GetQuestionResponse : ProtocolResponse
 {
-    GetQuestionResponse(int rotation, const Question& question);
+    explicit GetQuestionResponse(const std::optional<UserQuestion>& question);
 
-    const Question question;
-    const int rotation;
+    const std::optional<UserQuestion> question;
 };
 
 struct SubmitAnswerResponse : ProtocolResponse
 {
-    SubmitAnswerResponse();
+    SubmitAnswerResponse(const std::optional<UserQuestion>& newQuestion, bool wasLastPlayer);
+
+    /**
+     * Empty for if there are no more questions.
+     */
+    const std::optional<UserQuestion> newQuestion;
+
+    //TODO: Perhaps make this a client-side check such that if I am the last player to have an empty question,
+    // then obviously that the game ended.
+    const bool wasLastPlayer;
 };
 
-struct GetGameResultResponse : ProtocolResponse
+struct [[deprecated(
+    "The Noftifications system has been set in place to allow for automatic, non-polling updates of any "
+    "room state changes."
+    " This method is therefore useless and should not be used."
+)]] GetGameResultResponse : ProtocolResponse
 {
     explicit GetGameResultResponse(const std::vector<PlayerResult>& results);
 

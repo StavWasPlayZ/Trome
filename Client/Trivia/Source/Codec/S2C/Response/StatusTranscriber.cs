@@ -8,17 +8,17 @@ public static class StatusTranscriber
 {
     private static readonly Dictionary<object, Func<ErrorResponse, string>> Transcriptions = new()
     {            
-        [ErrorStatus.FailedInvalidCredentials] = _ =>
+        [ErrorStatus.InvalidCredentials] = _ =>
             "Invalid username or password. Please try again.",
-        [ErrorStatus.FailedAlreadyLoggedIn] = _ =>
+        [ErrorStatus.AlreadyLoggedIn] = _ =>
             "User is already logged in. Log out of the other game session and try again.",
         [ErrorStatus.Internal] = _ =>
             "The server faulted",
         
         
-        [ErrorStatus.FailedInvalidArgument] = response =>
+        [ErrorStatus.InvalidArgument] = response =>
             $"Invalid {response.Context} format",
-        [ErrorStatus.FailedUsernameTaken] = _ =>
+        [ErrorStatus.UsernameTaken] = _ =>
             "Username Taken",
         
         
@@ -28,10 +28,10 @@ public static class StatusTranscriber
             $"Unimplemented server request used: {response.Context}",
         
         
-        [ErrorStatus.FailedNotLoggedIn] = _ =>
+        [ErrorStatus.NotLoggedIn] = _ =>
             "The user isn't logged in",
         
-        [ErrorStatus.ErrorUnknownResource] = _ =>
+        [ErrorStatus.UnknownResource] = _ =>
             "The requested resource could not be found"
     };
 

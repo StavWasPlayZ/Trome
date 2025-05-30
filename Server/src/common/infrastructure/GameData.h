@@ -1,8 +1,9 @@
 #pragma once
 
-#include <chrono>
 #include "infrastructure/Room.h"
+#include <chrono>
 
+struct UserQuestion;
 struct Question;
 
 /**
@@ -15,13 +16,35 @@ struct GameData
     void rotateAnswers();
     void updateTimeSinceQuestionRoll();
 
-    void nextQuestion();
+    void nextQuestion(bool didFail);
+
+
+    std::chrono::milliseconds getTimeSinceQuestionRoll() const;
+    std::chrono::seconds getAverageAnswerTime() const;
+    int getAnswersRotation() const;
+
+    std::chrono::milliseconds getRoundTime() const;
 
 
     size_t currentQuestionIndex;
+    bool isFinished;
 
     int correctAnswerCount;
     int points;
+
+private:
+    static constexpr int QUESTION_POINTS = 500;
+    static constexpr int FAILURE_PENALTY = QUESTION_POINTS / 4;
+
+    void calculateRoundPoints(bool didFail);
+
+    /**
+     * Updates how long the current round has taken into GameData::roundTime.
+     *
+     * Also updates GameData::averageAnswerTime and GameData::timeSinceQuestionRoll accordingly.
+     */
+    void submitRoundTime();
+
 
     std::chrono::seconds averageAnswerTime;
 
@@ -30,20 +53,17 @@ struct GameData
      */
     int answersRotation;
 
-private:
-    static constexpr int QUESTION_POINTS = 500;
-
-    void calculateRoundPoints();
-
-    /**
-     * Updates how long the current round has taken into GameData::roundTime.
-     *
-     * Also updates GameData::averageAnswerTime and GameData::timeSinceQuestionRoll accordingly.
-     */
-    void calculateRoundTime();
-
     std::chrono::milliseconds roundTime;
     std::chrono::milliseconds timeSinceQuestionRoll;
 
     const Game &game;
+};
+
+
+struct UserQuestion
+{
+    UserQuestion(const Question& question, int rotation);
+
+    const Question& question;
+    const int rotation;
 };

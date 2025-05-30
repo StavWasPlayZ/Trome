@@ -164,23 +164,22 @@ UpdateRoomDataRequest JsonRequestPacketDeserializer::deserializeUpdateRoomDataRe
     );
 }
 
-LeaveGameRequest JsonRequestPacketDeserializer::deserializeLeaveGameRequest(const nlohmann::json &data)
+LeaveGameRequest JsonRequestPacketDeserializer::deserializeLeaveGameRequest(const nlohmann::json &)
 {
     return LeaveGameRequest();
 }
 
-GetQuestionRequest JsonRequestPacketDeserializer::deserializeGetQuestionRequest(const nlohmann::json &data)
+GetQuestionRequest JsonRequestPacketDeserializer::deserializeGetQuestionRequest(const nlohmann::json &)
 {
     return GetQuestionRequest();
 }
 
-// TODO: Implement this
 SubmitAnswerRequest JsonRequestPacketDeserializer::deserializeSubmitAnswerRequest(const nlohmann::json &data)
 {
-    return SubmitAnswerRequest();
+    return SubmitAnswerRequest(data.at("answer"));
 }
 
-GetGameResultRequest JsonRequestPacketDeserializer::deserializeGetGameResultRequest(const nlohmann::json &data)
+GetGameResultRequest JsonRequestPacketDeserializer::deserializeGetGameResultRequest(const nlohmann::json &)
 {
     return GetGameResultRequest();
 }

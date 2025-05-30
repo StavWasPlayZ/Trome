@@ -4,7 +4,6 @@
 #include "RoomAdminRequestHandler.h"
 #include "RoomMemberRequestHandler.h"
 #include "codec/c2s/request/Request.h"
-#include "codec/s2c/notification/Notification.h"
 #include "codec/s2c/response/ErrorResponse.h"
 
 MenuRequestHandler::MenuRequestHandler(const RequestHandlerFactory &handlerFactory) : IRequestHandler(handlerFactory)
@@ -60,8 +59,7 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo &info, const JoinRo
     if (!room)
     {
         return RequestResult(
-            new ErrorResponse(ErrorStatus::ERROR_UNKNOWN_RESOURCE, info.id),
-            new MenuRequestHandler(*this)
+            new ErrorResponse(ErrorStatus::UNKNOWN_RESOURCE, info.id)
         );
     }
 
@@ -93,8 +91,7 @@ RequestResult MenuRequestHandler::getRooms(const RequestInfo &, const GetRoomsRe
     RoomManager &rManager = m_handlerFactory.getRoomManager();
 
     return RequestResult(
-        new GetRoomsResponse(rManager.getRooms()),
-        new MenuRequestHandler(*this)
+        new GetRoomsResponse(rManager.getRooms())
     );
 }
 
@@ -103,8 +100,7 @@ RequestResult MenuRequestHandler::getHighScores(const RequestInfo &, const GetHi
     const StatisticsManager &sManager = m_handlerFactory.getStatisticsManager();
 
     return RequestResult(
-        new GetHighScoresResponse(sManager.getHighScores()),
-        new MenuRequestHandler(*this)
+        new GetHighScoresResponse(sManager.getHighScores())
     );
 }
 
@@ -117,9 +113,7 @@ RequestResult MenuRequestHandler::getPersonalStatistics(const RequestInfo& info,
             sManager.getUserStatistics(
                 getUserByInfo(info).getUsername()
             )
-        ),
-
-        new MenuRequestHandler(*this)
+        )
     );
 }
 
@@ -141,13 +135,11 @@ RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo &info, cons
     if (!room)
     {
         return RequestResult(
-            new ErrorResponse(ErrorStatus::ERROR_UNKNOWN_RESOURCE, info.id),
-            new MenuRequestHandler(*this)
+            new ErrorResponse(ErrorStatus::UNKNOWN_RESOURCE, info.id)
         );
     }
 
     return RequestResult(
-        new GetPlayersInRoomResponse(room.value()->getAllUsers()),
-        new MenuRequestHandler(*this)
+        new GetPlayersInRoomResponse(room.value()->getAllUsers())
     );
 }

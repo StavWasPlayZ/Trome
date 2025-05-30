@@ -1,7 +1,8 @@
 ﻿namespace Trivia.Codec.C2S.Request.Packets;
 
-// TODO: Make this submit the actual answer
-public readonly record struct SubmitAnswerRequest() : IProtocolRequest
+public readonly record struct SubmitAnswerRequest(
+    int Answer
+) : IProtocolRequest
 {
     public RequestCode Code { get; init; } = RequestCode.SubmitAnswer;
 }

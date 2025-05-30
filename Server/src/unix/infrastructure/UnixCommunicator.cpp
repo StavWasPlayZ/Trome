@@ -1,7 +1,5 @@
 #include "UnixCommunicator.h"
 
-#include "handler/LoginRequestHandler.h"
-
 #include "exception/SocketDisconnectionException.h"
 #include "exception/SocketTimeoutException.h"
 

@@ -1,10 +1,14 @@
 #include "Game.h"
 
+#include "Utils.h"
+
 #include <stdexcept>
 
 Game::Game(Room &room, const IDatabase &database) :
     m_database(database),
-    m_room(room)
+    m_startTime(0),
+    m_room(room),
+    playersRemaining(0)
 {}
 
 Game::~Game()
@@ -25,47 +29,93 @@ void Game::startGame()
     populateQuestions();
     initPlayersData();
 
-    m_startTime = std::chrono::duration_cast<std::chrono::milliseconds>(
-        std::chrono::steady_clock::now().time_since_epoch()
-    );
+    m_startTime = utils::getCurrTimeMillis();
     m_room.setStatus(RoomStatus::PLAYING);
 }
 
 void Game::endGame() const
 {
     m_room.setStatus(RoomStatus::WAITING);
-    // TODO: Self-remove from GameManager
 }
 
-const Room &Game::getRoom() const
+Room &Game::getRoom() const
 {
     return this->m_room;
 }
 
-UserQuestion Game::getQuestionForUser(const LoggedUser &user) const
+bool Game::isGameComplete() const
 {
-    const GameData &data = this->m_playersData.at(&user);
+    return this->playersRemaining == 0;
+}
+
+const GameData &Game::getDataOf(const LoggedUser &user) const
+{
+    return this->m_playersData.at(&user);
+}
+
+std::optional<UserQuestion> Game::getQuestionForUser(const LoggedUser &user) const
+{
+    const GameData &data = getDataOf(user);
+
+    if (data.isFinished)
+        return std::nullopt;
 
     return UserQuestion(
         this->m_questions.at(data.currentQuestionIndex),
-        data.answersRotation
+        data.getAnswersRotation()
     );
 }
 
-bool Game::generateNewQuestionForUser(const LoggedUser &user)
+std::optional<UserQuestion> Game::generateNewQuestionForUser(const LoggedUser &user, const bool didFail)
 {
     GameData &data = this->m_playersData.at(&user);
 
-    data.nextQuestion();
-    const bool finished = data.currentQuestionIndex < this->m_questions.size();
+    if (data.isFinished)
+        return std::nullopt;
 
-    if (finished)
+
+    data.nextQuestion(didFail);
+    data.isFinished = data.currentQuestionIndex < this->m_questions.size();
+
+    if (data.isFinished)
     {
-        submitGameStatsToDB(user);
-        // removePlayer(user);
+        handleUserLeft(user);
+        return std::nullopt;
     }
 
-    return finished;
+
+    return getQuestionForUser(user);
+}
+
+void Game::handleUserLeft(const LoggedUser &user)
+{
+    // removePlayer(user);
+
+    // Think you can get away?
+    // ehe~
+    submitGameStatsToDB(user);
+
+    // ⠀⠀⠀⠀⢀⠎⠂⠀⠀⠀⣀⣠⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧
+    // ⠀⡰⠓⠈⠡⠀⢀⣠⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+    // ⠀⡇⠀⠀⣀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⣿⣿⣿⣿⣿⣿⣿
+    // ⢀⣰⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⣻⣿⠃⢸⣿⣿⣿⣿⣿⣿
+    // ⠀⠙⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠋⢠⣿⠏⠀⠀⢿⣿⣿⣿⣿⣿
+    // ⠀⠀⠈⣹⣿⣿⣿⣿⡿⠿⣻⣿⣿⣟⡉⠁⠀⠀⢠⣿⠟⠈⠉⠒⠨⢿⣿⣿⣿⣿
+    // ⠀⣠⣾⡿⠟⣿⣿⣿⡇⠈⠏⠭⠜⠚⢻⡆⠀⣠⠿⠁.⠳     ⢿⣿⣿
+    // ⠀⠀⠀⠀⠀⢸⣿⣿⣅⠀⠐⠄⣈⡒⠚⠁⠞⠁⠀⠀ .---. ⣿⣿⣿
+    // ⠀⠀⠀⠀⠀⣴⣿⣿⣿⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀  ⢀⣾⣿⣿⣿
+    // ⠀⠀⠀⠀⠀⣿⣿⢿⣿⣷⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣾⣿⣿⡏⠀
+    // ⠀⠀⠀⠀⡜⠿⢡⠋⣿⢻⣿⣆⡀⠀⠈⠳⢂⣤⡤⠄⠀⠀⠀⣠⣿⣽⣿⣿⡇⠀
+    // ⠀⠀⠀⠀⠇⠆⡇⠀⠀⣸⠥⠻⣯⠂⢄⠀⠀ ⠀⣀⣤⢴⣿⢹⠇⠁⣿⡏⠀⠀
+    // ⠀⠀⠀⠀⠃⡰⠁⡠⠊⠀⠀⠀⠇⠑⡤⣉⣒⡂⠅⠊⡇⠀⠙⠐⡴⢂⢀⠇⠀⠀
+    // ⠀⠀⠀⠀⠎⠀⠎⠀⠀⠀⢀⠔⠃⡞⢀⠁⠇⡇⢱⠀⢇⡀⠀⢰⠀⢾⠃⠀⠀⠀
+    // ⠀⠀⠈⠀⠄⡚⠀⢀⣠⠤⢈⣢⡔⠀⡘⠀⠀⢁⠀⢢⣘⣁⣀⣸⡴⠜⢧⢀⡀⠀
+
+
+    //NOTE: We do not actually remove the player in question, but wait until the game truly finishes.
+    // This is so that said player may still be shown in the after-game view.
+
+    playersRemaining--;
 }
 
 void Game::initPlayersData()
@@ -87,11 +137,8 @@ void Game::submitGameStatsToDB(const LoggedUser &user) const
     const GameData &data = this->m_playersData.at(&user);
     const std::string &username = user.getUsername();
 
-    const std::chrono::milliseconds currTime = std::chrono::duration_cast<std::chrono::milliseconds>(
-        std::chrono::steady_clock::now().time_since_epoch()
-    );
     const std::chrono::seconds gameplayTime = std::chrono::duration_cast<std::chrono::seconds>(
-        currTime - this->m_startTime
+        utils::getCurrTimeMillis() - this->m_startTime
     );
 
     m_database.addTime(username, gameplayTime.count());
@@ -107,8 +154,3 @@ void Game::removePlayer(const LoggedUser &player)
 {
     m_playersData.erase(&player);
 }
-
-UserQuestion::UserQuestion(const Question &question, const int rotation) :
-    question(question),
-    rotation(rotation)
-{}

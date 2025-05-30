@@ -277,10 +277,14 @@ void CommonCommunicator::_handleClient(Client& client)
 
     delete request;
 
-    // The Handler did its job well.
-    // 🫡
-    delete handler;
-    client.setRequestHandlerUnsafe(result->newHandler);
+    if (result->newHandler.has_value())
+    {
+        // The Handler did its job well.
+        // 🫡
+        delete handler;
+        client.setRequestHandlerUnsafe(result->newHandler.value());
+    }
+
     handlerLock.unlock();
 
     _dispatchResponse(client, *result->response);

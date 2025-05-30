@@ -11,7 +11,10 @@ class GameManager
 public:
     explicit GameManager(const IDatabase& m_database);
 
-	Game &createGame(Room &room);
+  /*
+     * PLEASE CALL VIA Room::createNewGame.
+     */
+    Game &createGame(Room &room);
 
     static Game &getGameByRoom(const Room &room);
 

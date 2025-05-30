@@ -1,5 +1,7 @@
 #include "Response.h"
 
+#include "infrastructure/Game.h"
+
 ProtocolResponse::ProtocolResponse(const ResponseCode id) :
     id(id)
 {}
@@ -79,14 +81,15 @@ LeaveGameResponse::LeaveGameResponse() :
     ProtocolResponse(ResponseCode::LEAVE_GAME)
 {}
 
-GetQuestionResponse::GetQuestionResponse(const int rotation, const Question& question) :
+GetQuestionResponse::GetQuestionResponse(const std::optional<UserQuestion>& question) :
     ProtocolResponse(ResponseCode::GET_QUESTION),
-    question(question),
-    rotation(rotation)
+    question(question)
 {}
 
-SubmitAnswerResponse::SubmitAnswerResponse() : 
-    ProtocolResponse(ResponseCode::SUBMIT_ANSWER)
+SubmitAnswerResponse::SubmitAnswerResponse(const std::optional<UserQuestion> &newQuestion, const bool wasLastPlayer) :
+    ProtocolResponse(ResponseCode::SUBMIT_ANSWER),
+    newQuestion(newQuestion),
+    wasLastPlayer(wasLastPlayer)
 {}
 
 GetGameResultResponse::GetGameResultResponse(const std::vector<PlayerResult>& results) :

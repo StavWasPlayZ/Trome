@@ -2,12 +2,13 @@
 
 #include "Game.h"
 #include "Question.h"
+#include "Utils.h"
 
-#include <cstdlib>
 #include <cmath>
 
 GameData::GameData(const Game& game) :
     currentQuestionIndex(0),
+    isFinished(false),
     correctAnswerCount(0),
     averageAnswerTime(0),
     answersRotation(0),
@@ -24,27 +25,52 @@ void GameData::rotateAnswers()
 
 void GameData::updateTimeSinceQuestionRoll()
 {
-    //TODO: Move this method to a utils method.
-    // This is done twice throughout this document, and once more in Game.
-    this->timeSinceQuestionRoll = std::chrono::duration_cast<std::chrono::milliseconds>(
-        std::chrono::steady_clock::now().time_since_epoch()
-    );
-
+    this->timeSinceQuestionRoll = utils::getCurrTimeMillis();
     this->roundTime = std::chrono::milliseconds::zero();
 }
 
-void GameData::nextQuestion()
+void GameData::nextQuestion(const bool didFail)
 {
-    calculateRoundTime();
+    if (!didFail)
+    {
+        this->correctAnswerCount++;
+    }
+
+    submitRoundTime();
 
     this->currentQuestionIndex++;
 
-    calculateRoundPoints();
+    calculateRoundPoints(didFail);
     rotateAnswers();
 }
-
-void GameData::calculateRoundPoints()
+std::chrono::milliseconds GameData::getTimeSinceQuestionRoll() const
 {
+    return this->timeSinceQuestionRoll;
+}
+
+std::chrono::seconds GameData::getAverageAnswerTime() const
+{
+    return this->averageAnswerTime;
+}
+
+int GameData::getAnswersRotation() const
+{
+    return this->answersRotation;
+}
+
+std::chrono::milliseconds GameData::getRoundTime() const
+{
+    return utils::getCurrTimeMillis() - this->timeSinceQuestionRoll;
+}
+
+void GameData::calculateRoundPoints(const bool didFail)
+{
+    if (didFail)
+    {
+        this->points -= FAILURE_PENALTY;
+        return;
+    }
+
     const int maxTime = this->game.getRoom().getData().timePerQuestionSecs;
     const double time = static_cast<double>(this->roundTime.count());
 
@@ -56,13 +82,9 @@ void GameData::calculateRoundPoints()
     this->points += static_cast<int>(ceil(result));
 }
 
-void GameData::calculateRoundTime()
+void GameData::submitRoundTime()
 {
-    const std::chrono::milliseconds timeNow = std::chrono::duration_cast<std::chrono::milliseconds>(
-        std::chrono::steady_clock::now().time_since_epoch()
-    );
-
-    this->roundTime = timeNow - this->timeSinceQuestionRoll;
+    this->roundTime = getRoundTime();
     updateTimeSinceQuestionRoll();
 
     this->averageAnswerTime = std::chrono::duration_cast<std::chrono::seconds>(
@@ -70,3 +92,8 @@ void GameData::calculateRoundTime()
         / (currentQuestionIndex + 1)
     );
 }
+
+UserQuestion::UserQuestion(const Question &question, const int rotation) :
+    question(question),
+    rotation(rotation)
+{}
