@@ -17,6 +17,7 @@ Room::Room(const unsigned int id, LoggedUser &admin, const RoomData &data,
     status(status),
     m_admin(&admin),
     m_metadata(data),
+    m_currentGame(nullptr),
     m_database(database),
     m_handlerFactory(Server::getInstance().getRequestHandlerFactory())
 {
