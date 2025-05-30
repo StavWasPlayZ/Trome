@@ -65,9 +65,12 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
 
     const std::optional<UserQuestion> newQuestion = m_game.generateNewQuestionForUser(user, didFail);
 
+    //TODO: If this is the last player to have answered a question, release everyone from the waiting room state
+    // (into the Room handler), and dispatch an according notification.
+
     return RequestResult(
         new SubmitAnswerResponse(newQuestion)
-        //TODO: If did not generate (finished early), return a waiting handler or something.
+        //TODO: If did not generate (finished early), return a waiting handler.
     );
 }
 
