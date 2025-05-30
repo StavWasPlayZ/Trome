@@ -66,7 +66,7 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
 
     //TODO: If this is the last player to have answered a question, release everyone from the waiting room state
     // (into the Room handler), and dispatch an according notification.
-    // (Seen an example of such in Room::handleAdminLeft)
+    // (See an example of such in Room::handleAdminLeft)
 
     return RequestResult(
         new SubmitAnswerResponse(newQuestion)
