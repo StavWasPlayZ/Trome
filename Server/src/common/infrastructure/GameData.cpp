@@ -8,6 +8,7 @@
 
 GameData::GameData(const Game& game) :
     currentQuestionIndex(0),
+    isFinished(false),
     correctAnswerCount(0),
     averageAnswerTime(0),
     answersRotation(0),
@@ -72,3 +73,8 @@ void GameData::calculateRoundTime()
         / (currentQuestionIndex + 1)
     );
 }
+
+UserQuestion::UserQuestion(const Question &question, const int rotation) :
+    question(question),
+    rotation(rotation)
+{}

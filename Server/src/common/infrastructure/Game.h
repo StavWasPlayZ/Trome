@@ -28,13 +28,18 @@ public:
 
     Room& getRoom() const;
 
-    UserQuestion getQuestionForUser(const LoggedUser& user) const;
     /**
-     * Returns true whether a new question was generated, false otherwise.
+     * Returns the active question of the current user, if one exists.
      *
-     * A question may not be generated if the user has finished answering all set questions.
+     * A question may not exist if the user has already finished answering them all.
      */
-    bool generateNewQuestionForUser(const LoggedUser& user, bool didFail);
+    std::optional<UserQuestion> getQuestionForUser(const LoggedUser& user) const;
+    /**
+     * Generates a new question for the user and returns the new, active question of the current user, if one exists.
+     *
+     * A question may not exist if the user has already finished answering them all.
+     */
+    std::optional<UserQuestion> generateNewQuestionForUser(const LoggedUser& user, bool didFail);
 
     void handleUserLeft(const LoggedUser& user) const;
 
@@ -58,13 +63,4 @@ private:
     std::unordered_map<const LoggedUser*, GameData> m_playersData;
 
     std::vector<Question> m_questions;
-};
-
-
-struct UserQuestion
-{
-    UserQuestion(const Question& question, int rotation);
-
-    const Question& question;
-    const int rotation;
 };

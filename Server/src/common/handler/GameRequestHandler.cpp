@@ -46,7 +46,7 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo &info, const P
 RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const SubmitAnswerRequest &request) const
 {
     const LoggedUser& user = getUserByInfo(info);
-    const UserQuestion question = m_game.getQuestionForUser(user);
+    const UserQuestion question = m_game.getQuestionForUser(user).value();
 
     //TODO: Check if the question was submitted in time (+1sec for server delay).
     // If so, refuse to answer with an error response.
@@ -58,14 +58,7 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
     // This is because the first answer is always the correct one.
     const bool didFail = request.answer - question.rotation == 0;
 
-    std::optional<UserQuestion> newQuestion = std::nullopt;
-    // ReSharper disable once CppTooWideScope
-    const bool didGenerate = m_game.generateNewQuestionForUser(user, didFail);
-
-    if (didGenerate)
-    {
-        newQuestion.emplace(m_game.getQuestionForUser(user));
-    }
+    const std::optional<UserQuestion> newQuestion = m_game.generateNewQuestionForUser(user, didFail);
 
     return RequestResult(
         new SubmitAnswerResponse(newQuestion)

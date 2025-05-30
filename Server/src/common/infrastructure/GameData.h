@@ -1,8 +1,9 @@
 #pragma once
 
-#include <chrono>
 #include "infrastructure/Room.h"
+#include <chrono>
 
+struct UserQuestion;
 struct Question;
 
 /**
@@ -19,6 +20,7 @@ struct GameData
 
 
     size_t currentQuestionIndex;
+    bool isFinished;
 
     int correctAnswerCount;
     int points;
@@ -47,4 +49,13 @@ private:
     std::chrono::milliseconds timeSinceQuestionRoll;
 
     const Game &game;
+};
+
+
+struct UserQuestion
+{
+    UserQuestion(const Question& question, int rotation);
+
+    const Question& question;
+    const int rotation;
 };

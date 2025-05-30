@@ -43,9 +43,12 @@ Room &Game::getRoom() const
     return this->m_room;
 }
 
-UserQuestion Game::getQuestionForUser(const LoggedUser &user) const
+std::optional<UserQuestion> Game::getQuestionForUser(const LoggedUser &user) const
 {
     const GameData &data = this->m_playersData.at(&user);
+
+    if (data.isFinished)
+        return std::nullopt;
 
     return UserQuestion(
         this->m_questions.at(data.currentQuestionIndex),
@@ -53,19 +56,20 @@ UserQuestion Game::getQuestionForUser(const LoggedUser &user) const
     );
 }
 
-bool Game::generateNewQuestionForUser(const LoggedUser &user, const bool didFail)
+std::optional<UserQuestion> Game::generateNewQuestionForUser(const LoggedUser &user, const bool didFail)
 {
     GameData &data = this->m_playersData.at(&user);
 
     data.nextQuestion(didFail);
-    const bool finished = data.currentQuestionIndex < this->m_questions.size();
+    data.isFinished = data.currentQuestionIndex < this->m_questions.size();
 
-    if (finished)
+    if (data.isFinished)
     {
         submitGameStatsToDB(user);
+        return std::nullopt;
     }
 
-    return finished;
+    return getQuestionForUser(user);
 }
 
 void Game::handleUserLeft(const LoggedUser &user) const
@@ -83,8 +87,8 @@ void Game::handleUserLeft(const LoggedUser &user) const
     // ⠀⠙⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠋⢠⣿⠏⠀⠀⢿⣿⣿⣿⣿⣿
     // ⠀⠀⠈⣹⣿⣿⣿⣿⡿⠿⣻⣿⣿⣟⡉⠁⠀⠀⢠⣿⠟⠈⠉⠒⠨⢿⣿⣿⣿⣿
     // ⠀⣠⣾⡿⠟⣿⣿⣿⡇⠈⠏⠭⠜⠚⢻⡆⠀⣠⠿⠁.⠳     ⢿⣿⣿
-    // ⠀⠀⠀⠀⠀⢸⣿⣿⣅⠀⠐⠄⣈⡒⠚⠁⠞⠁⠀⠀ ...-. ⣿⣿⣿
-    // ⠀⠀⠀⠀⠀⣴⣿⣿⣿⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠋⢀⣾⣿⣿⣿
+    // ⠀⠀⠀⠀⠀⢸⣿⣿⣅⠀⠐⠄⣈⡒⠚⠁⠞⠁⠀⠀ .---. ⣿⣿⣿
+    // ⠀⠀⠀⠀⠀⣴⣿⣿⣿⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀  ⢀⣾⣿⣿⣿
     // ⠀⠀⠀⠀⠀⣿⣿⢿⣿⣷⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣾⣿⣿⡏⠀
     // ⠀⠀⠀⠀⡜⠿⢡⠋⣿⢻⣿⣆⡀⠀⠈⠳⢂⣤⡤⠄⠀⠀⠀⣠⣿⣽⣿⣿⡇⠀
     // ⠀⠀⠀⠀⠇⠆⡇⠀⠀⣸⠥⠻⣯⠂⢄⠀⠀ ⠀⣀⣤⢴⣿⢹⠇⠁⣿⡏⠀⠀
@@ -133,8 +137,3 @@ void Game::removePlayer(const LoggedUser &player)
 {
     m_playersData.erase(&player);
 }
-
-UserQuestion::UserQuestion(const Question &question, const int rotation) :
-    question(question),
-    rotation(rotation)
-{}
