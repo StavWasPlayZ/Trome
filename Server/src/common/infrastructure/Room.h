@@ -52,8 +52,8 @@ private:
     // Made a pointer such that if we'd like to change it in the future
     LoggedUser* m_admin;
 
-    void handleGuestLeft(const LoggedUser & guest) const;
-    void handleAdminLeft(const LoggedUser& admin) const;
+    void handleGuestLeft(const LoggedUser &guest) const;
+    void handleAdminLeft(const LoggedUser &admin) const;
 
     RoomData m_metadata;
     std::vector<LoggedUser*> m_users;
