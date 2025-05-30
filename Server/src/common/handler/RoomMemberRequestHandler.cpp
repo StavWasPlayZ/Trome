@@ -1,7 +1,6 @@
 #include "RoomMemberRequestHandler.h"
 #include "RequestHandlerFactory.h"
 #include "codec/c2s/request/Request.h"
-#include "codec/s2c/notification/Notification.h"
 
 RoomMemberRequestHandler::RoomMemberRequestHandler(const RequestHandlerFactory &handlerFactory, Room &room)
     : IRequestHandler(handlerFactory), m_room(room)

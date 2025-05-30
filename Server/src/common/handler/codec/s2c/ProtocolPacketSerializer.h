@@ -3,11 +3,10 @@
 #include "S2CPacketType.h"
 
 #include <nlohmann/json.hpp>
-#include <vector>
 
 #include "infrastructure/OBuffer.h"
-#include "response/Response.h"
 #include "infrastructure/Room.h"
+#include "response/Response.h"
 
 class ProtocolPacketSerializer
 {
