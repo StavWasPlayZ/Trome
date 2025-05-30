@@ -2,10 +2,9 @@
 
 #include "IRequestHandler.h"
 #include "codec/c2s/request/Request.h"
-#include "RequestHandlerFactory.h"
 
 class Game;
-class RequestHandlerFactory; // Circle dependency
+class RequestHandlerFactory;
 
 class FinishedGameEarlyRequestHandler : public IRequestHandler
 {
@@ -17,7 +16,7 @@ public:
     RequestResult handleRequest(const RequestInfo &info, const ProtocolRequest &request) const override;
 
 private:
-    Game &game;
+    Game &m_game;
 
     RequestResult leaveGame(const RequestInfo &info, const LeaveGameRequest &request) const;
 };

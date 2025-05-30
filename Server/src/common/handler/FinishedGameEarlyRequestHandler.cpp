@@ -1,12 +1,17 @@
 #include "handler/FinishedGameEarlyRequestHandler.h"
 
+#include "MenuRequestHandler.h"
+#include "RequestHandlerFactory.h"
+#include "codec/s2c/response/Response.h"
+
 FinishedGameEarlyRequestHandler::FinishedGameEarlyRequestHandler(const RequestHandlerFactory &handlerFactory, Game &game)
-    : IRequestHandler(handlerFactory), game(game)
+    : IRequestHandler(handlerFactory),
+    m_game(game)
 {}
 
 bool FinishedGameEarlyRequestHandler::isRequestRelevant(const RequestInfo& info) const
 {
-    return info.id == RequestCode::LEAVE_GAME && !this->m_handlerFactory.getLoginManager().isLoggedIn(info.client);
+    return info.id == RequestCode::LEAVE_GAME;
 }
 
 RequestResult FinishedGameEarlyRequestHandler::handleRequest(const RequestInfo& info, const ProtocolRequest& request) const
@@ -23,7 +28,7 @@ RequestResult FinishedGameEarlyRequestHandler::handleRequest(const RequestInfo& 
 
 RequestResult FinishedGameEarlyRequestHandler::leaveGame(const RequestInfo &info, const LeaveGameRequest &) const
 {
-    game.getRoom().removeUser(getUserByInfo(info));
+    m_game.getRoom().removeUser(getUserByInfo(info));
 
     return RequestResult(new LeaveRoomResponse(), new MenuRequestHandler(m_handlerFactory));
 }

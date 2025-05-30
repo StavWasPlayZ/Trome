@@ -94,19 +94,15 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
         );
     }
 
-    if (newQuestion.has_value())
-    {
-        return RequestResult(
-            new SubmitAnswerResponse(newQuestion, false)
-        );
-    }
-    else
-    {
-        return RequestResult(
-            new SubmitAnswerResponse(newQuestion, false), 
-            static_cast<const IRequestHandler*>(new FinishedGameEarlyRequestHandler(m_handlerFactory, m_game))
-        );
-    }
+
+    return RequestResult(
+        new SubmitAnswerResponse(newQuestion, false),
+
+        // If there is no new question available, we've finished early.
+        !newQuestion.has_value()
+            ? static_cast<const IRequestHandler *>(new FinishedGameEarlyRequestHandler(m_handlerFactory, m_game))
+            : std::nullopt
+    );
 }
 
 RequestResult GameRequestHandler::leaveGame(const RequestInfo &info, const LeaveGameRequest &) const
