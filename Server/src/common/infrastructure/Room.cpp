@@ -65,14 +65,13 @@ void Room::unsetCurrentGame()
 
 void Room::addUser(LoggedUser &user)
 {
-    const std::vector<LoggedUser*> usersBeforeNew = getAllUsers();
-
     this->m_users.push_back(&user);
     user.setCurrentRoom(*this);
 
     IRequestHandler::dispatchNotification(
         PlayerJoinedRoomNotification(user),
-        usersBeforeNew
+        getAllUsers(),
+        &user
     );
 }
 
@@ -123,16 +122,12 @@ void Room::setData(const RoomData &newData)
     this->m_metadata = newData;
 
     // Dispatch updates to all users.
-    // Assuming admin initiated the call.
-    const RoomDataUpdatedNotification notification(newData);
-
-    for (const LoggedUser *const player : getAllUsers())
-    {
-        if (*player == getAdmin())
-            continue;
-
-        player->getClient().sendNotification(notification);
-    }
+    IRequestHandler::dispatchNotification(
+        RoomDataUpdatedNotification(newData),
+        getAllUsers(),
+        // Assuming the admin initiated the call
+        &getAdmin()
+    );
 }
 
 LoggedUser &Room::getAdmin() const

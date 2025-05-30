@@ -70,31 +70,26 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
 
     if (this->m_game.isGameComplete())
     {
-        //TODO: Add optional parameter to dispatchNotification for player exclusion & handler setter
-        // (Many use this kind of variation)
-        for (const LoggedUser* player : room.getAllUsers())
-        {
-            if (*player == user)
-                continue;
+        setRequestHandlers(
+            [this, &room](const LoggedUser* player) {
+                return *player == room.getAdmin()
+                    ? static_cast<const IRequestHandler*>(new RoomAdminRequestHandler(this->m_handlerFactory, room))
+                    : static_cast<const IRequestHandler*>(new RoomMemberRequestHandler(this->m_handlerFactory, room))
+                ;
+            },
 
-            Client& client = player->getClient();
-
-            client.setRequestHandlerSafe(
-                room.getAdmin() == *player
-                    ? new RoomAdminRequestHandler(m_handlerFactory, room)
-                    : new RoomMemberRequestHandler(m_handlerFactory, room)
-            );
-
+            room.getAllUsers(),
             //TODO: Provide game results
-            client.sendNotification(GameEndedNotification());
-        }
+            GameEndedNotification(),
+            &user
+        );
 
         return RequestResult(
             new SubmitAnswerResponse(newQuestion, true),
 
-            room.getAdmin() == user
-                ? new RoomAdminRequestHandler(m_handlerFactory, room)
-                : new RoomMemberRequestHandler(m_handlerFactory, room)
+            user == room.getAdmin()
+                ? static_cast<const IRequestHandler*>(new RoomAdminRequestHandler(m_handlerFactory, room))
+                : static_cast<const IRequestHandler*>(new RoomMemberRequestHandler(m_handlerFactory, room))
         );
     }
 

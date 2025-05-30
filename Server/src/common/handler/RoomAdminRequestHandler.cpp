@@ -48,17 +48,15 @@ RequestResult RoomAdminRequestHandler::startGame(const RequestInfo &info, const 
 {
     Game& game = this->m_room.createNewGame(this->m_handlerFactory.getGameManager());
 
-    const LoggedUser& user = getUserByInfo(info);
+    setRequestHandlers(
+        [this, &game](const LoggedUser *) {
+            return new GameRequestHandler(this->m_handlerFactory, game);
+        },
 
-    for (const LoggedUser* player : this->m_room.getAllUsers())
-    {
-        if (*player == user)
-            continue;
-
-        Client& client = player->getClient();
-        client.setRequestHandlerSafe(new GameRequestHandler(m_handlerFactory, game));
-        client.sendNotification(GameStartedNotification());
-    }
+        this->m_room.getAllUsers(),
+        GameStartedNotification(),
+        &getUserByInfo(info)
+    );
 
     return RequestResult(
         new StartGameResponse(),
