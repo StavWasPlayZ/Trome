@@ -1,5 +1,6 @@
 #include "RoomAdminRequestHandler.h"
 
+#include "GameRequestHandler.h"
 #include "RequestHandlerFactory.h"
 #include "codec/c2s/request/Request.h"
 #include "codec/s2c/response/ErrorResponse.h"
@@ -45,10 +46,21 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo &info, co
 
 RequestResult RoomAdminRequestHandler::startGame(const RequestInfo &info, const StartGameRequest &) const
 {
-    //TODO: Implement
+    Game& game = this->m_handlerFactory.getGameManager().createGame(this->m_room);
+
+    const LoggedUser& user = getUserByInfo(info);
+
+    for (const LoggedUser* player : this->m_room.getAllUsers())
+    {
+        if (*player == user)
+            continue;
+
+        player->getClient().sendNotification(GameStartedNotification());
+    }
 
     return RequestResult(
-        new ErrorResponse(ErrorStatus::SERVER_UNIMPLEMENTED, info.id)
+        new StartGameResponse(),
+        new GameRequestHandler(m_handlerFactory, game)
     );
 }
 

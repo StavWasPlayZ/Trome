@@ -9,7 +9,7 @@ class RequestHandlerFactory;
 class GameRequestHandler : public IRequestHandler
 {
 public:
-    explicit GameRequestHandler(Game& game, const RequestHandlerFactory& handlerFactory);
+    GameRequestHandler(const RequestHandlerFactory& handlerFactory, Game& game);
 
     bool isRequestRelevant(const RequestInfo& info) const override;
 

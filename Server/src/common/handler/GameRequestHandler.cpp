@@ -1,11 +1,10 @@
 #include "GameRequestHandler.h"
 
-#include "Utils.h"
 #include "codec/s2c/response/JsonResponsePacketSerializer.h"
 #include "codec/s2c/response/Response.h"
 #include "handler/RequestHandlerFactory.h"
 
-GameRequestHandler::GameRequestHandler(Game& game, const RequestHandlerFactory &handlerFactory) :
+GameRequestHandler::GameRequestHandler(const RequestHandlerFactory &handlerFactory, Game& game) :
     IRequestHandler(handlerFactory),
     m_game(game)
 {}

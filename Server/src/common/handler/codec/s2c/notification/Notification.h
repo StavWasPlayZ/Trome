@@ -8,7 +8,9 @@ enum class NotificationCode : unsigned char
     PLAYER_JOINED_ROOM,
     PLAYER_LEFT_ROOM,
     ROOM_CLOSED,
-    ROOM_DATA_UPDATED
+    ROOM_DATA_UPDATED,
+
+    GAME_STARTED
 };
 
 
@@ -45,4 +47,9 @@ struct RoomDataUpdatedNotification : ProtocolNotification
     explicit RoomDataUpdatedNotification(const RoomData& data);
 
     const RoomData& data;
+};
+
+struct GameStartedNotification : ProtocolNotification
+{
+    GameStartedNotification();
 };

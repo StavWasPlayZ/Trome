@@ -11,7 +11,10 @@ class GameManager
 public:
     explicit GameManager(const IDatabase& m_database);
 
-	Game &createGame(Room &room);
+    /*
+     * Creates a new game, and automatically associates it to the provided room
+     */
+    Game &createGame(Room &room);
 
     static Game &getGameByRoom(const Room &room);
 
