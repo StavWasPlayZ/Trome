@@ -50,7 +50,7 @@
                 
                 <Grid RowDefinitions="Auto, *, Auto">
                     <Grid Grid.Row="0"
-                          ColumnDefinitions="Auto, *, Auto"
+                          ColumnDefinitions="*, *, *"
                           VerticalAlignment="Top">
                         
                         <Grid.Styles>
@@ -59,14 +59,37 @@
                             </Style>
                         </Grid.Styles>
                         
-                        <TextBlock Grid.Column="0">0:08</TextBlock>
+                        <StackPanel Grid.Column="0"
+                                    Orientation="Horizontal"
+                                    VerticalAlignment="Top">
+                            <Canvas Width="40"
+                                    Height="40"
+                                    Margin="0 0 15 0">
+                                
+                                <Ellipse Width="40"
+                                         Height="40"
+                                         Fill="rgba(0, 0, 0, .15)"/>
+                                
+                                <Sector Width="40"
+                                        Height="40"
+                                        StartAngle="0"
+                                        SweepAngle="300"
+                                        Fill="#3ca31d"
+                                        Stroke="White"
+                                        StrokeThickness="2"/>
+                                
+                            </Canvas>
+                            
+                            <TextBlock>0:08</TextBlock>
+                        </StackPanel>
                         
                         <TextBlock Grid.Column="1"
                                    TextAlignment="Center"
                                    Margin="0 10 0 0"
                                    Opacity=".6">2nd</TextBlock>
                         
-                        <TextBlock Grid.Column="2">2/10</TextBlock>
+                        <TextBlock Grid.Column="2"
+                                   TextAlignment="End">2/10</TextBlock>
                     </Grid>
                     
                     <TextBlock Grid.Row="1"
