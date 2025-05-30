@@ -41,6 +41,9 @@ unsigned int Room::generateId()
 
 std::optional<Game *> Room::getCurrentGame() const
 {
+    if (this->m_currentGame == nullptr)
+        return std::nullopt;
+
     return this->m_currentGame;
 }
 
