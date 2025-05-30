@@ -55,7 +55,9 @@ RequestResult RoomAdminRequestHandler::startGame(const RequestInfo &info, const 
         if (*player == user)
             continue;
 
-        player->getClient().sendNotification(GameStartedNotification());
+        Client& client = player->getClient();
+        client.setRequestHandlerSafe(new GameRequestHandler(m_handlerFactory, game));
+        client.sendNotification(GameStartedNotification());
     }
 
     return RequestResult(
