@@ -1,0 +1,125 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:game="clr-namespace:Trivia.ViewModels.Game"
+             xmlns:controls="clr-namespace:Trivia.Controls"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
+             x:Class="Trivia.Views.Game.GameView"
+             x:DataType="game:GameViewModel">
+    
+    <Design.DataContext>
+        <game:GameViewModel/>
+    </Design.DataContext>
+    
+    <Panel>
+        <Panel.Background>
+            <ImageBrush Source="avares://Trivia/Assets/drool-d-b1608556d649b5b943136ecc0df0fe1bc7ff644f.png"
+                        Stretch="UniformToFill"/>
+        </Panel.Background>
+        
+        <Panel Background="rgba(0, 0, 0, .2)">
+            
+            <Border
+                Padding="2,5,6,5"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                CornerRadius="0,0,10,0"
+                Background="rgba(0, 0, 0, .3)">
+                
+                <Grid ColumnDefinitions="*, Auto">
+                    
+                    <Svg Grid.Column="0"
+                         Path="avares://Trivia/Assets/Icons/crown.svg"
+                         Css="* { fill: #FFB43B; }"
+                         Height="40"
+                         Margin="0,0,10,0"/>
+                    
+                    <TextBlock Grid.Column="1">username</TextBlock>
+                    
+                </Grid>
+                
+            </Border>
+            
+            <Border
+                Background="rgba(0, 0, 0, .3)"
+                Margin="20 110 20 25"
+                CornerRadius="25"
+                BoxShadow="0 5 0 0 #1f000000"
+                Padding="20">
+                
+                <Grid RowDefinitions="Auto, *, Auto">
+                    <Grid Grid.Row="0"
+                          ColumnDefinitions="Auto, *, Auto"
+                          VerticalAlignment="Top">
+                        
+                        <Grid.Styles>
+                            <Style Selector="TextBlock">
+                                <Setter Property="Opacity" Value=".8"/>
+                            </Style>
+                        </Grid.Styles>
+                        
+                        <TextBlock Grid.Column="0">0:08</TextBlock>
+                        
+                        <TextBlock Grid.Column="1"
+                                   TextAlignment="Center"
+                                   Margin="0 10 0 0"
+                                   Opacity=".6">2nd</TextBlock>
+                        
+                        <TextBlock Grid.Column="2">2/10</TextBlock>
+                    </Grid>
+                    
+                    <TextBlock Grid.Row="1"
+                               LetterSpacing="2"
+                               TextWrapping="Wrap"
+                               TextAlignment="Center"
+                               Margin="0 20">
+                        Lorem ipsum etc i dont remember it all but here is some multilined text
+                    </TextBlock>
+                    
+                    <Grid Grid.Row="2"
+                          RowDefinitions="*, *"
+                          ColumnDefinitions="*, *"
+                          Width="800">
+                        
+                        <Grid.Styles>
+                            <Style Selector="controls|TriviaButton">
+                                <Setter Property="Margin" Value="8"/>
+                                <Setter Property="Height" Value="65"/>
+                                
+                                <Setter Property="Background" Value="#211c2c"/>
+                                <Setter Property="BorderBrush" Value="#ffffff"/>
+                                <Setter Property="BorderBrushSelected" Value="#D93040"/>
+                                <Setter Property="BorderBrushPressed" Value="#AA2C2F"/>
+                                <Setter Property="BorderThickness" Value="3"/>
+                            </Style>
+                        </Grid.Styles>
+                        
+                        <controls:TriviaButton Grid.Row="0"
+                                               Grid.Column="0"
+                                               Text="TEXT"/>
+                        
+                        <controls:TriviaButton Grid.Row="0"
+                                               Grid.Column="1"
+                                               Text="TEXT"/>
+                        
+                        <controls:TriviaButton Grid.Row="1"
+                                               Grid.Column="0"
+                                               Text="TEXT"/>
+                        
+                        <controls:TriviaButton Grid.Row="1"
+                                               Grid.Column="1"
+                                               Text="TEXT"/>
+                        
+                    </Grid>
+                </Grid>
+                
+            </Border>
+            
+            <Image Source="avares://Trivia/Assets/logo.png"
+                   Height="150"
+                   VerticalAlignment="Top"/>
+            
+        </Panel>
+    </Panel>
+</UserControl>
