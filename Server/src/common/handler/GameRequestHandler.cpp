@@ -95,7 +95,7 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
 
     return RequestResult(
         new SubmitAnswerResponse(newQuestion, false)
-        //TODO: If did not generate (finished early), return a waiting handler.
+        //TODO: If newQuestion is empty (finished early), return a waiting handler.
     );
 }
 
