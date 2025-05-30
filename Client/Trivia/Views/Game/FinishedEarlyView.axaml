@@ -27,29 +27,39 @@
                 CornerRadius="25"
                 BoxShadow="0 5 0 0 #1f000000">
                 
-                <StackPanel VerticalAlignment="Center"
-                            Margin="60 0">
-                    <StackPanel.Styles>
-                        <Style Selector="TextBlock">
-                            <Setter Property="FontSize" Value="40"/>
-                        </Style>
-                    </StackPanel.Styles>
+                <Panel>
+                    <StackPanel VerticalAlignment="Center"
+                                Margin="60 0">
+                        <StackPanel.Styles>
+                            <Style Selector="TextBlock">
+                                <Setter Property="FontSize" Value="40"/>
+                            </Style>
+                        </StackPanel.Styles>
+                        
+                        <TextBlock VerticalAlignment="Bottom"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,0,0,5"
+                                   FontSize="60">
+                            FINISHED EARLY.
+                        </TextBlock>
+                        <TextBlock VerticalAlignment="Top"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,20,0,0"
+                                   FontSize="40"
+                                   Opacity="0.8"
+                                   TextWrapping="Wrap"
+                                   TextAlignment="Center"
+                                   Text="{Binding EndingLine}"/>
+                    </StackPanel>
                     
                     <TextBlock VerticalAlignment="Bottom"
                                HorizontalAlignment="Center"
-                               Margin="0,0,0,5"
-                               FontSize="60">
-                        FINISHED EARLY.
+                               Margin="0, 10"
+                               FontSize="30"
+                               Opacity=".3">
+                        3/15 FINISHED
                     </TextBlock>
-                    <TextBlock VerticalAlignment="Top"
-                               HorizontalAlignment="Center"
-                               Margin="0,20,0,0"
-                               FontSize="40"
-                               Opacity="0.8"
-                               TextWrapping="Wrap"
-                               TextAlignment="Center"
-                               Text="{Binding EndingLine}"/>
-                </StackPanel>
+                </Panel>
                 
             </Border>
         </Panel>
