@@ -21,6 +21,8 @@ public class GameViewModel : PageViewModel
     public RoomData Data { get; }
     public ReactiveCommand<int, Unit> SubmitAnswerCommand { get; }
     
+    private TaskCompletionSource? _countdownCompletion;
+    
     public GameViewModel(IScreen hostScreen, RoomData data) : base(hostScreen)
     {
         Data = data;
@@ -65,7 +67,7 @@ public class GameViewModel : PageViewModel
 
     private async Task SubmitAnswer(int btnIndex)
     {
-        StopCountdown();
+        await StopCountdown();
         
         var response = await Comm.SendRequestAwaitResponse<SubmitAnswerResponse>(new SubmitAnswerRequest(btnIndex));
         Question = response.NewQuestion;
@@ -82,12 +84,15 @@ public class GameViewModel : PageViewModel
         TimeLeft = TimeSpan.FromSeconds(Data.TimePerQuestionSecs);
         
         _countdownRunning = true;
+        _countdownCompletion = new TaskCompletionSource();
         new Thread(CountdownThread).Start();
     }
     
-    private void StopCountdown()
+    private async Task StopCountdown()
     {
         _countdownRunning = false;
+        await _countdownCompletion!.Task;
+        _countdownCompletion = null;
     }
 
     private void CountdownThread()
@@ -99,7 +104,7 @@ public class GameViewModel : PageViewModel
             Thread.Sleep(CountdownSleepMs);
 
             if (!_countdownRunning)
-                return;
+                break;
             
             _internalTimeLeft -= TimeSpan.FromMilliseconds(CountdownSleepMs);
             
@@ -110,9 +115,11 @@ public class GameViewModel : PageViewModel
             
             if (_internalTimeLeft <= TimeSpan.Zero)
             {
-                StopCountdown();
+                _countdownRunning = false;
             }
         }
+        
+        _countdownCompletion!.TrySetResult();
     }
 
     private void HandleTimeLeftChanged()
