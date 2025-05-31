@@ -63,6 +63,8 @@ public class GameViewModel : GameViewModelBase
          var response = await Comm.SendRequestAwaitResponse<GetQuestionResponse>(new GetQuestionRequest());
          Question = response.Question;
          Points = response.Points;
+         _finishedLast = response.WasLastPlayer;
+         _playersFinished = response.PlayersFinished;
          
          HandleQuestion();
     }
