@@ -36,6 +36,7 @@ private:
     static constexpr int QUESTION_POINTS = 500;
     static constexpr int FAILURE_PENALTY = QUESTION_POINTS / 4;
 
+    // Graph: https://www.desmos.com/calculator/a4sauosvwr
     void calculateRoundPoints(bool didFail);
 
     /**
