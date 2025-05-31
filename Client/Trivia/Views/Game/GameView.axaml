@@ -19,6 +19,8 @@
         </Panel.Background>
         
         <Panel Background="rgba(0, 0, 0, .2)">
+            <controls:TriviaBackButton Command="{Binding LeaveGameCommand}"/>
+            
             <controls:LeadUserDock Username="{Binding LeadingUsername}"/>
             
             <Border

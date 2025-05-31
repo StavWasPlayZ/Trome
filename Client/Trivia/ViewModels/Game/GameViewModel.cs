@@ -20,6 +20,7 @@ public class GameViewModel : PageViewModel
     
     public RoomData Data { get; }
     public ReactiveCommand<int, Unit> SubmitAnswerCommand { get; }
+    public ReactiveCommand<Unit, Unit> LeaveGameCommand { get; }
     
     private TaskCompletionSource? _countdownCompletion;
     
@@ -30,6 +31,15 @@ public class GameViewModel : PageViewModel
         SubmitAnswerCommand = ReactiveCommand.CreateFromTask<int>(async (btnIndex, _) =>
             await SubmitAnswer(btnIndex)
         );
+
+        LeaveGameCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await Comm.SendRequestAwaitResponse<LeaveGameResponse>(new LeaveGameRequest());
+            
+            // Assuming Join -> Room -> Game
+            NavigateBackCommand!.Execute();
+            NavigateBackCommand!.Execute();
+        });
         
         this.WhenActivated(disposables =>
         {
@@ -55,6 +65,7 @@ public class GameViewModel : PageViewModel
         UpdateHalvedButtons();
 
         SubmitAnswerCommand = ReactiveCommand.Create<int>(_ => { });
+        LeaveGameCommand = NoOpCommand;
     }
 
 
