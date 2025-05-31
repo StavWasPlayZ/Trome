@@ -89,8 +89,7 @@ GetQuestionResponse::GetQuestionResponse(const std::optional<UserQuestion>& ques
 {}
 
 SubmitAnswerResponse::SubmitAnswerResponse(const std::optional<UserQuestion> &newQuestion, const int points,
-    const bool wasLastPlayer, int playersFinished)
-    :
+        const bool wasLastPlayer, const int playersFinished) :
     ProtocolResponse(ResponseCode::SUBMIT_ANSWER),
     newQuestion(newQuestion),
     points(points),
