@@ -22,11 +22,15 @@ public class FinishedEarlyViewModel : GameViewModelBase
     public string EndingLine { get; } = EndingLines[App.Random.Next(EndingLines.Length)];
 
 
-    public FinishedEarlyViewModel(IScreen hostScreen) : base(hostScreen)
-    {}
-    
+    public FinishedEarlyViewModel(IScreen hostScreen, int playersFinished) : base(hostScreen)
+    {
+        _playersFinished = playersFinished;
+    }
+
     public FinishedEarlyViewModel()
-    {}
+    {
+        _playersFinished = 1;
+    }
 
 
     protected override void CommOnPacketReceived(IS2CPacket packet)
@@ -37,9 +41,21 @@ public class FinishedEarlyViewModel : GameViewModelBase
                 NavigateTo(new AfterGameViewModel(HostScreen));
                 break;
             
+            case PlayerFinishedNotification:
+                _playersFinished++;
+                break;
+            
             default:
                 base.CommOnPacketReceived(packet);
                 break;
         }
+    }
+    
+    private int _playersFinished;
+
+    public int PlayersFinished
+    {
+        get => _playersFinished;
+        set => this.RaiseAndSetIfChanged(ref _playersFinished, value);
     }
 }
