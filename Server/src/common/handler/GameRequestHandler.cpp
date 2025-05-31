@@ -108,6 +108,12 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
     // If there is no new question available, we've finished early.
     if (!newQuestion.has_value())
     {
+        IRequestHandler::dispatchNotification(
+            PlayerFinishedNotification(), 
+            this->m_game.getRoom().getAllUsers(),
+            &user
+        );
+
         return RequestResult(
             new SubmitAnswerResponse(std::nullopt, userData.points, false, playersFinished),
             new FinishedGameEarlyRequestHandler(m_handlerFactory, m_game)
