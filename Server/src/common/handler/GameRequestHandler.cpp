@@ -74,7 +74,7 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
 
     // If the returned answer is 0 unrotated, it must be correct.
     // This is because the first answer is always the correct one.
-    const bool didFail = request.answer - question.rotation != 0;
+    const bool didFail = ((4 - request.answer) % 4) - question.rotation != 0;
 
     const std::optional<UserQuestion> newQuestion = this->m_game.generateNewQuestionForUser(user, didFail);
 
