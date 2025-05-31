@@ -56,7 +56,7 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
         return RequestResult(new ErrorResponse(ErrorStatus::ILLEGAL_REQUEST, info.id));
     }
 
-    Room& room = this->m_game.getRoom();
+    const Room & room = this->m_game.getRoom();
 
     // Check if the question was submitted in time (+1sec for server delay).
     // (The user is the one responsible for fetching a new question for that matter)
