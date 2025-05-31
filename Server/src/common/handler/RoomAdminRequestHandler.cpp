@@ -47,6 +47,7 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo &info, co
 RequestResult RoomAdminRequestHandler::startGame(const RequestInfo &info, const StartGameRequest &request) const
 {
     Game& game = this->m_room.createNewGame(this->m_handlerFactory.getGameManager());
+    game.startGame();
 
     setRequestHandlers(
         [this, &game](const LoggedUser *) {
