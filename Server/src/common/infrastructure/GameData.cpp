@@ -12,6 +12,7 @@ GameData::GameData(const Game& game) :
     correctAnswerCount(0),
     averageAnswerTime(0),
     answersRotation(0),
+    points(0),
     game(game)
 {
     rotateAnswers();
