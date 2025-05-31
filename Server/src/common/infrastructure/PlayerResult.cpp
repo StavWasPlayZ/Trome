@@ -13,7 +13,7 @@ PlayerResult::PlayerResult(
 {
 }
 
-PlayerResult::PlayerResult(LoggedUser user, const GameData &data)
+PlayerResult::PlayerResult(LoggedUser& user, const GameData &data)
     : 
     username(user.getUsername()), 
     correctAnswerCount(data.correctAnswerCount),

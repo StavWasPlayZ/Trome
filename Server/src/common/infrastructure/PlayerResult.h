@@ -16,7 +16,7 @@ struct PlayerResult
         int points
     );
 
-    PlayerResult(LoggedUser user, const GameData &data);
+    PlayerResult(LoggedUser& user, const GameData &data);
 
     //TODO: Change to User type
     const std::string username;
