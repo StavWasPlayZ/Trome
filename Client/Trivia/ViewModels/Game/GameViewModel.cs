@@ -2,6 +2,7 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
+using System.Web;
 using ReactiveUI;
 using Trivia.Codec.C2S.Request.Packets;
 using Trivia.Codec.S2C.Response.Packets;
@@ -66,6 +67,16 @@ public class GameViewModel : PageViewModel
             HandleLastQuestion();
             return;
         }
+
+        Question = new Question
+        {
+            Prompt = HttpUtility.HtmlDecode(Question.Prompt),
+            Answers = Question.Answers
+                // This is not a nullable.
+                // ReSharper disable once ConvertClosureToMethodGroup
+                .Select(answer => HttpUtility.HtmlDecode(answer))
+                .ToList()
+        };
 
         HalvedBtnTexts = Question.Answers
             .Select(answer => answer.Length > 20)
