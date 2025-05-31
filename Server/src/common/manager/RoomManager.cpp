@@ -17,9 +17,9 @@ Room &RoomManager::createRoom(LoggedUser &admin, const RoomData &data)
     return entry->second;
 }
 
-void RoomManager::deleteRoom(const int roomID)
+void RoomManager::deleteRoom(const Room& room)
 {
-    m_rooms.erase(roomID);
+    m_rooms.erase(room.getId());
 }
 
 RoomStatus RoomManager::getRoomStatus(const int roomID) const

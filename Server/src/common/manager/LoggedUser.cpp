@@ -56,7 +56,7 @@ void LoggedUser::handleDisconnecting()
     {
         if (*this == room.value()->getAdmin())
         {
-            server.getRoomManager().deleteRoom(room.value()->getId());
+            server.getRoomManager().deleteRoom(*room.value());
         }
         else
         {

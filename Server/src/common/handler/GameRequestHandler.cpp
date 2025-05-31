@@ -118,7 +118,17 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
 
 RequestResult GameRequestHandler::leaveGame(const RequestInfo &info, const LeaveGameRequest &) const
 {
-    m_game.getRoom().removeUser(getUserByInfo(info));
+    Room& room = m_game.getRoom();
+    const LoggedUser& user = getUserByInfo(info);
+
+    if (room.getAdmin() == user)
+    {
+        this->m_handlerFactory.getRoomManager().deleteRoom(room);
+    }
+    else
+    {
+        room.removeUser(getUserByInfo(info));
+    }
 
     return RequestResult(
         new LeaveGameResponse(),
