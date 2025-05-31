@@ -4,7 +4,5 @@ namespace Trivia.Codec.S2C.Response.Packets;
 
 public readonly record struct GetQuestionResponse(
     Question? Question,
-    int Points,
-    bool WasLastPlayer,
-    int PlayersFinished
+    int Points
 ) : IProtocolResponse;

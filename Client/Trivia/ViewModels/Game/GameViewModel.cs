@@ -9,6 +9,8 @@ using System.Web;
 using Avalonia.Threading;
 using ReactiveUI;
 using Trivia.Codec.C2S.Request.Packets;
+using Trivia.Codec.S2C;
+using Trivia.Codec.S2C.Notification.Packets;
 using Trivia.Codec.S2C.Response.Packets;
 using Trivia.Models.Raw;
 
@@ -21,7 +23,11 @@ public class GameViewModel : GameViewModelBase
     public Room Room { get; }
     public ReactiveCommand<int, Unit> SubmitAnswerCommand { get; }
     
+    
+    private int _playersFinished;
+    
     private TaskCompletionSource? _countdownCompletion;
+    
     
     public GameViewModel(IScreen hostScreen, Room data) : base(hostScreen)
     {
@@ -63,19 +69,11 @@ public class GameViewModel : GameViewModelBase
          var response = await Comm.SendRequestAwaitResponse<GetQuestionResponse>(new GetQuestionRequest());
          Question = response.Question;
          Points = response.Points;
-         _finishedLast = response.WasLastPlayer;
-         _playersFinished = response.PlayersFinished;
          
          HandleQuestion();
     }
 
-
-    //NOTE: This is temporary until the players countdown (from Finished Early screen)
-    // is implemented.
-    private bool _finishedLast;
     
-    private int _playersFinished;
-
     private async Task SubmitAnswer(int btnIndex)
     {
         await StopCountdown();
@@ -83,8 +81,6 @@ public class GameViewModel : GameViewModelBase
         var response = await Comm.SendRequestAwaitResponse<SubmitAnswerResponse>(new SubmitAnswerRequest(btnIndex));
         Question = response.NewQuestion;
         Points = response.Points;
-        _finishedLast = response.WasLastPlayer;
-        _playersFinished = response.PlayersFinished;
 
         CurrQuestionCount++;
         HandleQuestion();
@@ -175,13 +171,32 @@ public class GameViewModel : GameViewModelBase
 
     private void HandleLastQuestion()
     {
-        if (_finishedLast)
+        _playersFinished++;
+        
+        // If the below is true, then we were the last player
+        // to have finished the game.
+        if (_playersFinished == Room.PlayersCount)
         {
             NavigateAndPop(new AfterGameViewModel(HostScreen));
         }
         else
         {
             NavigateAndPop(new FinishedEarlyViewModel(HostScreen, Room, _playersFinished)); 
+        }
+    }
+
+
+    protected override void CommOnPacketReceived(IS2CPacket packet)
+    {
+        switch (packet)
+        {
+            case PlayerFinishedNotification:
+                _playersFinished++;
+                break;
+            
+            default:
+                base.CommOnPacketReceived(packet);
+                break;
         }
     }
 
