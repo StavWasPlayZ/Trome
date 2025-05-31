@@ -83,6 +83,7 @@
             <ControlTemplate>
                 <Button
                     Command="{TemplateBinding Command}"
+                    CommandParameter="{TemplateBinding CommandParameter}"
                     BorderBrush="{TemplateBinding BorderBrush}"
                     BorderThickness="{TemplateBinding BorderThickness}"
                     CornerRadius="{TemplateBinding CornerRadius}"

@@ -94,6 +94,8 @@ public class TriviaButton : TemplatedControl
     }
 
 
+    //TODO: Consider extending from Button directly
+    
     public static readonly StyledProperty<ICommand> CommandProperty = AvaloniaProperty.Register<TriviaButton, ICommand>(
         nameof(Command));
 
@@ -101,5 +103,14 @@ public class TriviaButton : TemplatedControl
     {
         get => GetValue(CommandProperty);
         set => SetValue(CommandProperty, value);
+    }
+
+    public static readonly StyledProperty<object?> CommandParameterProperty = AvaloniaProperty.Register<TriviaButton, object?>(
+        nameof(CommandParameter));
+
+    public object? CommandParameter
+    {
+        get => GetValue(CommandParameterProperty);
+        set => SetValue(CommandParameterProperty, value);
     }
 }
