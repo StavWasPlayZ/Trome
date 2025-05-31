@@ -8,5 +8,7 @@ public enum NotificationCode : byte
     RoomDataUpdated,
     
     GameStarted,
-    GameEnded
+    GameEnded,
+    
+    PlayerFinished
 }
