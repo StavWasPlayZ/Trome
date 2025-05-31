@@ -62,8 +62,6 @@ private:
     void initPlayersData();
     void populateQuestions();
 
-    void populateMockQuestions(std::list<Question>& questions) const;
-
     void submitGameStatsToDB(const LoggedUser &user) const;
 
     /**
