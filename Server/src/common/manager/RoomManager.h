@@ -10,7 +10,7 @@ public:
     explicit RoomManager(const IDatabase& database);
 
     Room& createRoom(LoggedUser &admin, const RoomData &data);
-    void deleteRoom(int roomID);
+    void deleteRoom(const Room& room);
 
     RoomStatus getRoomStatus(int roomID) const;
     std::vector<Room*> getRooms();
