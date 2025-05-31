@@ -5,16 +5,14 @@ PlayerResult::PlayerResult(
     const int correctAnswerCount,
     const int averageAnswerTime,
     const int points
-) : 
+) :
     username(username),
     correctAnswerCount(correctAnswerCount),
     averageAnswerTime(averageAnswerTime),
     points(points)
-{
-}
+{}
 
-PlayerResult::PlayerResult(LoggedUser& user, const GameData &data)
-    : 
+PlayerResult::PlayerResult(const LoggedUser& user, const GameData &data) :
     username(user.getUsername()), 
     correctAnswerCount(data.correctAnswerCount),
     averageAnswerTime(data.getAverageAnswerTime().count()),

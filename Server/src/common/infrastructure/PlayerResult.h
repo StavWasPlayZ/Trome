@@ -2,10 +2,6 @@
 
 #include <string>
 #include "infrastructure/GameData.h"
-#include "manager/LoggedUser.h"
-
-struct GameData;
-struct LoggedUser;
 
 struct PlayerResult
 {
@@ -16,8 +12,7 @@ struct PlayerResult
         int points
     );
 
-    // note: user isn't const because getUsername doesn't work with const LoggedUser
-    PlayerResult(LoggedUser& user, const GameData &data);
+    PlayerResult(const LoggedUser& user, const GameData &data);
 
     //TODO: Change to User type
     const std::string username;
