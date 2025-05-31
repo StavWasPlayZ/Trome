@@ -33,6 +33,11 @@ public class GameViewModel : PageViewModel
         {
             GetNewQuestion()
                 .DisposeWith(disposables);
+            
+            this
+                .WhenAnyValue(x => x.TimeLeft)
+                .Subscribe(_ => HandleTimeLeftChanged())
+                .DisposeWith(disposables);
         });
     }
 
@@ -87,17 +92,41 @@ public class GameViewModel : PageViewModel
         while (_countdownRunning)
         {
             Thread.Sleep(CountdownSleepMs);
+
+            if (!_countdownRunning)
+                return;
             
             Dispatcher.UIThread.Post(() =>
             {
-                TimeLeft -= TimeSpan.FromMilliseconds(CountdownSleepMs);
-
-                if (TimeLeft <= TimeSpan.Zero)
+                // This must be checked here because we might accidentally (surely lol)
+                // overstack this operation over the thread
+                if (TimeLeft > TimeSpan.Zero)
                 {
-                    _ = GetNewQuestion();
+                    TimeLeft -= TimeSpan.FromMilliseconds(CountdownSleepMs);
                 }
             });
+
+            // This must be done separately from HandleCountdownEnded
+            // because it's not on the same thread
+            if (TimeLeft <= TimeSpan.Zero)
+            {
+                _countdownRunning = false;
+            }
         }
+    }
+
+    private void HandleTimeLeftChanged()
+    {
+        if (TimeLeft <= TimeSpan.Zero)
+        {
+            HandleCountdownEnded();
+        }
+    }
+
+    private void HandleCountdownEnded()
+    {        
+        _ = GetNewQuestion();
+        CurrQuestionCount++;
     }
 
     
