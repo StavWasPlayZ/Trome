@@ -18,14 +18,14 @@ public class GameViewModel : GameViewModelBase
 {
     private const int CountdownSleepMs = 10;
     
-    public RoomData Data { get; }
+    public Room Room { get; }
     public ReactiveCommand<int, Unit> SubmitAnswerCommand { get; }
     
     private TaskCompletionSource? _countdownCompletion;
     
-    public GameViewModel(IScreen hostScreen, RoomData data) : base(hostScreen)
+    public GameViewModel(IScreen hostScreen, Room data) : base(hostScreen)
     {
-        Data = data;
+        Room = data;
 
         SubmitAnswerCommand = ReactiveCommand.CreateFromTask<int>(async (btnIndex, _) =>
             await SubmitAnswer(btnIndex)
@@ -46,8 +46,8 @@ public class GameViewModel : GameViewModelBase
 
     public GameViewModel()
     {
-        Data = Room.CreateMockRoom(AppService.SessionUser!).Data;
-        _timeLeft = TimeSpan.FromSeconds(Data.TimePerQuestionSecs - 1);
+        Room = Room.CreateMockRoom(AppService.SessionUser!);
+        _timeLeft = TimeSpan.FromSeconds(Room.Data.TimePerQuestionSecs - 1);
         Points = 4269;
         _leadingUsername = "Username";
         
@@ -95,7 +95,7 @@ public class GameViewModel : GameViewModelBase
     
     private void StartCountdown()
     {
-        TimeLeft = TimeSpan.FromSeconds(Data.TimePerQuestionSecs);
+        TimeLeft = TimeSpan.FromSeconds(Room.Data.TimePerQuestionSecs);
         
         _countdownRunning = true;
         _countdownCompletion = new TaskCompletionSource();
@@ -181,7 +181,7 @@ public class GameViewModel : GameViewModelBase
         }
         else
         {
-            NavigateTo(new FinishedEarlyViewModel(HostScreen, Data, _playersFinished)); 
+            NavigateTo(new FinishedEarlyViewModel(HostScreen, Room, _playersFinished)); 
         }
     }
 

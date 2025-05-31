@@ -63,7 +63,15 @@ public class JoinedRoomViewModel : RoomViewModel
 
     private void OnGameStarted(GameStartedNotification gameStartedNotif)
     {
-        NavigateTo(new GameViewModel(HostScreen, gameStartedNotif.Data));
+        NavigateTo(
+            new GameViewModel(
+                HostScreen,
+                Room with
+                {
+                    Data = gameStartedNotif.Data
+                }
+            )
+        );
     }
 
     private void OnRoomDataUpdated(RoomDataUpdatedNotification roomDataNotif)

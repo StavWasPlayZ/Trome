@@ -22,17 +22,17 @@ public class FinishedEarlyViewModel : GameViewModelBase
 
     public string EndingLine { get; } = EndingLines[App.Random.Next(EndingLines.Length)];
 
-    public RoomData Data { get; }
+    public Room Room { get; }
     
-    public FinishedEarlyViewModel(IScreen hostScreen, RoomData data, int playersFinished) : base(hostScreen)
+    public FinishedEarlyViewModel(IScreen hostScreen, Room room, int playersFinished) : base(hostScreen)
     {
-        Data = data;
+        Room = room;
         _playersFinished = playersFinished;
     }
 
     public FinishedEarlyViewModel()
     {
-        Data = Room.CreateMockRoom(AppService.SessionUser!).Data;
+        Room = Room.CreateMockRoom(AppService.SessionUser!);
         _playersFinished = 2;
     }
 
