@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
@@ -69,11 +68,7 @@ public class GameViewModel : PageViewModel
         }
 
         HalvedBtnTexts = Question.Answers
-            .Select(answer =>
-            {
-                Console.WriteLine($"{answer} {answer.Length > 20}");
-                return answer.Length > 20;
-            })
+            .Select(answer => answer.Length > 20)
             .ToArray();
     }
 
