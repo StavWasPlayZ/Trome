@@ -10,9 +10,9 @@ GameData::GameData(const Game& game) :
     currentQuestionIndex(-1),
     isFinished(false),
     correctAnswerCount(0),
+    points(0),
     averageAnswerTime(0),
     answersRotation(0),
-    points(0),
     game(game)
 {
     rotateAnswers();
@@ -85,7 +85,7 @@ void GameData::calculateRoundPoints(const bool didFail)
         return;
     }
 
-    const double maxTime = static_cast<double>(this->game.getRoom().getData().timePerQuestionSecs * 1000);
+    const double maxTime = this->game.getRoom().getData().timePerQuestionSecs * 1000;
     const double time = static_cast<double>(this->roundTime.count());
 
     const double result =
