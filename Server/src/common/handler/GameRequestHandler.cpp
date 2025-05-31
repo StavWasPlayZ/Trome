@@ -82,7 +82,7 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
         handleLastPlayerFinished(info);
 
         return RequestResult(
-            new SubmitAnswerResponse(newQuestion, userData.points, true, playersFinished),
+            new SubmitAnswerResponse(newQuestion, userData.points, playersFinished, true),
             getMenuRequestHandlerFor(user)
         );
     }
@@ -98,12 +98,12 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
         );
 
         return RequestResult(
-            new SubmitAnswerResponse(std::nullopt, userData.points, false, playersFinished),
+            new SubmitAnswerResponse(std::nullopt, userData.points, playersFinished),
             new FinishedGameEarlyRequestHandler(m_handlerFactory, m_game)
         );
     }
 
-    return RequestResult(new SubmitAnswerResponse(newQuestion, userData.points, false, playersFinished));
+    return RequestResult(new SubmitAnswerResponse(newQuestion, userData.points, playersFinished));
 }
 
 RequestResult GameRequestHandler::leaveGame(const RequestInfo &info, const LeaveGameRequest &) const
@@ -163,7 +163,7 @@ RequestResult GameRequestHandler::getQuestion(const RequestInfo &info, const Get
     if (userData.didYetStart())
     {
         const UserQuestion question = m_game.setFirstQuestionForUser(user);
-        return RequestResult(new GetQuestionResponse(question, 0, false, playersFinished));
+        return RequestResult(new GetQuestionResponse(question, 0, playersFinished));
     }
 
     // Getting here means the user has either skipped the question or that the time has passed.
@@ -175,12 +175,12 @@ RequestResult GameRequestHandler::getQuestion(const RequestInfo &info, const Get
         handleLastPlayerFinished(info);
 
         return RequestResult(
-            new GetQuestionResponse(newQuestion, userData.points, true, playersFinished),
+            new GetQuestionResponse(newQuestion, userData.points, playersFinished, true),
             getMenuRequestHandlerFor(user)
         );
     }
 
-    return RequestResult(new GetQuestionResponse(newQuestion, userData.points, false, playersFinished));
+    return RequestResult(new GetQuestionResponse(newQuestion, userData.points, playersFinished));
 }
 
 RequestResult GameRequestHandler::getGameResults(const RequestInfo &info, const GetGameResultRequest &) const

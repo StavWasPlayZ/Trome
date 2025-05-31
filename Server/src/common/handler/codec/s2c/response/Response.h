@@ -160,8 +160,8 @@ struct LeaveGameResponse : ProtocolResponse
 
 struct GetQuestionResponse : ProtocolResponse
 {
-    explicit GetQuestionResponse(const std::optional<UserQuestion> &question, int points, bool wasLastPlayer,
-        int playersFinished);
+    explicit GetQuestionResponse(const std::optional<UserQuestion> &question, int points, int playersFinished,
+        bool wasLastPlayer = false);
 
     //NOTE: The parameters for GetQuestionResponse and SubmitAnswerResponse are the same.
     // Consider a parent struct.
@@ -182,8 +182,8 @@ struct GetQuestionResponse : ProtocolResponse
 
 struct SubmitAnswerResponse : ProtocolResponse
 {
-    SubmitAnswerResponse(const std::optional<UserQuestion> &newQuestion, int points, bool wasLastPlayer,
-        int playersFinished);
+    SubmitAnswerResponse(const std::optional<UserQuestion> &newQuestion, int points, int playersFinished,
+        bool wasLastPlayer = false);
 
     /**
      * Empty for if there are no more questions.
