@@ -77,7 +77,9 @@
                         <TextBlock Grid.Column="1"
                                    TextAlignment="Center"
                                    Margin="0 20 0 0"
-                                   Opacity=".6">2nd</TextBlock>
+                                   Opacity=".6"
+                                   FontSize="30"
+                                   Text="{Binding Points}"/>
                         
                         <TextBlock Grid.Column="2"
                                    TextAlignment="End">
