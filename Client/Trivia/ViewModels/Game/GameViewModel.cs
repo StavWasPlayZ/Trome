@@ -48,6 +48,7 @@ public class GameViewModel : PageViewModel
     {
         Data = Room.CreateMockRoom(AppService.SessionUser!).Data;
         _timeLeft = TimeSpan.FromSeconds(Data.TimePerQuestionSecs - 1);
+        Points = 4269;
         _leadingUsername = "Username";
         
         _question = Question.MockQuestion;
@@ -71,6 +72,7 @@ public class GameViewModel : PageViewModel
         
         var response = await Comm.SendRequestAwaitResponse<SubmitAnswerResponse>(new SubmitAnswerRequest(btnIndex));
         Question = response.NewQuestion;
+        Points = response.Points;
 
         CurrQuestionCount++;
         HandleQuestion();
@@ -188,6 +190,15 @@ public class GameViewModel : PageViewModel
     {
         get => _question;
         private set => this.RaiseAndSetIfChanged(ref _question, value);
+    }
+    
+    
+    private int _points;
+
+    public int Points
+    {
+        get => _points;
+        set => this.RaiseAndSetIfChanged(ref _points, value);
     }
     
     
