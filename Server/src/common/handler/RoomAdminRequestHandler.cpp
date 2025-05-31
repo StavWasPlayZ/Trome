@@ -67,7 +67,7 @@ RequestResult RoomAdminRequestHandler::startGame(const RequestInfo &info, const 
 
 RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo &, const CloseRoomRequest &) const
 {
-    m_handlerFactory.getRoomManager().deleteRoom(m_room.getId());
+    m_handlerFactory.getRoomManager().deleteRoom(m_room);
 
     return RequestResult(
         new CloseRoomResponse(),

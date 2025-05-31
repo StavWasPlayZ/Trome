@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
@@ -13,17 +14,18 @@ using Trivia.Models.Raw;
 
 namespace Trivia.ViewModels.Game;
 
-public class GameViewModel : PageViewModel
+public class GameViewModel : GameViewModelBase
 {
     private const int CountdownSleepMs = 10;
     
     public RoomData Data { get; }
     public ReactiveCommand<int, Unit> SubmitAnswerCommand { get; }
     
+    private TaskCompletionSource? _countdownCompletion;
+    
     public GameViewModel(IScreen hostScreen, RoomData data) : base(hostScreen)
     {
         Data = data;
-        _timeLeft = TimeSpan.FromSeconds(Data.TimePerQuestionSecs);
 
         SubmitAnswerCommand = ReactiveCommand.CreateFromTask<int>(async (btnIndex, _) =>
             await SubmitAnswer(btnIndex)
@@ -33,13 +35,20 @@ public class GameViewModel : PageViewModel
         {
             GetNewQuestion()
                 .DisposeWith(disposables);
+            
+            this
+                .WhenAnyValue(x => x.TimeLeft)
+                .Skip(1)
+                .Subscribe(_ => HandleTimeLeftChanged())
+                .DisposeWith(disposables);
         });
     }
 
     public GameViewModel()
     {
         Data = Room.CreateMockRoom(AppService.SessionUser!).Data;
-        _timeLeft = TimeSpan.FromSeconds(Data.TimePerQuestionSecs);
+        _timeLeft = TimeSpan.FromSeconds(Data.TimePerQuestionSecs - 1);
+        Points = 4269;
         _leadingUsername = "Username";
         
         _question = Question.MockQuestion;
@@ -53,16 +62,24 @@ public class GameViewModel : PageViewModel
     {
          var response = await Comm.SendRequestAwaitResponse<GetQuestionResponse>(new GetQuestionRequest());
          Question = response.Question;
+         Points = response.Points;
          
          HandleQuestion();
     }
 
+
+    //NOTE: This is temporary until the players countdown (from Finished Early screen)
+    // is implemented.
+    private bool _finishedLast;
+
     private async Task SubmitAnswer(int btnIndex)
     {
-        StopCountdown();
+        await StopCountdown();
         
         var response = await Comm.SendRequestAwaitResponse<SubmitAnswerResponse>(new SubmitAnswerRequest(btnIndex));
         Question = response.NewQuestion;
+        Points = response.Points;
+        _finishedLast = response.WasLastPlayer;
 
         CurrQuestionCount++;
         HandleQuestion();
@@ -73,31 +90,59 @@ public class GameViewModel : PageViewModel
     
     private void StartCountdown()
     {
+        TimeLeft = TimeSpan.FromSeconds(Data.TimePerQuestionSecs);
+        
         _countdownRunning = true;
+        _countdownCompletion = new TaskCompletionSource();
         new Thread(CountdownThread).Start();
     }
     
-    private void StopCountdown()
+    private async Task StopCountdown()
     {
         _countdownRunning = false;
+        await _countdownCompletion!.Task;
+        _countdownCompletion = null;
     }
 
     private void CountdownThread()
     {
+        _internalTimeLeft = TimeLeft;
+        
         while (_countdownRunning)
         {
             Thread.Sleep(CountdownSleepMs);
+
+            if (!_countdownRunning)
+                break;
+            
+            _internalTimeLeft -= TimeSpan.FromMilliseconds(CountdownSleepMs);
             
             Dispatcher.UIThread.Post(() =>
             {
-                TimeLeft -= TimeSpan.FromMilliseconds(CountdownSleepMs);
-
-                if (TimeLeft <= TimeSpan.Zero)
-                {
-                    _ = GetNewQuestion();
-                }
+                TimeLeft = _internalTimeLeft;
             });
+            
+            if (_internalTimeLeft <= TimeSpan.Zero)
+            {
+                _countdownRunning = false;
+            }
         }
+        
+        _countdownCompletion!.TrySetResult();
+    }
+
+    private void HandleTimeLeftChanged()
+    {
+        if (TimeLeft <= TimeSpan.Zero)
+        {
+            _ = HandleCountdownEnded();
+        }
+    }
+
+    private async Task HandleCountdownEnded()
+    {        
+        CurrQuestionCount++;
+        await GetNewQuestion();
     }
 
     
@@ -125,7 +170,14 @@ public class GameViewModel : PageViewModel
 
     private void HandleLastQuestion()
     {
-        //TODO: Implement
+        if (_finishedLast)
+        {
+            NavigateTo(new AfterGameViewModel(HostScreen));
+        }
+        else
+        {
+            NavigateTo(new FinishedEarlyViewModel(HostScreen));
+        }
     }
 
 
@@ -153,8 +205,22 @@ public class GameViewModel : PageViewModel
         get => _question;
         private set => this.RaiseAndSetIfChanged(ref _question, value);
     }
+    
+    
+    private int _points;
 
-
+    public int Points
+    {
+        get => _points;
+        set => this.RaiseAndSetIfChanged(ref _points, value);
+    }
+    
+    
+    /// <summary>
+    /// Used for syncing the time with the Countdown thread
+    /// </summary>
+    private TimeSpan _internalTimeLeft;
+    
     private TimeSpan _timeLeft;
 
     public TimeSpan TimeLeft
