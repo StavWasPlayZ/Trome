@@ -47,7 +47,7 @@ public class GameViewModel : PageViewModel
     public GameViewModel()
     {
         Data = Room.CreateMockRoom(AppService.SessionUser!).Data;
-        _timeLeft = TimeSpan.FromSeconds(Data.TimePerQuestionSecs);
+        _timeLeft = TimeSpan.FromSeconds(Data.TimePerQuestionSecs - 1);
         _leadingUsername = "Username";
         
         _question = Question.MockQuestion;
