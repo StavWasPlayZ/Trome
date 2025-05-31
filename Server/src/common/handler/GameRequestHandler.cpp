@@ -155,20 +155,20 @@ RequestResult GameRequestHandler::getQuestion(const RequestInfo &info, const Get
     // User has already finished; Just return nothing
     if (userData.isFinished)
     {
-        return RequestResult(new GetQuestionResponse(std::nullopt));
+        return RequestResult(new GetQuestionResponse(std::nullopt, userData.points));
     }
 
     if (userData.didYetStart())
     {
         const UserQuestion question = m_game.setFirstQuestionForUser(user);
-        return RequestResult(new GetQuestionResponse(question));
+        return RequestResult(new GetQuestionResponse(question, 0));
     }
 
     // Getting here means the user has either skipped the question or that the time has passed.
     // Either of which will prompt the failure of the current round.
     const std::optional<UserQuestion> newQuestion = m_game.generateNewQuestionForUser(user, true);
 
-    return RequestResult(new GetQuestionResponse(newQuestion));
+    return RequestResult(new GetQuestionResponse(newQuestion, userData.points));
 }
 
 RequestResult GameRequestHandler::getGameResults(const RequestInfo &info, const GetGameResultRequest &) const

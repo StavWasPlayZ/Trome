@@ -227,6 +227,8 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetQuestionRespons
         data["question"] = ProtocolPacketSerializer::serializeAsJson(response.question.value());
     }
 
+    data["points"] = response.points;
+
     return serialize(response.id, data);
 }
 
