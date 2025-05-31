@@ -160,9 +160,10 @@ struct LeaveGameResponse : ProtocolResponse
 
 struct GetQuestionResponse : ProtocolResponse
 {
-    explicit GetQuestionResponse(const std::optional<UserQuestion>& question);
+    explicit GetQuestionResponse(const std::optional<UserQuestion>& question, int points);
 
     const std::optional<UserQuestion> question;
+    const int points;
 };
 
 struct SubmitAnswerResponse : ProtocolResponse

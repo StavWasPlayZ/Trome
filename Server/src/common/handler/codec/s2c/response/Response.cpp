@@ -82,9 +82,10 @@ LeaveGameResponse::LeaveGameResponse() :
     ProtocolResponse(ResponseCode::LEAVE_GAME)
 {}
 
-GetQuestionResponse::GetQuestionResponse(const std::optional<UserQuestion>& question) :
+GetQuestionResponse::GetQuestionResponse(const std::optional<UserQuestion>& question, const int points) :
     ProtocolResponse(ResponseCode::GET_QUESTION),
-    question(question)
+    question(question),
+    points(points)
 {}
 
 SubmitAnswerResponse::SubmitAnswerResponse(const std::optional<UserQuestion> &newQuestion,

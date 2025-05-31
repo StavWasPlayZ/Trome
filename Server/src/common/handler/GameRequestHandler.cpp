@@ -74,7 +74,7 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
 
     // If the returned answer is 0 unrotated, it must be correct.
     // This is because the first answer is always the correct one.
-    const bool didFail = request.answer - question.rotation != 0;
+    const bool didFail = ((4 - request.answer) % 4) - question.rotation != 0;
 
     const std::optional<UserQuestion> newQuestion = this->m_game.generateNewQuestionForUser(user, didFail);
 
@@ -155,20 +155,20 @@ RequestResult GameRequestHandler::getQuestion(const RequestInfo &info, const Get
     // User has already finished; Just return nothing
     if (userData.isFinished)
     {
-        return RequestResult(new GetQuestionResponse(std::nullopt));
+        return RequestResult(new GetQuestionResponse(std::nullopt, userData.points));
     }
 
     if (userData.didYetStart())
     {
         const UserQuestion question = m_game.setFirstQuestionForUser(user);
-        return RequestResult(new GetQuestionResponse(question));
+        return RequestResult(new GetQuestionResponse(question, 0));
     }
 
     // Getting here means the user has either skipped the question or that the time has passed.
     // Either of which will prompt the failure of the current round.
     const std::optional<UserQuestion> newQuestion = m_game.generateNewQuestionForUser(user, true);
 
-    return RequestResult(new GetQuestionResponse(newQuestion));
+    return RequestResult(new GetQuestionResponse(newQuestion, userData.points));
 }
 
 RequestResult GameRequestHandler::getGameResults(const RequestInfo &info, const GetGameResultRequest &) const
