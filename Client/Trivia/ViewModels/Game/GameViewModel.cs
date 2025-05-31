@@ -177,11 +177,11 @@ public class GameViewModel : GameViewModelBase
     {
         if (_finishedLast)
         {
-            NavigateTo(new AfterGameViewModel(HostScreen));
+            NavigateAndPop(new AfterGameViewModel(HostScreen));
         }
         else
         {
-            NavigateTo(new FinishedEarlyViewModel(HostScreen, Room, _playersFinished)); 
+            NavigateAndPop(new FinishedEarlyViewModel(HostScreen, Room, _playersFinished)); 
         }
     }
 

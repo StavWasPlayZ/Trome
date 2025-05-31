@@ -17,6 +17,8 @@ public abstract class PageViewModel : ViewModelBase, IRoutableViewModel, IActiva
     public string? UrlPathSegment { get; } = Guid.NewGuid().ToString()[..5];
     
     public ApplicationService AppService { get; }
+
+    protected static RoutingState? Router => MainWindowViewModel?.Router;
     
     
     protected PageViewModel(IScreen hostScreen)
@@ -55,7 +57,7 @@ public abstract class PageViewModel : ViewModelBase, IRoutableViewModel, IActiva
 
 
     public ReactiveCommand<Unit, IRoutableViewModel>? NavigateBackCommand { get; } =
-        MainWindowViewModel?.Router.NavigateBack;
+        Router?.NavigateBack;
 
 
     protected static MainWindowViewModel? MainWindowViewModel =>
@@ -63,11 +65,16 @@ public abstract class PageViewModel : ViewModelBase, IRoutableViewModel, IActiva
 
     protected static IObservable<IRoutableViewModel>? NavigateTo(PageViewModel pageViewModel)
     {
-        return MainWindowViewModel?.Router.Navigate.Execute(pageViewModel);
+        return Router?.Navigate.Execute(pageViewModel);
     }
     protected static IObservable<IRoutableViewModel>? NavigateAndReset(PageViewModel pageViewModel)
     {
-        return MainWindowViewModel?.Router.NavigateAndReset.Execute(pageViewModel);
+        return Router?.NavigateAndReset.Execute(pageViewModel);
+    }
+    protected static IObservable<IRoutableViewModel>? NavigateAndPop(PageViewModel pageViewModel)
+    {
+        Router?.NavigateBack.Execute();
+        return NavigateTo(pageViewModel);
     }
 
     protected static ReactiveCommand<Unit, IRoutableViewModel> NavigateReactiveCommand(Func<PageViewModel> pageViewModel)

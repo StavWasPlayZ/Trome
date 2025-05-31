@@ -42,7 +42,7 @@ public class FinishedEarlyViewModel : GameViewModelBase
         switch (packet)
         {
             case GameEndedNotification:
-                NavigateTo(new AfterGameViewModel(HostScreen));
+                NavigateAndPop(new AfterGameViewModel(HostScreen));
                 break;
             
             case PlayerFinishedNotification:
