@@ -10,4 +10,13 @@ PlayerResult::PlayerResult(
     correctAnswerCount(correctAnswerCount),
     averageAnswerTime(averageAnswerTime),
     points(points)
+{
+}
+
+PlayerResult::PlayerResult(const std::string &username, const GameData &data)
+    : 
+    username(username), 
+    correctAnswerCount(data.correctAnswerCount),
+    averageAnswerTime(data.getAverageAnswerTime().count()),
+    points(data.points)
 {}
