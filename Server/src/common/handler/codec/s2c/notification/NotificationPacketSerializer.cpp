@@ -18,6 +18,8 @@ OBuffer NotificationPacketSerializer::serialize(const ProtocolNotification &noti
         return serialize(static_cast<const GameStartedNotification&>(notification));
     case NotificationCode::GAME_ENDED:
         return serialize(static_cast<const GameEndedNotification&>(notification));
+    case NotificationCode::PLAYER_FINISHED:
+        return serialize(static_cast<const PlayerFinishedNotification&>(notification));
 
     default: throw std::invalid_argument("Invalid notification ID");
     }

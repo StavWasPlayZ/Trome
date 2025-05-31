@@ -2,9 +2,6 @@
 #include "manager/LoggedUser.h"
 #include "infrastructure/Game.h"
 
-struct RoomData;
-struct Game;
-
 enum class NotificationCode : unsigned char
 {
     PLAYER_JOINED_ROOM,
