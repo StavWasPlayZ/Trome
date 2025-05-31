@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include "infrastructure/GameData.h"
 
 struct PlayerResult
 {
@@ -10,6 +11,8 @@ struct PlayerResult
         int averageAnswerTime,
         int points
     );
+
+    PlayerResult(const LoggedUser& user, const GameData &data);
 
     //TODO: Change to User type
     const std::string username;

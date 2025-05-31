@@ -1,7 +1,9 @@
 #pragma once
 #include "manager/LoggedUser.h"
+#include "infrastructure/Game.h"
 
 struct RoomData;
+struct Game;
 
 enum class NotificationCode : unsigned char
 {
@@ -59,5 +61,7 @@ struct GameStartedNotification : ProtocolNotification
 
 struct GameEndedNotification : ProtocolNotification
 {
-    GameEndedNotification();
+    explicit GameEndedNotification(const Game &game);
+
+    const Game &game;
 };
