@@ -31,5 +31,12 @@ private:
     )]]
     RequestResult getGameResults(const RequestInfo &info, const GetGameResultRequest &request) const;
 
+
+    void handleLastPlayerFinished(const RequestInfo &info) const;
+
+    //NOTE: Could be internal method of room if used more than here.
+    IRequestHandler* getMenuRequestHandlerFor(const LoggedUser &user) const;
+
+
     Game& m_game;
 };

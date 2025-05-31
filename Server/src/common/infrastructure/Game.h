@@ -27,12 +27,20 @@ public:
     void endGame() const;
 
     Room& getRoom() const;
-    int getPlayersRemaining() const;
 
     /**
      * Returns whether all players have answered all questions
      */
     bool isGameComplete() const;
+
+    /**
+     * Returns the amount of players who have yet to finish all the questions of the room
+     */
+    int getPlayersRemaining() const;
+    /**
+     * Returns the amount of players who have finished all the questions of the room
+     */
+    int getPlayersFinished() const;
 
 
     const GameData& getDataOf(const LoggedUser& user) const;

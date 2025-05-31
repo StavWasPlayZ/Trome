@@ -44,14 +44,19 @@ Room &Game::getRoom() const
     return this->m_room;
 }
 
+bool Game::isGameComplete() const
+{
+    return this->m_playersRemaining == 0;
+}
+
 int Game::getPlayersRemaining() const
 {
     return this->m_playersRemaining;
 }
 
-bool Game::isGameComplete() const
+int Game::getPlayersFinished() const
 {
-    return this->m_playersRemaining == 0;
+    return this->m_room.getAllUsers().size() - this->m_playersRemaining;
 }
 
 const GameData &Game::getDataOf(const LoggedUser &user) const

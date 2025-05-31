@@ -46,5 +46,6 @@ enum class ErrorStatus : unsigned int
     NOT_LOGGED_IN,
 
     // Game
-    QUESTION_OUTDATED
+    QUESTION_OUTDATED,
+    ALREADY_FINISHED
 };
