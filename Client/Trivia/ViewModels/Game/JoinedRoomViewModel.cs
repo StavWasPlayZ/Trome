@@ -51,10 +51,19 @@ public class JoinedRoomViewModel : RoomViewModel
                 OnRoomDataUpdated(roomDataNotif);
                 break;
             
+            case GameStartedNotification gameStartedNotif:
+                OnGameStarted(gameStartedNotif);
+                break;
+            
             default:
                 base.CommOnPacketReceived(packet);
                 break;
         }
+    }
+
+    private void OnGameStarted(GameStartedNotification gameStartedNotif)
+    {
+        NavigateTo(new GameViewModel(HostScreen, gameStartedNotif.Data));
     }
 
     private void OnRoomDataUpdated(RoomDataUpdatedNotification roomDataNotif)
