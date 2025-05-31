@@ -160,43 +160,26 @@ struct LeaveGameResponse : ProtocolResponse
 
 struct GetQuestionResponse : ProtocolResponse
 {
-    explicit GetQuestionResponse(const std::optional<UserQuestion> &question, int points, int playersFinished,
-        bool wasLastPlayer = false);
+    explicit GetQuestionResponse(const std::optional<UserQuestion> &question, int points);
 
-    //NOTE: The parameters for GetQuestionResponse and SubmitAnswerResponse are the same.
-    // Consider a parent struct.
+    const int points;
 
     /**
      * Empty for if there are no more questions.
      */
     const std::optional<UserQuestion> question;
-
-    const int points;
-
-    //TODO: Perhaps make this a client-side check such that if I am the last player to have an empty question,
-    // then obviously that the game ended.
-    const bool wasLastPlayer;
-
-    const int playersFinished;
 };
 
 struct SubmitAnswerResponse : ProtocolResponse
 {
-    SubmitAnswerResponse(const std::optional<UserQuestion> &newQuestion, int points, int playersFinished,
-        bool wasLastPlayer = false);
+    SubmitAnswerResponse(const std::optional<UserQuestion> &newQuestion, int points);
+
+    const int points;
 
     /**
      * Empty for if there are no more questions.
      */
     const std::optional<UserQuestion> newQuestion;
-
-    const int points;
-
-    //TODO: Perhaps make this a client-side check such that if I am the last player to have an empty question,
-    // then obviously that the game ended.
-    const bool wasLastPlayer;
-
-    const int playersFinished;
 };
 
 struct [[deprecated(

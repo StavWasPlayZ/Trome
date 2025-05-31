@@ -76,14 +76,13 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
     const bool didFail = ((4 - request.answer) % 4) - question.rotation != 0;
 
     const std::optional<UserQuestion> newQuestion = this->m_game.generateNewQuestionForUser(user, didFail);
-    const int playersFinished = this->m_game.getPlayersFinished();
 
     if (this->m_game.isGameComplete())
     {
         handleLastPlayerFinished(info);
 
         return RequestResult(
-            new SubmitAnswerResponse(newQuestion, userData.points, playersFinished, true),
+            new SubmitAnswerResponse(newQuestion, userData.points),
             getMenuRequestHandlerFor(user)
         );
     }
@@ -99,12 +98,12 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
         );
 
         return RequestResult(
-            new SubmitAnswerResponse(std::nullopt, userData.points, playersFinished),
+            new SubmitAnswerResponse(std::nullopt, userData.points),
             new FinishedGameEarlyRequestHandler(m_handlerFactory, m_game)
         );
     }
 
-    return RequestResult(new SubmitAnswerResponse(newQuestion, userData.points, playersFinished));
+    return RequestResult(new SubmitAnswerResponse(newQuestion, userData.points));
 }
 
 RequestResult GameRequestHandler::leaveGame(const RequestInfo &info, const LeaveGameRequest &) const
@@ -159,12 +158,10 @@ RequestResult GameRequestHandler::getQuestion(const RequestInfo &info, const Get
     //
     // TODO: (probably never) fix
 
-    const int playersFinished = this->m_game.getPlayersFinished();
-
     if (userData.didYetStart())
     {
         const UserQuestion question = m_game.setFirstQuestionForUser(user);
-        return RequestResult(new GetQuestionResponse(question, 0, playersFinished));
+        return RequestResult(new GetQuestionResponse(question, 0));
     }
 
     // Getting here means the user has either skipped the question or that the time has passed.
@@ -176,12 +173,12 @@ RequestResult GameRequestHandler::getQuestion(const RequestInfo &info, const Get
         handleLastPlayerFinished(info);
 
         return RequestResult(
-            new GetQuestionResponse(newQuestion, userData.points, playersFinished, true),
+            new GetQuestionResponse(newQuestion, userData.points),
             getMenuRequestHandlerFor(user)
         );
     }
 
-    return RequestResult(new GetQuestionResponse(newQuestion, userData.points, playersFinished));
+    return RequestResult(new GetQuestionResponse(newQuestion, userData.points));
 }
 
 RequestResult GameRequestHandler::getGameResults(const RequestInfo &info, const GetGameResultRequest &) const

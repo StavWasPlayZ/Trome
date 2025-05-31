@@ -228,8 +228,6 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetQuestionRespons
     }
 
     data["points"] = response.points;
-    data["was_last_player"] = response.wasLastPlayer;
-    data["players_finished"] = response.playersFinished;
 
     return serialize(response.id, data);
 }
@@ -244,8 +242,6 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const SubmitAnswerRespon
     }
 
     data["points"] = response.points;
-    data["was_last_player"] = response.wasLastPlayer;
-    data["players_finished"] = response.playersFinished; 
 
     return serialize(response.id, data);
 }
