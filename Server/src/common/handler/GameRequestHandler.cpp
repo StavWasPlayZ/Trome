@@ -77,7 +77,7 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
     const bool didFail = ((4 - request.answer) % 4) - question.rotation != 0;
 
     const std::optional<UserQuestion> newQuestion = this->m_game.generateNewQuestionForUser(user, didFail);
-    const int playersFinished = this->m_game.getRoom().getAllUsers().size() - this->m_game.getPlayersRemaining();
+    const int playersFinished = room.getAllUsers().size() - this->m_game.getPlayersRemaining();
 
     if (this->m_game.isGameComplete())
     {
@@ -108,9 +108,9 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
     // If there is no new question available, we've finished early.
     if (!newQuestion.has_value())
     {
-        IRequestHandler::dispatchNotification(
+        dispatchNotification(
             PlayerFinishedNotification(), 
-            this->m_game.getRoom().getAllUsers(),
+            room.getAllUsers(),
             &user
         );
 
