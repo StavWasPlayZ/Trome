@@ -1,12 +1,13 @@
 #include "GameRequestHandler.h"
 
+#include "FinishedGameEarlyRequestHandler.h"
 #include "RoomAdminRequestHandler.h"
 #include "RoomMemberRequestHandler.h"
-#include "FinishedGameEarlyRequestHandler.h"
 #include "codec/s2c/response/JsonResponsePacketSerializer.h"
 #include "codec/s2c/response/Response.h"
 #include "handler/RequestHandlerFactory.h"
 #include "infrastructure/Client.h"
+#include "manager/GameManager.h"
 
 GameRequestHandler::GameRequestHandler(const RequestHandlerFactory &handlerFactory, Game& game) :
     IRequestHandler(handlerFactory),
@@ -199,6 +200,8 @@ void GameRequestHandler::handleLastPlayerFinished(const RequestInfo &info) const
         GameEndedNotification(m_game.getResults()),
         &getUserByInfo(info)
     );
+
+    this->m_handlerFactory.getGameManager().deleteGame(m_game);
 }
 
 IRequestHandler *GameRequestHandler::getMenuRequestHandlerFor(const LoggedUser &user) const

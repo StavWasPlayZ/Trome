@@ -24,8 +24,8 @@ Game &GameManager::getGameByRoom(const Room &room)
     return *game.value();
 }
 
-void GameManager::deleteGame(Room &room)
+void GameManager::deleteGame(const Game &game)
 {
-    room.unsetCurrentGame();
-    this->m_games.erase(room.getId());
+    game.getRoom().unsetCurrentGame();
+    this->m_games.erase(game.getId());
 }

@@ -18,7 +18,7 @@ public:
 
     static Game &getGameByRoom(const Room &room);
 
-	void deleteGame(Room &room);
+	void deleteGame(const Game &game);
 
 private:
 	const IDatabase& m_database;
