@@ -2,8 +2,10 @@
 
 #include <string>
 #include "infrastructure/GameData.h"
+#include "manager/LoggedUser.h"
 
 struct GameData;
+struct LoggedUser;
 
 struct PlayerResult
 {
@@ -14,7 +16,7 @@ struct PlayerResult
         int points
     );
 
-    PlayerResult(const std::string &username, const GameData &data);
+    PlayerResult(LoggedUser user, const GameData &data);
 
     //TODO: Change to User type
     const std::string username;

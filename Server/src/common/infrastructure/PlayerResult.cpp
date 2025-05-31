@@ -13,9 +13,9 @@ PlayerResult::PlayerResult(
 {
 }
 
-PlayerResult::PlayerResult(const std::string &username, const GameData &data)
+PlayerResult::PlayerResult(LoggedUser user, const GameData &data)
     : 
-    username(username), 
+    username(user.getUsername()), 
     correctAnswerCount(data.correctAnswerCount),
     averageAnswerTime(data.getAverageAnswerTime().count()),
     points(data.points)
