@@ -107,33 +107,61 @@
                             </Style>
                         </Grid.Styles>
                         
-                        <controls:TriviaButton Grid.Row="0"
+                        <controls:TriviaButton Command="{Binding SubmitAnswerCommand}"
+                                               Grid.Row="0"
                                                Grid.Column="0"
                                                Text="{
                                                    Binding Question.Answers[0],
                                                    FallbackValue=-----
-                                               }"/>
-                        
-                        <controls:TriviaButton Grid.Row="0"
+                                               }">
+                            
+                            <controls:TriviaButton.CommandParameter>
+                                <x:Int32>0</x:Int32>
+                            </controls:TriviaButton.CommandParameter>
+                            
+                        </controls:TriviaButton>
+
+                        <controls:TriviaButton Command="{Binding SubmitAnswerCommand}"
+                                               Grid.Row="0"
                                                Grid.Column="1"
                                                Text="{
                                                    Binding Question.Answers[1],
                                                    FallbackValue=-----
-                                               }"/>
+                                               }">
+                            
+                            <controls:TriviaButton.CommandParameter>
+                                <x:Int32>1</x:Int32>
+                            </controls:TriviaButton.CommandParameter>
+                            
+                        </controls:TriviaButton>
                         
-                        <controls:TriviaButton Grid.Row="1"
+                        <controls:TriviaButton Command="{Binding SubmitAnswerCommand}"
+                                               Grid.Row="1"
                                                Grid.Column="0"
                                                Text="{
                                                    Binding Question.Answers[2],
                                                    FallbackValue=-----
-                                               }"/>
+                                               }">
+                            
+                            <controls:TriviaButton.CommandParameter>
+                                <x:Int32>2</x:Int32>
+                            </controls:TriviaButton.CommandParameter>
+                            
+                        </controls:TriviaButton>
                         
-                        <controls:TriviaButton Grid.Row="1"
+                        <controls:TriviaButton Command="{Binding SubmitAnswerCommand}"
+                                               Grid.Row="1"
                                                Grid.Column="1"
                                                Text="{
                                                    Binding Question.Answers[3],
                                                    FallbackValue=-----
-                                               }"/>
+                                               }">
+                            
+                            <controls:TriviaButton.CommandParameter>
+                                <x:Int32>3</x:Int32>
+                            </controls:TriviaButton.CommandParameter>
+                            
+                        </controls:TriviaButton>
                         
                     </Grid>
                 </Grid>
