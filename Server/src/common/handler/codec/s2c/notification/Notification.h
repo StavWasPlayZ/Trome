@@ -2,9 +2,6 @@
 #include "manager/LoggedUser.h"
 #include "infrastructure/Game.h"
 
-struct RoomData;
-struct Game;
-
 enum class NotificationCode : unsigned char
 {
     PLAYER_JOINED_ROOM,
@@ -13,7 +10,9 @@ enum class NotificationCode : unsigned char
     ROOM_DATA_UPDATED,
 
     GAME_STARTED,
-    GAME_ENDED
+    GAME_ENDED,
+
+    PLAYER_FINISHED
 };
 
 
@@ -64,4 +63,9 @@ struct GameEndedNotification : ProtocolNotification
     explicit GameEndedNotification(const Game &game);
 
     const Game &game;
+};
+
+struct PlayerFinishedNotification : ProtocolNotification
+{
+    PlayerFinishedNotification();
 };

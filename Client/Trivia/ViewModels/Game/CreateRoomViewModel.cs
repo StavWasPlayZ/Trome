@@ -35,7 +35,7 @@ public class CreateRoomViewModel : RoomViewModel
         {
             await Comm.SendRequestAwaitResponse<StartGameResponse>(new StartGameRequest(Room.Data));
 
-            NavigateTo(new GameViewModel(HostScreen, Room.Data));
+            NavigateTo(new GameViewModel(HostScreen, Room));
         });
 
         

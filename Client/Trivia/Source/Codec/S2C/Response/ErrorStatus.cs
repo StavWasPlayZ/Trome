@@ -26,5 +26,6 @@ public enum ErrorStatus
     NotLoggedIn,
     
     // Game
-    QuestionOutdated
+    QuestionOutdated,
+    AlreadyFinished
 }

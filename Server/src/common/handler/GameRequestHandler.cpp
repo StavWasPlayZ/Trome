@@ -53,12 +53,10 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
 
     if (userData.didYetStart())
     {
-        return RequestResult(
-            new ErrorResponse(ErrorStatus::ILLEGAL_REQUEST, info.id)
-        );
+        return RequestResult(new ErrorResponse(ErrorStatus::ILLEGAL_REQUEST, info.id));
     }
 
-    Room& room = this->m_game.getRoom();
+    const Room & room = this->m_game.getRoom();
 
     // Check if the question was submitted in time (+1sec for server delay).
     // (The user is the one responsible for fetching a new question for that matter)
@@ -77,29 +75,15 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
     const bool didFail = ((4 - request.answer) % 4) - question.rotation != 0;
 
     const std::optional<UserQuestion> newQuestion = this->m_game.generateNewQuestionForUser(user, didFail);
+    const int playersFinished = this->m_game.getPlayersFinished();
 
     if (this->m_game.isGameComplete())
     {
-        setRequestHandlers(
-            [this, &room](const LoggedUser* player) {
-                return *player == room.getAdmin()
-                    ? static_cast<const IRequestHandler*>(new RoomAdminRequestHandler(this->m_handlerFactory, room))
-                    : static_cast<const IRequestHandler*>(new RoomMemberRequestHandler(this->m_handlerFactory, room))
-                ;
-            },
-
-            room.getAllUsers(),
-            //TODO: Provide game results
-            GameEndedNotification(m_game),
-            &user
-        );
+        handleLastPlayerFinished(info);
 
         return RequestResult(
-            new SubmitAnswerResponse(newQuestion, userData.points, true),
-
-            user == room.getAdmin()
-                ? static_cast<const IRequestHandler*>(new RoomAdminRequestHandler(m_handlerFactory, room))
-                : static_cast<const IRequestHandler*>(new RoomMemberRequestHandler(m_handlerFactory, room))
+            new SubmitAnswerResponse(newQuestion, userData.points, playersFinished, true),
+            getMenuRequestHandlerFor(user)
         );
     }
 
@@ -107,13 +91,19 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
     // If there is no new question available, we've finished early.
     if (!newQuestion.has_value())
     {
+        dispatchNotification(
+            PlayerFinishedNotification(), 
+            room.getAllUsers(),
+            &user
+        );
+
         return RequestResult(
-            new SubmitAnswerResponse(std::nullopt, userData.points, false),
+            new SubmitAnswerResponse(std::nullopt, userData.points, playersFinished),
             new FinishedGameEarlyRequestHandler(m_handlerFactory, m_game)
         );
     }
 
-    return RequestResult(new SubmitAnswerResponse(newQuestion, userData.points, false));
+    return RequestResult(new SubmitAnswerResponse(newQuestion, userData.points, playersFinished));
 }
 
 RequestResult GameRequestHandler::leaveGame(const RequestInfo &info, const LeaveGameRequest &) const
@@ -138,7 +128,16 @@ RequestResult GameRequestHandler::leaveGame(const RequestInfo &info, const Leave
 
 RequestResult GameRequestHandler::getQuestion(const RequestInfo &info, const GetQuestionRequest &) const
 {
-    //NOTE: A known vulnerability here is that the user can just never send this request and deadlock everyone
+    const LoggedUser& user = getUserByInfo(info);
+    const GameData& userData = m_game.getDataOf(user);
+
+    // User has already finished
+    if (userData.isFinished)
+    {
+        return RequestResult(new ErrorResponse(ErrorStatus::ALREADY_FINISHED, info.id));
+    }
+
+    //NOTE: A vulnerability here is that the user can just never send this request and deadlock everyone
     // in the room.
     //
     // The fix is to make a server-bound timer for every player that will invoke a version of this method on timeout,
@@ -159,31 +158,57 @@ RequestResult GameRequestHandler::getQuestion(const RequestInfo &info, const Get
     //
     // TODO: (probably never) fix
 
-    const LoggedUser& user = getUserByInfo(info);
-    const GameData& userData = m_game.getDataOf(user);
-
-    // User has already finished; Just return nothing
-    if (userData.isFinished)
-    {
-        return RequestResult(new GetQuestionResponse(std::nullopt, userData.points));
-    }
+    const int playersFinished = this->m_game.getPlayersFinished();
 
     if (userData.didYetStart())
     {
         const UserQuestion question = m_game.setFirstQuestionForUser(user);
-        return RequestResult(new GetQuestionResponse(question, 0));
+        return RequestResult(new GetQuestionResponse(question, 0, playersFinished));
     }
 
     // Getting here means the user has either skipped the question or that the time has passed.
     // Either of which will prompt the failure of the current round.
     const std::optional<UserQuestion> newQuestion = m_game.generateNewQuestionForUser(user, true);
 
-    return RequestResult(new GetQuestionResponse(newQuestion, userData.points));
+    if (this->m_game.isGameComplete())
+    {
+        handleLastPlayerFinished(info);
+
+        return RequestResult(
+            new GetQuestionResponse(newQuestion, userData.points, playersFinished, true),
+            getMenuRequestHandlerFor(user)
+        );
+    }
+
+    return RequestResult(new GetQuestionResponse(newQuestion, userData.points, playersFinished));
 }
 
 RequestResult GameRequestHandler::getGameResults(const RequestInfo &info, const GetGameResultRequest &) const
 {
-    return RequestResult(
-        new ErrorResponse(ErrorStatus::SERVER_UNIMPLEMENTED, info.id)
+    return RequestResult(new ErrorResponse(ErrorStatus::SERVER_UNIMPLEMENTED, info.id));
+}
+
+void GameRequestHandler::handleLastPlayerFinished(const RequestInfo &info) const
+{
+    const LoggedUser &user = getUserByInfo(info);
+
+    setRequestHandlers(
+        [this](const LoggedUser *player) {
+            return getMenuRequestHandlerFor(*player);
+        },
+
+         m_game.getRoom().getAllUsers(),
+        // TODO: Provide game results
+        GameEndedNotification(m_game),
+        &user
     );
+}
+
+IRequestHandler *GameRequestHandler::getMenuRequestHandlerFor(const LoggedUser &user) const
+{
+    Room &room = m_game.getRoom();
+
+    return user == room.getAdmin()
+        ? static_cast<IRequestHandler *>(new RoomAdminRequestHandler(this->m_handlerFactory, room))
+        : static_cast<IRequestHandler *>(new RoomMemberRequestHandler(this->m_handlerFactory, room));
 }
