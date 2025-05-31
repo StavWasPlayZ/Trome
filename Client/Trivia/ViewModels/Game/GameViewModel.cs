@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
@@ -32,7 +34,9 @@ public class GameViewModel : PageViewModel
     {
         Data = Room.CreateMockRoom(AppService.SessionUser!).Data;
         _leadingUsername = "Username";
+        
         _question = Question.MockQuestion;
+        HandleQuestion();
 
         SubmitAnswerCommand = ReactiveCommand.Create<int>(_ => { });
     }
@@ -50,7 +54,8 @@ public class GameViewModel : PageViewModel
     {
         var response = await Comm.SendRequestAwaitResponse<SubmitAnswerResponse>(new SubmitAnswerRequest(btnIndex));
         Question = response.NewQuestion;
-        
+
+        CurrQuestionCount++;
         HandleQuestion();
     }
 
@@ -60,7 +65,16 @@ public class GameViewModel : PageViewModel
         if (Question == null)
         {
             HandleLastQuestion();
+            return;
         }
+
+        HalvedBtnTexts = Question.Answers
+            .Select(answer =>
+            {
+                Console.WriteLine($"{answer} {answer.Length > 20}");
+                return answer.Length > 20;
+            })
+            .ToArray();
     }
 
     private void HandleLastQuestion()
@@ -69,12 +83,12 @@ public class GameViewModel : PageViewModel
     }
     
     
-    private int _currQuestion = 1;
+    private int _currQuestionCount = 1;
 
-    public int CurrQuestion
+    public int CurrQuestionCount
     {
-        get => _currQuestion;
-        set => this.RaiseAndSetIfChanged(ref _currQuestion, value);
+        get => _currQuestionCount;
+        set => this.RaiseAndSetIfChanged(ref _currQuestionCount, value);
     }
 
 
@@ -93,5 +107,14 @@ public class GameViewModel : PageViewModel
     {
         get => _leadingUsername;
         set => this.RaiseAndSetIfChanged(ref _leadingUsername, value);
+    }
+
+
+    private bool[] _halvedBtnTexts = new bool[4];
+
+    public bool[] HalvedBtnTexts
+    {
+        get => _halvedBtnTexts;
+        private set => this.RaiseAndSetIfChanged(ref _halvedBtnTexts, value);
     }
 }
