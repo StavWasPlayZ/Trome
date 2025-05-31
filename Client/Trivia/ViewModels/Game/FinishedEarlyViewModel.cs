@@ -1,6 +1,7 @@
 ﻿using ReactiveUI;
 using Trivia.Codec.S2C;
 using Trivia.Codec.S2C.Notification.Packets;
+using Trivia.Models.Raw;
 
 namespace Trivia.ViewModels.Game;
 
@@ -21,14 +22,17 @@ public class FinishedEarlyViewModel : GameViewModelBase
 
     public string EndingLine { get; } = EndingLines[App.Random.Next(EndingLines.Length)];
 
-
-    public FinishedEarlyViewModel(IScreen hostScreen, int playersFinished) : base(hostScreen)
+    public RoomData Data { get; }
+    
+    public FinishedEarlyViewModel(IScreen hostScreen, RoomData data, int playersFinished) : base(hostScreen)
     {
+        Data = data;
         _playersFinished = playersFinished;
     }
 
     public FinishedEarlyViewModel()
     {
+        Data = Room.CreateMockRoom(AppService.SessionUser!).Data;
         _playersFinished = 1;
     }
 

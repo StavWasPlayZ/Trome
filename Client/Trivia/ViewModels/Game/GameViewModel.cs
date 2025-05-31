@@ -176,8 +176,8 @@ public class GameViewModel : GameViewModelBase
         }
         else
         {
-            // TODO: change 0 (temp number)
-            NavigateTo(new FinishedEarlyViewModel(HostScreen, 0)); 
+            // TODO: change 1 (temp number)
+            NavigateTo(new FinishedEarlyViewModel(HostScreen, Data, 1)); 
         }
     }
 
