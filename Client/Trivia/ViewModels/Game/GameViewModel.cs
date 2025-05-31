@@ -92,6 +92,8 @@ public class GameViewModel : PageViewModel
 
     private void CountdownThread()
     {
+        _internalTimeLeft = TimeLeft;
+        
         while (_countdownRunning)
         {
             Thread.Sleep(CountdownSleepMs);
@@ -99,21 +101,16 @@ public class GameViewModel : PageViewModel
             if (!_countdownRunning)
                 return;
             
+            _internalTimeLeft -= TimeSpan.FromMilliseconds(CountdownSleepMs);
+            
             Dispatcher.UIThread.Post(() =>
             {
-                // This must be checked here because we might accidentally (surely lol)
-                // overstack this operation over the thread
-                if (TimeLeft > TimeSpan.Zero)
-                {
-                    TimeLeft -= TimeSpan.FromMilliseconds(CountdownSleepMs);
-                }
+                TimeLeft = _internalTimeLeft;
             });
-
-            // This must be done separately from HandleCountdownEnded
-            // because it's not on the same thread
-            if (TimeLeft <= TimeSpan.Zero)
+            
+            if (_internalTimeLeft <= TimeSpan.Zero)
             {
-                _countdownRunning = false;
+                StopCountdown();
             }
         }
     }
@@ -185,8 +182,13 @@ public class GameViewModel : PageViewModel
         get => _question;
         private set => this.RaiseAndSetIfChanged(ref _question, value);
     }
-
-
+    
+    
+    /// <summary>
+    /// Used for syncing the time with the Countdown thread
+    /// </summary>
+    private TimeSpan _internalTimeLeft;
+    
     private TimeSpan _timeLeft;
 
     public TimeSpan TimeLeft
