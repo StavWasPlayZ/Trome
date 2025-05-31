@@ -67,7 +67,7 @@ public abstract class PageViewModel : ViewModelBase, IRoutableViewModel, IActiva
     }
     protected static IObservable<IRoutableViewModel>? NavigateAndReset(PageViewModel pageViewModel)
     {
-        return MainWindowViewModel?.Router.Navigate.Execute(pageViewModel);
+        return MainWindowViewModel?.Router.NavigateAndReset.Execute(pageViewModel);
     }
 
     protected static ReactiveCommand<Unit, IRoutableViewModel> NavigateReactiveCommand(Func<PageViewModel> pageViewModel)
