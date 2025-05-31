@@ -134,8 +134,33 @@ void Game::initPlayersData()
 
 void Game::populateQuestions()
 {
-    const std::list<Question> questions = this->m_database.queryQuestions(m_room.getData().questionsCount);
+    std::list<Question> questions;
+
+    if (!MOCK)
+    {
+        questions = this->m_database.queryQuestions(m_room.getData().questionsCount);
+    }
+    else
+    {
+        populateMockQuestions(questions);
+    }
+
     this->m_questions = std::vector(questions.begin(), questions.end());
+}
+void Game::populateMockQuestions(std::list<Question>& questions) const
+{
+    for (size_t i = 0; i < m_room.getData().questionsCount; i++)
+    {
+        questions.push_back(Question(
+            "mirror mirror on the wall, whose the prettiest of them all?",
+            {
+                "MMMMEEEEEEEEE 👺",
+                "me!",
+                "no me!",
+                "obviously me!!"
+            }
+        ));
+    }
 }
 
 void Game::submitGameStatsToDB(const LoggedUser &user) const

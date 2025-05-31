@@ -54,8 +54,15 @@ public:
     void handleUserLeft(const LoggedUser& user);
 
 private:
+    /**
+     * Defines whether all the questions will be debug nonsense
+     */
+    static constexpr bool MOCK = true;
+
     void initPlayersData();
     void populateQuestions();
+
+    void populateMockQuestions(std::list<Question>& questions) const;
 
     void submitGameStatsToDB(const LoggedUser &user) const;
 
