@@ -19,7 +19,7 @@
         </Panel.Background>
         
         <Panel Background="rgba(0, 0, 0, .2)">
-            <controls:LeadUserDock Username="Username"/>
+            <controls:LeadUserDock Username="{Binding LeadingUsername}"/>
             
             <Border
                 Background="rgba(0, 0, 0, .3)"
@@ -69,16 +69,25 @@
                                    Opacity=".6">2nd</TextBlock>
                         
                         <TextBlock Grid.Column="2"
-                                   TextAlignment="End">2/10</TextBlock>
+                                   TextAlignment="End">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0}/{1}">
+                                    <Binding Path="CurrQuestion"/>
+                                    <Binding Path="Data.QuestionsCount"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
                     </Grid>
                     
                     <TextBlock Grid.Row="1"
                                LetterSpacing="2"
                                TextWrapping="Wrap"
                                TextAlignment="Center"
-                               Margin="0 20">
-                        Lorem ipsum etc i dont remember it all but here is some multilined text
-                    </TextBlock>
+                               Margin="0 20"
+                               Text="{
+                                   Binding Question.Prompt,
+                                   FallbackValue=-----
+                               }"/>
                     
                     <Grid Grid.Row="2"
                           RowDefinitions="*, *"
@@ -100,19 +109,31 @@
                         
                         <controls:TriviaButton Grid.Row="0"
                                                Grid.Column="0"
-                                               Text="TEXT"/>
+                                               Text="{
+                                                   Binding Question.Answers[0],
+                                                   FallbackValue=-----
+                                               }"/>
                         
                         <controls:TriviaButton Grid.Row="0"
                                                Grid.Column="1"
-                                               Text="TEXT"/>
+                                               Text="{
+                                                   Binding Question.Answers[1],
+                                                   FallbackValue=-----
+                                               }"/>
                         
                         <controls:TriviaButton Grid.Row="1"
                                                Grid.Column="0"
-                                               Text="TEXT"/>
+                                               Text="{
+                                                   Binding Question.Answers[2],
+                                                   FallbackValue=-----
+                                               }"/>
                         
                         <controls:TriviaButton Grid.Row="1"
                                                Grid.Column="1"
-                                               Text="TEXT"/>
+                                               Text="{
+                                                   Binding Question.Answers[3],
+                                                   FallbackValue=-----
+                                               }"/>
                         
                     </Grid>
                 </Grid>
