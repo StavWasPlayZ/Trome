@@ -90,7 +90,7 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
 
             room.getAllUsers(),
             //TODO: Provide game results
-            GameEndedNotification(),
+            GameEndedNotification(m_game),
             &user
         );
 
