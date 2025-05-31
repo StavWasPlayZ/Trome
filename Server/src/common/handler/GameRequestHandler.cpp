@@ -95,7 +95,7 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
         );
 
         return RequestResult(
-            new SubmitAnswerResponse(newQuestion, true),
+            new SubmitAnswerResponse(newQuestion, userData.points, true),
 
             user == room.getAdmin()
                 ? static_cast<const IRequestHandler*>(new RoomAdminRequestHandler(m_handlerFactory, room))
@@ -108,12 +108,12 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
     if (!newQuestion.has_value())
     {
         return RequestResult(
-            new SubmitAnswerResponse(std::nullopt, false),
+            new SubmitAnswerResponse(std::nullopt, userData.points, false),
             new FinishedGameEarlyRequestHandler(m_handlerFactory, m_game)
         );
     }
 
-    return RequestResult(new SubmitAnswerResponse(newQuestion, false));
+    return RequestResult(new SubmitAnswerResponse(newQuestion, userData.points, false));
 }
 
 RequestResult GameRequestHandler::leaveGame(const RequestInfo &info, const LeaveGameRequest &) const
