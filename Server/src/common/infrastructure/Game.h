@@ -57,7 +57,7 @@ private:
     /**
      * Defines whether all the questions will be debug nonsense
      */
-    static constexpr bool MOCK = true;
+    static constexpr bool MOCK = false;
 
     void initPlayersData();
     void populateQuestions();
