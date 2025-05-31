@@ -53,19 +53,30 @@
                                 <Sector Width="40"
                                         Height="40"
                                         StartAngle="0"
-                                        SweepAngle="300"
                                         Fill="#3ca31d"
                                         Stroke="White"
-                                        StrokeThickness="2"/>
-                                
+                                        StrokeThickness="2">
+                                    
+                                    <Sector.SweepAngle>
+                                        <MultiBinding Converter="{StaticResource TimeSpanToSectorAngleMultiConverter}">
+                                            <Binding Path="TimeLeft"/>
+                                            <Binding Path="Data.TimePerQuestionSecs"/>
+                                        </MultiBinding>
+                                    </Sector.SweepAngle>
+                                    
+                                </Sector>
+
                             </Canvas>
                             
-                            <TextBlock>0:08</TextBlock>
+                            <TextBlock Text="{
+                                Binding TimeLeft,
+                                Converter={StaticResource TimeSpanToStringConverter}
+                            }"/>
                         </StackPanel>
                         
                         <TextBlock Grid.Column="1"
                                    TextAlignment="Center"
-                                   Margin="0 10 0 0"
+                                   Margin="0 20 0 0"
                                    Opacity=".6">2nd</TextBlock>
                         
                         <TextBlock Grid.Column="2"
@@ -83,7 +94,7 @@
                                LetterSpacing="2"
                                TextWrapping="Wrap"
                                TextAlignment="Center"
-                               Margin="0 20"
+                               Margin="0 5"
                                Text="{
                                    Binding Question.Prompt,
                                    FallbackValue=-----
@@ -181,6 +192,7 @@
             
             <Image Source="avares://Trivia/Assets/logo.png"
                    Height="150"
+                   Margin="0 10 0 0"
                    VerticalAlignment="Top"/>
             
         </Panel>
