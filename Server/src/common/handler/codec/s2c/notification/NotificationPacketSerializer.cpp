@@ -67,7 +67,17 @@ OBuffer NotificationPacketSerializer::serialize(const GameStartedNotification &n
 
 OBuffer NotificationPacketSerializer::serialize(const GameEndedNotification &notification)
 {
-    return serialize(notification.id, nlohmann::json::object());
+    nlohmann::json data;
+
+    nlohmann::json &results = data["results"] = nlohmann::json::array();
+    Game game = notification.game;
+
+    for (LoggedUser *user : game.getRoom().getAllUsers())
+    {
+        results.push_back(ProtocolPacketSerializer::serializeAsJson(PlayerResult(*user, game.getDataOf(*user))));
+    }
+
+    return serialize(notification.id, data);
 }
 
 OBuffer NotificationPacketSerializer::serialize(const NotificationCode msgCode, const nlohmann::json &data)
