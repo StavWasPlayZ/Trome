@@ -69,8 +69,8 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
         );
     }
 
-    const UserQuestion question = this->m_game.getQuestionForUser(user).value();
 
+    const UserQuestion question = this->m_game.getQuestionForUser(user).value();
 
     // If the returned answer is 0 unrotated, it must be correct.
     // This is because the first answer is always the correct one.
