@@ -86,12 +86,12 @@ void GameData::calculateRoundPoints(const bool didFail)
     }
 
     const double maxTime = this->game.getRoom().getData().timePerQuestionSecs * 1000;
-    const double time = static_cast<double>(this->roundTime.count());
+    const double timeLeft = maxTime - static_cast<double>(this->roundTime.count());
 
     const double result =
-        (4 * QUESTION_POINTS / pow(maxTime, 3)) * pow(time, 3) -
-        (6 * QUESTION_POINTS / pow(maxTime, 2)) * pow(time, 2) +
-        (3 * QUESTION_POINTS / maxTime) * time;
+        (4 * QUESTION_POINTS / pow(maxTime, 3)) * pow(timeLeft, 3) -
+        (6 * QUESTION_POINTS / pow(maxTime, 2)) * pow(timeLeft, 2) +
+        (3 * QUESTION_POINTS / maxTime) * timeLeft;
 
     this->points += static_cast<int>(ceil(result));
 }
