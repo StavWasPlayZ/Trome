@@ -88,12 +88,14 @@ GetQuestionResponse::GetQuestionResponse(const std::optional<UserQuestion>& ques
     points(points)
 {}
 
-SubmitAnswerResponse::SubmitAnswerResponse(const std::optional<UserQuestion> &newQuestion,
-        const int points, const bool wasLastPlayer) :
+SubmitAnswerResponse::SubmitAnswerResponse(const std::optional<UserQuestion> &newQuestion, const int points,
+    const bool wasLastPlayer, int playersFinished)
+    :
     ProtocolResponse(ResponseCode::SUBMIT_ANSWER),
     newQuestion(newQuestion),
     points(points),
-    wasLastPlayer(wasLastPlayer)
+    wasLastPlayer(wasLastPlayer), 
+    playersFinished(playersFinished)
 {}
 
 GetGameResultResponse::GetGameResultResponse(const std::vector<PlayerResult>& results) :

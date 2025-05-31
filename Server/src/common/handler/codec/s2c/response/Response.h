@@ -168,7 +168,7 @@ struct GetQuestionResponse : ProtocolResponse
 
 struct SubmitAnswerResponse : ProtocolResponse
 {
-    SubmitAnswerResponse(const std::optional<UserQuestion>& newQuestion, int points, bool wasLastPlayer);
+    SubmitAnswerResponse(const std::optional<UserQuestion> &newQuestion, int points, bool wasLastPlayer, int playersFinished);
 
     /**
      * Empty for if there are no more questions.
@@ -180,6 +180,8 @@ struct SubmitAnswerResponse : ProtocolResponse
     //TODO: Perhaps make this a client-side check such that if I am the last player to have an empty question,
     // then obviously that the game ended.
     const bool wasLastPlayer;
+
+    const int playersFinished;
 };
 
 struct [[deprecated(

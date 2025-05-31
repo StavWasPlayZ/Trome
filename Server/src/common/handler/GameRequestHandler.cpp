@@ -77,6 +77,7 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
     const bool didFail = ((4 - request.answer) % 4) - question.rotation != 0;
 
     const std::optional<UserQuestion> newQuestion = this->m_game.generateNewQuestionForUser(user, didFail);
+    const int playersFinished = this->m_game.getRoom().getAllUsers().size() - this->m_game.getPlayersRemaining();
 
     if (this->m_game.isGameComplete())
     {
@@ -95,7 +96,7 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
         );
 
         return RequestResult(
-            new SubmitAnswerResponse(newQuestion, userData.points, true),
+            new SubmitAnswerResponse(newQuestion, userData.points, true, playersFinished),
 
             user == room.getAdmin()
                 ? static_cast<const IRequestHandler*>(new RoomAdminRequestHandler(m_handlerFactory, room))
@@ -108,12 +109,12 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
     if (!newQuestion.has_value())
     {
         return RequestResult(
-            new SubmitAnswerResponse(std::nullopt, userData.points, false),
+            new SubmitAnswerResponse(std::nullopt, userData.points, false, playersFinished),
             new FinishedGameEarlyRequestHandler(m_handlerFactory, m_game)
         );
     }
 
-    return RequestResult(new SubmitAnswerResponse(newQuestion, userData.points, false));
+    return RequestResult(new SubmitAnswerResponse(newQuestion, userData.points, false, playersFinished));
 }
 
 RequestResult GameRequestHandler::leaveGame(const RequestInfo &info, const LeaveGameRequest &) const

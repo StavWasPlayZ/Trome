@@ -44,6 +44,11 @@ Room &Game::getRoom() const
     return this->m_room;
 }
 
+int Game::getPlayersRemaining() const
+{
+    return this->m_playersRemaining;
+}
+
 bool Game::isGameComplete() const
 {
     return this->m_playersRemaining == 0;

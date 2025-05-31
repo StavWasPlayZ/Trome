@@ -27,6 +27,7 @@ public:
     void endGame() const;
 
     Room& getRoom() const;
+    int getPlayersRemaining() const;
 
     /**
      * Returns whether all players have answered all questions
