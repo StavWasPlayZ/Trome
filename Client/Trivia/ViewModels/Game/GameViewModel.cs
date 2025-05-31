@@ -71,6 +71,8 @@ public class GameViewModel : GameViewModelBase
     //NOTE: This is temporary until the players countdown (from Finished Early screen)
     // is implemented.
     private bool _finishedLast;
+    
+    private int _playersFinished;
 
     private async Task SubmitAnswer(int btnIndex)
     {
@@ -80,6 +82,7 @@ public class GameViewModel : GameViewModelBase
         Question = response.NewQuestion;
         Points = response.Points;
         _finishedLast = response.WasLastPlayer;
+        _playersFinished = response.PlayersFinished;
 
         CurrQuestionCount++;
         HandleQuestion();
@@ -176,8 +179,7 @@ public class GameViewModel : GameViewModelBase
         }
         else
         {
-            // TODO: change 1 (temp number)
-            NavigateTo(new FinishedEarlyViewModel(HostScreen, Data, 1)); 
+            NavigateTo(new FinishedEarlyViewModel(HostScreen, Data, _playersFinished)); 
         }
     }
 

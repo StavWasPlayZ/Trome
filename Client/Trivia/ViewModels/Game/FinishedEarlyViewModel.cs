@@ -33,7 +33,7 @@ public class FinishedEarlyViewModel : GameViewModelBase
     public FinishedEarlyViewModel()
     {
         Data = Room.CreateMockRoom(AppService.SessionUser!).Data;
-        _playersFinished = 1;
+        _playersFinished = 2;
     }
 
 
