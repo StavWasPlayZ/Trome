@@ -46,7 +46,9 @@ void GameData::nextQuestion(const bool didFail)
     this->currentQuestionIndex++;
 
     calculateRoundPoints(didFail);
+
     rotateAnswers();
+    updateTimeSinceQuestionRoll();
 }
 
 bool GameData::didYetStart() const
@@ -96,7 +98,6 @@ void GameData::calculateRoundPoints(const bool didFail)
 void GameData::submitRoundTime()
 {
     this->roundTime = getRoundTime();
-    updateTimeSinceQuestionRoll();
 
     this->averageAnswerTime = std::chrono::duration_cast<std::chrono::seconds>(
         (this->averageAnswerTime * currentQuestionIndex + roundTime)
