@@ -1,5 +1,7 @@
 #include "Notification.h"
 
+#include "infrastructure/PlayerResult.h"
+
 ProtocolNotification::ProtocolNotification(const NotificationCode id) :
     id(id)
 {}
@@ -31,9 +33,9 @@ GameStartedNotification::GameStartedNotification(const RoomData &data) :
     data(data)
 {}
 
-GameEndedNotification::GameEndedNotification(const Game &game) :
+GameEndedNotification::GameEndedNotification(const std::vector<PlayerResult> &results) :
     ProtocolNotification(NotificationCode::GAME_ENDED), 
-    game(game)
+    results(results)
 {}
 
 PlayerFinishedNotification::PlayerFinishedNotification() :

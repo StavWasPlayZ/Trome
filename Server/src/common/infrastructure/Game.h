@@ -10,6 +10,7 @@
 
 #include "infrastructure/Question.h"
 
+struct PlayerResult;
 struct UserQuestion;
 
 class Game
@@ -44,6 +45,9 @@ public:
 
 
     const GameData& getDataOf(const LoggedUser& user) const;
+
+    std::vector<PlayerResult> getResults() const;
+
 
     /**
      * Returns the active question of the current user, if one exists.

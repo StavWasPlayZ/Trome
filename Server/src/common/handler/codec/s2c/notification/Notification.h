@@ -1,7 +1,8 @@
 #pragma once
-#include "manager/LoggedUser.h"
 #include "infrastructure/Game.h"
+#include "manager/LoggedUser.h"
 
+struct PlayerResult;
 enum class NotificationCode : unsigned char
 {
     PLAYER_JOINED_ROOM,
@@ -60,9 +61,9 @@ struct GameStartedNotification : ProtocolNotification
 
 struct GameEndedNotification : ProtocolNotification
 {
-    explicit GameEndedNotification(const Game &game);
+    explicit GameEndedNotification(const std::vector<PlayerResult> &results);
 
-    const Game &game;
+    const std::vector<PlayerResult>& results;
 };
 
 struct PlayerFinishedNotification : ProtocolNotification

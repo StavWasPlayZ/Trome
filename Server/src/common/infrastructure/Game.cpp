@@ -1,5 +1,6 @@
 #include "Game.h"
 
+#include "PlayerResult.h"
 #include "Utils.h"
 
 #include <stdexcept>
@@ -62,6 +63,18 @@ int Game::getPlayersFinished() const
 const GameData &Game::getDataOf(const LoggedUser &user) const
 {
     return this->m_playersData.at(&user);
+}
+
+std::vector<PlayerResult> Game::getResults() const
+{
+    std::vector<PlayerResult> results;
+
+    for (const auto [user, data] : this->m_playersData)
+    {
+        results.push_back(PlayerResult(*user, data));
+    }
+
+    return results;
 }
 
 std::optional<UserQuestion> Game::getQuestionForUser(const LoggedUser &user) const

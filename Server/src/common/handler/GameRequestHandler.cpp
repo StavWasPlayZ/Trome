@@ -190,17 +190,14 @@ RequestResult GameRequestHandler::getGameResults(const RequestInfo &info, const 
 
 void GameRequestHandler::handleLastPlayerFinished(const RequestInfo &info) const
 {
-    const LoggedUser &user = getUserByInfo(info);
-
     setRequestHandlers(
         [this](const LoggedUser *player) {
             return getMenuRequestHandlerFor(*player);
         },
 
-         m_game.getRoom().getAllUsers(),
-        // TODO: Provide game results
-        GameEndedNotification(m_game),
-        &user
+        m_game.getRoom().getAllUsers(),
+        GameEndedNotification(m_game.getResults()),
+        &getUserByInfo(info)
     );
 }
 
