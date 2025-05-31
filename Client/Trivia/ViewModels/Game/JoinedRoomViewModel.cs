@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reactive;
+using System.Reactive.Disposables;
 using ReactiveUI;
 using Trivia.Codec.C2S.Request.Packets;
 using Trivia.Codec.S2C;
@@ -21,6 +23,14 @@ public class JoinedRoomViewModel : RoomViewModel
             
             NavigateBackCommand!.Execute();
         });
+        
+        this.WhenActivated(disposables =>
+        {
+            this
+                .WhenAnyValue(x => x.Room)
+                .Subscribe(_ => MaxPlayers = Room.Data.MaxPlayers)
+                .DisposeWith(disposables);
+        });
     }
 
     public JoinedRoomViewModel()
@@ -41,10 +51,19 @@ public class JoinedRoomViewModel : RoomViewModel
                 OnRoomDataUpdated(roomDataNotif);
                 break;
             
+            case GameStartedNotification gameStartedNotif:
+                OnGameStarted(gameStartedNotif);
+                break;
+            
             default:
                 base.CommOnPacketReceived(packet);
                 break;
         }
+    }
+
+    private void OnGameStarted(GameStartedNotification gameStartedNotif)
+    {
+        NavigateTo(new GameViewModel(HostScreen, gameStartedNotif.Data));
     }
 
     private void OnRoomDataUpdated(RoomDataUpdatedNotification roomDataNotif)

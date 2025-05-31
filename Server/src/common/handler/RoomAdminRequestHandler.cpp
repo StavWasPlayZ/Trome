@@ -44,9 +44,10 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo &info, co
     }
 }
 
-RequestResult RoomAdminRequestHandler::startGame(const RequestInfo &info, const StartGameRequest &) const
+RequestResult RoomAdminRequestHandler::startGame(const RequestInfo &info, const StartGameRequest &request) const
 {
     Game& game = this->m_room.createNewGame(this->m_handlerFactory.getGameManager());
+    game.startGame();
 
     setRequestHandlers(
         [this, &game](const LoggedUser *) {
@@ -54,7 +55,7 @@ RequestResult RoomAdminRequestHandler::startGame(const RequestInfo &info, const 
         },
 
         this->m_room.getAllUsers(),
-        GameStartedNotification(),
+        GameStartedNotification(request.data),
         &getUserByInfo(info)
     );
 
@@ -66,7 +67,7 @@ RequestResult RoomAdminRequestHandler::startGame(const RequestInfo &info, const 
 
 RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo &, const CloseRoomRequest &) const
 {
-    m_handlerFactory.getRoomManager().deleteRoom(m_room.getId());
+    m_handlerFactory.getRoomManager().deleteRoom(m_room);
 
     return RequestResult(
         new CloseRoomResponse(),

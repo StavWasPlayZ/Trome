@@ -110,7 +110,7 @@ private:
 	 */
 	void consumeSql(
 		const std::string& query,
-		std::function<void(const std::map<std::string, std::string>&)> rowConsumer
+		std::function<void(const std::map<std::string, std::optional<std::string>>&)> rowConsumer
 	) const;
 
 	/**
@@ -124,7 +124,7 @@ private:
 	template <typename T>
 	std::list<T> querySql(
 		const std::string& query,
-		std::function<T(const std::map<std::string, std::string>&)> rowMapper
+		std::function<T(const std::map<std::string, std::optional<std::string>>&)> rowMapper
 	) const;
 
 	const std::string _dbName;

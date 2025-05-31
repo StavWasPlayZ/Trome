@@ -19,7 +19,9 @@
         </Panel.Background>
         
         <Panel Background="rgba(0, 0, 0, .2)">
-            <controls:LeadUserDock Username="Username"/>
+            <controls:TriviaBackButton Command="{Binding LeaveGameCommand}"/>
+            
+            <controls:LeadUserDock Username="{Binding LeadingUsername}"/>
             
             <Border
                 Background="rgba(0, 0, 0, .3)"
@@ -53,32 +55,54 @@
                                 <Sector Width="40"
                                         Height="40"
                                         StartAngle="0"
-                                        SweepAngle="300"
                                         Fill="#3ca31d"
                                         Stroke="White"
-                                        StrokeThickness="2"/>
-                                
+                                        StrokeThickness="2">
+                                    
+                                    <Sector.SweepAngle>
+                                        <MultiBinding Converter="{StaticResource TimeSpanToSectorAngleMultiConverter}">
+                                            <Binding Path="TimeLeft"/>
+                                            <Binding Path="Data.TimePerQuestionSecs"/>
+                                        </MultiBinding>
+                                    </Sector.SweepAngle>
+                                    
+                                </Sector>
+
                             </Canvas>
                             
-                            <TextBlock>0:08</TextBlock>
+                            <TextBlock Text="{
+                                Binding TimeLeft,
+                                Converter={StaticResource TimeSpanToStringConverter}
+                            }"/>
                         </StackPanel>
                         
                         <TextBlock Grid.Column="1"
                                    TextAlignment="Center"
-                                   Margin="0 10 0 0"
-                                   Opacity=".6">2nd</TextBlock>
+                                   Margin="0 20 0 0"
+                                   Opacity=".6"
+                                   FontSize="30"
+                                   Text="{Binding Points}"/>
                         
                         <TextBlock Grid.Column="2"
-                                   TextAlignment="End">2/10</TextBlock>
+                                   TextAlignment="End">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0}/{1}">
+                                    <Binding Path="CurrQuestionCount"/>
+                                    <Binding Path="Data.QuestionsCount"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
                     </Grid>
                     
                     <TextBlock Grid.Row="1"
                                LetterSpacing="2"
                                TextWrapping="Wrap"
                                TextAlignment="Center"
-                               Margin="0 20">
-                        Lorem ipsum etc i dont remember it all but here is some multilined text
-                    </TextBlock>
+                               Margin="0 5"
+                               Text="{
+                                   Binding Question.Prompt,
+                                   FallbackValue=-----
+                               }"/>
                     
                     <Grid Grid.Row="2"
                           RowDefinitions="*, *"
@@ -95,24 +119,75 @@
                                 <Setter Property="BorderBrushSelected" Value="#D93040"/>
                                 <Setter Property="BorderBrushPressed" Value="#AA2C2F"/>
                                 <Setter Property="BorderThickness" Value="3"/>
+                                
+                                <Style Selector="^ TextBlock">
+                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                </Style>
+                                <Style Selector="^.halved-text TextBlock">
+                                    <Setter Property="FontSize" Value="25"/>
+                                </Style>
                             </Style>
                         </Grid.Styles>
                         
-                        <controls:TriviaButton Grid.Row="0"
+                        <controls:TriviaButton Command="{Binding SubmitAnswerCommand}"
+                                               Grid.Row="0"
                                                Grid.Column="0"
-                                               Text="TEXT"/>
-                        
-                        <controls:TriviaButton Grid.Row="0"
+                                               Classes.halved-text="{Binding HalvedBtnTexts[0]}"
+                                               Text="{
+                                                   Binding Question.Answers[0],
+                                                   FallbackValue=-----
+                                               }">
+                            
+                            <controls:TriviaButton.CommandParameter>
+                                <x:Int32>0</x:Int32>
+                            </controls:TriviaButton.CommandParameter>
+                            
+                        </controls:TriviaButton>
+
+                        <controls:TriviaButton Command="{Binding SubmitAnswerCommand}"
+                                               Grid.Row="0"
                                                Grid.Column="1"
-                                               Text="TEXT"/>
+                                               Classes.halved-text="{Binding HalvedBtnTexts[1]}"
+                                               Text="{
+                                                   Binding Question.Answers[1],
+                                                   FallbackValue=-----
+                                               }">
+                            
+                            <controls:TriviaButton.CommandParameter>
+                                <x:Int32>1</x:Int32>
+                            </controls:TriviaButton.CommandParameter>
+                            
+                        </controls:TriviaButton>
                         
-                        <controls:TriviaButton Grid.Row="1"
+                        <controls:TriviaButton Command="{Binding SubmitAnswerCommand}"
+                                               Grid.Row="1"
                                                Grid.Column="0"
-                                               Text="TEXT"/>
+                                               Classes.halved-text="{Binding HalvedBtnTexts[2]}"
+                                               Text="{
+                                                   Binding Question.Answers[2],
+                                                   FallbackValue=-----
+                                               }">
+                            
+                            <controls:TriviaButton.CommandParameter>
+                                <x:Int32>2</x:Int32>
+                            </controls:TriviaButton.CommandParameter>
+                            
+                        </controls:TriviaButton>
                         
-                        <controls:TriviaButton Grid.Row="1"
+                        <controls:TriviaButton Command="{Binding SubmitAnswerCommand}"
+                                               Grid.Row="1"
                                                Grid.Column="1"
-                                               Text="TEXT"/>
+                                               Classes.halved-text="{Binding HalvedBtnTexts[3]}"
+                                               Text="{
+                                                   Binding Question.Answers[3],
+                                                   FallbackValue=-----
+                                               }">
+                            
+                            <controls:TriviaButton.CommandParameter>
+                                <x:Int32>3</x:Int32>
+                            </controls:TriviaButton.CommandParameter>
+                            
+                        </controls:TriviaButton>
                         
                     </Grid>
                 </Grid>
@@ -121,6 +196,7 @@
             
             <Image Source="avares://Trivia/Assets/logo.png"
                    Height="150"
+                   Margin="0 10 0 0"
                    VerticalAlignment="Top"/>
             
         </Panel>

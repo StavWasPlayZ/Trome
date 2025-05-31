@@ -49,9 +49,16 @@ public:
      */
     std::optional<UserQuestion> generateNewQuestionForUser(const LoggedUser& user, bool didFail);
 
+    UserQuestion setFirstQuestionForUser(const LoggedUser& user);
+
     void handleUserLeft(const LoggedUser& user);
 
 private:
+    /**
+     * Defines whether all the questions will be debug nonsense
+     */
+    static constexpr bool MOCK = false;
+
     void initPlayersData();
     void populateQuestions();
 
@@ -72,5 +79,5 @@ private:
 
     std::vector<Question> m_questions;
 
-    int playersRemaining;
+    int m_playersRemaining;
 };

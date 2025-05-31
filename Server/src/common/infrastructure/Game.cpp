@@ -8,7 +8,7 @@ Game::Game(Room &room, const IDatabase &database) :
     m_database(database),
     m_startTime(0),
     m_room(room),
-    playersRemaining(0)
+    m_playersRemaining(0)
 {}
 
 Game::~Game()
@@ -29,6 +29,7 @@ void Game::startGame()
     populateQuestions();
     initPlayersData();
 
+    m_playersRemaining = m_room.getAllUsers().size();
     m_startTime = utils::getCurrTimeMillis();
     m_room.setStatus(RoomStatus::PLAYING);
 }
@@ -45,7 +46,7 @@ Room &Game::getRoom() const
 
 bool Game::isGameComplete() const
 {
-    return this->playersRemaining == 0;
+    return this->m_playersRemaining == 0;
 }
 
 const GameData &Game::getDataOf(const LoggedUser &user) const
@@ -73,9 +74,8 @@ std::optional<UserQuestion> Game::generateNewQuestionForUser(const LoggedUser &u
     if (data.isFinished)
         return std::nullopt;
 
-
     data.nextQuestion(didFail);
-    data.isFinished = data.currentQuestionIndex < this->m_questions.size();
+    data.isFinished = data.currentQuestionIndex >= this->m_questions.size();
 
     if (data.isFinished)
     {
@@ -83,8 +83,14 @@ std::optional<UserQuestion> Game::generateNewQuestionForUser(const LoggedUser &u
         return std::nullopt;
     }
 
-
     return getQuestionForUser(user);
+}
+
+UserQuestion Game::setFirstQuestionForUser(const LoggedUser &user)
+{
+    this->m_playersData.at(&user).setFirstQuestion();
+
+    return getQuestionForUser(user).value();
 }
 
 void Game::handleUserLeft(const LoggedUser &user)
@@ -115,7 +121,7 @@ void Game::handleUserLeft(const LoggedUser &user)
     //NOTE: We do not actually remove the player in question, but wait until the game truly finishes.
     // This is so that said player may still be shown in the after-game view.
 
-    playersRemaining--;
+    m_playersRemaining--;
 }
 
 void Game::initPlayersData()
@@ -128,7 +134,28 @@ void Game::initPlayersData()
 
 void Game::populateQuestions()
 {
-    const std::list<Question> questions = this->m_database.queryQuestions(m_room.getData().questionsCount);
+    std::list<Question> questions;
+
+    if (!MOCK)
+    {
+        questions = this->m_database.queryQuestions(m_room.getData().questionsCount);
+    }
+    else
+    {
+        for (size_t i = 0; i < m_room.getData().questionsCount; i++)
+        {
+            questions.push_back(Question(
+                "mirror mirror on the wall, whose the prettiest of them all?",
+                {
+                    "MMMMEEEEEEEEE 👺",
+                    "me!",
+                    "no me!",
+                    "obviously me!!"
+                }
+            ));
+        }
+    }
+
     this->m_questions = std::vector(questions.begin(), questions.end());
 }
 

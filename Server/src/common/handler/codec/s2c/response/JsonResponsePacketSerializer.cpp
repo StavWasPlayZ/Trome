@@ -44,6 +44,14 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const ProtocolResponse &
         return serializeResponse(static_cast<const LeaveRoomResponse&>(response));
     case ResponseCode::UPDATE_ROOM_DATA:
         return serializeResponse(static_cast<const UpdateRoomDataResponse&>(response));
+    case ResponseCode::LEAVE_GAME:
+        return serializeResponse(static_cast<const LeaveGameResponse&>(response));
+    case ResponseCode::GET_QUESTION:
+        return serializeResponse(static_cast<const GetQuestionResponse&>(response));
+    case ResponseCode::SUBMIT_ANSWER:
+        return serializeResponse(static_cast<const SubmitAnswerResponse&>(response));
+    case ResponseCode::GET_GAME_RESULT:
+        return serializeResponse(static_cast<const GetGameResultResponse&>(response));
 
     default: throw std::invalid_argument("Invalid response ID");
     }
@@ -219,6 +227,8 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetQuestionRespons
         data["question"] = ProtocolPacketSerializer::serializeAsJson(response.question.value());
     }
 
+    data["points"] = response.points;
+
     return serialize(response.id, data);
 }
 
@@ -231,6 +241,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const SubmitAnswerRespon
         data["new_question"] = ProtocolPacketSerializer::serializeAsJson(response.newQuestion.value());
     }
 
+    data["points"] = response.points;
     data["was_last_player"] = response.wasLastPlayer;
 
     return serialize(response.id, data);

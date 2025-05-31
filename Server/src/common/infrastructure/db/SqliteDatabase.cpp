@@ -201,19 +201,19 @@ std::list<Question> SqliteDatabase::queryQuestions(const int amount) const
         " LIMIT " + std::to_string(amount) +
         ";",
 
-        [](const std::map<std::string, std::string> &columns) -> Question
+        [](const std::map<std::string, std::optional<std::string>> &columns) -> Question
         {
             std::vector<std::string> answers;
             answers.reserve(Question::QUESTIONS_AMOUNT);
 
-            answers.push_back(columns.at("correct"));
+            answers.push_back(columns.at("correct").value());
 
             for (int i = 1; i < Question::QUESTIONS_AMOUNT; i++)
             {
-                answers.push_back(columns.at("wrong_" + std::to_string(i)));
+                answers.push_back(columns.at("wrong_" + std::to_string(i)).value());
             }
 
-            return Question(columns.at("question"), answers);
+            return Question(columns.at("question").value(), answers);
         }
     );
 }
@@ -334,9 +334,12 @@ std::unordered_map<std::string, int> SqliteDatabase::queryHighScores(const int l
     consumeSql(
         builder.str(),
 
-        [&results](const std::map<std::string, std::string> &row)
+        [&results](const std::map<std::string, std::optional<std::string>> &row)
         {
-            results.emplace(row.at("username"), std::stoi(row.at("points")));
+            results.emplace(
+                row.at("username").value(),
+                std::stoi(row.at("points").value())
+            );
         }
     );
 
@@ -350,9 +353,9 @@ bool SqliteDatabase::queryExists(const std::string& query) const
 {
 	return *querySql<bool>(
 		query,
-		[](const std::map<std::string, std::string> &columns) -> bool
+		[](const std::map<std::string, std::optional<std::string>> &columns) -> bool
 		{
-			return columns.at("q_exists") == "1";
+			return columns.at("q_exists").value() == "1";
 		}
 	).begin();
 }
@@ -362,9 +365,9 @@ std::list<unsigned int> SqliteDatabase::queryIds(const std::string &query) const
     return querySql<unsigned int>(
 		query,
 
-		[](const std::map<std::string, std::string> &columns) -> unsigned int
+		[](const std::map<std::string, std::optional<std::string>> &columns) -> unsigned int
 		{
-			return static_cast<unsigned int>(std::stoul(columns.at("id")));
+			return static_cast<unsigned int>(std::stoul(columns.at("id").value()));
 		}
 	);
 }
@@ -374,9 +377,9 @@ std::list<int> SqliteDatabase::queryInts(const std::string& query, const std::st
     return querySql<int>(
         query,
 
-        [colName](const std::map<std::string, std::string> &columns) -> int
+        [colName](const std::map<std::string, std::optional<std::string>> &columns) -> int
         {
-            return std::stoi(columns.at(colName));
+            return std::stoi(columns.at(colName).value());
         }
     );
 }
@@ -428,22 +431,27 @@ void SqliteDatabase::execSql(const std::string& query) const
 
 void SqliteDatabase::consumeSql(
     const std::string &query,
-    std::function<void(const std::map<std::string, std::string> &)> rowConsumer
+    std::function<void(const std::map<std::string, std::optional<std::string>> &)> rowConsumer
 ) const {
     char *errMsg;
 
     const int result = sqlite3_exec(
         this->_dbInstance, query.c_str(),
+
         [](void *data, const int argc, char **argv, char **azColName) -> int {
-            const std::function<void(const std::map<std::string, std::string> &)> rowConsumer =
-                *static_cast<std::function<void(const std::map<std::string, std::string> &)>*>(data);
+            const std::function<void(const std::map<std::string, std::optional<std::string>> &)> rowConsumer =
+                *static_cast<std::function<void(const std::map<std::string, std::optional<std::string>> &)>*>(data);
 
             // Convert the args to a string vector to be passed to the provided mapper function
-            std::map<std::string, std::string> columns;
+            std::map<std::string, std::optional<std::string>> columns;
 
             for (size_t i = 0; i < argc; i++)
             {
-                columns[std::string(azColName[i])] = std::string(argv[i]);
+                const std::optional<std::string> valStr = argv[i] != nullptr
+                    ? std::optional<std::string>(argv[i])
+                    : std::nullopt;
+
+                columns[std::string(azColName[i])] = valStr;
             }
 
             rowConsumer(columns);

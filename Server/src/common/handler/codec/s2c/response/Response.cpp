@@ -69,8 +69,9 @@ LeaveRoomResponse::LeaveRoomResponse() :
     ProtocolResponse(ResponseCode::LEAVE_ROOM)
 {}
 
-GetRoomStateResponse::GetRoomStateResponse(const Room& room)
-    : ProtocolResponse(ResponseCode::GET_ROOM_STATE), room(room)
+GetRoomStateResponse::GetRoomStateResponse(const Room& room) :
+    ProtocolResponse(ResponseCode::GET_ROOM_STATE),
+    room(room)
 {}
 
 UpdateRoomDataResponse::UpdateRoomDataResponse() :
@@ -81,14 +82,17 @@ LeaveGameResponse::LeaveGameResponse() :
     ProtocolResponse(ResponseCode::LEAVE_GAME)
 {}
 
-GetQuestionResponse::GetQuestionResponse(const std::optional<UserQuestion>& question) :
+GetQuestionResponse::GetQuestionResponse(const std::optional<UserQuestion>& question, const int points) :
     ProtocolResponse(ResponseCode::GET_QUESTION),
-    question(question)
+    question(question),
+    points(points)
 {}
 
-SubmitAnswerResponse::SubmitAnswerResponse(const std::optional<UserQuestion> &newQuestion, const bool wasLastPlayer) :
+SubmitAnswerResponse::SubmitAnswerResponse(const std::optional<UserQuestion> &newQuestion,
+        const int points, const bool wasLastPlayer) :
     ProtocolResponse(ResponseCode::SUBMIT_ANSWER),
     newQuestion(newQuestion),
+    points(points),
     wasLastPlayer(wasLastPlayer)
 {}
 

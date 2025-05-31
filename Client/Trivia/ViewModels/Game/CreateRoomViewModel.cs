@@ -14,19 +14,28 @@ public class CreateRoomViewModel : RoomViewModel
     private static readonly TimeSpan RoomDataUpdateDelay = TimeSpan.FromMilliseconds(300);
 
     public ReactiveCommand<Unit, Unit> CloseRoomCommand { get; }
+    public ReactiveCommand<Unit, Unit> StartGameCommand { get; }
 
     public CreateRoomViewModel(IScreen hostScreen, Room room) : base(hostScreen, room)
     {
         _name = room.Data.Name;
         _questions = room.Data.QuestionsCount;
         _secsPerQuestion = room.Data.TimePerQuestionSecs;
-        _maxPlayers = room.Data.MaxPlayers;
+        MaxPlayers = room.Data.MaxPlayers;
+        
         
         CloseRoomCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             await Comm.SendRequestAwaitResponse<CloseRoomResponse>(new CloseRoomRequest());
             
             NavigateBackCommand!.Execute();
+        });
+
+        StartGameCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await Comm.SendRequestAwaitResponse<StartGameResponse>(new StartGameRequest(Room.Data));
+
+            NavigateTo(new GameViewModel(HostScreen, Room.Data));
         });
 
         
@@ -52,9 +61,9 @@ public class CreateRoomViewModel : RoomViewModel
         _name = "ROOM NAME";
         _questions = 20;
         _secsPerQuestion = 10;
-        _maxPlayers = 10;
+        MaxPlayers = 10;
         
-        CloseRoomCommand = NoOpCommand;
+        CloseRoomCommand = StartGameCommand = NoOpCommand;
     }
 
 
@@ -66,7 +75,7 @@ public class CreateRoomViewModel : RoomViewModel
             {
                 Name = _name,
                 QuestionsCount = _questions,
-                MaxPlayers = _maxPlayers,
+                MaxPlayers = MaxPlayers,
                 TimePerQuestionSecs = _secsPerQuestion
             }
         }; 
@@ -99,14 +108,5 @@ public class CreateRoomViewModel : RoomViewModel
     {
         get => _secsPerQuestion;
         set => this.RaiseAndSetIfChanged(ref _secsPerQuestion, value);
-    }
-
-
-    private int _maxPlayers;
-
-    public int MaxPlayers
-    {
-        get => _maxPlayers;
-        set => this.RaiseAndSetIfChanged(ref _maxPlayers, value);
     }
 }

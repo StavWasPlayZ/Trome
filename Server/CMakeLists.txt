@@ -118,6 +118,9 @@ add_executable (Server
 
   "src/common/handler/FinishedGameEarlyRequestHandler.h" 
   "src/common/handler/FinishedGameEarlyRequestHandler.cpp"
+
+  "src/common/handler/codec/c2s/request/ProtocolPacketDeserializer.cpp"
+  "src/common/handler/codec/c2s/request/ProtocolPacketDeserializer.h"
 )
 
 # Platform-specific sources

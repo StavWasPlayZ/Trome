@@ -16,8 +16,11 @@ struct GameData
     void rotateAnswers();
     void updateTimeSinceQuestionRoll();
 
+    void setFirstQuestion();
     void nextQuestion(bool didFail);
 
+
+    bool didYetStart() const;
 
     std::chrono::milliseconds getTimeSinceQuestionRoll() const;
     std::chrono::seconds getAverageAnswerTime() const;
@@ -33,8 +36,8 @@ struct GameData
     int points;
 
 private:
-    static constexpr int QUESTION_POINTS = 500;
-    static constexpr int FAILURE_PENALTY = QUESTION_POINTS / 4;
+    static constexpr int QUESTION_POINTS = 100;
+    static constexpr int FAILURE_PENALTY = QUESTION_POINTS / 3;
 
     // Graph: https://www.desmos.com/calculator/c61xau6qme
     void calculateRoundPoints(bool didFail);
