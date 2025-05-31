@@ -1,4 +1,6 @@
 ﻿using ReactiveUI;
+using Trivia.Codec.S2C;
+using Trivia.Codec.S2C.Notification.Packets;
 
 namespace Trivia.ViewModels.Game;
 
@@ -25,4 +27,19 @@ public class FinishedEarlyViewModel : GameViewModelBase
     
     public FinishedEarlyViewModel()
     {}
+
+
+    protected override void CommOnPacketReceived(IS2CPacket packet)
+    {
+        switch (packet)
+        {
+            case GameEndedNotification:
+                NavigateTo(new AfterGameViewModel(HostScreen));
+                break;
+            
+            default:
+                base.CommOnPacketReceived(packet);
+                break;
+        }
+    }
 }
