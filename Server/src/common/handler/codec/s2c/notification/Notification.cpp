@@ -35,3 +35,7 @@ GameEndedNotification::GameEndedNotification(const Game &game) :
     ProtocolNotification(NotificationCode::GAME_ENDED), 
     game(game)
 {}
+
+PlayerFinishedNotification::PlayerFinishedNotification() :
+    ProtocolNotification(NotificationCode::PLAYER_FINISHED)
+{}
