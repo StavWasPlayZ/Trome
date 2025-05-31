@@ -74,7 +74,7 @@ std::optional<UserQuestion> Game::generateNewQuestionForUser(const LoggedUser &u
         return std::nullopt;
 
     data.nextQuestion(didFail);
-    data.isFinished = data.currentQuestionIndex < this->m_questions.size();
+    data.isFinished = data.currentQuestionIndex >= this->m_questions.size();
 
     if (data.isFinished)
     {
