@@ -49,6 +49,8 @@ public:
      */
     std::optional<UserQuestion> generateNewQuestionForUser(const LoggedUser& user, bool didFail);
 
+    UserQuestion setFirstQuestionForUser(const LoggedUser& user);
+
     void handleUserLeft(const LoggedUser& user);
 
 private:

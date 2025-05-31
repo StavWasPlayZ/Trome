@@ -7,7 +7,7 @@
 #include <cmath>
 
 GameData::GameData(const Game& game) :
-    currentQuestionIndex(0),
+    currentQuestionIndex(-1),
     isFinished(false),
     correctAnswerCount(0),
     averageAnswerTime(0),
@@ -29,6 +29,11 @@ void GameData::updateTimeSinceQuestionRoll()
     this->roundTime = std::chrono::milliseconds::zero();
 }
 
+void GameData::setFirstQuestion()
+{
+    this->currentQuestionIndex = 0;
+}
+
 void GameData::nextQuestion(const bool didFail)
 {
     if (!didFail)
@@ -43,6 +48,12 @@ void GameData::nextQuestion(const bool didFail)
     calculateRoundPoints(didFail);
     rotateAnswers();
 }
+
+bool GameData::didYetStart() const
+{
+    return this->currentQuestionIndex == -1;
+}
+
 std::chrono::milliseconds GameData::getTimeSinceQuestionRoll() const
 {
     return this->timeSinceQuestionRoll;

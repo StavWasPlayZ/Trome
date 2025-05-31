@@ -73,7 +73,6 @@ std::optional<UserQuestion> Game::generateNewQuestionForUser(const LoggedUser &u
     if (data.isFinished)
         return std::nullopt;
 
-
     data.nextQuestion(didFail);
     data.isFinished = data.currentQuestionIndex < this->m_questions.size();
 
@@ -83,8 +82,14 @@ std::optional<UserQuestion> Game::generateNewQuestionForUser(const LoggedUser &u
         return std::nullopt;
     }
 
-
     return getQuestionForUser(user);
+}
+
+UserQuestion Game::setFirstQuestionForUser(const LoggedUser &user)
+{
+    this->m_playersData.at(&user).setFirstQuestion();
+
+    return getQuestionForUser(user).value();
 }
 
 void Game::handleUserLeft(const LoggedUser &user)

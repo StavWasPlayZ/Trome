@@ -16,8 +16,11 @@ struct GameData
     void rotateAnswers();
     void updateTimeSinceQuestionRoll();
 
+    void setFirstQuestion();
     void nextQuestion(bool didFail);
 
+
+    bool didYetStart() const;
 
     std::chrono::milliseconds getTimeSinceQuestionRoll() const;
     std::chrono::seconds getAverageAnswerTime() const;

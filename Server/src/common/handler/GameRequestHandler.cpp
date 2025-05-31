@@ -49,11 +49,20 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo &info, const P
 RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const SubmitAnswerRequest &request) const
 {
     const LoggedUser& user = getUserByInfo(info);
+    const GameData& userData = m_game.getDataOf(user);
+
+    if (userData.didYetStart())
+    {
+        return RequestResult(
+            new ErrorResponse(ErrorStatus::ILLEGAL_REQUEST, info.id)
+        );
+    }
+
     Room& room = this->m_game.getRoom();
 
     // Check if the question was submitted in time (+1sec for server delay).
     // (The user is the one responsible for fetching a new question for that matter)
-    if (m_game.getDataOf(user).getRoundTime() > room.getData().getTimePerQuestionMs())
+    if (userData.getRoundTime() > room.getData().getTimePerQuestionMs())
     {
         return RequestResult(
             new ErrorResponse(ErrorStatus::QUESTION_OUTDATED, info.id)
@@ -141,15 +150,22 @@ RequestResult GameRequestHandler::getQuestion(const RequestInfo &info, const Get
     // TODO: (probably never) fix
 
     const LoggedUser& user = getUserByInfo(info);
+    const GameData& userData = m_game.getDataOf(user);
 
     // User has already finished; Just return nothing
-    if (m_game.getDataOf(user).isFinished)
+    if (userData.isFinished)
     {
         return RequestResult(new GetQuestionResponse(std::nullopt));
     }
 
+    if (userData.didYetStart())
+    {
+        const UserQuestion question = m_game.setFirstQuestionForUser(user);
+        return RequestResult(new GetQuestionResponse(question));
+    }
+
     // Getting here means the user has either skipped the question or that the time has passed.
-    // Either of which will prompt  the failure of the current round.
+    // Either of which will prompt the failure of the current round.
     const std::optional<UserQuestion> newQuestion = m_game.generateNewQuestionForUser(user, true);
 
     return RequestResult(new GetQuestionResponse(newQuestion));
