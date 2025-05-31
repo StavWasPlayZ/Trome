@@ -121,7 +121,7 @@ RequestResult GameRequestHandler::leaveGame(const RequestInfo &info, const Leave
     m_game.getRoom().removeUser(getUserByInfo(info));
 
     return RequestResult(
-        new LeaveRoomResponse(),
+        new LeaveGameResponse(),
         new MenuRequestHandler(m_handlerFactory)
     );
 }

@@ -30,5 +30,5 @@ RequestResult FinishedGameEarlyRequestHandler::leaveGame(const RequestInfo &info
 {
     m_game.getRoom().removeUser(getUserByInfo(info));
 
-    return RequestResult(new LeaveRoomResponse(), new MenuRequestHandler(m_handlerFactory));
+    return RequestResult(new LeaveGameResponse(), new MenuRequestHandler(m_handlerFactory));
 }
