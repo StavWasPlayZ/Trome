@@ -74,5 +74,5 @@ private:
 
     std::vector<Question> m_questions;
 
-    int playersRemaining;
+    int m_playersRemaining;
 };

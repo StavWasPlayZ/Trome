@@ -108,7 +108,7 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
     if (!newQuestion.has_value())
     {
         return RequestResult(
-            new SubmitAnswerResponse(newQuestion, false),
+            new SubmitAnswerResponse(std::nullopt, false),
             new FinishedGameEarlyRequestHandler(m_handlerFactory, m_game)
         );
     }

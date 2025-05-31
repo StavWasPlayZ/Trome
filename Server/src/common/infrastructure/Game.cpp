@@ -8,7 +8,7 @@ Game::Game(Room &room, const IDatabase &database) :
     m_database(database),
     m_startTime(0),
     m_room(room),
-    playersRemaining(0)
+    m_playersRemaining(0)
 {}
 
 Game::~Game()
@@ -29,6 +29,7 @@ void Game::startGame()
     populateQuestions();
     initPlayersData();
 
+    m_playersRemaining = m_room.getAllUsers().size();
     m_startTime = utils::getCurrTimeMillis();
     m_room.setStatus(RoomStatus::PLAYING);
 }
@@ -45,7 +46,7 @@ Room &Game::getRoom() const
 
 bool Game::isGameComplete() const
 {
-    return this->playersRemaining == 0;
+    return this->m_playersRemaining == 0;
 }
 
 const GameData &Game::getDataOf(const LoggedUser &user) const
@@ -120,7 +121,7 @@ void Game::handleUserLeft(const LoggedUser &user)
     //NOTE: We do not actually remove the player in question, but wait until the game truly finishes.
     // This is so that said player may still be shown in the after-game view.
 
-    playersRemaining--;
+    m_playersRemaining--;
 }
 
 void Game::initPlayersData()
