@@ -21,20 +21,14 @@ public class FinishedEarlyViewModel : GameViewModelBase
     ];
 
     public string EndingLine { get; } = EndingLines[App.Random.Next(EndingLines.Length)];
-
-    public Room Room { get; }
     
-    public FinishedEarlyViewModel(IScreen hostScreen, Room room, int playersFinished) : base(hostScreen)
+    public FinishedEarlyViewModel(IScreen hostScreen, Room room, int playersFinished) : base(hostScreen, room)
     {
-        Room = room;
-        _playersFinished = playersFinished;
+        PlayersFinished = playersFinished;
     }
 
     public FinishedEarlyViewModel()
-    {
-        Room = Room.CreateMockRoom(AppService.SessionUser!);
-        _playersFinished = 2;
-    }
+    {}
 
 
     protected override void CommOnPacketReceived(IS2CPacket packet)
@@ -45,21 +39,9 @@ public class FinishedEarlyViewModel : GameViewModelBase
                 NavigateAndPop(new AfterGameViewModel(HostScreen));
                 break;
             
-            case PlayerFinishedNotification:
-                _playersFinished++;
-                break;
-            
             default:
                 base.CommOnPacketReceived(packet);
                 break;
         }
-    }
-    
-    private int _playersFinished;
-
-    public int PlayersFinished
-    {
-        get => _playersFinished;
-        set => this.RaiseAndSetIfChanged(ref _playersFinished, value);
     }
 }

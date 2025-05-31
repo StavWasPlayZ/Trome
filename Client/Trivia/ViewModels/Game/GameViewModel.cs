@@ -9,8 +9,6 @@ using System.Web;
 using Avalonia.Threading;
 using ReactiveUI;
 using Trivia.Codec.C2S.Request.Packets;
-using Trivia.Codec.S2C;
-using Trivia.Codec.S2C.Notification.Packets;
 using Trivia.Codec.S2C.Response.Packets;
 using Trivia.Models.Raw;
 
@@ -20,19 +18,13 @@ public class GameViewModel : GameViewModelBase
 {
     private const int CountdownSleepMs = 10;
     
-    public Room Room { get; }
     public ReactiveCommand<int, Unit> SubmitAnswerCommand { get; }
-    
-    
-    private int _playersFinished;
     
     private TaskCompletionSource? _countdownCompletion;
     
     
-    public GameViewModel(IScreen hostScreen, Room data) : base(hostScreen)
+    public GameViewModel(IScreen hostScreen, Room room) : base(hostScreen, room)
     {
-        Room = data;
-
         SubmitAnswerCommand = ReactiveCommand.CreateFromTask<int>(async (btnIndex, _) =>
             await SubmitAnswer(btnIndex)
         );
@@ -52,7 +44,6 @@ public class GameViewModel : GameViewModelBase
 
     public GameViewModel()
     {
-        Room = Room.CreateMockRoom(AppService.SessionUser!);
         _timeLeft = TimeSpan.FromSeconds(Room.Data.TimePerQuestionSecs - 1);
         Points = 4269;
         _leadingUsername = "Username";
@@ -171,32 +162,17 @@ public class GameViewModel : GameViewModelBase
 
     private void HandleLastQuestion()
     {
-        _playersFinished++;
+        PlayersFinished++;
         
         // If the below is true, then we were the last player
         // to have finished the game.
-        if (_playersFinished == Room.PlayersCount)
+        if (PlayersFinished == Room.PlayersCount)
         {
             NavigateAndPop(new AfterGameViewModel(HostScreen));
         }
         else
         {
-            NavigateAndPop(new FinishedEarlyViewModel(HostScreen, Room, _playersFinished)); 
-        }
-    }
-
-
-    protected override void CommOnPacketReceived(IS2CPacket packet)
-    {
-        switch (packet)
-        {
-            case PlayerFinishedNotification:
-                _playersFinished++;
-                break;
-            
-            default:
-                base.CommOnPacketReceived(packet);
-                break;
+            NavigateAndPop(new FinishedEarlyViewModel(HostScreen, Room, PlayersFinished)); 
         }
     }
 
