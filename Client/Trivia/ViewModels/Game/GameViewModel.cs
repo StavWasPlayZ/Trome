@@ -62,6 +62,7 @@ public class GameViewModel : PageViewModel
     {
          var response = await Comm.SendRequestAwaitResponse<GetQuestionResponse>(new GetQuestionRequest());
          Question = response.Question;
+         Points = response.Points;
          
          HandleQuestion();
     }
