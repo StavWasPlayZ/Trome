@@ -78,6 +78,11 @@ public class GameViewModel : PageViewModel
          HandleQuestion();
     }
 
+
+    //NOTE: This is temporary until the players countdown (from Finished Early screen)
+    // is implemented.
+    private bool _finishedLast;
+
     private async Task SubmitAnswer(int btnIndex)
     {
         await StopCountdown();
@@ -85,6 +90,7 @@ public class GameViewModel : PageViewModel
         var response = await Comm.SendRequestAwaitResponse<SubmitAnswerResponse>(new SubmitAnswerRequest(btnIndex));
         Question = response.NewQuestion;
         Points = response.Points;
+        _finishedLast = response.WasLastPlayer;
 
         CurrQuestionCount++;
         HandleQuestion();
@@ -175,7 +181,14 @@ public class GameViewModel : PageViewModel
 
     private void HandleLastQuestion()
     {
-        //TODO: Implement
+        if (_finishedLast)
+        {
+            NavigateTo(new AfterGameViewModel(HostScreen));
+        }
+        else
+        {
+            NavigateTo(new FinishedEarlyViewModel(HostScreen));
+        }
     }
 
 
