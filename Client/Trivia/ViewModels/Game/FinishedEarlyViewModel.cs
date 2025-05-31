@@ -2,7 +2,7 @@
 
 namespace Trivia.ViewModels.Game;
 
-public class FinishedEarlyViewModel : PageViewModel
+public class FinishedEarlyViewModel : GameViewModelBase
 {
     private static readonly string[] EndingLines = [
         "You await the inferiors before you...",
@@ -23,6 +23,6 @@ public class FinishedEarlyViewModel : PageViewModel
     public FinishedEarlyViewModel(IScreen hostScreen) : base(hostScreen)
     {}
     
-    public FinishedEarlyViewModel() : base()
+    public FinishedEarlyViewModel()
     {}
 }
