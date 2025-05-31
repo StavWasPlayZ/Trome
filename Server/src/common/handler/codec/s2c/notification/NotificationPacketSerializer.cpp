@@ -80,6 +80,11 @@ OBuffer NotificationPacketSerializer::serialize(const GameEndedNotification &not
     return serialize(notification.id, data);
 }
 
+OBuffer NotificationPacketSerializer::serialize(const PlayerFinishedNotification &notification)
+{
+    return serialize(notification.id, nlohmann::json::object());
+}
+
 OBuffer NotificationPacketSerializer::serialize(const NotificationCode msgCode, const nlohmann::json &data)
 {
     return ProtocolPacketSerializer::serialize(S2CPacketType::NOTIFICATION, static_cast<unsigned char>(msgCode), data);
