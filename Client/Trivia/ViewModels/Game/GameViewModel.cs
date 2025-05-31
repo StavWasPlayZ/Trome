@@ -1,8 +1,11 @@
+using System;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+using Avalonia.Threading;
 using ReactiveUI;
 using Trivia.Codec.C2S.Request.Packets;
 using Trivia.Codec.S2C.Response.Packets;
@@ -12,12 +15,15 @@ namespace Trivia.ViewModels.Game;
 
 public class GameViewModel : PageViewModel
 {
+    private const int CountdownSleepMs = 10;
+    
     public RoomData Data { get; }
     public ReactiveCommand<int, Unit> SubmitAnswerCommand { get; }
     
     public GameViewModel(IScreen hostScreen, RoomData data) : base(hostScreen)
     {
         Data = data;
+        _timeLeft = TimeSpan.FromSeconds(Data.TimePerQuestionSecs);
 
         SubmitAnswerCommand = ReactiveCommand.CreateFromTask<int>(async (btnIndex, _) =>
             await SubmitAnswer(btnIndex)
@@ -33,10 +39,11 @@ public class GameViewModel : PageViewModel
     public GameViewModel()
     {
         Data = Room.CreateMockRoom(AppService.SessionUser!).Data;
+        _timeLeft = TimeSpan.FromSeconds(Data.TimePerQuestionSecs);
         _leadingUsername = "Username";
         
         _question = Question.MockQuestion;
-        HandleQuestion();
+        UpdateHalvedButtons();
 
         SubmitAnswerCommand = ReactiveCommand.Create<int>(_ => { });
     }
@@ -52,11 +59,45 @@ public class GameViewModel : PageViewModel
 
     private async Task SubmitAnswer(int btnIndex)
     {
+        StopCountdown();
+        
         var response = await Comm.SendRequestAwaitResponse<SubmitAnswerResponse>(new SubmitAnswerRequest(btnIndex));
         Question = response.NewQuestion;
 
         CurrQuestionCount++;
         HandleQuestion();
+    }
+
+
+    private bool _countdownRunning;
+    
+    private void StartCountdown()
+    {
+        _countdownRunning = true;
+        new Thread(CountdownThread).Start();
+    }
+    
+    private void StopCountdown()
+    {
+        _countdownRunning = false;
+    }
+
+    private void CountdownThread()
+    {
+        while (_countdownRunning)
+        {
+            Thread.Sleep(CountdownSleepMs);
+            
+            Dispatcher.UIThread.Post(() =>
+            {
+                TimeLeft -= TimeSpan.FromMilliseconds(CountdownSleepMs);
+
+                if (TimeLeft <= TimeSpan.Zero)
+                {
+                    _ = GetNewQuestion();
+                }
+            });
+        }
     }
 
     
@@ -78,14 +119,21 @@ public class GameViewModel : PageViewModel
                 .ToList()
         };
 
-        HalvedBtnTexts = Question.Answers
-            .Select(answer => answer.Length > 20)
-            .ToArray();
+        UpdateHalvedButtons();
+        StartCountdown();
     }
 
     private void HandleLastQuestion()
     {
         //TODO: Implement
+    }
+
+
+    private void UpdateHalvedButtons()
+    {
+        HalvedBtnTexts = Question!.Answers
+            .Select(answer => answer.Length > 20)
+            .ToArray();
     }
     
     
@@ -104,6 +152,15 @@ public class GameViewModel : PageViewModel
     {
         get => _question;
         private set => this.RaiseAndSetIfChanged(ref _question, value);
+    }
+
+
+    private TimeSpan _timeLeft;
+
+    public TimeSpan TimeLeft
+    {
+        get => _timeLeft;
+        set => this.RaiseAndSetIfChanged(ref _timeLeft, value);
     }
 
 

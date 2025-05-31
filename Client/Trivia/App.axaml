@@ -18,6 +18,7 @@
             
             <converters:MultiplicationConverter x:Key="MultiplicationConverter"/>
             <converters:SolidColorBrushToHexStrConverter x:Key="SolidColorBrushToHexStrConverter"/>
+            <converters:TimeSpanToStringConverter x:Key="TimeSpanToStringConverter"/>
             
             
             <SolidColorBrush x:Key="TriviaTextBoxForeground">#4D264A</SolidColorBrush>

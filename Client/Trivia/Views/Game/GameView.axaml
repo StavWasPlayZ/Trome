@@ -60,7 +60,10 @@
                                 
                             </Canvas>
                             
-                            <TextBlock>0:08</TextBlock>
+                            <TextBlock Text="{
+                                Binding TimeLeft,
+                                Converter={StaticResource TimeSpanToStringConverter}
+                            }"/>
                         </StackPanel>
                         
                         <TextBlock Grid.Column="1"
