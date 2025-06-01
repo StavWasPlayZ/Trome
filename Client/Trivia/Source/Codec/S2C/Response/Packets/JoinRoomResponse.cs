@@ -4,6 +4,6 @@ using Trivia.Models.Raw;
 namespace Trivia.Codec.S2C.Response.Packets;
 
 public readonly record struct JoinRoomResponse(
-    RoomModel RoomModel,
+    RoomModel Room,
     ImmutableList<User> Players
 ) : IProtocolResponse;
