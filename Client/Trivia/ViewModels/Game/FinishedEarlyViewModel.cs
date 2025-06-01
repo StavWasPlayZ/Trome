@@ -1,4 +1,5 @@
-﻿using ReactiveUI;
+﻿using System;
+using ReactiveUI;
 using Trivia.Codec.S2C;
 using Trivia.Codec.S2C.Notification.Packets;
 using Trivia.Models.Raw;
@@ -36,7 +37,7 @@ public class FinishedEarlyViewModel : GameViewModelBase
         switch (packet)
         {
             case GameEndedNotification:
-                NavigateAndPop(new AfterGameViewModel(HostScreen));
+                NavigateAndPop(new AfterGameViewModel(HostScreen))!.Subscribe();
                 break;
             
             default:

@@ -1,4 +1,5 @@
 using System.Reactive;
+using System.Reactive.Threading.Tasks;
 using ReactiveUI;
 using Trivia.Codec.C2S.Request.Packets;
 using Trivia.Codec.S2C;
@@ -23,8 +24,8 @@ public abstract class GameViewModelBase : PageViewModel
             await Comm.SendRequestAwaitResponse<LeaveGameResponse>(new LeaveGameRequest());
             
             // Assuming Join -> Room -> Game
-            NavigateBackCommand!.Execute();
-            NavigateBackCommand!.Execute();
+            await NavigateBackCommand!.Execute().ToTask();
+            await NavigateBackCommand!.Execute().ToTask();
         });
     }
 
