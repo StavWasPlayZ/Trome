@@ -84,7 +84,7 @@ RequestResult RoomAdminRequestHandler::updateRoomData(const RequestInfo &, const
     );
 }
 
-RequestResult RoomAdminRequestHandler::getRoomState(const RequestInfo &, const GetRoomsRequest &) const
+RequestResult RoomAdminRequestHandler::getRoomState(const RequestInfo &, const GetRoomStateRequest &) const
 {
     return RequestResult(new GetRoomStateResponse(m_room));
 }

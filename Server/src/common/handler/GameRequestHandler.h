@@ -24,11 +24,6 @@ private:
      */
     RequestResult getQuestion(const RequestInfo &info, const GetQuestionRequest &request) const;
 
-    [[deprecated(
-        "The Noftifications system has been set in place to allow for automatic, non-polling updates of any "
-        "room state changes."
-        " This method is therefore useless and should not be used."
-    )]]
     RequestResult getGameResults(const RequestInfo &info, const GetGameResultRequest &request) const;
 
 
