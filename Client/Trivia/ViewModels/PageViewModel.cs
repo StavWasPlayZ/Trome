@@ -37,12 +37,6 @@ public abstract class PageViewModel : ViewModelBase, IRoutableViewModel, IActiva
         });
     }
 
-    
-    // public void SubToServerEvents()
-    // {
-    //     Comm.PacketReceived += CommOnPacketReceived;
-    // }
-
     protected virtual void CommOnPacketReceived(IS2CPacket packet) { }
     
     
