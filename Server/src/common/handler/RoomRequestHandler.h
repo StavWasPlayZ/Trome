@@ -1,6 +1,7 @@
 #pragma once
 #include "IRequestHandler.h"
 
+struct GetPlayersInRoomRequest;
 struct GetRoomStateRequest;
 class RequestHandlerFactory;
 
@@ -16,5 +17,7 @@ protected:
     Room &m_room;
 
 private:
+    RequestResult getPlayersInRoom(const RequestInfo &info, const GetPlayersInRoomRequest &request) const;
+
     RequestResult getRoomState(const RequestInfo &info, const GetRoomStateRequest &request) const;
 };

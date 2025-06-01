@@ -27,10 +27,5 @@ private:
     RequestResult getPersonalStatistics(const RequestInfo& info, const GetPersonalStatisticsRequest &request) const;
     RequestResult logout(const RequestInfo& info, const LogoutRequest &request) const;
 
-    [[deprecated(
-        "The Noftifications system has been set in place to allow for automatic, non-polling updates of any "
-        "room state changes."
-        " This method is therefore useless and should not be used."
-    )]]
     RequestResult getPlayersInRoom(const RequestInfo & info, const GetPlayersInRoomRequest &request) const;
 };
