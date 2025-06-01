@@ -73,9 +73,11 @@ struct LogoutRequest : ProtocolRequest
 
 struct GetPlayersInRoomRequest : ProtocolRequest
 {
-    explicit GetPlayersInRoomRequest(unsigned int roomID);
-
-    const unsigned int roomID;
+    //NOTE: Removed Room ID parameter from the request, as it is unnecessary.
+    // (At least in our version.)
+    // explicit GetPlayersInRoomRequest(unsigned int roomID);
+    //
+    // const unsigned int roomID;
 };
 
 struct JoinRoomRequest : ProtocolRequest

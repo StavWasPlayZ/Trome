@@ -1,4 +1,5 @@
 #pragma once
+
 #include "IRequestHandler.h"
 
 struct GetPlayersInRoomRequest;

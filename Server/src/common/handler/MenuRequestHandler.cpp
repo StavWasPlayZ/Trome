@@ -14,7 +14,7 @@ bool MenuRequestHandler::isRequestRelevant(const RequestInfo &info) const
     switch (info.id)
     {
 	case RequestCode::JOIN_ROOM:
-    case RequestCode::GET_PLAYERS_IN_ROOM:
+    // case RequestCode::GET_PLAYERS_IN_ROOM:
     case RequestCode::CREATE_ROOM:
     case RequestCode::GET_ROOMS:
     case RequestCode::GET_HIGH_SCORES:
@@ -43,8 +43,8 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo &info, const P
     case RequestCode::LOGOUT:
         return logout(info, static_cast<const LogoutRequest &>(request));
 
-    case RequestCode::GET_PLAYERS_IN_ROOM:
-        return getPlayersInRoom(info, static_cast<const GetPlayersInRoomRequest &>(request));
+    // case RequestCode::GET_PLAYERS_IN_ROOM:
+    //     return getPlayersInRoom(info, static_cast<const GetPlayersInRoomRequest &>(request));
 
     default: throw std::invalid_argument("Unknown request ID");
     }
@@ -126,20 +126,24 @@ RequestResult MenuRequestHandler::logout(const RequestInfo &info, const LogoutRe
     return RequestResult(new LogoutResponse(), new LoginRequestHandler(this->m_handlerFactory));
 }
 
-RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo &info, const GetPlayersInRoomRequest &request) const
+RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo &info, const GetPlayersInRoomRequest &) const
 {
-    RoomManager &rManager = m_handlerFactory.getRoomManager();
+    //NOTICE: This behavior was entirely replaced by the notifications' system.
+    // This request was re-purposed to the Room handler to sync players after a match.
+    return RequestResult(new ErrorResponse(ErrorStatus::SERVER_UNIMPLEMENTED, info.id));
 
-    const std::optional<Room*> room = rManager.getRoom(request.roomID);
-
-    if (!room)
-    {
-        return RequestResult(
-            new ErrorResponse(ErrorStatus::UNKNOWN_RESOURCE, info.id)
-        );
-    }
-
-    return RequestResult(
-        new GetPlayersInRoomResponse(room.value()->getAllUsers())
-    );
+    // RoomManager &rManager = m_handlerFactory.getRoomManager();
+    //
+    // const std::optional<Room*> room = rManager.getRoom(request.roomID);
+    //
+    // if (!room)
+    // {
+    //     return RequestResult(
+    //         new ErrorResponse(ErrorStatus::UNKNOWN_RESOURCE, info.id)
+    //     );
+    // }
+    //
+    // return RequestResult(
+    //     new GetPlayersInRoomResponse(room.value()->getAllUsers())
+    // );
 }

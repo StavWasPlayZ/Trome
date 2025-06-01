@@ -107,9 +107,10 @@ GetRoomsRequest JsonRequestPacketDeserializer::deserializeGetRoomsRequest(const 
     return GetRoomsRequest();
 }
 
-GetPlayersInRoomRequest JsonRequestPacketDeserializer::deserializeGetPlayersInRoomRequest(const nlohmann::json &data)
+GetPlayersInRoomRequest JsonRequestPacketDeserializer::deserializeGetPlayersInRoomRequest(const nlohmann::json &)
 {
-    return GetPlayersInRoomRequest(ProtocolPacketDeserializer::toUL(data.at("room_id")));
+    // return GetPlayersInRoomRequest(ProtocolPacketDeserializer::toUL(data.at("room_id")));
+    return GetPlayersInRoomRequest();
 }
 
 JoinRoomRequest JsonRequestPacketDeserializer::deserializeJoinRoomRequest(const nlohmann::json &data)

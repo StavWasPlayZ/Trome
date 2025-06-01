@@ -22,9 +22,9 @@ SignupRequest::SignupRequest(
     birthdate(birthdate)
 {}
 
-GetPlayersInRoomRequest::GetPlayersInRoomRequest(const unsigned int roomID) : roomID(roomID)
-{
-}
+// GetPlayersInRoomRequest::GetPlayersInRoomRequest(const unsigned int roomID) : roomID(roomID)
+// {
+// }
 
 ProtocolRequest::~ProtocolRequest() = default;
 
