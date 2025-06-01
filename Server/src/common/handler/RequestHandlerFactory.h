@@ -1,7 +1,8 @@
 #pragma once
 
-#include "handler/LoginRequestHandler.h"
 #include "MenuRequestHandler.h"
+#include "RoomRequestHandler.h"
+#include "handler/LoginRequestHandler.h"
 
 #include "infrastructure/db/IDatabase.h"
 
@@ -39,6 +40,11 @@ public:
      * NOTE: The returned resource must be freed.
      */
     const MenuRequestHandler* createMenuRequestHandler() const;
+
+    /**
+     * NOTE: The returned resource must be freed.
+     */
+    const RoomRequestHandler* createRoomRequestHandler(const LoggedUser &user, Room &room) const;
 
 private:
     //NOTE: Actual managers instantiated via Server (or otherwise).

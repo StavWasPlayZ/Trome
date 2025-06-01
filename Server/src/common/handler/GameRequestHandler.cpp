@@ -1,8 +1,6 @@
 #include "GameRequestHandler.h"
 
 #include "FinishedGameEarlyRequestHandler.h"
-#include "RoomAdminRequestHandler.h"
-#include "RoomMemberRequestHandler.h"
 #include "codec/s2c/response/JsonResponsePacketSerializer.h"
 #include "codec/s2c/response/Response.h"
 #include "handler/RequestHandlerFactory.h"
@@ -57,7 +55,7 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
         return RequestResult(new ErrorResponse(ErrorStatus::ILLEGAL_REQUEST, info.id));
     }
 
-    const Room & room = this->m_game.getRoom();
+    Room &room = this->m_game.getRoom();
 
     // Check if the question was submitted in time (+1sec for server delay).
     // (The user is the one responsible for fetching a new question for that matter)
@@ -83,7 +81,7 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
 
         return RequestResult(
             new SubmitAnswerResponse(newQuestion, userData.points),
-            getMenuRequestHandlerFor(user)
+            this->m_handlerFactory.createRoomRequestHandler(user, room)
         );
     }
 
@@ -174,7 +172,7 @@ RequestResult GameRequestHandler::getQuestion(const RequestInfo &info, const Get
 
         return RequestResult(
             new GetQuestionResponse(newQuestion, userData.points),
-            getMenuRequestHandlerFor(user)
+            this->m_handlerFactory.createRoomRequestHandler(user, this->m_game.getRoom())
         );
     }
 
@@ -190,7 +188,7 @@ void GameRequestHandler::handleLastPlayerFinished(const RequestInfo &info) const
 {
     setRequestHandlers(
         [this](const LoggedUser *player) {
-            return getMenuRequestHandlerFor(*player);
+            return this->m_handlerFactory.createRoomRequestHandler(*player, this->m_game.getRoom());
         },
 
         m_game.getRoom().getAllUsers(),
@@ -199,13 +197,4 @@ void GameRequestHandler::handleLastPlayerFinished(const RequestInfo &info) const
     );
 
     this->m_handlerFactory.getGameManager().deleteGame(m_game);
-}
-
-IRequestHandler *GameRequestHandler::getMenuRequestHandlerFor(const LoggedUser &user) const
-{
-    Room &room = m_game.getRoom();
-
-    return user == room.getAdmin()
-        ? static_cast<IRequestHandler *>(new RoomAdminRequestHandler(this->m_handlerFactory, room))
-        : static_cast<IRequestHandler *>(new RoomMemberRequestHandler(this->m_handlerFactory, room));
 }

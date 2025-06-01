@@ -1,6 +1,8 @@
 #include "RequestHandlerFactory.h"
 
 #include "MenuRequestHandler.h"
+#include "RoomAdminRequestHandler.h"
+#include "RoomMemberRequestHandler.h"
 
 RequestHandlerFactory::RequestHandlerFactory(
     LoginManager& loginManager,
@@ -41,4 +43,11 @@ const LoginRequestHandler *RequestHandlerFactory::createLoginRequestHandler() co
 const MenuRequestHandler *RequestHandlerFactory::createMenuRequestHandler() const
 {
     return new MenuRequestHandler(*this);
+}
+
+const RoomRequestHandler *RequestHandlerFactory::createRoomRequestHandler(const LoggedUser &user, Room &room) const
+{
+    return user == room.getAdmin()
+        ? static_cast<const RoomRequestHandler *>(new RoomAdminRequestHandler(*this, room))
+        : static_cast<const RoomRequestHandler *>(new RoomMemberRequestHandler(*this, room));
 }

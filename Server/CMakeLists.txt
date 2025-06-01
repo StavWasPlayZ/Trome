@@ -121,6 +121,9 @@ add_executable (Server
 
   "src/common/handler/codec/c2s/request/ProtocolPacketDeserializer.cpp"
   "src/common/handler/codec/c2s/request/ProtocolPacketDeserializer.h"
+
+  "src/common/handler/RoomRequestHandler.cpp"
+  "src/common/handler/RoomRequestHandler.h"
 )
 
 # Platform-specific sources

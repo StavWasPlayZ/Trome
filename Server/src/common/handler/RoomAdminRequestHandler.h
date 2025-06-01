@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IRequestHandler.h"
+#include "RoomRequestHandler.h"
 
 struct GetRoomStateRequest;
 struct UpdateRoomDataRequest;
@@ -9,7 +10,7 @@ struct StartGameRequest;
 
 class Room;
 
-class RoomAdminRequestHandler : public IRequestHandler
+class RoomAdminRequestHandler : public RoomRequestHandler
 {
 public:
     explicit RoomAdminRequestHandler(const RequestHandlerFactory& handlerFactory, Room& room);
@@ -25,6 +26,4 @@ private:
     RequestResult updateRoomData(const RequestInfo & info, const UpdateRoomDataRequest & request) const;
 
     RequestResult getRoomState(const RequestInfo& info, const GetRoomStateRequest& request) const;
-
-    Room& m_room;
 };

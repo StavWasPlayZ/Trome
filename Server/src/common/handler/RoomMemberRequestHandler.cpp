@@ -3,7 +3,7 @@
 #include "codec/c2s/request/Request.h"
 
 RoomMemberRequestHandler::RoomMemberRequestHandler(const RequestHandlerFactory &handlerFactory, Room &room)
-    : IRequestHandler(handlerFactory), m_room(room)
+    : RoomRequestHandler(handlerFactory, room)
 {
 }
 

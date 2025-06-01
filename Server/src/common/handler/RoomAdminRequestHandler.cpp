@@ -8,8 +8,7 @@
 #include "manager/RoomManager.h"
 
 RoomAdminRequestHandler::RoomAdminRequestHandler(const RequestHandlerFactory &handlerFactory, Room& room) :
-    IRequestHandler(handlerFactory),
-    m_room(room)
+    RoomRequestHandler(handlerFactory, room)
 {}
 
 bool RoomAdminRequestHandler::isRequestRelevant(const RequestInfo &info) const
@@ -38,7 +37,7 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo &info, co
         return updateRoomData(info, static_cast<const UpdateRoomDataRequest &>(request));
 
     case RequestCode::GET_ROOM_STATE:
-        return getRoomState(info, static_cast<const GetRoomsRequest &>(request));
+        return getRoomState(info, static_cast<const GetRoomStateRequest &>(request));
 
     default: throw std::invalid_argument("Unknown request ID");
     }
