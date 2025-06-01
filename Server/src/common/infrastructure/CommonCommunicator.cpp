@@ -229,8 +229,7 @@ void CommonCommunicator::_clientThreadFunc(Client& client)
         }
         catch (const std::exception& e)
         {
-            std::cerr << "Unknown exception occurred (" << e.what() << "); Assuming client disconnection" << std::endl;
-            break;
+            std::cerr << "Unknown exception occurred (" << e.what() << ")" << std::endl;
         }
     }
 
