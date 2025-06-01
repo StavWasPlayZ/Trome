@@ -60,7 +60,7 @@ public class JoinRoomMenuViewModel : PageViewModel
             //TODO: Handle room deleted before refresh
             var response = await Comm.SendRequestAwaitResponse<JoinRoomResponse>(new JoinRoomRequest(roomId));
             
-            NavigateTo(new JoinedRoomViewModel(hostScreen, response.RoomModel, [..response.Players]));
+            NavigateTo(new JoinedRoomViewModel(hostScreen, response.Room, [..response.Players]));
         });
 
         this.WhenActivated(disposables =>
