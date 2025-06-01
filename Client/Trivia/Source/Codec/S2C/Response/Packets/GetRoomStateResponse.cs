@@ -3,5 +3,5 @@
 namespace Trivia.Codec.S2C.Response.Packets;
 
 public readonly record struct GetRoomStateResponse(
-    Room Room
+    RoomModel RoomModel
 ) : IProtocolResponse;

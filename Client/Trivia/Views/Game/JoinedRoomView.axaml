@@ -50,7 +50,7 @@
                                FontSize="65"
                                HorizontalAlignment="Center"
                                Foreground="#4d264a"
-                               Text="{Binding Room.Data.Name}"/>
+                               Text="{Binding RoomModel.Data.Name}"/>
                     
                     <Grid Grid.Row="1"
                           RowDefinitions="50, 0, 50, 0, 50"
@@ -79,7 +79,7 @@
                         
                         <TextBlock Grid.Row="0"
                                     Grid.Column="2"
-                                    Text="{Binding Room.Data.QuestionsCount}"/>
+                                    Text="{Binding RoomModel.Data.QuestionsCount}"/>
                         
                         <TextBlock Grid.Row="2"
                                    Grid.Column="0"
@@ -89,7 +89,7 @@
                         </TextBlock>
                         <TextBlock Grid.Row="2"
                                    Grid.Column="2"
-                                   Text="{Binding Room.Data.TimePerQuestionSecs}"/>
+                                   Text="{Binding RoomModel.Data.TimePerQuestionSecs}"/>
                         
                         <TextBlock Grid.Row="4"
                                    Grid.Column="0"
@@ -99,7 +99,7 @@
                         </TextBlock>
                         <TextBlock Grid.Row="4"
                                    Grid.Column="2"
-                                   Text="{Binding Room.Data.MaxPlayers}"/>
+                                   Text="{Binding RoomModel.Data.MaxPlayers}"/>
                     </Grid>
                     
 

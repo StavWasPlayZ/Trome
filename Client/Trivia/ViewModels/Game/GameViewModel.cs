@@ -23,7 +23,7 @@ public class GameViewModel : GameViewModelBase
     private TaskCompletionSource? _countdownCompletion;
     
     
-    public GameViewModel(IScreen hostScreen, Room room) : base(hostScreen, room)
+    public GameViewModel(IScreen hostScreen, RoomModel roomModel) : base(hostScreen, roomModel)
     {
         SubmitAnswerCommand = ReactiveCommand.CreateFromTask<int>(async (btnIndex, _) =>
             await SubmitAnswer(btnIndex)
@@ -44,11 +44,11 @@ public class GameViewModel : GameViewModelBase
 
     public GameViewModel()
     {
-        _timeLeft = TimeSpan.FromSeconds(Room.Data.TimePerQuestionSecs - 1);
+        _timeLeft = TimeSpan.FromSeconds(RoomModel.Data.TimePerQuestionSecs - 1);
         Points = 4269;
         _leadingUsername = "Username";
         
-        _question = Question.MockQuestion;
+        _question = QuestionModel.MockQuestionModel;
         UpdateHalvedButtons();
 
         SubmitAnswerCommand = ReactiveCommand.Create<int>(_ => { });
@@ -82,7 +82,7 @@ public class GameViewModel : GameViewModelBase
     
     private void StartCountdown()
     {
-        TimeLeft = TimeSpan.FromSeconds(Room.Data.TimePerQuestionSecs);
+        TimeLeft = TimeSpan.FromSeconds(RoomModel.Data.TimePerQuestionSecs);
         
         _countdownRunning = true;
         _countdownCompletion = new TaskCompletionSource();
@@ -146,7 +146,7 @@ public class GameViewModel : GameViewModelBase
             return;
         }
 
-        Question = new Question
+        Question = new QuestionModel
         {
             Prompt = HttpUtility.HtmlDecode(Question.Prompt),
             Answers = Question.Answers
@@ -166,13 +166,13 @@ public class GameViewModel : GameViewModelBase
         
         // If the below is true, then we were the last player
         // to have finished the game.
-        if (PlayersFinished == Room.PlayersCount)
+        if (PlayersFinished == RoomModel.PlayersCount)
         {
             NavigateAndPop(new AfterGameViewModel(HostScreen))!.Subscribe();
         }
         else
         {
-            NavigateAndPop(new FinishedEarlyViewModel(HostScreen, Room, PlayersFinished))!.Subscribe(); 
+            NavigateAndPop(new FinishedEarlyViewModel(HostScreen, RoomModel, PlayersFinished))!.Subscribe(); 
         }
     }
 
@@ -194,9 +194,9 @@ public class GameViewModel : GameViewModelBase
     }
 
 
-    private Question? _question;
+    private QuestionModel? _question;
 
-    public Question? Question
+    public QuestionModel? Question
     {
         get => _question;
         private set => this.RaiseAndSetIfChanged(ref _question, value);

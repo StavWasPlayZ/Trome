@@ -4,7 +4,7 @@ using Trivia.Codec;
 
 namespace Trivia.Models.Raw;
 
-public record Room : IdentifiableModel
+public record RoomModel : IdentifiableModel
 {
     public RoomStatus Status { get; init; } = RoomStatus.Waiting;
     public required User Admin { get; init; }
@@ -14,10 +14,10 @@ public record Room : IdentifiableModel
     public required RoomData Data { get; init; }
 
 
-    public static List<Room> GenerateMockRooms(int count)
+    public static List<RoomModel> GenerateMockRooms(int count)
     {
         return Enumerable.Range(1, count)
-            .Select(i => new Room
+            .Select(i => new RoomModel
                 {
                     Id = i,
                     Status = i % 2 == 0 ? RoomStatus.Waiting : RoomStatus.Playing,
@@ -40,9 +40,9 @@ public record Room : IdentifiableModel
             ).ToList();
     }
 
-    public static Room CreateMockRoom(User admin)
+    public static RoomModel CreateMockRoom(User admin)
     {
-        return new Room
+        return new RoomModel
         {
             Id = 0,
             Admin = admin,

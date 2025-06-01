@@ -46,13 +46,13 @@ public partial class JoinRoomMenuView : PageViewControl<JoinRoomMenuViewModel>
             return;
         }
 
-        ExpandRoomPanel((listbox.SelectedItem as Room)!);
+        ExpandRoomPanel((listbox.SelectedItem as RoomModel)!);
     }
     
-    private void ExpandRoomPanel(Room room)
+    private void ExpandRoomPanel(RoomModel roomModel)
     {
         RoomInfoPanel.Width = _roomInfoPanelWidth;
-        ViewModel!.SelectedRoom = room;
+        ViewModel!.SelectedRoom = roomModel;
     }
 
     private void CloseRoomPanel()

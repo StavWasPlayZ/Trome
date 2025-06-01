@@ -2,13 +2,13 @@ using System.Collections.Generic;
 
 namespace Trivia.Models.Raw;
 
-public class Question
+public class QuestionModel
 {
     public required string Prompt { get; init; }
     public required List<string> Answers { get; init; }
 
     
-    public static readonly Question MockQuestion = new()
+    public static readonly QuestionModel MockQuestionModel = new()
     {
         Prompt = "Lorem ipsum etc i dont remember it all but here is some multilined text",
         Answers = [

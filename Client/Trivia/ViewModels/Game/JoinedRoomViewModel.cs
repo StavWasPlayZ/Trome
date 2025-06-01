@@ -15,7 +15,7 @@ public class JoinedRoomViewModel : RoomViewModel
 {
     public ReactiveCommand<Unit, Unit> LeaveRoomCommand { get; }
     
-    public JoinedRoomViewModel(IScreen hostScreen, Room room, List<User> players) : base(hostScreen, room, players)
+    public JoinedRoomViewModel(IScreen hostScreen, RoomModel roomModel, List<User> players) : base(hostScreen, roomModel, players)
     {
         LeaveRoomCommand = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -27,8 +27,8 @@ public class JoinedRoomViewModel : RoomViewModel
         this.WhenActivated(disposables =>
         {
             this
-                .WhenAnyValue(x => x.Room)
-                .Subscribe(_ => MaxPlayers = Room.Data.MaxPlayers)
+                .WhenAnyValue(x => x.RoomModel)
+                .Subscribe(_ => MaxPlayers = RoomModel.Data.MaxPlayers)
                 .DisposeWith(disposables);
         });
     }
@@ -66,7 +66,7 @@ public class JoinedRoomViewModel : RoomViewModel
         NavigateTo(
             new GameViewModel(
                 HostScreen,
-                Room with
+                RoomModel with
                 {
                     Data = gameStartedNotif.Data
                 }
@@ -76,7 +76,7 @@ public class JoinedRoomViewModel : RoomViewModel
 
     private void OnRoomDataUpdated(RoomDataUpdatedNotification roomDataNotif)
     {
-        Room = Room with
+        RoomModel = RoomModel with
         {
             Data = roomDataNotif.Data
         };

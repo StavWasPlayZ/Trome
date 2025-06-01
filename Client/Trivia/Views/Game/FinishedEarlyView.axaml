@@ -62,7 +62,7 @@
                         <TextBlock.Text>
                             <MultiBinding StringFormat="{}{0}/{1} FINISHED">
                                     <Binding Path="PlayersFinished"/>
-                                    <Binding Path="Room.PlayersCount"/>
+                                    <Binding Path="RoomModel.PlayersCount"/>
                                 </MultiBinding>
                         </TextBlock.Text>
                     </TextBlock>

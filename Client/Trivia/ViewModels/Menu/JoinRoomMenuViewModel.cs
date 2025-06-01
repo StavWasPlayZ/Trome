@@ -21,17 +21,17 @@ public class JoinRoomMenuViewModel : PageViewModel
     public ReactiveCommand<int, Unit> JoinRoomButtonCommand { get; }
 
 
-    private List<Room> _rooms = [];
+    private List<RoomModel> _rooms = [];
 
-    public List<Room> Rooms
+    public List<RoomModel> Rooms
     {
         get => _rooms;
         private set => this.RaiseAndSetIfChanged(ref _rooms, value);
     }
 
-    private Room? _room;
+    private RoomModel? _room;
     
-    public Room? SelectedRoom
+    public RoomModel? SelectedRoom
     {
         get => _room;
         set => this.RaiseAndSetIfChanged(ref _room, value);
@@ -46,7 +46,7 @@ public class JoinRoomMenuViewModel : PageViewModel
         {
             var response = await Comm.SendRequestAwaitResponse<CreateRoomResponse>(new CreateRoomRequest());
             
-            NavigateTo(new CreateRoomViewModel(hostScreen, new Room
+            NavigateTo(new CreateRoomViewModel(hostScreen, new RoomModel
             {
                 Id = response.RoomId,
                 Admin = AppService.SessionUser!,
@@ -60,7 +60,7 @@ public class JoinRoomMenuViewModel : PageViewModel
             //TODO: Handle room deleted before refresh
             var response = await Comm.SendRequestAwaitResponse<JoinRoomResponse>(new JoinRoomRequest(roomId));
             
-            NavigateTo(new JoinedRoomViewModel(hostScreen, response.Room, [..response.Players]));
+            NavigateTo(new JoinedRoomViewModel(hostScreen, response.RoomModel, [..response.Players]));
         });
 
         this.WhenActivated(disposables =>
@@ -75,7 +75,7 @@ public class JoinRoomMenuViewModel : PageViewModel
     {
         JoinRoomButtonCommand = ReactiveCommand.Create<int>(_ => { });
         NewRoomButtonCommand = NoOpCommand;
-        Rooms = Room.GenerateMockRooms(30);
+        Rooms = RoomModel.GenerateMockRooms(30);
         SelectedRoom = Rooms[0];
     }
 

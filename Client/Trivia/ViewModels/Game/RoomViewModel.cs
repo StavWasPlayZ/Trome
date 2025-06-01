@@ -15,37 +15,37 @@ public abstract class RoomViewModel : PageViewModel
 {
     public ObservableCollection<RoomUserModel?> Players { get; }
     
-    private Room _room;
+    private RoomModel _roomModel;
 
-    public Room Room
+    public RoomModel RoomModel
     {
-        get => _room;
-        set => this.RaiseAndSetIfChanged(ref _room, value);
+        get => _roomModel;
+        set => this.RaiseAndSetIfChanged(ref _roomModel, value);
     }
 
 
     /// <summary>
     /// </summary>
     /// <param name="hostScreen"></param>
-    /// <param name="room"></param>
+    /// <param name="roomModel"></param>
     /// <param name="players">
     /// A list of all already existing players.
-    /// Must be present if the room's <see cref="Room.PlayersCount"/> is greater than 1.
+    /// Must be present if the room's <see cref="RoomModel.PlayersCount"/> is greater than 1.
     /// </param>
-    protected RoomViewModel(IScreen hostScreen, Room room, List<User>? players = null) : base(hostScreen)
+    protected RoomViewModel(IScreen hostScreen, RoomModel roomModel, List<User>? players = null) : base(hostScreen)
     {
-        _room = room;
+        _roomModel = roomModel;
 
-        var isRoomAdmin = room.Admin == AppService.SessionUser!;
+        var isRoomAdmin = roomModel.Admin == AppService.SessionUser!;
         
         // This assumes that the first player is always the admin.
         // Also note that ObservableCollection does not provide an API for setting a capacity.
         Players = [
-            RoomUserModel.FromUser(room.Admin, isRoomAdmin, true)
+            RoomUserModel.FromUser(roomModel.Admin, isRoomAdmin, true)
         ];
 
         // The current player is not to be provided.
-        for (var i = 1; i < room.PlayersCount - 1; i++)
+        for (var i = 1; i < roomModel.PlayersCount - 1; i++)
         {
             var player = players![i];
             Players.Add(RoomUserModel.FromUser(player, player == AppService.SessionUser!, false));
@@ -58,7 +58,7 @@ public abstract class RoomViewModel : PageViewModel
             Players.Add(RoomUserModel.FromUser(AppService.SessionUser!, true, false));
         }
 
-        for (var i = room.PlayersCount; i < room.Data.MaxPlayers; i++)
+        for (var i = roomModel.PlayersCount; i < roomModel.Data.MaxPlayers; i++)
         {
             Players.Add(null);
         }
@@ -75,7 +75,7 @@ public abstract class RoomViewModel : PageViewModel
 
     protected RoomViewModel()
     {
-        _room = Room.CreateMockRoom(AppService.SessionUser!);
+        _roomModel = RoomModel.CreateMockRoom(AppService.SessionUser!);
         
         Players = new ObservableCollection<RoomUserModel?>(
             Enumerable.Range(1, 10)
@@ -148,11 +148,11 @@ public abstract class RoomViewModel : PageViewModel
 
     private void HandlePlayerJoined(PlayerJoinedRoomNotification playerJoinedRoomNotif)
     {
-        Players[Room.PlayersCount] = RoomUserModel.FromUser(playerJoinedRoomNotif.Player, false, false);
+        Players[RoomModel.PlayersCount] = RoomUserModel.FromUser(playerJoinedRoomNotif.Player, false, false);
         
-        Room = Room with
+        RoomModel = RoomModel with
         {
-            PlayersCount = _room.PlayersCount + 1
+            PlayersCount = _roomModel.PlayersCount + 1
         };
     }
 
@@ -173,9 +173,9 @@ public abstract class RoomViewModel : PageViewModel
             Players.Add(null);
         }
         
-        Room = Room with
+        RoomModel = RoomModel with
         {
-            PlayersCount = _room.PlayersCount - 1
+            PlayersCount = _roomModel.PlayersCount - 1
         };
     }
 }

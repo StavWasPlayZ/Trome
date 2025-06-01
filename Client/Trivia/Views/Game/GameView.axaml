@@ -62,7 +62,7 @@
                                     <Sector.SweepAngle>
                                         <MultiBinding Converter="{StaticResource TimeSpanToSectorAngleMultiConverter}">
                                             <Binding Path="TimeLeft"/>
-                                            <Binding Path="Room.Data.TimePerQuestionSecs"/>
+                                            <Binding Path="RoomModel.Data.TimePerQuestionSecs"/>
                                         </MultiBinding>
                                     </Sector.SweepAngle>
                                     
@@ -88,7 +88,7 @@
                             <TextBlock.Text>
                                 <MultiBinding StringFormat="{}{0}/{1}">
                                     <Binding Path="CurrQuestionCount"/>
-                                    <Binding Path="Room.Data.QuestionsCount"/>
+                                    <Binding Path="RoomModel.Data.QuestionsCount"/>
                                 </MultiBinding>
                             </TextBlock.Text>
                         </TextBlock>

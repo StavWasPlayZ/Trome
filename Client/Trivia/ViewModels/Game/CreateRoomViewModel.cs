@@ -16,12 +16,12 @@ public class CreateRoomViewModel : RoomViewModel
     public ReactiveCommand<Unit, Unit> CloseRoomCommand { get; }
     public ReactiveCommand<Unit, Unit> StartGameCommand { get; }
 
-    public CreateRoomViewModel(IScreen hostScreen, Room room) : base(hostScreen, room)
+    public CreateRoomViewModel(IScreen hostScreen, RoomModel roomModel) : base(hostScreen, roomModel)
     {
-        _name = room.Data.Name;
-        _questions = room.Data.QuestionsCount;
-        _secsPerQuestion = room.Data.TimePerQuestionSecs;
-        MaxPlayers = room.Data.MaxPlayers;
+        _name = roomModel.Data.Name;
+        _questions = roomModel.Data.QuestionsCount;
+        _secsPerQuestion = roomModel.Data.TimePerQuestionSecs;
+        MaxPlayers = roomModel.Data.MaxPlayers;
         
         
         CloseRoomCommand = ReactiveCommand.CreateFromTask(async () =>
@@ -33,9 +33,9 @@ public class CreateRoomViewModel : RoomViewModel
 
         StartGameCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            await Comm.SendRequestAwaitResponse<StartGameResponse>(new StartGameRequest(Room.Data));
+            await Comm.SendRequestAwaitResponse<StartGameResponse>(new StartGameRequest(RoomModel.Data));
 
-            NavigateTo(new GameViewModel(HostScreen, Room));
+            NavigateTo(new GameViewModel(HostScreen, RoomModel));
         });
 
         
@@ -69,7 +69,7 @@ public class CreateRoomViewModel : RoomViewModel
 
     private void SendRoomData()
     {
-        Room = Room with
+        RoomModel = RoomModel with
         {
             Data = new RoomData
             {
@@ -80,7 +80,7 @@ public class CreateRoomViewModel : RoomViewModel
             }
         }; 
         
-        Comm.SendRequest(new UpdateRoomDataRequest(Room.Data));
+        Comm.SendRequest(new UpdateRoomDataRequest(RoomModel.Data));
     }
 
 
