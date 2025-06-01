@@ -1,6 +1,6 @@
-﻿using Trivia.ViewModels.Game;
+﻿using Trivia.ViewModels.Room;
 
-namespace Trivia.Views.Game;
+namespace Trivia.Views.Room;
 
 public partial class CreateRoomView : PageViewControl<CreateRoomViewModel>
 {

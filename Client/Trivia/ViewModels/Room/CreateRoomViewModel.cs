@@ -6,8 +6,9 @@ using ReactiveUI;
 using Trivia.Codec.C2S.Request.Packets;
 using Trivia.Codec.S2C.Response.Packets;
 using Trivia.Models.Raw;
+using Trivia.ViewModels.Game;
 
-namespace Trivia.ViewModels.Game;
+namespace Trivia.ViewModels.Room;
 
 public class CreateRoomViewModel : RoomViewModel
 {

@@ -23,7 +23,8 @@ public class FinishedEarlyViewModel : GameViewModelBase
 
     public string EndingLine { get; } = EndingLines[App.Random.Next(EndingLines.Length)];
     
-    public FinishedEarlyViewModel(IScreen hostScreen, RoomModel roomModel, int playersFinished) : base(hostScreen, roomModel)
+    public FinishedEarlyViewModel(IScreen hostScreen, RoomModel roomModel, int playersFinished) :
+        base(hostScreen, roomModel)
     {
         PlayersFinished = playersFinished;
     }

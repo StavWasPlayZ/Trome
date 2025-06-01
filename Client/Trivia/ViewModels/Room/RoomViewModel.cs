@@ -9,7 +9,7 @@ using Trivia.Codec.S2C.Notification.Packets;
 using Trivia.Models.Raw;
 using Trivia.Models.User;
 
-namespace Trivia.ViewModels.Game;
+namespace Trivia.ViewModels.Room;
 
 public abstract class RoomViewModel : PageViewModel
 {

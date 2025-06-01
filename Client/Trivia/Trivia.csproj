@@ -54,20 +54,20 @@
         <DependentUpon>JoinMenuView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\Game\CreateRoomView.axaml.cs">
-        <DependentUpon>CreateRoomView.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
       <Compile Update="Views\Menu\StatisticsView.axaml.cs">
         <DependentUpon>StatisticsView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\Game\JoinedRoomView.axaml.cs">
-        <DependentUpon>JoinedRoomView.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
       <Compile Update="Views\Game\AfterGameView.axaml.cs">
         <DependentUpon>AfterGameView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Room\CreateRoomView.axaml.cs">
+        <DependentUpon>CreateRoomView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Room\JoinedRoomView.axaml.cs">
+        <DependentUpon>JoinedRoomView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
     </ItemGroup>
