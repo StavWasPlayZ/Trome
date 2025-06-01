@@ -17,7 +17,7 @@ public class CreateRoomViewModel : RoomViewModel
     public ReactiveCommand<Unit, Unit> CloseRoomCommand { get; }
     public ReactiveCommand<Unit, Unit> StartGameCommand { get; }
 
-    public CreateRoomViewModel(IScreen hostScreen, RoomModel roomModel) : base(hostScreen, roomModel)
+    public CreateRoomViewModel(IScreen hostScreen, RoomModel roomModel) : base(hostScreen, roomModel, [])
     {
         _name = roomModel.Data.Name;
         _questions = roomModel.Data.QuestionsCount;

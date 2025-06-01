@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Disposables;
+using System.Threading.Tasks;
 using ReactiveUI;
+using Trivia.Codec.C2S.Request.Packets;
 using Trivia.Codec.S2C;
 using Trivia.Codec.S2C.Notification.Packets;
+using Trivia.Codec.S2C.Response.Packets;
 using Trivia.Models.Raw;
 using Trivia.Models.User;
 
@@ -13,16 +16,7 @@ namespace Trivia.ViewModels.Room;
 
 public abstract class RoomViewModel : PageViewModel
 {
-    public ObservableCollection<RoomUserModel?> Players { get; }
-    
-    private RoomModel _roomModel;
-
-    public RoomModel RoomModel
-    {
-        get => _roomModel;
-        set => this.RaiseAndSetIfChanged(ref _roomModel, value);
-    }
-
+    private bool _wasInitiated;
 
     /// <summary>
     /// </summary>
@@ -30,46 +24,43 @@ public abstract class RoomViewModel : PageViewModel
     /// <param name="roomModel"></param>
     /// <param name="players">
     /// A list of all already existing players.
-    /// Must be present if the room's <see cref="RoomModel.PlayersCount"/> is greater than 1.
+    /// Excludes the current player.
     /// </param>
-    protected RoomViewModel(IScreen hostScreen, RoomModel roomModel, List<User>? players = null) : base(hostScreen)
+    protected RoomViewModel(IScreen hostScreen, RoomModel roomModel, List<User> players) :
+        base(hostScreen)
     {
         _roomModel = roomModel;
-
-        var isRoomAdmin = roomModel.Admin == AppService.SessionUser!;
+        _players = [];
         
-        // This assumes that the first player is always the admin.
-        // Also note that ObservableCollection does not provide an API for setting a capacity.
-        Players = [
-            RoomUserModel.FromUser(roomModel.Admin, isRoomAdmin, true)
+        // The player list excludes the current player.
+        // Add them back.
+        players =
+        [
+            ..players,
+            AppService.SessionUser!
         ];
 
-        // The current player is not to be provided.
-        for (var i = 1; i < roomModel.PlayersCount - 1; i++)
-        {
-            var player = players![i];
-            Players.Add(RoomUserModel.FromUser(player, player == AppService.SessionUser!, false));
-        }
-        
-        // If we were not added during the initial addition as an Admin, now's the time.
-        // (AKA we're last in the list)
-        if (!isRoomAdmin)
-        {
-            Players.Add(RoomUserModel.FromUser(AppService.SessionUser!, true, false));
-        }
-
-        for (var i = roomModel.PlayersCount; i < roomModel.Data.MaxPlayers; i++)
-        {
-            Players.Add(null);
-        }
+        ReAddAllPlayers(players);
         
         
         this.WhenActivated(disposables =>
         {
             this
                 .WhenAnyValue(x => x.MaxPlayers)
-                .Subscribe(_ => UpdatePlayersList())
+                .Subscribe(_ => UpdateEmptyPlayerSlots())
                 .DisposeWith(disposables);
+            
+            // Even though we've already got the existing players, still get them here.
+            // This is because the provided list could very well be outdated, due to
+            // navigation cache.
+
+            if (_wasInitiated)
+            {
+                FetchPlayersInRoom()
+                    .DisposeWith(disposables);
+            }
+
+            _wasInitiated = true;
         });
     }
 
@@ -77,7 +68,7 @@ public abstract class RoomViewModel : PageViewModel
     {
         _roomModel = RoomModel.CreateMockRoom(AppService.SessionUser!);
         
-        Players = new ObservableCollection<RoomUserModel?>(
+        _players = new ObservableCollection<RoomUserModel?>(
             Enumerable.Range(1, 10)
                 .Select(i =>
                 {
@@ -94,6 +85,32 @@ public abstract class RoomViewModel : PageViewModel
                 })
         );
     }
+
+
+    private void ReAddAllPlayers(List<User> players)
+    {
+        List<RoomUserModel?> newPlayersList = [];
+
+        newPlayersList.AddRange(
+            players
+                .Select(player =>
+                    RoomUserModel.FromUser(
+                        player,
+                        player == AppService.SessionUser!,
+                        player == RoomModel.Admin
+                    )
+                )
+            );
+
+        SetPlayersList(newPlayersList);
+    }
+
+
+    private async Task FetchPlayersInRoom()
+    {
+        var response = await Comm.SendRequestAwaitResponse<GetPlayersInRoomResponse>(new GetPlayersInRoomRequest());
+        ReAddAllPlayers([..response.Players]);
+    }
     
     
     private int _maxPlayers;
@@ -104,27 +121,59 @@ public abstract class RoomViewModel : PageViewModel
         set => this.RaiseAndSetIfChanged(ref _maxPlayers, value);
     }
     
-    
-    private void UpdatePlayersList()
+    private RoomModel _roomModel;
+
+    public RoomModel RoomModel
     {
-        if (MaxPlayers == Players.Count)
+        get => _roomModel;
+        set => this.RaiseAndSetIfChanged(ref _roomModel, value);
+    }
+    
+    private ObservableCollection<RoomUserModel?> _players;
+    
+    public ObservableCollection<RoomUserModel?> Players
+    {
+        get => _players;
+        set => this.RaiseAndSetIfChanged(ref _players, value);
+    }
+    
+    
+    /// <summary>
+    /// Adapts the provided players list to be displayable in the Room view,
+    /// and sends an update notification to it.
+    /// </summary>
+    /// <param name="players">A raw list of players</param>
+    private void SetPlayersList(List<RoomUserModel?> players)
+    {
+        UpdateEmptyPlayerSlotsFor(players);
+        Players = new ObservableCollection<RoomUserModel?>(players);
+    }
+
+    private void UpdateEmptyPlayerSlotsFor(List<RoomUserModel?> players)
+    {
+        if (MaxPlayers == players.Count)
             return;
 
-        while (MaxPlayers > Players.Count)
+        while (MaxPlayers > players.Count)
         {
-            Players.Add(null);
+            players.Add(null);
         }
         
-        while (MaxPlayers < Players.Count)
+        while (MaxPlayers < players.Count)
         {
-            var current = Players.Last();
+            var current = players.Last();
             
             // If we're about to destroy a player, just don't.
             if (current is not null)
                 break;
 
-            Players.Remove(current);
+            players.Remove(current);
         }
+    }
+
+    private void UpdateEmptyPlayerSlots()
+    {
+        SetPlayersList([..Players]);
     }
     
 
