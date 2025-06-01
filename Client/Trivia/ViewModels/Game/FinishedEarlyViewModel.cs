@@ -1,4 +1,5 @@
-﻿using ReactiveUI;
+﻿using System;
+using ReactiveUI;
 using Trivia.Codec.S2C;
 using Trivia.Codec.S2C.Notification.Packets;
 using Trivia.Models.Raw;
@@ -21,20 +22,14 @@ public class FinishedEarlyViewModel : GameViewModelBase
     ];
 
     public string EndingLine { get; } = EndingLines[App.Random.Next(EndingLines.Length)];
-
-    public Room Room { get; }
     
-    public FinishedEarlyViewModel(IScreen hostScreen, Room room, int playersFinished) : base(hostScreen)
+    public FinishedEarlyViewModel(IScreen hostScreen, Room room, int playersFinished) : base(hostScreen, room)
     {
-        Room = room;
-        _playersFinished = playersFinished;
+        PlayersFinished = playersFinished;
     }
 
     public FinishedEarlyViewModel()
-    {
-        Room = Room.CreateMockRoom(AppService.SessionUser!);
-        _playersFinished = 2;
-    }
+    {}
 
 
     protected override void CommOnPacketReceived(IS2CPacket packet)
@@ -42,24 +37,12 @@ public class FinishedEarlyViewModel : GameViewModelBase
         switch (packet)
         {
             case GameEndedNotification:
-                NavigateAndPop(new AfterGameViewModel(HostScreen));
-                break;
-            
-            case PlayerFinishedNotification:
-                _playersFinished++;
+                NavigateAndPop(new AfterGameViewModel(HostScreen))!.Subscribe();
                 break;
             
             default:
                 base.CommOnPacketReceived(packet);
                 break;
         }
-    }
-    
-    private int _playersFinished;
-
-    public int PlayersFinished
-    {
-        get => _playersFinished;
-        set => this.RaiseAndSetIfChanged(ref _playersFinished, value);
     }
 }

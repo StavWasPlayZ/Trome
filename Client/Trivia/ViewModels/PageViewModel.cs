@@ -1,6 +1,7 @@
 using System;
 using System.Reactive;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using ReactiveUI;
 using Trivia.Codec.S2C;
 using Trivia.Services;
@@ -28,16 +29,12 @@ public abstract class PageViewModel : ViewModelBase, IRoutableViewModel, IActiva
         
         this.WhenActivated(disposables =>
         {
+            Comm.PacketReceived += CommOnPacketReceived;
+
             Disposable
                 .Create(() => Comm.PacketReceived -= CommOnPacketReceived)
                 .DisposeWith(disposables);
         });
-    }
-
-    
-    public void SubToServerEvents()
-    {
-        Comm.PacketReceived += CommOnPacketReceived;
     }
 
     protected virtual void CommOnPacketReceived(IS2CPacket packet) { }
@@ -73,8 +70,9 @@ public abstract class PageViewModel : ViewModelBase, IRoutableViewModel, IActiva
     }
     protected static IObservable<IRoutableViewModel>? NavigateAndPop(PageViewModel pageViewModel)
     {
-        Router?.NavigateBack.Execute();
-        return NavigateTo(pageViewModel);
+        return Router?.NavigateBack
+            .Execute()
+            .SelectMany(_ => NavigateTo(pageViewModel)!);
     }
 
     protected static ReactiveCommand<Unit, IRoutableViewModel> NavigateReactiveCommand(Func<PageViewModel> pageViewModel)

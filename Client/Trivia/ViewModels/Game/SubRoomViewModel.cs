@@ -1,16 +1,26 @@
-﻿using ReactiveUI;
+using System.Reactive.Threading.Tasks;
+using System.Threading.Tasks;
+using ReactiveUI;
 using Trivia.Codec.S2C;
 using Trivia.Codec.S2C.Notification.Packets;
 
 namespace Trivia.ViewModels.Game;
 
-public class AfterGameViewModel : SubRoomViewModel
+public abstract class SubRoomViewModel : PageViewModel
 {
-    public AfterGameViewModel(IScreen hostScreen) : base(hostScreen)
+    protected SubRoomViewModel(IScreen hostScreen) : base(hostScreen)
     {}
     
-    public AfterGameViewModel()
+    protected SubRoomViewModel()
     {}
+    
+    
+    protected async Task NavBackFromRoom()
+    {
+        // Assuming Join -> Room -> Game
+        await NavigateBackCommand!.Execute().ToTask();
+        await NavigateBackCommand!.Execute().ToTask();
+    }
     
     
     protected override void CommOnPacketReceived(IS2CPacket packet)

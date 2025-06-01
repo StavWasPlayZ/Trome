@@ -139,6 +139,10 @@ public abstract class RoomViewModel : PageViewModel
             case PlayerLeftRoomNotification playerLeftRoomNotif:
                 HandlePlayerLeft(playerLeftRoomNotif);
                 break;
+            
+            default:
+                base.CommOnPacketReceived(packet);
+                break;
         }
     }
 

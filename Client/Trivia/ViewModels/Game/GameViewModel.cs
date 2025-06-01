@@ -18,15 +18,13 @@ public class GameViewModel : GameViewModelBase
 {
     private const int CountdownSleepMs = 10;
     
-    public Room Room { get; }
     public ReactiveCommand<int, Unit> SubmitAnswerCommand { get; }
     
     private TaskCompletionSource? _countdownCompletion;
     
-    public GameViewModel(IScreen hostScreen, Room data) : base(hostScreen)
+    
+    public GameViewModel(IScreen hostScreen, Room room) : base(hostScreen, room)
     {
-        Room = data;
-
         SubmitAnswerCommand = ReactiveCommand.CreateFromTask<int>(async (btnIndex, _) =>
             await SubmitAnswer(btnIndex)
         );
@@ -46,7 +44,6 @@ public class GameViewModel : GameViewModelBase
 
     public GameViewModel()
     {
-        Room = Room.CreateMockRoom(AppService.SessionUser!);
         _timeLeft = TimeSpan.FromSeconds(Room.Data.TimePerQuestionSecs - 1);
         Points = 4269;
         _leadingUsername = "Username";
@@ -63,19 +60,11 @@ public class GameViewModel : GameViewModelBase
          var response = await Comm.SendRequestAwaitResponse<GetQuestionResponse>(new GetQuestionRequest());
          Question = response.Question;
          Points = response.Points;
-         _finishedLast = response.WasLastPlayer;
-         _playersFinished = response.PlayersFinished;
          
          HandleQuestion();
     }
 
-
-    //NOTE: This is temporary until the players countdown (from Finished Early screen)
-    // is implemented.
-    private bool _finishedLast;
     
-    private int _playersFinished;
-
     private async Task SubmitAnswer(int btnIndex)
     {
         await StopCountdown();
@@ -83,8 +72,6 @@ public class GameViewModel : GameViewModelBase
         var response = await Comm.SendRequestAwaitResponse<SubmitAnswerResponse>(new SubmitAnswerRequest(btnIndex));
         Question = response.NewQuestion;
         Points = response.Points;
-        _finishedLast = response.WasLastPlayer;
-        _playersFinished = response.PlayersFinished;
 
         CurrQuestionCount++;
         HandleQuestion();
@@ -175,13 +162,17 @@ public class GameViewModel : GameViewModelBase
 
     private void HandleLastQuestion()
     {
-        if (_finishedLast)
+        PlayersFinished++;
+        
+        // If the below is true, then we were the last player
+        // to have finished the game.
+        if (PlayersFinished == Room.PlayersCount)
         {
-            NavigateAndPop(new AfterGameViewModel(HostScreen));
+            NavigateAndPop(new AfterGameViewModel(HostScreen))!.Subscribe();
         }
         else
         {
-            NavigateAndPop(new FinishedEarlyViewModel(HostScreen, Room, _playersFinished)); 
+            NavigateAndPop(new FinishedEarlyViewModel(HostScreen, Room, PlayersFinished))!.Subscribe(); 
         }
     }
 
