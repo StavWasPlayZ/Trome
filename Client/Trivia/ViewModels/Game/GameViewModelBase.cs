@@ -1,6 +1,4 @@
 using System.Reactive;
-using System.Reactive.Threading.Tasks;
-using System.Threading.Tasks;
 using ReactiveUI;
 using Trivia.Codec.C2S.Request.Packets;
 using Trivia.Codec.S2C;
@@ -10,7 +8,7 @@ using Trivia.Models.Raw;
 
 namespace Trivia.ViewModels.Game;
 
-public abstract class GameViewModelBase : PageViewModel
+public abstract class GameViewModelBase : SubRoomViewModel
 {
     public ReactiveCommand<Unit, Unit> LeaveGameCommand { get; }
     
@@ -34,14 +32,6 @@ public abstract class GameViewModelBase : PageViewModel
         LeaveGameCommand = NoOpCommand;
         _playersFinished = 2;
     }
-
-
-    private async Task NavBackFromRoom()
-    {
-        // Assuming Join -> Room -> Game
-        await NavigateBackCommand!.Execute().ToTask();
-        await NavigateBackCommand!.Execute().ToTask();
-    }
     
     
     private int _playersFinished;
@@ -59,10 +49,6 @@ public abstract class GameViewModelBase : PageViewModel
         {
             case PlayerFinishedNotification:
                 PlayersFinished++;
-                break;
-            
-            case RoomClosedNotification:
-                NavBackFromRoom().Wait();
                 break;
             
             default:
