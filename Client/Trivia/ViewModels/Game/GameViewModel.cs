@@ -168,7 +168,7 @@ public class GameViewModel : GameViewModelBase
         // to have finished the game.
         if (PlayersFinished == RoomModel.PlayersCount)
         {
-            NavigateAndPop(new AfterGameViewModel(HostScreen))!.Subscribe();
+            NavigateAndPop(new AfterGameViewModel(HostScreen, RoomModel))!.Subscribe();
         }
         else
         {

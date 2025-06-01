@@ -1,14 +1,19 @@
 ﻿using ReactiveUI;
 using Trivia.Codec.S2C;
 using Trivia.Codec.S2C.Notification.Packets;
+using Trivia.Models.Raw;
 
 namespace Trivia.ViewModels.Game;
 
 public class AfterGameViewModel : SubRoomViewModel
 {
-    public AfterGameViewModel(IScreen hostScreen) : base(hostScreen)
-    {}
-    
+    private RoomModel _room;
+
+    public AfterGameViewModel(IScreen hostScreen, RoomModel room) : base(hostScreen)
+    {
+        _room = room;
+    }
+
     public AfterGameViewModel()
     {}
     
@@ -19,6 +24,12 @@ public class AfterGameViewModel : SubRoomViewModel
         {
             case RoomClosedNotification:
                 NavBackFromRoom().Wait();
+                break;
+            
+            case GameStartedNotification:
+                // tried to do: NavigateAndPop(new GameViewModel(HostScreen, _room))!.Subscribe(); 
+                // got error: Method 'Subscribe' has 1 parameter(s) but is invoked with 0 argument(s)
+                NavigateTo(new GameViewModel(HostScreen, _room));
                 break;
             
             default:
