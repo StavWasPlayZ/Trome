@@ -12,11 +12,10 @@ bool RoomMemberRequestHandler::isRequestRelevant(const RequestInfo &info) const
     switch (info.id)
     {
     case RequestCode::LEAVE_ROOM:
-    case RequestCode::GET_ROOM_STATE:
         return true;
 
     default:
-        return false;
+        return RoomRequestHandler::isRequestRelevant(info);
     }
 }
 
@@ -26,11 +25,9 @@ RequestResult RoomMemberRequestHandler::handleRequest(const RequestInfo &info, c
     {
     case RequestCode::LEAVE_ROOM:
         return leaveRoom(info, static_cast<const LeaveRoomRequest &>(request));
-    case RequestCode::GET_ROOM_STATE:
-        return getRoomState(info, static_cast<const GetRoomStateRequest &>(request));
 
     default:
-        throw std::invalid_argument("Unknown request ID");
+        return RoomRequestHandler::handleRequest(info, request);
     }
 }
 
@@ -43,9 +40,4 @@ RequestResult RoomMemberRequestHandler::leaveRoom(const RequestInfo &info, const
         new LeaveRoomResponse(),
         new MenuRequestHandler(this->m_handlerFactory)
     );
-}
-
-RequestResult RoomMemberRequestHandler::getRoomState(const RequestInfo &, const GetRoomStateRequest &) const
-{
-    return RequestResult(new GetRoomStateResponse(m_room));
 }

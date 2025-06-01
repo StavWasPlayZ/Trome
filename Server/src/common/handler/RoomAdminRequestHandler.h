@@ -24,6 +24,4 @@ private:
     RequestResult closeRoom(const RequestInfo & info, const CloseRoomRequest & request) const;
 
     RequestResult updateRoomData(const RequestInfo & info, const UpdateRoomDataRequest & request) const;
-
-    RequestResult getRoomState(const RequestInfo& info, const GetRoomStateRequest& request) const;
 };

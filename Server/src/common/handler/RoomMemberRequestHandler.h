@@ -18,6 +18,4 @@ public:
 
 private:
     RequestResult leaveRoom(const RequestInfo &info, const LeaveRoomRequest &request) const;
-
-    RequestResult getRoomState(const RequestInfo &info, const GetRoomStateRequest &request) const;
 };

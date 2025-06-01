@@ -21,7 +21,8 @@ bool RoomAdminRequestHandler::isRequestRelevant(const RequestInfo &info) const
     case RequestCode::GET_ROOM_STATE:
         return true;
 
-    default: return false;
+    default:
+        return RoomRequestHandler::isRequestRelevant(info);
     }
 }
 
@@ -36,10 +37,8 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo &info, co
     case RequestCode::UPDATE_ROOM_DATA:
         return updateRoomData(info, static_cast<const UpdateRoomDataRequest &>(request));
 
-    case RequestCode::GET_ROOM_STATE:
-        return getRoomState(info, static_cast<const GetRoomStateRequest &>(request));
-
-    default: throw std::invalid_argument("Unknown request ID");
+    default:
+        return RoomRequestHandler::handleRequest(info, request);
     }
 }
 
@@ -81,9 +80,4 @@ RequestResult RoomAdminRequestHandler::updateRoomData(const RequestInfo &, const
     return RequestResult(
         new UpdateRoomDataResponse()
     );
-}
-
-RequestResult RoomAdminRequestHandler::getRoomState(const RequestInfo &, const GetRoomStateRequest &) const
-{
-    return RequestResult(new GetRoomStateResponse(m_room));
 }
