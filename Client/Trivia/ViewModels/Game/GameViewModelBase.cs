@@ -1,5 +1,6 @@
 using System.Reactive;
 using System.Reactive.Threading.Tasks;
+using System.Threading.Tasks;
 using ReactiveUI;
 using Trivia.Codec.C2S.Request.Packets;
 using Trivia.Codec.S2C;
@@ -22,10 +23,7 @@ public abstract class GameViewModelBase : PageViewModel
         LeaveGameCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             await Comm.SendRequestAwaitResponse<LeaveGameResponse>(new LeaveGameRequest());
-            
-            // Assuming Join -> Room -> Game
-            await NavigateBackCommand!.Execute().ToTask();
-            await NavigateBackCommand!.Execute().ToTask();
+            await NavBackFromRoom();
         });
     }
 
@@ -35,6 +33,14 @@ public abstract class GameViewModelBase : PageViewModel
 
         LeaveGameCommand = NoOpCommand;
         _playersFinished = 2;
+    }
+
+
+    private async Task NavBackFromRoom()
+    {
+        // Assuming Join -> Room -> Game
+        await NavigateBackCommand!.Execute().ToTask();
+        await NavigateBackCommand!.Execute().ToTask();
     }
     
     
@@ -53,6 +59,10 @@ public abstract class GameViewModelBase : PageViewModel
         {
             case PlayerFinishedNotification:
                 PlayersFinished++;
+                break;
+            
+            case RoomClosedNotification:
+                NavBackFromRoom().Wait();
                 break;
             
             default:
