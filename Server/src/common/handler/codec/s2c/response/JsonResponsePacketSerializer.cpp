@@ -125,7 +125,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetRoomsResponse &
 
     nlohmann::json& rooms = data["rooms"] = nlohmann::json::array();
 
-	for (const auto& room : response.rooms)
+	for (const Room* const room : response.rooms)
     {
         rooms.push_back(ProtocolPacketSerializer::serializeAsJson(*room));
 	}
@@ -252,7 +252,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetGameResultRespo
     nlohmann::json data;
     nlohmann::json resultsArr = nlohmann::json::array();
 
-    for (const auto& result : response.results)
+    for (const PlayerResult& result : response.results)
     {
         resultsArr.push_back(ProtocolPacketSerializer::serializeAsJson(result));
     }
