@@ -27,6 +27,7 @@ public enum ErrorStatus
     
     // Room
     RoomFull,
+    RoomAlreadyPlaying,
     
     // Game
     QuestionOutdated,
