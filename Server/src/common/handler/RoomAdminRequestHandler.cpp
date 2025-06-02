@@ -73,29 +73,9 @@ RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo &, const Clos
     );
 }
 
-RequestResult RoomAdminRequestHandler::updateRoomData(const RequestInfo &info, const UpdateRoomDataRequest &request) const
+RequestResult RoomAdminRequestHandler::updateRoomData(const RequestInfo &, const UpdateRoomDataRequest &request) const
 {
-    RoomData data = request.data;
-
-    if (data.timePerQuestionSecs <= 0)
-    {
-        return RequestResult(
-            new ErrorResponse(ErrorStatus::INVALID_ARGUMENT, info.id, "Time per question must be positive"));
-    }
-
-    if (data.maxPlayers < 2)
-    {
-        return RequestResult(
-            new ErrorResponse(ErrorStatus::INVALID_ARGUMENT, info.id, "Max player count must be more then 1"));
-    }
-
-    if (data.questionsCount <= 0)
-    {
-        return RequestResult(
-            new ErrorResponse(ErrorStatus::INVALID_ARGUMENT, info.id, "Number of questions must be positive"));
-    }
-
-    m_room.setData(data);
+    m_room.setData(request.data);
 
     return RequestResult(
         new UpdateRoomDataResponse()
