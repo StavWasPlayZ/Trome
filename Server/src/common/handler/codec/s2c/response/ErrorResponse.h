@@ -45,6 +45,9 @@ enum class ErrorStatus : unsigned int
     // Logout
     NOT_LOGGED_IN,
 
+    // Room
+    ROOM_FULL,
+
     // Game
     QUESTION_OUTDATED,
     ALREADY_FINISHED

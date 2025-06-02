@@ -65,6 +65,13 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo &info, const JoinRo
 
     const std::vector<LoggedUser*> usersBeforeNew = room.value()->getAllUsers();
 
+    if (usersBeforeNew.size() >= room.value()->getData().maxPlayers)
+    {
+        return RequestResult(
+            new ErrorResponse(ErrorStatus::ROOM_FULL, info.id)
+        );
+    }
+
     LoggedUser& user = getUserByInfo(info);
     room.value()->addUser(user);
 
