@@ -106,8 +106,7 @@ public class JoinRoomMenuViewModel : PageViewModel
         switch (e.ServerResponse.Status)
         {
             case ErrorStatus.RoomFull:
-            //TODO:
-            //case ErrorStatus.RoomAlreadyPlaying:
+            case ErrorStatus.RoomAlreadyPlaying:
                 return;
             
             default:
