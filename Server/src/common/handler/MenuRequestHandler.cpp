@@ -72,6 +72,13 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo &info, const JoinRo
         );
     }
 
+    if (room.value()->getStatus() == RoomStatus::PLAYING)
+    {
+        return RequestResult(
+            new ErrorResponse(ErrorStatus::ROOM_ALREADY_PLAYING, info.id)
+        );
+    }
+
     LoggedUser& user = getUserByInfo(info);
     room.value()->addUser(user);
 
