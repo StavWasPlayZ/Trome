@@ -25,6 +25,9 @@ public enum ErrorStatus
     // Logout
     NotLoggedIn,
     
+    // Room
+    RoomFull,
+    
     // Game
     QuestionOutdated,
     AlreadyFinished

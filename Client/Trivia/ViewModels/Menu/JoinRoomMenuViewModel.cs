@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Threading;
 using System.Threading.Tasks;
 using ReactiveUI;
 using Trivia.Codec.C2S.Request.Packets;
+using Trivia.Codec.S2C.Response;
 using Trivia.Codec.S2C.Response.Packets;
+using Trivia.Exceptions;
 using Trivia.Models.Raw;
 using Trivia.ViewModels.Room;
 
@@ -54,13 +57,19 @@ public class JoinRoomMenuViewModel : PageViewModel
                 Data = response.Data
             }));
         });
+
+        JoinRoomButtonCommand = ReactiveCommand.CreateFromTask<int>(JoinRoom);
         
-        JoinRoomButtonCommand = ReactiveCommand.CreateFromTask<int>(async roomId =>
+        this.WhenActivated(disposables =>
         {
-            //TODO: Handle room deleted before refresh
-            var response = await Comm.SendRequestAwaitResponse<JoinRoomResponse>(new JoinRoomRequest(roomId));
+            Disposable
+                .Create(() => _refreshRoomThreadRunning = false)
+                .DisposeWith(disposables);
             
-            NavigateTo(new JoinedRoomViewModel(hostScreen, response.Room, [..response.Players]));
+            JoinRoomButtonCommand
+                .ThrownExceptions
+                .Subscribe(OnJoinRoomFailed)
+                .DisposeWith(disposables);
         });
 
         this.WhenActivated(disposables =>
@@ -79,6 +88,23 @@ public class JoinRoomMenuViewModel : PageViewModel
         SelectedRoom = Rooms[0];
     }
 
+    private async Task JoinRoom(int roomId)
+    {
+        //TODO: Handle room deleted before refresh
+        var response = await Comm.SendRequestAwaitResponse<JoinRoomResponse>(new JoinRoomRequest(roomId));
+        
+        NavigateTo(new JoinedRoomViewModel(HostScreen, response.Room, [..response.Players]));
+    }
+
+    private void OnJoinRoomFailed(Exception exception)
+    {
+        if (exception is ServerErrorException e && e.ServerResponse.Status == ErrorStatus.RoomFull)
+        {
+            return;
+        }
+        
+        throw exception;
+    }
 
     public void RunRefreshRoomsThread()
     {
