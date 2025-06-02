@@ -16,8 +16,7 @@ public static class StatusTranscriber
             "The server faulted",
         
         
-        [ErrorStatus.InvalidArgument] = response =>
-            $"Invalid {response.Context} format",
+        [ErrorStatus.InvalidArgument] = TranscribeIllegalArgument,
         [ErrorStatus.UsernameTaken] = _ =>
             "Username Taken",
         
@@ -37,6 +36,20 @@ public static class StatusTranscriber
         [ErrorStatus.RoomFull] = _ =>
             "Room is full"
     };
+
+
+    private static string TranscribeIllegalArgument(ErrorResponse response)
+    {
+        return response.Context switch
+        {
+            "time_per_question_secs-npz" => "The time per question must be greater than 0",
+            "max_players-nzp" => "There must be at least one player in a room",
+            "questions_count-npz" => " There must be at least one question in the game",
+            
+            _ => $"Invalid {response.Context} format"
+        };
+    }
+    
 
     public static string Transcribe(this ErrorResponse response)
     {
