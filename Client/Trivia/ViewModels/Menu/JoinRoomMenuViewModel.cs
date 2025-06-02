@@ -98,12 +98,19 @@ public class JoinRoomMenuViewModel : PageViewModel
 
     private void OnJoinRoomFailed(Exception exception)
     {
-        if (exception is ServerErrorException e && e.ServerResponse.Status == ErrorStatus.RoomFull)
+        if (exception is not ServerErrorException e)
+            throw exception;
+
+        switch (e.ServerResponse.Status)
         {
-            return;
+            case ErrorStatus.RoomFull:
+            //TODO:
+            //case ErrorStatus.RoomAlreadyPlaying:
+                return;
+            
+            default:
+                throw exception;
         }
-        
-        throw exception;
     }
 
     public void RunRefreshRoomsThread()
