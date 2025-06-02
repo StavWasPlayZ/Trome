@@ -35,7 +35,9 @@ public static class StatusTranscriber
             "The requested resource could not be found",
         
         [ErrorStatus.RoomFull] = _ =>
-            "Room is full"
+            "Room is full",
+        [ErrorStatus.RoomAlreadyPlaying] = _ =>
+            "Room is already playing"
     };
 
     public static string Transcribe(this ErrorResponse response)
