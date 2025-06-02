@@ -75,26 +75,27 @@ RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo &, const Clos
 
 RequestResult RoomAdminRequestHandler::updateRoomData(const RequestInfo &info, const UpdateRoomDataRequest &request) const
 {
-    RoomData data = request.data;
+    const RoomData& data = request.data;
 
+    //NOTE: nzp = non-zero positive
     if (data.timePerQuestionSecs <= 0)
     {
         return RequestResult(
-            new ErrorResponse(ErrorStatus::INVALID_ARGUMENT, info.id, "Time per question must be positive")
+            new ErrorResponse(ErrorStatus::INVALID_ARGUMENT, info.id, "time_per_question_secs-npz")
         );
     }
 
-    if (data.maxPlayers <= 1)
+    if (data.maxPlayers <= 0)
     {
         return RequestResult(
-            new ErrorResponse(ErrorStatus::INVALID_ARGUMENT, info.id, "Max player count must be greater then 1")
+            new ErrorResponse(ErrorStatus::INVALID_ARGUMENT, info.id, "max_players-nzp")
         );
     }
 
     if (data.questionsCount <= 0)
     {
         return RequestResult(
-            new ErrorResponse(ErrorStatus::INVALID_ARGUMENT, info.id, "Number of questions must be a non-zero positive")
+            new ErrorResponse(ErrorStatus::INVALID_ARGUMENT, info.id, "questions_count-npz")
         );
     }
 
