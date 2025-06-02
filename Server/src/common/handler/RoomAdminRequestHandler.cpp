@@ -80,19 +80,22 @@ RequestResult RoomAdminRequestHandler::updateRoomData(const RequestInfo &info, c
     if (data.timePerQuestionSecs <= 0)
     {
         return RequestResult(
-            new ErrorResponse(ErrorStatus::INVALID_ARGUMENT, info.id, "Time per question must be positive"));
+            new ErrorResponse(ErrorStatus::INVALID_ARGUMENT, info.id, "Time per question must be positive")
+        );
     }
 
-    if (data.maxPlayers < 2)
+    if (data.maxPlayers <= 1)
     {
         return RequestResult(
-            new ErrorResponse(ErrorStatus::INVALID_ARGUMENT, info.id, "Max player count must be more then 1"));
+            new ErrorResponse(ErrorStatus::INVALID_ARGUMENT, info.id, "Max player count must be greater then 1")
+        );
     }
 
     if (data.questionsCount <= 0)
     {
         return RequestResult(
-            new ErrorResponse(ErrorStatus::INVALID_ARGUMENT, info.id, "Number of questions must be positive"));
+            new ErrorResponse(ErrorStatus::INVALID_ARGUMENT, info.id, "Number of questions must be a non-zero positive")
+        );
     }
 
     m_room.setData(data);
