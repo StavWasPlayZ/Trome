@@ -32,7 +32,10 @@ public static class StatusTranscriber
             "The user isn't logged in",
         
         [ErrorStatus.UnknownResource] = _ =>
-            "The requested resource could not be found"
+            "The requested resource could not be found",
+        
+        [ErrorStatus.RoomFull] = _ =>
+            "Room is full"
     };
 
     public static string Transcribe(this ErrorResponse response)
