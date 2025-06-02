@@ -54,6 +54,12 @@ void WindowsCommunicator::acceptClients()
     // It is not the same under Unix.
     const SOCKET newSocket = accept(this->m_serverSocket, (struct sockaddr*)&_serverSockAddr, &addrLen);
 
+    // the _running to avoid the WSAEINTR (10004) exception for windows
+    if (!_running)
+    {
+        return;
+    }
+
     if (newSocket == INVALID_SOCKET)
     {
         throwPlatformError("Accept failed");
