@@ -26,9 +26,9 @@ public class JoinRoomMenuViewModel : PageViewModel
     public ReactiveCommand<int, Unit> JoinRoomButtonCommand { get; }
 
 
-    private ObservableCollection<RoomModel> _rooms = [];
+    private List<RoomModel> _rooms = [];
 
-    public ObservableCollection<RoomModel> Rooms
+    public List<RoomModel> Rooms
     {
         get => _rooms;
         private set => this.RaiseAndSetIfChanged(ref _rooms, value);
@@ -86,7 +86,7 @@ public class JoinRoomMenuViewModel : PageViewModel
     {
         JoinRoomButtonCommand = ReactiveCommand.Create<int>(_ => { });
         NewRoomButtonCommand = NoOpCommand;
-        Rooms = new ObservableCollection<RoomModel>(RoomModel.GenerateMockRooms(30));
+        Rooms = RoomModel.GenerateMockRooms(30);
         SelectedRoom = Rooms[0];
     }
 
@@ -130,17 +130,7 @@ public class JoinRoomMenuViewModel : PageViewModel
         {            
             var response = await Communicator.Instance.SendRequestAwaitResponse<GetRoomsResponse>(new GetRoomsRequest());
 
-            // This for resetting the ObservableCollection for each refresh
-            Rooms = new ObservableCollection<RoomModel>();
-            
-            foreach (var room in response.Rooms)
-            {
-                if (room.Status == RoomStatus.Waiting)
-                {
-                    Rooms.Add(room);
-                }
-            }
-            
+            Rooms = [..response.Rooms];
             Thread.Sleep(RefreshTime);
         }
     }
