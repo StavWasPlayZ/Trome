@@ -127,7 +127,7 @@ void CommonCommunicator::registerClient(const SOCKET socket)
     );
 
 #ifdef _WIN32
-    std::cout << "Connection accepted from " + std::to_string(socket);
+    std::cout << "Connection accepted from " + std::to_string(socket) << std::endl;
 #else
     // Get the IP of the remote to display it
     socklen_t addrLen = sizeof(this->_serverSockAddr);
