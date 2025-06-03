@@ -165,9 +165,10 @@ public class Communicator : IDisposable
             {
                 serverPacket = ReadServerPacket();
             }
-            catch (IOException)
+            catch (IOException e)
             {
                 Console.Error.WriteLine("IO Exception occured; Assuming forced disconnection");
+                Console.Error.WriteLine(e);
                 return;
             }
 
