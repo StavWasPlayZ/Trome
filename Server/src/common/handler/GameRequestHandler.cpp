@@ -116,6 +116,11 @@ RequestResult GameRequestHandler::leaveGame(const RequestInfo &info, const Leave
     else
     {
         room.removeUser(getUserByInfo(info));
+
+        if (this->m_game.isGameComplete())
+        {
+            handleLastPlayerFinished(info);
+        }
     }
 
     return RequestResult(
