@@ -47,6 +47,8 @@ public abstract class GameViewModelBase : SubRoomViewModel
     {
         switch (packet)
         {
+            // When a player leaves, it is also to be considered that they have finished.
+            case PlayerLeftRoomNotification:
             case PlayerFinishedNotification:
                 PlayersFinished++;
                 break;
