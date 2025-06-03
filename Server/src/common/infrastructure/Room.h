@@ -23,6 +23,9 @@ public:
     Room(unsigned int id, LoggedUser& admin, const RoomData& data, const IDatabase& database, RoomStatus status);
     ~Room();
 
+    //TODO: Make part of an identifiable (LoggedUser is too)
+    bool operator==(const Room &other) const;
+
     static unsigned int generateId();
 
 
@@ -76,5 +79,6 @@ enum class RoomStatus : unsigned int
 {
     WAITING = 0,
     PLAYING = 1,
+    //TODO: Remove
     NOT_FOUND = 2
 };

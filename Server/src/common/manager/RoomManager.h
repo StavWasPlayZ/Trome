@@ -1,7 +1,10 @@
 # pragma once
 
-#include <unordered_map>
 #include <optional>
+
+#include <unordered_map>
+#include <set>
+
 #include "infrastructure/Room.h"
 
 class RoomManager
@@ -10,7 +13,14 @@ public:
     explicit RoomManager(const IDatabase& database);
 
     Room& createRoom(LoggedUser &admin, const RoomData &data);
-    void deleteRoom(const Room& room);
+    void deleteRoom(Room& room);
+
+
+    void setRoomPlaying(Room& room);
+    void setRoomWaiting(Room& room);
+
+    std::set<Room *> getWaitingRooms() const;
+
 
     RoomStatus getRoomStatus(int roomID) const;
     std::vector<Room*> getRooms();
@@ -26,4 +36,9 @@ private:
      * Room ID to room mappings.
      */
     std::unordered_map<unsigned int, Room> m_rooms;
+
+    /**
+     * All rooms that are currently in a waiting state
+     */
+    std::set<Room *> m_waitingRooms;
 };

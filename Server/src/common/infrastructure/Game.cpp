@@ -2,11 +2,13 @@
 
 #include "PlayerResult.h"
 #include "Utils.h"
+#include "manager/RoomManager.h"
 
 #include <stdexcept>
 
-Game::Game(Room &room, const IDatabase &database) :
+Game::Game(Room &room, const IDatabase &database, RoomManager& roomManager) :
     m_database(database),
+    m_roomManager(roomManager),
     m_startTime(0),
     m_room(room),
     m_playersRemaining(0)
@@ -32,12 +34,13 @@ void Game::startGame()
 
     m_playersRemaining = m_room.getAllUsers().size();
     m_startTime = utils::getCurrTimeMillis();
-    m_room.setStatus(RoomStatus::PLAYING);
+
+    m_roomManager.setRoomPlaying(m_room);
 }
 
 void Game::endGame() const
 {
-    m_room.setStatus(RoomStatus::WAITING);
+    m_roomManager.setRoomWaiting(m_room);
 }
 
 Room &Game::getRoom() const

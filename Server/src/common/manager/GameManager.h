@@ -9,7 +9,7 @@
 class GameManager
 {
 public:
-    explicit GameManager(const IDatabase& m_database);
+    explicit GameManager(const IDatabase& database, RoomManager& roomManager);
 
   /*
      * PLEASE CALL VIA Room::createNewGame.
@@ -22,5 +22,7 @@ public:
 
 private:
 	const IDatabase& m_database;
+    RoomManager& m_roomManager;
+
 	std::unordered_map<unsigned int, Game> m_games;
 };
