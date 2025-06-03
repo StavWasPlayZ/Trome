@@ -5,6 +5,7 @@ using System.Reactive.Linq;
 using ReactiveUI;
 using Trivia.Codec.C2S.Request.Packets;
 using Trivia.Codec.S2C.Response.Packets;
+using Trivia.Models;
 using Trivia.Models.Raw;
 using Trivia.ViewModels.Game;
 

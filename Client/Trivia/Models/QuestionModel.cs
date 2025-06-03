@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Trivia.Models.Raw;
+namespace Trivia.Models;
 
 public class QuestionModel
 {
