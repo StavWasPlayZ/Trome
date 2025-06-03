@@ -9,7 +9,7 @@
 class GameManager
 {
 public:
-    explicit GameManager(const IDatabase& database, RoomManager& roomManager);
+    GameManager(const IDatabase& database, RoomManager& roomManager);
 
   /*
      * PLEASE CALL VIA Room::createNewGame.
