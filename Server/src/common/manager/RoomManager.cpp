@@ -16,31 +16,40 @@ Room &RoomManager::createRoom(LoggedUser &admin, const RoomData &data)
         std::forward_as_tuple(roomId, admin, data, this->m_database, RoomStatus::WAITING)
     );
 
-    m_waitingRooms.insert(&entry->second);
+    m_waitingRooms.emplace(roomId, &entry->second);
     return entry->second;
 }
 
-void RoomManager::deleteRoom(Room &room)
+void RoomManager::deleteRoom(const Room &room)
 {
-    m_waitingRooms.erase(&room);
-    m_rooms.erase(room.getId());
+    const unsigned int roomId = room.getId();
+
+    m_rooms.erase(roomId);
+    m_waitingRooms.erase(roomId);
 }
 
 void RoomManager::setRoomPlaying(Room &room)
 {
     room.setStatus(RoomStatus::PLAYING);
-    m_waitingRooms.erase(&room);
+    m_waitingRooms.erase(room.getId());
 }
 
 void RoomManager::setRoomWaiting(Room &room)
 {
     room.setStatus(RoomStatus::WAITING);
-    m_waitingRooms.insert(&room);
+    m_waitingRooms.emplace(room.getId(), &room);
 }
 
-std::set<Room *> RoomManager::getWaitingRooms() const
+std::vector<Room *> RoomManager::getWaitingRooms() const
 {
-    return this->m_waitingRooms;
+    std::vector<Room *> results;
+
+    for (const auto& pair : this->m_waitingRooms)
+    {
+        results.push_back(pair.second);
+    }
+
+    return results;
 }
 
 RoomStatus RoomManager::getRoomStatus(const int roomID) const

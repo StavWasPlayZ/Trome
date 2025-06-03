@@ -103,13 +103,10 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& info, const Crea
 RequestResult MenuRequestHandler::getRooms(const RequestInfo &, const GetRoomsRequest &) const
 {
     const RoomManager &rManager = m_handlerFactory.getRoomManager();
-    const std::set<Room *> rooms = rManager.getWaitingRooms();
-
-    std::vector<Room *> roomsVector;
-    std::ranges::copy(rooms, std::back_inserter(roomsVector));
+    const std::vector<Room *> rooms = rManager.getWaitingRooms();
 
     return RequestResult(
-        new GetRoomsResponse(roomsVector)
+        new GetRoomsResponse(rooms)
     );
 }
 

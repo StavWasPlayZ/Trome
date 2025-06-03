@@ -3,7 +3,6 @@
 #include <optional>
 
 #include <unordered_map>
-#include <set>
 
 #include "infrastructure/Room.h"
 
@@ -13,13 +12,13 @@ public:
     explicit RoomManager(const IDatabase& database);
 
     Room& createRoom(LoggedUser &admin, const RoomData &data);
-    void deleteRoom(Room& room);
+    void deleteRoom(const Room & room);
 
 
     void setRoomPlaying(Room& room);
     void setRoomWaiting(Room& room);
 
-    std::set<Room *> getWaitingRooms() const;
+    std::vector<Room *> getWaitingRooms() const;
 
 
     RoomStatus getRoomStatus(int roomID) const;
@@ -40,5 +39,5 @@ private:
     /**
      * All rooms that are currently in a waiting state
      */
-    std::set<Room *> m_waitingRooms;
+    std::unordered_map<unsigned int, Room *> m_waitingRooms;
 };
