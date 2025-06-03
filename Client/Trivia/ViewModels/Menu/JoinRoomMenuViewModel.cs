@@ -9,7 +9,7 @@ using Trivia.Codec.C2S.Request.Packets;
 using Trivia.Codec.S2C.Response;
 using Trivia.Codec.S2C.Response.Packets;
 using Trivia.Exceptions;
-using Trivia.Models.Raw;
+using Trivia.Models;
 using Trivia.ViewModels.Room;
 
 namespace Trivia.ViewModels.Menu;
@@ -104,8 +104,7 @@ public class JoinRoomMenuViewModel : PageViewModel
         switch (e.ServerResponse.Status)
         {
             case ErrorStatus.RoomFull:
-            //TODO:
-            //case ErrorStatus.RoomAlreadyPlaying:
+            case ErrorStatus.RoomAlreadyPlaying:
                 return;
             
             default:

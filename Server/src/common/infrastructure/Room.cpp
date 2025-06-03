@@ -35,6 +35,11 @@ Room::~Room()
     removeUser(getAdmin());
 }
 
+bool Room::operator==(const Room &other) const
+{
+    return this->id == other.id;
+}
+
 unsigned int Room::generateId()
 {
     return globalId++;

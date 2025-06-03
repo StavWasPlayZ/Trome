@@ -47,6 +47,7 @@ enum class ErrorStatus : unsigned int
 
     // Room
     ROOM_FULL,
+    ROOM_ALREADY_PLAYING,
 
     // Game
     QUESTION_OUTDATED,

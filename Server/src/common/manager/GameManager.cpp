@@ -1,6 +1,8 @@
 #include "GameManager.h"
 
-GameManager::GameManager(const IDatabase& m_database) : m_database(m_database)
+GameManager::GameManager(const IDatabase& database, RoomManager& roomManager) :
+    m_database(database),
+    m_roomManager(roomManager)
 {}
 
 Game& GameManager::createGame(Room &room)
@@ -8,7 +10,7 @@ Game& GameManager::createGame(Room &room)
     const auto [result, _] = this->m_games.emplace(
         std::piecewise_construct,
         std::forward_as_tuple(room.getId()),
-        std::forward_as_tuple(room, m_database)
+        std::forward_as_tuple(room, m_database, m_roomManager)
     );
 
     return result->second;

@@ -11,7 +11,7 @@ Server::Server() :
     m_loginManager(m_database),
     m_roomManager(m_database),
     m_statisticsManager(m_database),
-    m_gameManager(m_database),
+    m_gameManager(m_database, m_roomManager),
     m_handlerFactory(
         this->m_loginManager,
         this->m_roomManager,

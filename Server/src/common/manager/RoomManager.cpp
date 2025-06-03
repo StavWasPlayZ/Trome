@@ -1,5 +1,7 @@
 #include "RoomManager.h"
 
+#include <algorithm>
+
 RoomManager::RoomManager(const IDatabase &database) :
     m_database(database)
 {}
@@ -14,12 +16,31 @@ Room &RoomManager::createRoom(LoggedUser &admin, const RoomData &data)
         std::forward_as_tuple(roomId, admin, data, this->m_database, RoomStatus::WAITING)
     );
 
+    m_waitingRooms.insert(&entry->second);
     return entry->second;
 }
 
-void RoomManager::deleteRoom(const Room& room)
+void RoomManager::deleteRoom(Room &room)
 {
+    m_waitingRooms.erase(&room);
     m_rooms.erase(room.getId());
+}
+
+void RoomManager::setRoomPlaying(Room &room)
+{
+    room.setStatus(RoomStatus::PLAYING);
+    m_waitingRooms.erase(&room);
+}
+
+void RoomManager::setRoomWaiting(Room &room)
+{
+    room.setStatus(RoomStatus::WAITING);
+    m_waitingRooms.insert(&room);
+}
+
+std::set<Room *> RoomManager::getWaitingRooms() const
+{
+    return this->m_waitingRooms;
 }
 
 RoomStatus RoomManager::getRoomStatus(const int roomID) const

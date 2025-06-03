@@ -72,6 +72,13 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo &info, const JoinRo
         );
     }
 
+    if (room.value()->getStatus() == RoomStatus::PLAYING)
+    {
+        return RequestResult(
+            new ErrorResponse(ErrorStatus::ROOM_ALREADY_PLAYING, info.id)
+        );
+    }
+
     LoggedUser& user = getUserByInfo(info);
     room.value()->addUser(user);
 
@@ -95,10 +102,14 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& info, const Crea
 
 RequestResult MenuRequestHandler::getRooms(const RequestInfo &, const GetRoomsRequest &) const
 {
-    RoomManager &rManager = m_handlerFactory.getRoomManager();
+    const RoomManager &rManager = m_handlerFactory.getRoomManager();
+    const std::set<Room *> rooms = rManager.getWaitingRooms();
+
+    std::vector<Room *> roomsVector;
+    std::ranges::copy(rooms, std::back_inserter(roomsVector));
 
     return RequestResult(
-        new GetRoomsResponse(rManager.getRooms())
+        new GetRoomsResponse(roomsVector)
     );
 }
 

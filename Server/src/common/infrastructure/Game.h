@@ -10,13 +10,14 @@
 
 #include "infrastructure/Question.h"
 
+class RoomManager;
 struct PlayerResult;
 struct UserQuestion;
 
 class Game
 {
 public:
-    Game(Room &room, const IDatabase &database);
+    Game(Room &room, const IDatabase &database, RoomManager& roomManager);
     ~Game();
 
     unsigned int getId() const;
@@ -83,6 +84,7 @@ private:
     void removePlayer(const LoggedUser& player);
 
     const IDatabase &m_database;
+    RoomManager& m_roomManager;
 
     std::chrono::milliseconds m_startTime;
 
