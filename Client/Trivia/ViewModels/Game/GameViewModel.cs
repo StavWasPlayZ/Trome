@@ -10,7 +10,7 @@ using Avalonia.Threading;
 using ReactiveUI;
 using Trivia.Codec.C2S.Request.Packets;
 using Trivia.Codec.S2C.Response.Packets;
-using Trivia.Models.Raw;
+using Trivia.Models;
 
 namespace Trivia.ViewModels.Game;
 

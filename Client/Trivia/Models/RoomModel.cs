@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using Trivia.Codec;
+using Trivia.Models.Raw;
 
-namespace Trivia.Models.Raw;
+namespace Trivia.Models;
 
 public record RoomModel : IdentifiableModel
 {
     public RoomStatus Status { get; init; } = RoomStatus.Waiting;
-    public required User Admin { get; init; }
+    public required Raw.User Admin { get; init; }
     
     public int PlayersCount { get; init; }
     
@@ -21,7 +22,7 @@ public record RoomModel : IdentifiableModel
                 {
                     Id = i,
                     Status = i % 2 == 0 ? RoomStatus.Waiting : RoomStatus.Playing,
-                    Admin = new User
+                    Admin = new Raw.User
                     {
                         Id = i,
                         Username = $"User {i}"
@@ -40,7 +41,7 @@ public record RoomModel : IdentifiableModel
             ).ToList();
     }
 
-    public static RoomModel CreateMockRoom(User admin)
+    public static RoomModel CreateMockRoom(Raw.User admin)
     {
         return new RoomModel
         {

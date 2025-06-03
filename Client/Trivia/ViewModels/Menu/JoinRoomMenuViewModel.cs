@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Threading;
 using System.Threading.Tasks;
 using ReactiveUI;
-using Trivia.Codec;
 using Trivia.Codec.C2S.Request.Packets;
 using Trivia.Codec.S2C.Response;
 using Trivia.Codec.S2C.Response.Packets;
 using Trivia.Exceptions;
-using Trivia.Models.Raw;
+using Trivia.Models;
 using Trivia.ViewModels.Room;
 
 namespace Trivia.ViewModels.Menu;

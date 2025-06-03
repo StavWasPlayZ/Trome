@@ -4,7 +4,7 @@ using Trivia.Codec.C2S.Request.Packets;
 using Trivia.Codec.S2C;
 using Trivia.Codec.S2C.Notification.Packets;
 using Trivia.Codec.S2C.Response.Packets;
-using Trivia.Models.Raw;
+using Trivia.Models;
 
 namespace Trivia.ViewModels.Game;
 

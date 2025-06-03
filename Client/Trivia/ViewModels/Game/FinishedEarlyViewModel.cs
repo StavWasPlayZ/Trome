@@ -2,7 +2,7 @@
 using ReactiveUI;
 using Trivia.Codec.S2C;
 using Trivia.Codec.S2C.Notification.Packets;
-using Trivia.Models.Raw;
+using Trivia.Models;
 
 namespace Trivia.ViewModels.Game;
 
