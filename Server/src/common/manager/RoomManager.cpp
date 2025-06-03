@@ -46,7 +46,12 @@ std::vector<Room *> RoomManager::getWaitingRooms() const
 
     for (const auto& pair : this->m_waitingRooms)
     {
-        results.push_back(pair.second);
+        Room *room = pair.second;
+
+        if (room->getAllUsers().size() < room->getData().maxPlayers)
+        {
+            results.push_back(room);
+        }
     }
 
     return results;
