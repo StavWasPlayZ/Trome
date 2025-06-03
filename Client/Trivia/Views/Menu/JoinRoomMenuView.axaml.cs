@@ -25,7 +25,7 @@ public partial class JoinRoomMenuView : PageViewControl<JoinRoomMenuViewModel>
         FixedWidthGrid.Width = _roomInfoPanelWidth - 20;
 
         if (!Design.IsDesignMode)
-        {    
+        {
             CloseRoomPanel();
         }
     }

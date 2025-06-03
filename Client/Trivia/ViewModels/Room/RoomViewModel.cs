@@ -111,6 +111,11 @@ public abstract class RoomViewModel : PageViewModel
     {
         var response = await Comm.SendRequestAwaitResponse<GetPlayersInRoomResponse>(new GetPlayersInRoomRequest());
         ReAddAllPlayers([..response.Players]);
+
+        RoomModel = RoomModel with
+        {
+            PlayersCount = response.Players.Count
+        };
     }
     
     
