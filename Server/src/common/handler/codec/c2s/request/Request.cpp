@@ -48,6 +48,6 @@ SubmitAnswerRequest::SubmitAnswerRequest(const int answer) : answer(answer)
 {
 }
 
-AddQuestionRequest::AddQuestionRequest(const std::string &question, const std::vector<std::string> &answers) : question(question), answers(answers)
+AddQuestionRequest::AddQuestionRequest(const Question &question) : question(question)
 {
 }

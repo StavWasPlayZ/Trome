@@ -1,6 +1,7 @@
 #pragma once
 
 #include "infrastructure/RoomData.h"
+#include "infrastructure/Question.h"
 
 #include <optional>
 #include <string>
@@ -159,8 +160,7 @@ struct [[deprecated(
 
 struct AddQuestionRequest : ProtocolRequest
 {
-    AddQuestionRequest(const std::string& question, const std::vector<std::string>& answers);
+    explicit AddQuestionRequest(const Question& question);
 
-    const std::string question;
-    const std::vector<std::string> answers;
+    const Question question;
 };
