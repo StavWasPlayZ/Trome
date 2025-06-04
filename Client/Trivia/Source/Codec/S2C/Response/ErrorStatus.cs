@@ -31,5 +31,8 @@ public enum ErrorStatus
     
     // Game
     QuestionOutdated,
-    AlreadyFinished
+    AlreadyFinished,
+    
+    // Adding Question
+    QuestionAlreadyExists
 }
