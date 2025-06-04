@@ -36,7 +36,8 @@ enum class ResponseCode : unsigned char
     LEAVE_GAME,
     GET_QUESTION,
     SUBMIT_ANSWER,
-    GET_GAME_RESULT
+    GET_GAME_RESULT,
+    ADD_QUESTION
 };
 
 
@@ -187,4 +188,9 @@ struct [[deprecated(
     explicit GetGameResultResponse(const std::vector<PlayerResult>& results);
 
     const std::vector<PlayerResult> results;
+};
+
+struct AddQuestionResponse : ProtocolResponse
+{
+    AddQuestionResponse();
 };
