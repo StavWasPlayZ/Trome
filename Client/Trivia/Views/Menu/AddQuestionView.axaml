@@ -8,5 +8,88 @@
              x:CompileBindings="True"
              x:Class="Trivia.Views.Menu.AddQuestionView"
              x:DataType="vmmenu:AddQuestionViewModel">
-    Welcome to Avalonia!
+    <Panel>
+        <Panel.Background>
+            <ImageBrush Source="avares://Trivia/Assets/blobs-l-b49caff1a7941d98b60902da64956ad85dfbe4f9.png"
+                        Stretch="UniformToFill" />            
+        </Panel.Background>
+        
+        <controls:TriviaMenuPanel Title="NEW QUESTION"
+                                  DisplayBackButton="TRUE"
+                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="Center"
+                                  Width="650">
+            <Grid RowDefinitions="Auto, *, Auto"
+                  Margin="20">
+                <controls:TriviaTextBox Grid.Row="0"
+                                        Margin="0,20"
+                                        Background="rgba(0, 0, 0, .3)">
+                    <TextBox Text="{}"/>
+                </controls:TriviaTextBox>
+                <Grid Grid.Row="1" 
+                      RowDefinitions="*, Auto, Auto">
+                    <TextBlock Grid.Row="0"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               Margin="0, 20, 0, 10"
+                               FontSize="50">
+                        ANSWERS
+                    </TextBlock>
+                    
+                    <Grid Grid.Row="1"
+                          ColumnDefinitions="Auto, Auto"
+                          Margin="0, 20"
+                          VerticalAlignment="Center"
+                          HorizontalAlignment="Center">
+                        
+                        <controls:TriviaTextBox Grid.Column="0"
+                                                Margin="50, 0, 10,0"
+                                                Background="rgba(0, 0, 0, .3)">
+                            <TextBox Text="{}"/>
+                        </controls:TriviaTextBox>
+                        
+                            <controls:TriviaTextBox Grid.Column="1"
+                                                    Margin="10, 0, 50, 0"
+                                                    Background="rgba(0, 0, 0, .3)">
+                                <TextBox Text="{}"/>
+                        </controls:TriviaTextBox>  
+                    </Grid>
+                    
+                    <Grid Grid.Row="2"
+                          ColumnDefinitions="Auto, Auto"
+                          Margin="0, 20"
+                          VerticalAlignment="Center"
+                          HorizontalAlignment="Center">
+                        
+                        <controls:TriviaTextBox Grid.Column="0"
+                                                Margin="50, 0, 10,0"
+                                                Background="rgba(0, 0, 0, .3)">
+                            <TextBox Text="{}"/>
+                        </controls:TriviaTextBox>
+                        
+                        <controls:TriviaTextBox Grid.Column="1"
+                                                Margin="10, 0, 50, 0"
+                                                Background="rgba(0, 0, 0, .3)">
+                            <TextBox Text="{}"/>
+                        </controls:TriviaTextBox>  
+                    </Grid>
+                    
+                </Grid>
+                
+                <controls:TriviaButton Grid.Row="2"
+                                       
+                                       HorizontalAlignment="Center"
+                                       Text="ADD"
+                                       Background="#362034"
+                                       BorderBrush="#ffffff"
+                                       IconColor="#ffffff"
+                                       BorderBrushSelected="#ffffff"
+                                       BorderBrushPressed="#ffffff"
+                                       BorderThickness="3"
+                                       Padding="100,0"
+                                       Margin="0, 20, 0, 0"/>
+            </Grid>
+        </controls:TriviaMenuPanel>
+        
+    </Panel>
 </UserControl>
