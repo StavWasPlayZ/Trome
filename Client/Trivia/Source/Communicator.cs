@@ -214,6 +214,8 @@ public class Communicator : IDisposable
         if (read == 0 || !IsConnected)
             return null;
         
+        // TODO: Decrypt here
+        
         var json = Encoding.UTF8.GetString(jsonRaw, 0, jsonRaw.Length);
 
         

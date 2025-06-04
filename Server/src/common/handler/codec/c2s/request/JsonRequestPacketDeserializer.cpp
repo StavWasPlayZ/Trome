@@ -193,7 +193,9 @@ nlohmann::json JsonRequestPacketDeserializer::readJson(const unsigned char *data
 	char* const jsonRaw = new char[jsonLen];
 	std::memcpy(jsonRaw, data, jsonLen * sizeof(char));
 
-    const nlohmann::json result = nlohmann::json::parse(std::string(jsonRaw, jsonLen));
+    const nlohmann::json result = nlohmann::json::parse(
+        // TODO: Decrypt here
+        std::string(jsonRaw, jsonLen));
 
     delete[] jsonRaw;
     return result;
