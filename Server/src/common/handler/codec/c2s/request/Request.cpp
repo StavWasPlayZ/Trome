@@ -47,3 +47,7 @@ UpdateRoomDataRequest::UpdateRoomDataRequest(const RoomData &data) : data(data)
 SubmitAnswerRequest::SubmitAnswerRequest(const int answer) : answer(answer)
 {
 }
+
+AddQuestionRequest::AddQuestionRequest(const std::string &question, const std::vector<std::string> &answers) : question(question), answers(answers)
+{
+}

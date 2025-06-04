@@ -26,7 +26,8 @@ enum class RequestCode : unsigned char
 	LEAVE_GAME,
 	GET_QUESTION,
 	SUBMIT_ANSWER,
-	GET_GAME_RESULT
+	GET_GAME_RESULT,
+	ADD_QUESTION
 };
 
 struct ProtocolRequest
@@ -154,4 +155,12 @@ struct [[deprecated(
     " This method is therefore useless and should not be used."
 )]] GetGameResultRequest : ProtocolRequest
 {
+};
+
+struct AddQuestionRequest : ProtocolRequest
+{
+    AddQuestionRequest(const std::string& question, const std::vector<std::string>& answers);
+
+    const std::string question;
+    const std::vector<std::string> answers;
 };
