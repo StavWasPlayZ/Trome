@@ -262,6 +262,11 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetGameResultRespo
     return serialize(response.id, data);
 }
 
+OBuffer JsonResponsePacketSerializer::serializeResponse(const AddQuestionResponse &response)
+{
+    return serialize(response.id, nlohmann::json::object());
+}
+
 OBuffer JsonResponsePacketSerializer::serialize(const ResponseCode msgCode, const nlohmann::json &data)
 {
     return ProtocolPacketSerializer::serialize(S2CPacketType::RESPONSE, static_cast<unsigned char>(msgCode), data);
