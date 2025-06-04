@@ -187,7 +187,7 @@ GetGameResultRequest JsonRequestPacketDeserializer::deserializeGetGameResultRequ
 
 AddQuestionRequest JsonRequestPacketDeserializer::deserializeAddQuestionRequest(const nlohmann::json &data)
 {
-    std::vector<std::string> answers; // TODO: deserialse
+    std::vector<std::string> answers;
     answers.push_back(data.at("correct"));
     answers.push_back(data.at("wrong_1"));
     answers.push_back(data.at("wrong_2"));
