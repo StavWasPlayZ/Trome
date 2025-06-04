@@ -9,6 +9,7 @@ struct GetHighScoresRequest;
 struct GetRoomsRequest;
 struct CreateRoomRequest;
 struct GetPlayersInRoomRequest;
+struct AddQuestionRequest;
 
 class MenuRequestHandler : public IRequestHandler
 {
@@ -26,6 +27,6 @@ private:
     RequestResult getHighScores(const RequestInfo& info, const GetHighScoresRequest &request) const;
     RequestResult getPersonalStatistics(const RequestInfo& info, const GetPersonalStatisticsRequest &request) const;
     RequestResult logout(const RequestInfo& info, const LogoutRequest &request) const;
-
     RequestResult getPlayersInRoom(const RequestInfo & info, const GetPlayersInRoomRequest &request) const;
+    RequestResult addQuestion(const RequestInfo &info, const AddQuestionRequest &request) const;
 };

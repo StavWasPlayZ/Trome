@@ -20,6 +20,7 @@ bool MenuRequestHandler::isRequestRelevant(const RequestInfo &info) const
     case RequestCode::GET_HIGH_SCORES:
     case RequestCode::GET_PERSONAL_STATISTICS:
     case RequestCode::LOGOUT:
+    case RequestCode::ADD_QUESTION:
         return true;
 
     default: return false;
@@ -45,6 +46,9 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo &info, const P
 
     // case RequestCode::GET_PLAYERS_IN_ROOM:
     //     return getPlayersInRoom(info, static_cast<const GetPlayersInRoomRequest &>(request));
+
+    case RequestCode::ADD_QUESTION:
+        return addQuestion(info, static_cast<const AddQuestionRequest &>(request));
 
     default: throw std::invalid_argument("Unknown request ID");
     }
@@ -161,4 +165,15 @@ RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo &info, cons
     // return RequestResult(
     //     new GetPlayersInRoomResponse(room.value()->getAllUsers())
     // );
+}
+
+RequestResult MenuRequestHandler::addQuestion(const RequestInfo &info, const AddQuestionRequest &request) const
+{
+    return RequestResult(
+        this->m_handlerFactory.getGameManager().addQuestion(
+            info,
+            request.question,
+            getUserByInfo(info)
+        )
+    );
 }
