@@ -9,6 +9,7 @@
 #include "manager/LoginManager.h"
 #include "manager/RoomManager.h"
 #include "manager/StatisticsManager.h"
+#include "manager/GameManager.h"
 
 // Note that this class is a bit useless, as we can just supply these
 // arguments to the various handlers by ourselves using the
