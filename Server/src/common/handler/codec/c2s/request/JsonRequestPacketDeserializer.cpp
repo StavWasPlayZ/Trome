@@ -193,8 +193,10 @@ AddQuestionRequest JsonRequestPacketDeserializer::deserializeAddQuestionRequest(
     answers.push_back(data.at("wrong_2"));
     answers.push_back(data.at("wrong_3"));
     return AddQuestionRequest(
-        data.at("question"), 
-        answers
+        Question(
+            data.at("question"),
+            answers
+        )
     );
 }
 
