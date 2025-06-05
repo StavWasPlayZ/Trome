@@ -5,7 +5,8 @@
 
 class Game;
 class RequestHandlerFactory;
-enum class QuestionRollResult;
+enum class QuestionRollType;
+struct QuestionRollResult;
 
 class GameRequestHandler : public IRequestHandler
 {
@@ -37,9 +38,17 @@ private:
 };
 
 
-enum class QuestionRollResult
+enum class QuestionRollType
 {
     ROLLED,
     FINISHED,
     FINISHED_LAST
+};
+
+struct QuestionRollResult
+{
+    QuestionRollResult(QuestionRollType rollType, const std::optional<UserQuestion>& newQuestion);
+
+    const QuestionRollType rollType;
+    const std::optional<UserQuestion> newQuestion;
 };

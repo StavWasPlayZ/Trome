@@ -75,23 +75,22 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
 
 
     const QuestionRollResult rollResult = rollNewUserQuestion(info, didFail);
-    const std::optional<UserQuestion> newQuestion = this->m_game.getQuestionForUser(user);
 
 
-    switch (rollResult)
+    switch (rollResult.rollType)
     {
-    case QuestionRollResult::ROLLED:
-        return RequestResult(new SubmitAnswerResponse(newQuestion, userData.points));
+    case QuestionRollType::ROLLED:
+        return RequestResult(new SubmitAnswerResponse(rollResult.newQuestion, userData.points));
 
-    case QuestionRollResult::FINISHED:
+    case QuestionRollType::FINISHED:
         return RequestResult(
             new SubmitAnswerResponse(std::nullopt, userData.points),
             new FinishedGameEarlyRequestHandler(this->m_handlerFactory, this->m_game)
         );
 
-    case QuestionRollResult::FINISHED_LAST:
+    case QuestionRollType::FINISHED_LAST:
         return RequestResult(
-            new SubmitAnswerResponse(newQuestion, userData.points, m_game.getResults()),
+            new SubmitAnswerResponse(rollResult.newQuestion, userData.points, m_game.getResults()),
             this->m_handlerFactory.createRoomRequestHandler(user, room)
         );
 
@@ -134,7 +133,8 @@ QuestionRollResult GameRequestHandler::rollNewUserQuestion(const RequestInfo &in
     if (this->m_game.isGameComplete())
     {
         handleLastPlayerFinished(info);
-        return QuestionRollResult::FINISHED_LAST;
+
+        return QuestionRollResult(QuestionRollType::FINISHED_LAST, newQuestion);
     }
 
     // If there is no new question available, we've finished early.
@@ -146,10 +146,10 @@ QuestionRollResult GameRequestHandler::rollNewUserQuestion(const RequestInfo &in
             &user
         );
 
-        return QuestionRollResult::FINISHED;
+        return QuestionRollResult(QuestionRollType::FINISHED, newQuestion);
     }
 
-    return QuestionRollResult::ROLLED;
+    return QuestionRollResult(QuestionRollType::ROLLED, newQuestion);
 }
 
 RequestResult GameRequestHandler::getQuestion(const RequestInfo &info, const GetQuestionRequest &) const
@@ -193,23 +193,22 @@ RequestResult GameRequestHandler::getQuestion(const RequestInfo &info, const Get
     // Getting here means the user has either skipped the question or that the time has passed.
     // Either of which will prompt the failure of the current round.
     const QuestionRollResult rollResult = rollNewUserQuestion(info, true);
-    const std::optional<UserQuestion> newQuestion = this->m_game.getQuestionForUser(user);
 
 
-    switch (rollResult)
+    switch (rollResult.rollType)
     {
-    case QuestionRollResult::ROLLED:
-        return RequestResult(new GetQuestionResponse(newQuestion, userData.points));
+    case QuestionRollType::ROLLED:
+        return RequestResult(new GetQuestionResponse(rollResult.newQuestion, userData.points));
 
-    case QuestionRollResult::FINISHED:
+    case QuestionRollType::FINISHED:
         return RequestResult(
             new GetQuestionResponse(std::nullopt, userData.points),
             new FinishedGameEarlyRequestHandler(this->m_handlerFactory, this->m_game)
         );
 
-    case QuestionRollResult::FINISHED_LAST:
+    case QuestionRollType::FINISHED_LAST:
         return RequestResult(
-            new GetQuestionResponse(newQuestion, userData.points, m_game.getResults()),
+            new GetQuestionResponse(rollResult.newQuestion, userData.points, m_game.getResults()),
             this->m_handlerFactory.createRoomRequestHandler(user, this->m_game.getRoom())
         );
 
@@ -231,10 +230,12 @@ void GameRequestHandler::handleLastPlayerFinished(const RequestInfo &info) const
             return this->m_handlerFactory.createRoomRequestHandler(*player, this->m_game.getRoom());
         },
 
-        m_game.getRoom().getAllUsers(),
-        GameEndedNotification(m_game.getResults()),
-        &getUserByInfo(info)
-    );
+        m_game.getRoom().getAllUsers(), GameEndedNotification(m_game.getResults()), &getUserByInfo(info));
 
     this->m_handlerFactory.getGameManager().deleteGame(m_game);
 }
+
+QuestionRollResult::QuestionRollResult(const QuestionRollType rollType, const std::optional<UserQuestion> &newQuestion) :
+    rollType(rollType),
+    newQuestion(newQuestion)
+{}
