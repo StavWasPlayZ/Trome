@@ -1,28 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ReactiveUI;
 using Trivia.Codec.S2C;
 using Trivia.Codec.S2C.Notification.Packets;
 using Trivia.Codec.S2C.Objects;
 using Trivia.Models;
+using Trivia.Models.Raw;
 
 namespace Trivia.ViewModels.Game;
 
 public class AfterGameViewModel : SubRoomViewModel
 {
-    public IList<PlayerResult> Results { get; }
+    public List<PlayerResult> Results { get; }
+
+    public PlayerResult WinnerResults => Results[0];
+    
 
     public AfterGameViewModel(IScreen hostScreen, RoomModel roomModel, IList<PlayerResult> results) :
         base(hostScreen, roomModel)
     {
-        Results = results;
+        Results = [..results];
+        
+        // Sort by points
+        Results.Sort((prev, curr) => curr.Points.CompareTo(prev.Points));
     }
 
     public AfterGameViewModel()
     {
-        Results = [
-            // new PlayerResult()
-        ];
+        Results = Enumerable.Range(0, 30)
+            .Select(i => new User
+            {
+                Id = i,
+                Username = $"User {i}",
+            })
+            .Select(user => new PlayerResult
+            {
+                User = user,
+                AverageAnswerTime = 123,
+                CorrectAnswerCount = 5,
+                Points = 69420
+            })
+            .ToList();
     }
     
     

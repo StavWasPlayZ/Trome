@@ -116,7 +116,8 @@
                                         </StackPanel.Styles>
                                         
                                         <TextBlock FontSize="80">WINNER</TextBlock>
-                                        <TextBlock FontSize="45">USERNAME</TextBlock>
+                                        <TextBlock FontSize="45"
+                                                   Text="{Binding WinnerResults.User.Username}"/>
                                     </StackPanel>
                                     
                                     <Panel Height="2"/>
@@ -128,8 +129,18 @@
                                             </Style>
                                         </StackPanel.Styles>
                                         
-                                        <TextBlock FontSize="30">69420</TextBlock>
-                                        <TextBlock FontSize="25">2:45 • 7/10 CORRECT</TextBlock>
+                                        <TextBlock FontSize="30"
+                                                   Text="{Binding WinnerResults.Points}"/>
+                                        <!-- <TextBlock FontSize="25">2:45 • 7/10 CORRECT</TextBlock> -->
+                                        <TextBlock FontSize="25">
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0} • {1}/{2} CORRECT">
+                                                    <Binding Path="WinnerResults.AverageAnswerTime"/>
+                                                    <Binding Path="WinnerResults.CorrectAnswerCount"/>
+                                                    <Binding Path="RoomModel.Data.QuestionsCount"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
                                     </StackPanel>
                                 </StackPanel>
                                 
