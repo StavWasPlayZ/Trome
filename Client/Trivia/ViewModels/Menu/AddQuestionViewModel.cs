@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Reactive;
 using ReactiveUI;
+using Trivia.Codec.C2S.Request.Packets;
+using Trivia.Codec.S2C.Response.Packets;
 
 namespace Trivia.ViewModels.Menu;
 
@@ -25,7 +27,12 @@ public class AddQuestionViewModel : PageViewModel
     {
         AddQuestionCommand = ReactiveCommand.CreateFromTask(async _ =>
         {
-            // TODO
+            if(_prompt != null)
+            {
+                await Comm.SendRequestAwaitResponse<AddQuestionResponse>(
+                    new AddQuestionRequest(_prompt, _answers)
+                );
+            }
         });
     }
 

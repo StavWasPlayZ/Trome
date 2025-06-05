@@ -1,4 +1,6 @@
-﻿namespace Trivia.Codec.C2S.Request.Packets;
+﻿using System.Collections.Generic;
+
+namespace Trivia.Codec.C2S.Request.Packets;
 
 public readonly record struct AddQuestionRequest(
     string Question,
@@ -9,4 +11,8 @@ public readonly record struct AddQuestionRequest(
 ) : IProtocolRequest
 {
     public RequestCode Code { get; init; } = RequestCode.AddQuestion;
+    
+    public AddQuestionRequest(string question, List<string> answers) :
+        this(question, answers[0], answers[1], answers[2], answers[3])
+    {}
 }
