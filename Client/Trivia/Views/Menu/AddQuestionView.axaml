@@ -8,6 +8,12 @@
              x:CompileBindings="True"
              x:Class="Trivia.Views.Menu.AddQuestionView"
              x:DataType="vmmenu:AddQuestionViewModel">
+    
+    <Design.DataContext>
+        <vmmenu:AddQuestionViewModel/>
+    </Design.DataContext>
+    
+    
     <Panel>
         <Panel.Background>
             <ImageBrush Source="avares://Trivia/Assets/blobs-l-b49caff1a7941d98b60902da64956ad85dfbe4f9.png"
@@ -24,7 +30,7 @@
                 <controls:TriviaTextBox Grid.Row="0"
                                         Margin="0,20"
                                         Background="rgba(0, 0, 0, .3)">
-                    <TextBox Text="{}"/>
+                    <TextBox Text="{Binding Prompt}"/>
                 </controls:TriviaTextBox>
                 <Grid Grid.Row="1" 
                       RowDefinitions="*, Auto, Auto">
@@ -45,13 +51,13 @@
                         <controls:TriviaTextBox Grid.Column="0"
                                                 Margin="50, 0, 10,0"
                                                 Background="rgba(0, 0, 0, .3)">
-                            <TextBox Text="{}"/>
+                            <TextBox Text="{Binding Answers[0]}"/>
                         </controls:TriviaTextBox>
                         
                             <controls:TriviaTextBox Grid.Column="1"
                                                     Margin="10, 0, 50, 0"
                                                     Background="rgba(0, 0, 0, .3)">
-                                <TextBox Text="{}"/>
+                                <TextBox Text="{Binding Answers[1]}"/>
                         </controls:TriviaTextBox>  
                     </Grid>
                     
@@ -64,20 +70,20 @@
                         <controls:TriviaTextBox Grid.Column="0"
                                                 Margin="50, 0, 10,0"
                                                 Background="rgba(0, 0, 0, .3)">
-                            <TextBox Text="{}"/>
+                            <TextBox Text="{Binding Answers[2]}"/>
                         </controls:TriviaTextBox>
                         
                         <controls:TriviaTextBox Grid.Column="1"
                                                 Margin="10, 0, 50, 0"
                                                 Background="rgba(0, 0, 0, .3)">
-                            <TextBox Text="{}"/>
+                            <TextBox Text="{Binding Answers[3]}"/>
                         </controls:TriviaTextBox>  
                     </Grid>
                     
                 </Grid>
                 
                 <controls:TriviaButton Grid.Row="2"
-                                       
+                                       Command="{Binding AddQuestionCommand}"
                                        HorizontalAlignment="Center"
                                        Text="ADD"
                                        Background="#362034"
