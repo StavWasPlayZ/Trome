@@ -135,7 +135,8 @@
                                         <TextBlock FontSize="25">
                                             <TextBlock.Text>
                                                 <MultiBinding StringFormat="{}{0} • {1}/{2} CORRECT">
-                                                    <Binding Path="WinnerResults.AverageAnswerTimeSecs"/>
+                                                    <Binding Path="WinnerResults.AverageAnswerTime"
+                                                             Converter="{StaticResource TimeSpanToStringConverter}"/>
                                                     <Binding Path="WinnerResults.CorrectAnswerCount"/>
                                                     <Binding Path="RoomModel.Data.QuestionsCount"/>
                                                 </MultiBinding>

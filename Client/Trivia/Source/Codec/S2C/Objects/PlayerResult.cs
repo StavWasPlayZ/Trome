@@ -1,4 +1,5 @@
-﻿using Trivia.Models.Raw;
+﻿using System;
+using Trivia.Models.Raw;
 
 namespace Trivia.Codec.S2C.Objects;
 
@@ -7,4 +8,7 @@ public readonly record struct PlayerResult(
     int CorrectAnswerCount,
     int AverageAnswerTimeSecs,
     int Points
-);
+)
+{
+    public TimeSpan AverageAnswerTime => TimeSpan.FromSeconds(AverageAnswerTimeSecs);
+};
