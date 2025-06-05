@@ -37,7 +37,7 @@ public class AfterGameViewModel : SubRoomViewModel
             .Select(user => new PlayerResult
             {
                 User = user,
-                AverageAnswerTime = 123,
+                AverageAnswerTimeSecs = 123,
                 CorrectAnswerCount = 5,
                 Points = 69420
             })

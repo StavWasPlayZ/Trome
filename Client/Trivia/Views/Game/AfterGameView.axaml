@@ -131,11 +131,11 @@
                                         
                                         <TextBlock FontSize="30"
                                                    Text="{Binding WinnerResults.Points}"/>
-                                        <!-- <TextBlock FontSize="25">2:45 • 7/10 CORRECT</TextBlock> -->
+                                        
                                         <TextBlock FontSize="25">
                                             <TextBlock.Text>
                                                 <MultiBinding StringFormat="{}{0} • {1}/{2} CORRECT">
-                                                    <Binding Path="WinnerResults.AverageAnswerTime"/>
+                                                    <Binding Path="WinnerResults.AverageAnswerTimeSecs"/>
                                                     <Binding Path="WinnerResults.CorrectAnswerCount"/>
                                                     <Binding Path="RoomModel.Data.QuestionsCount"/>
                                                 </MultiBinding>

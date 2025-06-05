@@ -5,6 +5,6 @@ namespace Trivia.Codec.S2C.Objects;
 public readonly record struct PlayerResult(
     User User,
     int CorrectAnswerCount,
-    int AverageAnswerTime,
+    int AverageAnswerTimeSecs,
     int Points
 );
