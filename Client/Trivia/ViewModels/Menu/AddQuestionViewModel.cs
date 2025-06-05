@@ -9,6 +9,8 @@ namespace Trivia.ViewModels.Menu;
 public class AddQuestionViewModel : PageViewModel
 {
     public ReactiveCommand<Unit, Unit> AddQuestionCommand { get; }
+    
+    public ReactiveCommand<Unit, IRoutableViewModel>? NavigateBackCommand { get; }
     private string _prompt = "";
     public string? Prompt
     {
@@ -32,12 +34,20 @@ public class AddQuestionViewModel : PageViewModel
                 await Comm.SendRequestAwaitResponse<AddQuestionResponse>(
                     new AddQuestionRequest(_prompt, _answers)
                 );
+                NavigateReactiveCommand(
+                    () => new MainMenuViewModel(hostScreen)
+                );
             }
         });
+        
+        NavigateBackCommand = NavigateReactiveCommand(
+                () => new MainMenuViewModel(hostScreen)
+        );
     }
 
     public AddQuestionViewModel()
     {
         AddQuestionCommand = NoOpCommand;
+        NavigateBackCommand = NoOpNavCommand;
     }
 }

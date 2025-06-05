@@ -24,20 +24,31 @@
                                   DisplayBackButton="TRUE"
                                   VerticalAlignment="Center"
                                   HorizontalAlignment="Center"
-                                  Width="650">
+                                  Width="650"
+                                  Height="500"
+                                  BackButtonCommand="{Binding NavigateBackCommand}">
             <Grid RowDefinitions="Auto, *, Auto"
                   Margin="20">
+                
+                <Grid.Resources>
+                    <!-- ReSharper disable once Xaml.RedundantResource -->
+                    <SolidColorBrush x:Key="TriviaTextBoxForeground">White</SolidColorBrush>
+                </Grid.Resources>
+                
+                
                 <controls:TriviaTextBox Grid.Row="0"
-                                        Margin="0,20"
+                                        Margin="0,30, 0, 0"
                                         Background="rgba(0, 0, 0, .3)">
                     <TextBox Text="{Binding Prompt}"/>
                 </controls:TriviaTextBox>
+                
+                
                 <Grid Grid.Row="1" 
                       RowDefinitions="*, Auto, Auto">
                     <TextBlock Grid.Row="0"
                                VerticalAlignment="Center"
                                HorizontalAlignment="Center"
-                               Margin="0, 20, 0, 10"
+                               Margin="0, 20, 0, 0"
                                FontSize="50">
                         ANSWERS
                     </TextBlock>
@@ -54,10 +65,10 @@
                             <TextBox Text="{Binding Answers[0]}"/>
                         </controls:TriviaTextBox>
                         
-                            <controls:TriviaTextBox Grid.Column="1"
-                                                    Margin="10, 0, 50, 0"
-                                                    Background="rgba(0, 0, 0, .3)">
-                                <TextBox Text="{Binding Answers[1]}"/>
+                        <controls:TriviaTextBox Grid.Column="1"
+                                                Margin="10, 0, 50, 0"
+                                                Background="rgba(0, 0, 0, .3)">
+                            <TextBox Text="{Binding Answers[1]}"/>
                         </controls:TriviaTextBox>  
                     </Grid>
                     
@@ -79,7 +90,6 @@
                             <TextBox Text="{Binding Answers[3]}"/>
                         </controls:TriviaTextBox>  
                     </Grid>
-                    
                 </Grid>
                 
                 <controls:TriviaButton Grid.Row="2"
