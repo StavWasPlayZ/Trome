@@ -78,20 +78,22 @@ UpdateRoomDataResponse::UpdateRoomDataResponse() :
     ProtocolResponse(ResponseCode::UPDATE_ROOM_DATA)
 {}
 
-LeaveGameResponse::LeaveGameResponse() : 
+LeaveGameResponse::LeaveGameResponse() :
     ProtocolResponse(ResponseCode::LEAVE_GAME)
 {}
 
-GetQuestionResponse::GetQuestionResponse(const std::optional<UserQuestion> &question, const int points) :
-    ProtocolResponse(ResponseCode::GET_QUESTION),
-    points(points),
-    question(question)
+QuestionResponse::QuestionResponse(const ResponseCode id, const std::optional<UserQuestion> &question, const int points)
+    : ProtocolResponse(id),
+    question(question),
+    points(points)
 {}
 
-SubmitAnswerResponse::SubmitAnswerResponse(const std::optional<UserQuestion> &newQuestion, const int points) :
-    ProtocolResponse(ResponseCode::SUBMIT_ANSWER),
-    points(points),
-    newQuestion(newQuestion)
+GetQuestionResponse::GetQuestionResponse(const std::optional<UserQuestion> &question, const int points) :
+    QuestionResponse(ResponseCode::GET_QUESTION, question, points)
+{}
+
+SubmitAnswerResponse::SubmitAnswerResponse(const std::optional<UserQuestion> &question, const int points) :
+    QuestionResponse(ResponseCode::GET_QUESTION, question, points)
 {}
 
 GetGameResultResponse::GetGameResultResponse(const std::vector<PlayerResult>& results) :

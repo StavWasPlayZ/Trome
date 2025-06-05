@@ -220,30 +220,12 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const LeaveGameResponse 
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const GetQuestionResponse &response)
 {
-    nlohmann::json data;
-
-    if (response.question.has_value())
-    {
-        data["question"] = ProtocolPacketSerializer::serializeAsJson(response.question.value());
-    }
-
-    data["points"] = response.points;
-
-    return serialize(response.id, data);
+    return serializeResponse(static_cast<const QuestionResponse &>(response));
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const SubmitAnswerResponse &response)
 {
-    nlohmann::json data;
-
-    if (response.newQuestion.has_value())
-    {
-        data["new_question"] = ProtocolPacketSerializer::serializeAsJson(response.newQuestion.value());
-    }
-
-    data["points"] = response.points;
-
-    return serialize(response.id, data);
+    return serializeResponse(static_cast<const QuestionResponse &>(response));
 }
 
 
@@ -252,12 +234,26 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetGameResultRespo
     nlohmann::json data;
     nlohmann::json resultsArr = nlohmann::json::array();
 
-    for (const PlayerResult& result : response.results)
+    for (const PlayerResult &result : response.results)
     {
         resultsArr.push_back(ProtocolPacketSerializer::serializeAsJson(result));
     }
 
     data["results"] = resultsArr;
+
+    return serialize(response.id, data);
+}
+
+OBuffer JsonResponsePacketSerializer::serializeResponse(const QuestionResponse &response)
+{
+    nlohmann::json data;
+
+    if (response.question.has_value())
+    {
+        data["question"] = ProtocolPacketSerializer::serializeAsJson(response.question.value());
+    }
+
+    data["points"] = response.points;
 
     return serialize(response.id, data);
 }
