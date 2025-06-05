@@ -232,14 +232,13 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const SubmitAnswerRespon
 OBuffer JsonResponsePacketSerializer::serializeResponse(const GetGameResultResponse &response)
 {
     nlohmann::json data;
-    nlohmann::json resultsArr = nlohmann::json::array();
+
+    nlohmann::json& resultsObj = data["results"] = nlohmann::json::array();
 
     for (const PlayerResult &result : response.results)
     {
-        resultsArr.push_back(ProtocolPacketSerializer::serializeAsJson(result));
+        resultsObj.push_back(ProtocolPacketSerializer::serializeAsJson(result));
     }
-
-    data["results"] = resultsArr;
 
     return serialize(response.id, data);
 }
@@ -254,6 +253,13 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const QuestionResponse &
     }
 
     data["points"] = response.points;
+
+    nlohmann::json& resultsObj = data["results"] = nlohmann::json::array();
+
+    for (const PlayerResult &result : response.results)
+    {
+        resultsObj.push_back(ProtocolPacketSerializer::serializeAsJson(result));
+    }
 
     return serialize(response.id, data);
 }

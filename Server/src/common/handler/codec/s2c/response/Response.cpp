@@ -82,18 +82,22 @@ LeaveGameResponse::LeaveGameResponse() :
     ProtocolResponse(ResponseCode::LEAVE_GAME)
 {}
 
-QuestionResponse::QuestionResponse(const ResponseCode id, const std::optional<UserQuestion> &question, const int points)
-    : ProtocolResponse(id),
+QuestionResponse::QuestionResponse(const ResponseCode id, const std::optional<UserQuestion> &question, const int points,
+                                   const std::optional<std::vector<PlayerResult>> &results) :
+    ProtocolResponse(id),
     question(question),
-    points(points)
+    points(points),
+    results(results)
 {}
 
-GetQuestionResponse::GetQuestionResponse(const std::optional<UserQuestion> &question, const int points) :
-    QuestionResponse(ResponseCode::GET_QUESTION, question, points)
+GetQuestionResponse::GetQuestionResponse(const std::optional<UserQuestion> &question, const int points,
+                                         const std::optional<std::vector<PlayerResult>> &results) :
+    QuestionResponse(ResponseCode::GET_QUESTION, question, points, results)
 {}
 
-SubmitAnswerResponse::SubmitAnswerResponse(const std::optional<UserQuestion> &question, const int points) :
-    QuestionResponse(ResponseCode::GET_QUESTION, question, points)
+SubmitAnswerResponse::SubmitAnswerResponse(const std::optional<UserQuestion> &question, const int points,
+                                           const std::optional<std::vector<PlayerResult>> &results) :
+    QuestionResponse(ResponseCode::GET_QUESTION, question, points, results)
 {}
 
 GetGameResultResponse::GetGameResultResponse(const std::vector<PlayerResult>& results) :

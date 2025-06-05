@@ -157,7 +157,8 @@ struct LeaveGameResponse : ProtocolResponse
 
 struct QuestionResponse : ProtocolResponse
 {
-    explicit QuestionResponse(ResponseCode id, const std::optional<UserQuestion> &question, int points);
+    explicit QuestionResponse(ResponseCode id, const std::optional<UserQuestion> &question, int points,
+                              const std::optional<std::vector<PlayerResult>> &results);
 
     /**
      * Empty for if there are no more questions.
@@ -165,11 +166,17 @@ struct QuestionResponse : ProtocolResponse
     const std::optional<UserQuestion> question;
 
     const int points;
+
+    /**
+     * If the game has ended during the response period, then the results will be provided here.
+     */
+    const std::optional<std::vector<PlayerResult>> results;
 };
 
 struct GetQuestionResponse : QuestionResponse
 {
-    GetQuestionResponse(const std::optional<UserQuestion> &question, int points);
+    GetQuestionResponse(const std::optional<UserQuestion> &question, int points,
+                        const std::optional<std::vector<PlayerResult>> &results = std::nullopt);
 };
 
 /**
@@ -177,7 +184,8 @@ struct GetQuestionResponse : QuestionResponse
  */
 struct SubmitAnswerResponse : QuestionResponse
 {
-    SubmitAnswerResponse(const std::optional<UserQuestion> &question, int points);
+    SubmitAnswerResponse(const std::optional<UserQuestion> &question, int points,
+                        const std::optional<std::vector<PlayerResult>> &results = std::nullopt);
 };
 
 
