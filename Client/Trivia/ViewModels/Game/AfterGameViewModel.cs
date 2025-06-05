@@ -14,7 +14,9 @@ public class AfterGameViewModel : SubRoomViewModel
 {
     public List<PlayerResult> Results { get; }
 
-    public PlayerResult WinnerResults => Results[0];
+    public PlayerResult WinnerResults { get; private set; } = default!;
+    public List<PlayerResult> List2Results { get; private set; } = null!;
+    public List<PlayerResult> List3Results { get; private set; } = null!;
     
 
     public AfterGameViewModel(IScreen hostScreen, RoomModel roomModel, IList<PlayerResult> results) :
@@ -24,6 +26,8 @@ public class AfterGameViewModel : SubRoomViewModel
         
         // Sort by points
         Results.Sort((prev, curr) => curr.Points.CompareTo(prev.Points));
+        
+        InitShorthandLists();
     }
 
     public AfterGameViewModel()
@@ -32,7 +36,7 @@ public class AfterGameViewModel : SubRoomViewModel
             .Select(i => new User
             {
                 Id = i,
-                Username = $"User {i}",
+                Username = $"User {i + 1}",
             })
             .Select(user => new PlayerResult
             {
@@ -43,6 +47,21 @@ public class AfterGameViewModel : SubRoomViewModel
                 Points = 69420
             })
             .ToList();
+        
+        InitShorthandLists();
+    }
+
+    private void InitShorthandLists()
+    {
+        WinnerResults = Results[0];
+        
+        List2Results = Results.Count > 1
+            ? Results[1..Math.Min(3, Results.Count)]
+            : [];
+
+        List3Results = Results.Count > 3
+            ? Results[3..]
+            : [];
     }
     
     

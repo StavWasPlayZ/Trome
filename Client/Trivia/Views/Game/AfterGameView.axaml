@@ -161,12 +161,7 @@
                     <controls:TriviaUsersList Background="#FFCCA2"
                                               Width="450"
                                               Margin="0 15">
-                        <ListBox>
-                            <ListBox.Items>
-                                <x:Int32>2</x:Int32>
-                                <x:Int32>3</x:Int32>
-                            </ListBox.Items>
-                            
+                        <ListBox ItemsSource="{Binding List2Results}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <listEntries:ScoredUserListEntry NumberedPlace="{Binding}"/>
