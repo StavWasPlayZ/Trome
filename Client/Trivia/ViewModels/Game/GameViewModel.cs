@@ -70,7 +70,7 @@ public class GameViewModel : GameViewModelBase
         await StopCountdown();
         
         var response = await Comm.SendRequestAwaitResponse<SubmitAnswerResponse>(new SubmitAnswerRequest(btnIndex));
-        Question = response.NewQuestion;
+        Question = response.Question;
         Points = response.Points;
 
         CurrQuestionCount++;
