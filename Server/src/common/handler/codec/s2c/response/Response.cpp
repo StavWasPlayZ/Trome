@@ -97,7 +97,7 @@ GetQuestionResponse::GetQuestionResponse(const std::optional<UserQuestion> &ques
 
 SubmitAnswerResponse::SubmitAnswerResponse(const std::optional<UserQuestion> &question, const int points,
                                            const std::optional<std::vector<PlayerResult>> &results) :
-    QuestionResponse(ResponseCode::GET_QUESTION, question, points, results)
+    QuestionResponse(ResponseCode::SUBMIT_ANSWER, question, points, results)
 {}
 
 GetGameResultResponse::GetGameResultResponse(const std::vector<PlayerResult>& results) :
