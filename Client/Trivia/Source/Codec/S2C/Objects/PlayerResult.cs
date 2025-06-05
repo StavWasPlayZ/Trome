@@ -1,7 +1,9 @@
-﻿namespace Trivia.Codec.S2C.Objects;
+﻿using Trivia.Models.Raw;
 
-public record PlayerResult(
-    string Username,
+namespace Trivia.Codec.S2C.Objects;
+
+public readonly record struct PlayerResult(
+    User User,
     int CorrectAnswerCount,
     int AverageAnswerTime,
     int Points
