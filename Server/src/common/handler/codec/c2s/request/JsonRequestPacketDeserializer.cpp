@@ -189,9 +189,9 @@ AddQuestionRequest JsonRequestPacketDeserializer::deserializeAddQuestionRequest(
 {
     std::vector<std::string> answers;
     answers.push_back(data.at("correct"));
-    answers.push_back(data.at("wrong_1"));
-    answers.push_back(data.at("wrong_2"));
-    answers.push_back(data.at("wrong_3"));
+    answers.push_back(data.at("wrong1"));
+    answers.push_back(data.at("wrong2"));
+    answers.push_back(data.at("wrong3"));
     return AddQuestionRequest(
         Question(
             data.at("question"),
