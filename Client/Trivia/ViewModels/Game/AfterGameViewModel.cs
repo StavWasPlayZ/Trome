@@ -12,20 +12,23 @@ namespace Trivia.ViewModels.Game;
 
 public class AfterGameViewModel : SubRoomViewModel
 {
-    public List<PlayerResult> Results { get; }
+    public List<PlayerResultModel> Results { get; }
 
-    public PlayerResult WinnerResults { get; private set; } = default!;
-    public List<PlayerResult> List2Results { get; private set; } = null!;
-    public List<PlayerResult> List3Results { get; private set; } = null!;
+    public PlayerResultModel WinnerResults { get; private set; } = null!;
+    public List<PlayerResultModel> List2Results { get; private set; } = null!;
+    public List<PlayerResultModel> List3Results { get; private set; } = null!;
     
 
     public AfterGameViewModel(IScreen hostScreen, RoomModel roomModel, IList<PlayerResult> results) :
         base(hostScreen, roomModel)
     {
-        Results = [..results];
-        
         // Sort by points
-        Results.Sort((prev, curr) => curr.Points.CompareTo(prev.Points));
+        List<PlayerResult> sortedResults = [..results];
+        sortedResults.Sort((prev, curr) => curr.Points.CompareTo(prev.Points));
+        
+        Results = sortedResults
+            .Select((result, i) => PlayerResultModel.FromPlayerResult(result, i + 1))
+            .ToList();
         
         InitShorthandLists();
     }
@@ -38,8 +41,10 @@ public class AfterGameViewModel : SubRoomViewModel
                 Id = i,
                 Username = $"User {i + 1}",
             })
-            .Select(user => new PlayerResult
+            .Select(user => new PlayerResultModel
             {
+                Place = user.Id + 1,
+                
                 User = user,
                 PlaytimeSecs = 123,
                 AverageAnswerTimeSecs = 15,
