@@ -12,7 +12,7 @@ public class AddQuestionViewModel : PageViewModel
     
     public ReactiveCommand<Unit, IRoutableViewModel>? NavigateBackCommand { get; }
     private string _prompt = "";
-    public string? Prompt
+    public string Prompt
     {
         get => _prompt;
         set => this.RaiseAndSetIfChanged(ref _prompt, value);
@@ -29,7 +29,8 @@ public class AddQuestionViewModel : PageViewModel
     {
         AddQuestionCommand = ReactiveCommand.CreateFromTask(async _ =>
         {
-            if(_prompt != null)
+            if (_prompt.Length > 0 && _answers[0].Length > 0 && _answers[1].Length > 0 && _answers[2].Length > 0 &&
+                _answers[3].Length > 0)
             {
                 await Comm.SendRequestAwaitResponse<AddQuestionResponse>(
                     new AddQuestionRequest(_prompt, _answers)
