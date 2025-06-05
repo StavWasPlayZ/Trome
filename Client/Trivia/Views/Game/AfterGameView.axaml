@@ -122,19 +122,26 @@
                                     
                                     <Panel Height="2"/>
                                     
-                                    <StackPanel>
+                                    <StackPanel Spacing="2">
                                         <StackPanel.Styles>
                                             <Style Selector="TextBlock">
                                                 <Setter Property="Foreground" Value="#B7722D"/>
                                             </Style>
                                         </StackPanel.Styles>
                                         
-                                        <TextBlock FontSize="30"
-                                                   Text="{Binding WinnerResults.Points}"/>
-                                        
+                                        <TextBlock FontSize="30">
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0} • {1}">
+                                                    <Binding Path="WinnerResults.Points"/>
+                                                    <Binding Path="WinnerResults.Playtime"
+                                                             Converter="{StaticResource TimeSpanToStringConverter}"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+
                                         <TextBlock FontSize="25">
                                             <TextBlock.Text>
-                                                <MultiBinding StringFormat="{}{0} • {1}/{2} CORRECT">
+                                                <MultiBinding StringFormat="AVG. {0} • {1}/{2} CORRECT">
                                                     <Binding Path="WinnerResults.AverageAnswerTime"
                                                              Converter="{StaticResource TimeSpanToStringConverter}"/>
                                                     <Binding Path="WinnerResults.CorrectAnswerCount"/>

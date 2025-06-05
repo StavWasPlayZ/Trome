@@ -12,4 +12,5 @@ public readonly record struct PlayerResult(
 )
 {
     public TimeSpan AverageAnswerTime => TimeSpan.FromSeconds(AverageAnswerTimeSecs);
+    public TimeSpan Playtime => TimeSpan.FromSeconds(PlaytimeSecs);
 };
