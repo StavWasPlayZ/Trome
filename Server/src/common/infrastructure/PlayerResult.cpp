@@ -3,18 +3,18 @@
 PlayerResult::PlayerResult(
     const LoggedUser &user,
     const int correctAnswerCount,
-    const int averageAnswerTime,
+    const int averageAnswerTimeSecs,
     const int points
 ) :
     user(user),
     correctAnswerCount(correctAnswerCount),
-    averageAnswerTime(averageAnswerTime),
+    averageAnswerTimeSecs(averageAnswerTimeSecs),
     points(points)
 {}
 
 PlayerResult::PlayerResult(const LoggedUser& user, const GameData &data) :
     user(user),
     correctAnswerCount(data.correctAnswerCount),
-    averageAnswerTime(data.getAverageAnswerTime().count()),
+    averageAnswerTimeSecs(data.getAverageAnswerTime().count()),
     points(data.points)
 {}

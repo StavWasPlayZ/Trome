@@ -6,16 +6,16 @@
 struct PlayerResult
 {
     PlayerResult(
-        const LoggedUser& user,
+        const LoggedUser &user,
         int correctAnswerCount,
-        int averageAnswerTime,
+        int averageAnswerTimeSecs,
         int points
     );
 
-    PlayerResult(const LoggedUser& user, const GameData &data);
+    PlayerResult(const LoggedUser &user, const GameData &data);
 
     const LoggedUser& user;
     const int correctAnswerCount;
-    const int averageAnswerTime;
+    const int averageAnswerTimeSecs;
     const int points;
 };
