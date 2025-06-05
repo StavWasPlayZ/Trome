@@ -7,12 +7,8 @@ namespace Trivia.ViewModels.Game;
 
 public class AfterGameViewModel : SubRoomViewModel
 {
-    private RoomModel _room;
-
-    public AfterGameViewModel(IScreen hostScreen, RoomModel room) : base(hostScreen)
-    {
-        _room = room;
-    }
+    public AfterGameViewModel(IScreen hostScreen, RoomModel roomModel) : base(hostScreen, roomModel)
+    {}
 
     public AfterGameViewModel()
     {}
@@ -29,7 +25,7 @@ public class AfterGameViewModel : SubRoomViewModel
             case GameStartedNotification:
                 // tried to do: NavigateAndPop(new GameViewModel(HostScreen, _room))!.Subscribe(); 
                 // got error: Method 'Subscribe' has 1 parameter(s) but is invoked with 0 argument(s)
-                NavigateTo(new GameViewModel(HostScreen, _room));
+                NavigateTo(new GameViewModel(HostScreen, RoomModel));
                 break;
             
             default:
