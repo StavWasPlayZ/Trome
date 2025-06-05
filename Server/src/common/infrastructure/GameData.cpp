@@ -67,6 +67,11 @@ std::chrono::seconds GameData::getAverageAnswerTime() const
     return this->averageAnswerTime;
 }
 
+std::chrono::seconds GameData::getPlaytime() const
+{
+    return this->game.getPlaytime();
+}
+
 int GameData::getAnswersRotation() const
 {
     return this->answersRotation;
