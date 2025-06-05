@@ -7,7 +7,8 @@
              xmlns:listEntries="clr-namespace:Trivia.Controls.ListEntries"
              mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
              x:Class="Trivia.Views.Game.AfterGameView"
-             x:DataType="game:AfterGameViewModel">
+             x:DataType="game:AfterGameViewModel"
+             x:Name="AfterGameViewModelControl">
     
     <Design.DataContext>
         <game:AfterGameViewModel/>
@@ -159,12 +160,17 @@
                     </Border>
                     
                     <controls:TriviaUsersList Background="#FFCCA2"
-                                              Width="450"
+                                              Width="470"
                                               Margin="0 15">
                         <ListBox ItemsSource="{Binding List2Results}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <listEntries:ScoredUserListEntry NumberedPlace="{Binding}"/>
+                                    <listEntries:AfterGameListEntry
+                                        Result="{Binding}"
+                                        RoomModel="{
+                                            Binding DataContext.RoomModel,
+                                            ElementName=AfterGameViewModelControl
+                                        }"/>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
@@ -174,23 +180,23 @@
                         <controls:TriviaUsersList.Styles>
                             
                             <Style Selector="TextBlock.secondary-text">
-                                <Setter Property="FontSize" Value="30" />
+                                <Setter Property="FontSize" Value="26"/>
                             </Style>
                             
                             <Style Selector="ListBoxItem">
                                 <Setter Property="Padding" Value="0 3"/>
                             </Style>
-                            <Style Selector="listEntries|ScoredUserListEntry">
+                            <Style Selector="listEntries|AfterGameListEntry">
                                 <Setter Property="Padding" Value="10 10"/>
                             </Style>
                             
-                            <Style Selector="listEntries|ScoredUserListEntry Border#PART_Pfp">
+                            <Style Selector="listEntries|AfterGameListEntry Border#PART_Pfp">
                                 <Setter Property="Width" Value="56"/>
                                 <Setter Property="Height" Value="56"/>
                             </Style>
                             
                             <Style Selector="ListBoxItem:nth-child(1)">
-                                <Style Selector="^ > listEntries|ScoredUserListEntry">
+                                <Style Selector="^ > listEntries|AfterGameListEntry">
                                     <Setter Property="Background" Value="#b4483a"/>
                                     
                                     <Style Selector="^ Border#PART_Pfp">
@@ -209,16 +215,16 @@
                                     </Style>
                                 </Style>
                                 
-                                <Style Selector="^:pointerover > listEntries|ScoredUserListEntry">
+                                <Style Selector="^:pointerover > listEntries|AfterGameListEntry">
                                     <Setter Property="Background" Value="#B45C46"/>
                                 </Style>
-                                <Style Selector="^:pressed listEntries|ScoredUserListEntry">
+                                <Style Selector="^:pressed listEntries|AfterGameListEntry">
                                     <Setter Property="Background" Value="#A74336"/>
                                 </Style>
                             </Style>
                             
                             <Style Selector="ListBoxItem:nth-child(2)">
-                                <Style Selector="^ > listEntries|ScoredUserListEntry">
+                                <Style Selector="^ > listEntries|AfterGameListEntry">
                                     <Setter Property="Background" Value="#d29188"/>
                                                     
                                     <Style Selector="^ Border#PART_Pfp">
@@ -237,10 +243,10 @@
                                     </Style>
                                 </Style>
                                                 
-                                <Style Selector="^:pointerover > listEntries|ScoredUserListEntry">
+                                <Style Selector="^:pointerover > listEntries|AfterGameListEntry">
                                     <Setter Property="Background" Value="#D29C97"/>
                                 </Style>
-                                <Style Selector="^:pressed listEntries|ScoredUserListEntry">
+                                <Style Selector="^:pressed listEntries|AfterGameListEntry">
                                     <Setter Property="Background" Value="#C3867E"/>
                                 </Style>
                             </Style>
@@ -275,7 +281,7 @@
                                         
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
-                                        <listEntries:ScoredUserListEntry NumberedPlace="{Binding}"/>
+                                        <!-- <listEntries:AfterGameListEntry Result="{Binding}"/> -->
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>

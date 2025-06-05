@@ -1,0 +1,175 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:listEntries="clr-namespace:Trivia.Controls.ListEntries"
+        xmlns:models="clr-namespace:Trivia.Models"
+        xmlns:modelsraw="clr-namespace:Trivia.Models.Raw"
+        xmlns:generic="clr-namespace:System.Collections.Generic;assembly=System.Collections"
+        xmlns:controls="clr-namespace:Trivia.Controls">
+    <Design.PreviewWith>
+        <controls:TriviaUsersList>
+            <ListBox Width="500">
+
+                <ListBox.ItemsSource>
+                    <generic:List x:TypeArguments="models:PlayerResultModel">
+                        <models:PlayerResultModel Place="1"
+                                                  Points="69420"
+                                                  AverageAnswerTimeSecs="15"
+                                                  CorrectAnswerCount="5"
+                                                  PlaytimeSecs="123">
+                            
+                            <models:PlayerResultModel.User>
+                                <modelsraw:User Username="USERNAME"
+                                                Id="1"/>
+                            </models:PlayerResultModel.User>
+                            
+                        </models:PlayerResultModel>
+                        
+                        <models:PlayerResultModel Place="2"
+                                                  Points="69420"
+                                                  AverageAnswerTimeSecs="15"
+                                                  CorrectAnswerCount="5"
+                                                  PlaytimeSecs="123">
+                            
+                            <models:PlayerResultModel.User>
+                                <modelsraw:User Username="USERNAME"
+                                                Id="1"/>
+                            </models:PlayerResultModel.User>
+                            
+                        </models:PlayerResultModel>
+                        
+                        <models:PlayerResultModel Place="3"
+                                                  Points="69420"
+                                                  AverageAnswerTimeSecs="15"
+                                                  CorrectAnswerCount="5"
+                                                  PlaytimeSecs="123">
+                            
+                            <models:PlayerResultModel.User>
+                                <modelsraw:User Username="USERNAME"
+                                                Id="1"/>
+                            </models:PlayerResultModel.User>
+                            
+                        </models:PlayerResultModel>
+                    </generic:List>
+                </ListBox.ItemsSource>
+                
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <listEntries:AfterGameListEntry Result="{Binding}">
+                            
+                            <listEntries:AfterGameListEntry.RoomModel>
+                                <models:RoomModel/>
+                            </listEntries:AfterGameListEntry.RoomModel>
+                            
+                        </listEntries:AfterGameListEntry>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                
+            </ListBox>
+        </controls:TriviaUsersList>
+    </Design.PreviewWith>
+    
+
+    <Style Selector="listEntries|AfterGameListEntry">
+        <!-- Set Defaults -->
+        <Setter Property="Background" Value="#9d4d95"/>
+        <Setter Property="Padding" Value="10 10"/>
+        
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{TemplateBinding Background}"
+                        Padding="{TemplateBinding Padding}"
+                        CornerRadius="{TemplateBinding CornerRadius}">
+                    
+                    <Grid ColumnDefinitions="Auto, Auto, Auto, *">
+                                            
+                        <TextBlock Classes="secondary-text"
+                                   Grid.Column="0"
+                                   VerticalAlignment="Center"
+                                   FontSize="25"
+                                   Margin="5 0 2 0"
+                                   Width="25"
+                                   TextAlignment="End"
+                                   Text="{
+                                       Binding $parent[listEntries:AfterGameListEntry].Result.Place,
+                                       StringFormat={}{0}.
+                                   }"/>
+
+                        <Border x:Name="PART_Pfp"
+                                Grid.Column="1"
+                                CornerRadius="10"
+                                Margin="10 0 15 0">
+
+                            <Svg Path="avares://Trivia/Assets/Icons/person.svg"/>
+                        </Border>
+
+                        <TextBlock Classes="primary-text"
+                                   Grid.Column="2"
+                                   VerticalAlignment="Center"
+                                   FontSize="30">
+                            USERNAME
+                        </TextBlock>
+                    
+                        <TextBlock Classes="secondary-text"
+                                   Grid.Column="3"
+                                   VerticalAlignment="Center"
+                                   TextAlignment="End"
+                                   FontSize="30">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0} • {1}/{2} • {3}">
+                                    <Binding Path="Result.Playtime"
+                                             RelativeSource="{RelativeSource TemplatedParent}"
+                                             Converter="{StaticResource TimeSpanToStringConverter}"/>
+                                    <Binding Path="Result.CorrectAnswerCount"
+                                             RelativeSource="{RelativeSource TemplatedParent}"/>
+                                    <Binding Path="RoomModel.Data.QuestionsCount"
+                                             RelativeSource="{RelativeSource TemplatedParent}"/>
+                                    <Binding Path="Result.Points"
+                                             RelativeSource="{RelativeSource TemplatedParent}"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+
+                    </Grid>
+                    
+                </Border>
+            </ControlTemplate>
+        </Setter>
+        
+        <Style Selector="^ Border#PART_Pfp">
+            <Setter Property="Background" Value="#ffbcf8"/>
+            
+            <Setter Property="Width" Value="60"/>
+            <Setter Property="Height" Value="60"/>
+            <Setter Property="Padding" Value="6"/>
+                                            
+            <Style Selector="^ > Svg">
+                <Setter Property="Css" Value="* { fill: #813e7a; }"/>
+            </Style>
+        </Style>
+                                        
+        <Style Selector="^ TextBlock.primary-text, ^ TextBlock.secondary-text">
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        
+    </Style>
+    
+    <Style Selector="controls|TriviaUsersList ListBoxItem">
+        <Style Selector="^:pointerover > listEntries|AfterGameListEntry">
+            <Setter Property="Background" Value="#B456AB"/>
+        </Style>
+        <Style Selector="^:pressed > listEntries|AfterGameListEntry">
+            <Setter Property="Background" Value="#85437D"/>
+        </Style>
+        
+            
+        <Style Selector="^:nth-child(1) > listEntries|AfterGameListEntry">
+            <Setter Property="CornerRadius" Value="25 25 0 0"/>
+        </Style>
+        <Style Selector="^:nth-last-child(1) > listEntries|AfterGameListEntry">
+            <Setter Property="CornerRadius" Value="0 0 25 25"/>
+        </Style>
+        <Style Selector="^:nth-child(1):nth-last-child(1) > listEntries|RoomUserListEntry">
+            <Setter Property="CornerRadius" Value="25 25 25 25"/>
+        </Style>
+    </Style>
+</Styles>
