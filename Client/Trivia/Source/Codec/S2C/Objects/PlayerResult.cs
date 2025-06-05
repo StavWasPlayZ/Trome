@@ -7,6 +7,7 @@ public readonly record struct PlayerResult(
     User User,
     int CorrectAnswerCount,
     int AverageAnswerTimeSecs,
+    int PlaytimeSecs,
     int Points
 )
 {
