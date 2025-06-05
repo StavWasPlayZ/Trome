@@ -73,41 +73,36 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
     // This is because the first answer is always the correct one.
     const bool didFail = ((4 - request.answer) % 4) - question.rotation != 0;
 
-    const std::optional<UserQuestion> newQuestion = this->m_game.generateNewQuestionForUser(user, didFail);
 
-    if (this->m_game.isGameComplete())
+    const QuestionRollResult rollResult = rollNewUserQuestion(info, didFail);
+    const std::optional<UserQuestion> newQuestion = this->m_game.getQuestionForUser(user);
+
+
+    switch (rollResult)
     {
-        handleLastPlayerFinished(info);
+    case QuestionRollResult::ROLLED:
+        return RequestResult(new SubmitAnswerResponse(newQuestion, userData.points));
 
-        return RequestResult(
-            new SubmitAnswerResponse(newQuestion, userData.points),
-            this->m_handlerFactory.createRoomRequestHandler(user, room)
-        );
-    }
-
-
-    // If there is no new question available, we've finished early.
-    if (!newQuestion.has_value())
-    {
-        dispatchNotification(
-            PlayerFinishedNotification(), 
-            room.getAllUsers(),
-            &user
-        );
-
+    case QuestionRollResult::FINISHED:
         return RequestResult(
             new SubmitAnswerResponse(std::nullopt, userData.points),
-            new FinishedGameEarlyRequestHandler(m_handlerFactory, m_game)
+            new FinishedGameEarlyRequestHandler(this->m_handlerFactory, this->m_game)
         );
-    }
 
-    return RequestResult(new SubmitAnswerResponse(newQuestion, userData.points));
+    case QuestionRollResult::FINISHED_LAST:
+        return RequestResult(new SubmitAnswerResponse(newQuestion, userData.points),
+                             this->m_handlerFactory.createRoomRequestHandler(user, room));
+
+    // ReSharper disable once CppDFAUnreachableCode
+    default:
+        throw std::runtime_error("Invalid roll state");
+    }
 }
 
 RequestResult GameRequestHandler::leaveGame(const RequestInfo &info, const LeaveGameRequest &) const
 {
-    Room& room = m_game.getRoom();
-    const LoggedUser& user = getUserByInfo(info);
+    Room &room = m_game.getRoom();
+    const LoggedUser &user = getUserByInfo(info);
 
     if (room.getAdmin() == user)
     {
@@ -123,10 +118,36 @@ RequestResult GameRequestHandler::leaveGame(const RequestInfo &info, const Leave
         }
     }
 
-    return RequestResult(
-        new LeaveGameResponse(),
-        new MenuRequestHandler(m_handlerFactory)
-    );
+    return RequestResult(new LeaveGameResponse(), new MenuRequestHandler(m_handlerFactory));
+}
+
+QuestionRollResult GameRequestHandler::rollNewUserQuestion(const RequestInfo &info, const bool didFail) const
+{
+    const LoggedUser &user = getUserByInfo(info);
+    const Room &room = this->m_game.getRoom();
+
+
+    const std::optional<UserQuestion> newQuestion = this->m_game.generateNewQuestionForUser(user, didFail);
+
+    if (this->m_game.isGameComplete())
+    {
+        handleLastPlayerFinished(info);
+        return QuestionRollResult::FINISHED_LAST;
+    }
+
+    // If there is no new question available, we've finished early.
+    if (!newQuestion.has_value())
+    {
+        dispatchNotification(
+            PlayerFinishedNotification(),
+            room.getAllUsers(),
+            &user
+        );
+
+        return QuestionRollResult::FINISHED;
+    }
+
+    return QuestionRollResult::ROLLED;
 }
 
 RequestResult GameRequestHandler::getQuestion(const RequestInfo &info, const GetQuestionRequest &) const
@@ -169,19 +190,31 @@ RequestResult GameRequestHandler::getQuestion(const RequestInfo &info, const Get
 
     // Getting here means the user has either skipped the question or that the time has passed.
     // Either of which will prompt the failure of the current round.
-    const std::optional<UserQuestion> newQuestion = m_game.generateNewQuestionForUser(user, true);
+    const QuestionRollResult rollResult = rollNewUserQuestion(info, true);
+    const std::optional<UserQuestion> newQuestion = this->m_game.getQuestionForUser(user);
 
-    if (this->m_game.isGameComplete())
+
+    switch (rollResult)
     {
-        handleLastPlayerFinished(info);
+    case QuestionRollResult::ROLLED:
+        return RequestResult(new GetQuestionResponse(newQuestion, userData.points));
 
+    case QuestionRollResult::FINISHED:
+        return RequestResult(
+            new GetQuestionResponse(std::nullopt, userData.points),
+            new FinishedGameEarlyRequestHandler(this->m_handlerFactory, this->m_game)
+        );
+
+    case QuestionRollResult::FINISHED_LAST:
         return RequestResult(
             new GetQuestionResponse(newQuestion, userData.points),
             this->m_handlerFactory.createRoomRequestHandler(user, this->m_game.getRoom())
         );
-    }
 
-    return RequestResult(new GetQuestionResponse(newQuestion, userData.points));
+    // ReSharper disable once CppDFAUnreachableCode
+    default:
+        throw std::runtime_error("Invalid roll state");
+    }
 }
 
 RequestResult GameRequestHandler::getGameResults(const RequestInfo &info, const GetGameResultRequest &) const

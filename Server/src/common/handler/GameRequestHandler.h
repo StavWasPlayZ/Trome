@@ -5,6 +5,7 @@
 
 class Game;
 class RequestHandlerFactory;
+enum class QuestionRollResult;
 
 class GameRequestHandler : public IRequestHandler
 {
@@ -19,6 +20,8 @@ private:
     RequestResult submitAnswer(const RequestInfo &info, const SubmitAnswerRequest &request) const;
     RequestResult leaveGame(const RequestInfo &info, const LeaveGameRequest &request) const;
 
+    QuestionRollResult rollNewUserQuestion(const RequestInfo &info, bool didFail) const;
+
     /**
      * Invalidates the current, active (or inactive) question, replacing it with the next one.
      */
@@ -31,4 +34,12 @@ private:
 
 
     Game& m_game;
+};
+
+
+enum class QuestionRollResult
+{
+    ROLLED,
+    FINISHED,
+    FINISHED_LAST
 };
