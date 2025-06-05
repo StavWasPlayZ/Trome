@@ -90,8 +90,10 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
         );
 
     case QuestionRollResult::FINISHED_LAST:
-        return RequestResult(new SubmitAnswerResponse(newQuestion, userData.points),
-                             this->m_handlerFactory.createRoomRequestHandler(user, room));
+        return RequestResult(
+            new SubmitAnswerResponse(newQuestion, userData.points, m_game.getResults()),
+            this->m_handlerFactory.createRoomRequestHandler(user, room)
+        );
 
     // ReSharper disable once CppDFAUnreachableCode
     default:
@@ -207,7 +209,7 @@ RequestResult GameRequestHandler::getQuestion(const RequestInfo &info, const Get
 
     case QuestionRollResult::FINISHED_LAST:
         return RequestResult(
-            new GetQuestionResponse(newQuestion, userData.points),
+            new GetQuestionResponse(newQuestion, userData.points, m_game.getResults()),
             this->m_handlerFactory.createRoomRequestHandler(user, this->m_game.getRoom())
         );
 
