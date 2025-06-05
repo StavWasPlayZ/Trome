@@ -6,7 +6,7 @@
 struct PlayerResult
 {
     PlayerResult(
-        const std::string& username,
+        const LoggedUser& user,
         int correctAnswerCount,
         int averageAnswerTime,
         int points
@@ -14,8 +14,7 @@ struct PlayerResult
 
     PlayerResult(const LoggedUser& user, const GameData &data);
 
-    //TODO: Change to User type
-    const std::string username;
+    const LoggedUser& user;
     const int correctAnswerCount;
     const int averageAnswerTime;
     const int points;

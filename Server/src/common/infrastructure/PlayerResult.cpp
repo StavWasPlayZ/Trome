@@ -1,19 +1,19 @@
 #include "PlayerResult.h"
 
 PlayerResult::PlayerResult(
-    const std::string &username,
+    const LoggedUser &user,
     const int correctAnswerCount,
     const int averageAnswerTime,
     const int points
 ) :
-    username(username),
+    user(user),
     correctAnswerCount(correctAnswerCount),
     averageAnswerTime(averageAnswerTime),
     points(points)
 {}
 
 PlayerResult::PlayerResult(const LoggedUser& user, const GameData &data) :
-    username(user.getUsername()), 
+    user(user),
     correctAnswerCount(data.correctAnswerCount),
     averageAnswerTime(data.getAverageAnswerTime().count()),
     points(data.points)

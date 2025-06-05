@@ -80,7 +80,7 @@ nlohmann::json ProtocolPacketSerializer::serializeAsJson(const PlayerResult &pla
 {
     nlohmann::json result;
 
-    result["username"] = playerResult.username;
+    result["user"] = serializeAsJson(playerResult.user);
     result["correct_answer_count"] = playerResult.correctAnswerCount;
     result["average_answer_time"] = playerResult.averageAnswerTime;
     result["points"] = playerResult.points;
