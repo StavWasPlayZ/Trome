@@ -74,6 +74,7 @@
 
                         <controls:TriviaButton Grid.Column="2"
                                                x:Name="SettingsButton"
+                                               Command="{Binding SettingsCommand}"
                                                IsIconButton="True"
                                                IconSvgPath="avares://Trivia/Assets/Icons/settings.svg"
                                                BorderBrushSelected="LightGray"

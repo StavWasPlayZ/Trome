@@ -16,6 +16,11 @@ public class MainMenuViewModel : PageViewModel
         StatisticsCommand = NavigateReactiveCommand(
             () => new StatisticsViewModel(hostScreen)
         );
+        // TODO: Make this to go to settings
+        // this is temp for looking if AddQuestion works
+        SettingsCommand= NavigateReactiveCommand(
+            () => new AddQuestionViewModel(hostScreen)
+        );
         LogOutCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             await Comm.SendRequestAwaitResponse<LogoutResponse>(new LogoutRequest());
@@ -27,7 +32,7 @@ public class MainMenuViewModel : PageViewModel
 
     public MainMenuViewModel()
     {
-        PlayCommand = StatisticsCommand = NoOpNavCommand;
+        PlayCommand = StatisticsCommand = SettingsCommand = NoOpNavCommand;
         LogOutCommand = NoOpCommand;
     }
     
@@ -37,6 +42,8 @@ public class MainMenuViewModel : PageViewModel
     public ReactiveCommand<Unit, IRoutableViewModel> StatisticsCommand { get; }
     
     public ReactiveCommand<Unit, Unit> LogOutCommand { get; }
+    
+    public ReactiveCommand<Unit, IRoutableViewModel> SettingsCommand { get; }
 
     public ReactiveCommand<Unit, Unit> ExitCommand { get; } = ReactiveCommand.Create(() =>
     {
