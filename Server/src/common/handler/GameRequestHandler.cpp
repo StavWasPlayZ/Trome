@@ -90,7 +90,7 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
 
     case QuestionRollType::FINISHED_LAST:
         return RequestResult(
-            new SubmitAnswerResponse(rollResult.newQuestion, userData.points, m_game.getResults()),
+            new SubmitAnswerResponse(rollResult.newQuestion, userData.points, rollResult.results),
             this->m_handlerFactory.createRoomRequestHandler(user, room)
         );
 
@@ -132,9 +132,9 @@ QuestionRollResult GameRequestHandler::rollNewUserQuestion(const RequestInfo &in
 
     if (this->m_game.isGameComplete())
     {
-        handleLastPlayerFinished(info);
+        const std::vector<PlayerResult> results = handleLastPlayerFinished(info);
 
-        return QuestionRollResult(QuestionRollType::FINISHED_LAST, newQuestion);
+        return QuestionRollResult(QuestionRollType::FINISHED_LAST, newQuestion, results);
     }
 
     // If there is no new question available, we've finished early.
@@ -208,7 +208,7 @@ RequestResult GameRequestHandler::getQuestion(const RequestInfo &info, const Get
 
     case QuestionRollType::FINISHED_LAST:
         return RequestResult(
-            new GetQuestionResponse(rollResult.newQuestion, userData.points, m_game.getResults()),
+            new GetQuestionResponse(rollResult.newQuestion, userData.points, rollResult.results),
             this->m_handlerFactory.createRoomRequestHandler(user, this->m_game.getRoom())
         );
 
@@ -223,19 +223,27 @@ RequestResult GameRequestHandler::getGameResults(const RequestInfo &, const GetG
     return RequestResult(new GetGameResultResponse(m_game.getResults()));
 }
 
-void GameRequestHandler::handleLastPlayerFinished(const RequestInfo &info) const
+std::vector<PlayerResult> GameRequestHandler::handleLastPlayerFinished(const RequestInfo &info) const
 {
+    const std::vector<PlayerResult> results = m_game.getResults();
+
     setRequestHandlers(
         [this](const LoggedUser *player) {
             return this->m_handlerFactory.createRoomRequestHandler(*player, this->m_game.getRoom());
         },
 
-        m_game.getRoom().getAllUsers(), GameEndedNotification(m_game.getResults()), &getUserByInfo(info));
+        m_game.getRoom().getAllUsers(),
+        GameEndedNotification(results),
+        &getUserByInfo(info)
+    );
 
     this->m_handlerFactory.getGameManager().deleteGame(m_game);
+    return results;
 }
 
-QuestionRollResult::QuestionRollResult(const QuestionRollType rollType, const std::optional<UserQuestion> &newQuestion) :
+QuestionRollResult::QuestionRollResult(const QuestionRollType rollType, const std::optional<UserQuestion> &newQuestion,
+                                       const std::optional<std::vector<PlayerResult>>& results) :
     rollType(rollType),
-    newQuestion(newQuestion)
+    newQuestion(newQuestion),
+    results(results)
 {}

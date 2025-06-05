@@ -31,7 +31,7 @@ private:
     RequestResult getGameResults(const RequestInfo &info, const GetGameResultRequest &request) const;
 
 
-    void handleLastPlayerFinished(const RequestInfo &info) const;
+    std::vector<PlayerResult> handleLastPlayerFinished(const RequestInfo &info) const;
 
 
     Game& m_game;
@@ -47,8 +47,14 @@ enum class QuestionRollType
 
 struct QuestionRollResult
 {
-    QuestionRollResult(QuestionRollType rollType, const std::optional<UserQuestion>& newQuestion);
+    QuestionRollResult(QuestionRollType rollType, const std::optional<UserQuestion>& newQuestion,
+                       const std::optional<std::vector<PlayerResult>>& results = std::nullopt);
 
     const QuestionRollType rollType;
     const std::optional<UserQuestion> newQuestion;
+
+    /**
+     * If the player has finished, and finished last - the results will be provided here.
+     */
+    const std::optional<std::vector<PlayerResult>> results;
 };
