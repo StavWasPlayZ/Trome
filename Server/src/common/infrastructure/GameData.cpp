@@ -109,6 +109,11 @@ void GameData::submitRoundTime()
         (this->averageAnswerTime * currentQuestionIndex + roundTime)
         / (currentQuestionIndex + 1)
     );
+
+    if (this->averageAnswerTime.count() == 0)
+    {
+        this->averageAnswerTime = std::chrono::seconds(1);
+    }
 }
 
 UserQuestion::UserQuestion(const Question &question, const int rotation) :
