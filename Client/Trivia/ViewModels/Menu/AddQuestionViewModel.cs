@@ -9,14 +9,14 @@ namespace Trivia.ViewModels.Menu;
 public class AddQuestionViewModel : PageViewModel
 {
     public ReactiveCommand<Unit, Unit> AddQuestionCommand { get; }
-    private string? _prompt;
+    private string _prompt = "";
     public string? Prompt
     {
         get => _prompt;
         set => this.RaiseAndSetIfChanged(ref _prompt, value);
     }
     
-    private List<string> _answers = [];
+    private List<string> _answers = ["", "", "", ""];
     public List<string> Answers
     {
         get => _answers;
