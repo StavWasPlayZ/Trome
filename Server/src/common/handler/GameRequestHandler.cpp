@@ -217,9 +217,9 @@ RequestResult GameRequestHandler::getQuestion(const RequestInfo &info, const Get
     }
 }
 
-RequestResult GameRequestHandler::getGameResults(const RequestInfo &info, const GetGameResultRequest &) const
+RequestResult GameRequestHandler::getGameResults(const RequestInfo &, const GetGameResultRequest &) const
 {
-    return RequestResult(new ErrorResponse(ErrorStatus::SERVER_UNIMPLEMENTED, info.id));
+    return RequestResult(new GetGameResultResponse(m_game.getResults()));
 }
 
 void GameRequestHandler::handleLastPlayerFinished(const RequestInfo &info) const
