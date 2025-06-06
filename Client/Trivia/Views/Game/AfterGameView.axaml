@@ -159,141 +159,155 @@
                         
                     </Border>
                     
-                    <controls:TriviaUsersList Background="#FFCCA2"
-                                              Width="470"
-                                              Margin="0 15">
-                        <ListBox ItemsSource="{Binding List2Results}">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <listEntries:AfterGameListEntry
-                                        Result="{Binding}"
-                                        RoomModel="{
-                                            Binding DataContext.RoomModel,
-                                            ElementName=AfterGameViewModelControl
-                                        }"/>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-
-                        <!--FIXME: These styles are copy-pasted from StatisticsView. -->
-                        <!-- Find a way to DRY it. -->
-                        <controls:TriviaUsersList.Styles>
-                            
-                            <Style Selector="TextBlock.secondary-text">
-                                <Setter Property="FontSize" Value="26"/>
-                            </Style>
-                            
-                            <Style Selector="ListBoxItem">
-                                <Setter Property="Padding" Value="0 3"/>
-                            </Style>
-                            <Style Selector="listEntries|AfterGameListEntry">
-                                <Setter Property="Padding" Value="10 10"/>
-                            </Style>
-                            
-                            <Style Selector="listEntries|AfterGameListEntry Border#PART_Pfp">
-                                <Setter Property="Width" Value="56"/>
-                                <Setter Property="Height" Value="56"/>
-                            </Style>
-                            
-                            <Style Selector="ListBoxItem:nth-child(1)">
-                                <Style Selector="^ > listEntries|AfterGameListEntry">
-                                    <Setter Property="Background" Value="#b4483a"/>
-                                    
-                                    <Style Selector="^ Border#PART_Pfp">
-                                        <Setter Property="Background" Value="#ffa69a"/>
-                                    
-                                        <Style Selector="^ > Svg">
-                                            <Setter Property="Css" Value="* { fill: #9d4236; }"/>
-                                        </Style>
-                                    </Style>
-                                    
-                                    <Style Selector="^ TextBlock.primary-text">
-                                        <Setter Property="Foreground" Value="#ffa69a"/>
-                                    </Style>
-                                    <Style Selector="^ TextBlock.secondary-text">
-                                        <Setter Property="Foreground" Value="#712e25"/>
-                                    </Style>
-                                </Style>
-                                
-                                <Style Selector="^:pointerover > listEntries|AfterGameListEntry">
-                                    <Setter Property="Background" Value="#B45C46"/>
-                                </Style>
-                                <Style Selector="^:pressed listEntries|AfterGameListEntry">
-                                    <Setter Property="Background" Value="#A74336"/>
-                                </Style>
-                            </Style>
-                            
-                            <Style Selector="ListBoxItem:nth-child(2)">
-                                <Style Selector="^ > listEntries|AfterGameListEntry">
-                                    <Setter Property="Background" Value="#d29188"/>
-                                                    
-                                    <Style Selector="^ Border#PART_Pfp">
-                                        <Setter Property="Background" Value="#ffcdc7"/>
-                                                    
-                                        <Style Selector="^ > Svg">
-                                            <Setter Property="Css" Value="* { fill: #ae6e65; }"/>
-                                        </Style>
-                                    </Style>
-                                                    
-                                    <Style Selector="^ TextBlock.primary-text">
-                                        <Setter Property="Foreground" Value="White"/>
-                                    </Style>
-                                    <Style Selector="^ TextBlock.secondary-text">
-                                        <Setter Property="Foreground" Value="#975f58"/>
-                                    </Style>
-                                </Style>
-                                                
-                                <Style Selector="^:pointerover > listEntries|AfterGameListEntry">
-                                    <Setter Property="Background" Value="#D29C97"/>
-                                </Style>
-                                <Style Selector="^:pressed listEntries|AfterGameListEntry">
-                                    <Setter Property="Background" Value="#C3867E"/>
-                                </Style>
-                            </Style>
-                            
-                        </controls:TriviaUsersList.Styles>
+                    <StackPanel IsVisible="{
+                                    Binding List2Results,
+                                    Converter={x:Static ObjectConverters.IsNotNull}
+                                }">
                         
-                    </controls:TriviaUsersList>
-                    
-                    <Border Background="rgba(0, 0, 0, 0.3)"
-                            CornerRadius="30"
-                            Margin="50 35"
-                            Padding="0 15">
-                        <!--TODO: This is copied directly from StatisticsView. Make it its own control -->
-                        <controls:TriviaUsersList Margin="50 0"
-                                                  CornerRadius="30">
-                            <ListBox ItemsSource="{Binding List3Results}">
+                        <controls:TriviaUsersList Background="#FFCCA2"
+                                                  Width="470"
+                                                  Margin="0 15">
+                            <ListBox ItemsSource="{Binding List2Results}">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
-                                        <listEntries:AfterGameListEntry Result="{Binding}"
-                                                                        RoomModel="{
-                                                                            Binding DataContext.RoomModel,
-                                                                            ElementName=AfterGameViewModelControl
-                                                                        }"/>
+                                        <listEntries:AfterGameListEntry
+                                            Result="{Binding}"
+                                            RoomModel="{
+                                                Binding DataContext.RoomModel,
+                                                ElementName=AfterGameViewModelControl
+                                            }"/>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
-                            
+
+                            <!--FIXME: These styles are copy-pasted from StatisticsView. -->
+                            <!-- Find a way to DRY it. -->
                             <controls:TriviaUsersList.Styles>
-                                <Style Selector="Border#PART_Pfp">
-                                    <Setter Property="Width" Value="30"/>
-                                    <Setter Property="Height" Value="30"/>
-                                    <Setter Property="Padding" Value="3"/>
+                                
+                                <Style Selector="TextBlock.secondary-text">
+                                    <Setter Property="FontSize" Value="26"/>
                                 </Style>
+                                
+                                <Style Selector="ListBoxItem">
+                                    <Setter Property="Padding" Value="0 3"/>
+                                </Style>
+                                <Style Selector="listEntries|AfterGameListEntry">
+                                    <Setter Property="Padding" Value="10 10"/>
+                                </Style>
+                                
+                                <Style Selector="listEntries|AfterGameListEntry Border#PART_Pfp">
+                                    <Setter Property="Width" Value="56"/>
+                                    <Setter Property="Height" Value="56"/>
+                                </Style>
+                                
+                                <Style Selector="ListBoxItem:nth-child(1)">
+                                    <Style Selector="^ > listEntries|AfterGameListEntry">
+                                        <Setter Property="Background" Value="#b4483a"/>
+                                        
+                                        <Style Selector="^ Border#PART_Pfp">
+                                            <Setter Property="Background" Value="#ffa69a"/>
+                                        
+                                            <Style Selector="^ > Svg">
+                                                <Setter Property="Css" Value="* { fill: #9d4236; }"/>
+                                            </Style>
+                                        </Style>
+                                        
+                                        <Style Selector="^ TextBlock.primary-text">
+                                            <Setter Property="Foreground" Value="#ffa69a"/>
+                                        </Style>
+                                        <Style Selector="^ TextBlock.secondary-text">
+                                            <Setter Property="Foreground" Value="#712e25"/>
+                                        </Style>
+                                    </Style>
+                                    
+                                    <Style Selector="^:pointerover > listEntries|AfterGameListEntry">
+                                        <Setter Property="Background" Value="#B45C46"/>
+                                    </Style>
+                                    <Style Selector="^:pressed listEntries|AfterGameListEntry">
+                                        <Setter Property="Background" Value="#A74336"/>
+                                    </Style>
+                                </Style>
+                                
+                                <Style Selector="ListBoxItem:nth-child(2)">
+                                    <Style Selector="^ > listEntries|AfterGameListEntry">
+                                        <Setter Property="Background" Value="#d29188"/>
+                                                        
+                                        <Style Selector="^ Border#PART_Pfp">
+                                            <Setter Property="Background" Value="#ffcdc7"/>
+                                                        
+                                            <Style Selector="^ > Svg">
+                                                <Setter Property="Css" Value="* { fill: #ae6e65; }"/>
+                                            </Style>
+                                        </Style>
+                                                        
+                                        <Style Selector="^ TextBlock.primary-text">
+                                            <Setter Property="Foreground" Value="White"/>
+                                        </Style>
+                                        <Style Selector="^ TextBlock.secondary-text">
+                                            <Setter Property="Foreground" Value="#975f58"/>
+                                        </Style>
+                                    </Style>
+                                                    
+                                    <Style Selector="^:pointerover > listEntries|AfterGameListEntry">
+                                        <Setter Property="Background" Value="#D29C97"/>
+                                    </Style>
+                                    <Style Selector="^:pressed listEntries|AfterGameListEntry">
+                                        <Setter Property="Background" Value="#C3867E"/>
+                                    </Style>
+                                </Style>
+                                
                             </controls:TriviaUsersList.Styles>
                             
                         </controls:TriviaUsersList>
-                    </Border>
+                        
+                        <Border IsVisible="{
+                                    Binding List3Results,
+                                    Converter={x:Static ObjectConverters.IsNotNull}
+                                }">
+                            
+                            <Border Background="rgba(0, 0, 0, 0.3)"
+                                    CornerRadius="30"
+                                    Margin="50 35 50 0"
+                                    Padding="0 15">
+                                <!--TODO: This is copied directly from StatisticsView. Make it its own control -->
+                                <controls:TriviaUsersList Margin="50 0"
+                                                          CornerRadius="30">
+                                    <ListBox ItemsSource="{Binding List3Results}">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <listEntries:AfterGameListEntry Result="{Binding}"
+                                                                                RoomModel="{
+                                                                                    Binding DataContext.RoomModel,
+                                                                                    ElementName=AfterGameViewModelControl
+                                                                                }"/>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                
+                                    <controls:TriviaUsersList.Styles>
+                                        <Style Selector="Border#PART_Pfp">
+                                            <Setter Property="Width" Value="30"/>
+                                            <Setter Property="Height" Value="30"/>
+                                            <Setter Property="Padding" Value="3"/>
+                                        </Style>
+                                    </controls:TriviaUsersList.Styles>
+                                
+                                </controls:TriviaUsersList>
+                            </Border>
+                            
+                        </Border>
+                        
+                    </StackPanel>
                     
                     <controls:TriviaButton Command="{Binding NavigateBackCommand}"
                                            Text="RETURN TO LOBBY"
                                            Width="335"
-                                           Margin="0 0 0 30"
+                                           Margin="0 60"
                                            Background="#362034"
-                                           BorderBrush="#b92e2b"
+                                           BorderBrush="#DC7D62"
                                            IconColor="#ffbbbb"
-                                           BorderBrushSelected="#D93040"
-                                           BorderBrushPressed="#AA2C2F"
+                                           BorderBrushSelected="#DC9683"
+                                           BorderBrushPressed="#DC7D62"
                                            BorderThickness="5"
                                            BorderThicknessSelected="6"
                                            IconSvgPath="avares://Trivia/Assets/Icons/play_arrow.svg"
@@ -301,7 +315,7 @@
                         
                         <controls:TriviaButton.Styles>
                             <Style Selector="controls|TriviaButton /template/ Button /template/ ContentPresenter">
-                                <Setter Property="BoxShadow" Value="0 6 7 0 #3f000000"/>
+                                <Setter Property="BoxShadow" Value="0 6 7 0 #4f000000"/>
                             </Style>
                         </controls:TriviaButton.Styles>
                         
