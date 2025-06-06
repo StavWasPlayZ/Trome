@@ -45,7 +45,7 @@ public:
     int getPlayersFinished() const;
 
 
-    std::chrono::seconds getPlaytime() const;
+    std::chrono::milliseconds getStartTime() const;
 
 
     const GameData& getDataOf(const LoggedUser& user) const;

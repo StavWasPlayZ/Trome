@@ -70,7 +70,9 @@ std::chrono::seconds GameData::getAverageAnswerTime() const
 
 std::chrono::seconds GameData::getPlaytime() const
 {
-    return this->game.getPlaytime();
+    return std::chrono::duration_cast<std::chrono::seconds>(
+        this->timeSinceQuestionRoll - this->game.getStartTime()
+    );
 }
 
 int GameData::getAnswersRotation() const
