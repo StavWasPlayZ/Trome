@@ -1,16 +1,17 @@
 using Avalonia;
 using Avalonia.Controls.Primitives;
+using Trivia.Models.User;
 
 namespace Trivia.Controls.ListEntries;
 
 public class ScoredUserListEntry : TemplatedControl
 {
-    public static readonly StyledProperty<int> NumberedPlaceProperty = AvaloniaProperty.Register<ScoredUserListEntry, int>(
-        nameof(NumberedPlace));
+    public static readonly StyledProperty<UserScoreModel?> ScoresProperty = AvaloniaProperty.Register<ScoredUserListEntry, UserScoreModel?>(
+        nameof(Scores));
 
-    public int NumberedPlace
+    public UserScoreModel? Scores
     {
-        get => GetValue(NumberedPlaceProperty);
-        set => SetValue(NumberedPlaceProperty, value);
+        get => GetValue(ScoresProperty);
+        set => SetValue(ScoresProperty, value);
     }
 }

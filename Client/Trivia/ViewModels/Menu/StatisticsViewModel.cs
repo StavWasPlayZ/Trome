@@ -1,13 +1,96 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Reactive;
+using System.Reactive.Disposables;
+using System.Threading.Tasks;
 using ReactiveUI;
+using Trivia.Codec.C2S.Request.Packets;
+using Trivia.Codec.S2C.Response.Packets;
 using Trivia.Controls.Popups;
+using Trivia.Models.Raw;
+using Trivia.Models.User;
 
 namespace Trivia.ViewModels.Menu;
 
 public class StatisticsViewModel : PageViewModel
 {
-    public StatisticsViewModel(IScreen hostScreen) : base(hostScreen) { }
-    public StatisticsViewModel() { }
+    private const int Lists = 3;
+    private const int MockUsers = 30;
+    
+    private List<UserScoreModel>? _scores;
+
+    public StatisticsViewModel(IScreen hostScreen) : base(hostScreen)
+    {
+        this.WhenActivated(disposables =>
+        {
+            FetchHighScores().DisposeWith(disposables);
+        }); 
+    }
+
+    public StatisticsViewModel()
+    {
+        _scores = Enumerable.Range(1, MockUsers)
+            .Select(i => new UserScoreModel
+            {
+                Place = i,
+                User = new User
+                {
+                    Id = i,
+                    Username = $"User {i}",
+                },
+                Points = 69420
+            })
+            .ToList();
+        
+        GenScoreLists();
+    }
+
+
+    private async Task FetchHighScores()
+    {
+        var response = await Comm.SendRequestAwaitResponse<GetHighScoresResponse>(new GetHighScoresRequest());
+        
+        _scores = response.HighScores
+            .Select((score, i) => UserScoreModel.FromUserScore(score, i + 1))
+            .ToList();
+        
+        GenScoreLists();
+    }
+
+    private void GenScoreLists()
+    {
+        var scores = new List<UserScoreModel?>[Lists];
+        
+        scores[0] = PickScoreOrNull(0, 2);
+        scores[1] = PickScoreOrNull(2, 3);
+        
+        scores[2] = _scores!.Count > 4
+            ? _scores[4..]
+                .Select(UserScoreModel? (x) => x)
+                .ToList()
+            : [];
+        
+        ScoreLists = scores;
+    }
+
+    private List<UserScoreModel?> PickScoreOrNull(int start, int count)
+    {
+        return Enumerable.Range(start, count)
+            .Select(_scores!.ElementAtOrDefault)
+            .ToList();
+    }
+    
+    
+    private List<UserScoreModel?>[] _scoreLists = Enumerable.Range(0, Lists)
+        .Select(_ => new List<UserScoreModel?>())
+        .ToArray();
+
+    public List<UserScoreModel?>[] ScoreLists
+    {
+        get => _scoreLists;
+        set => this.RaiseAndSetIfChanged(ref _scoreLists, value);
+    }
+    
 
     public ReactiveCommand<Unit, Unit>? ShowStatsPopup { get; } = ReactiveCommand.Create(() =>
     {

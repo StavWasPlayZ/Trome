@@ -36,15 +36,11 @@
                             
                             <controls:TriviaUsersList Grid.Column="0"
                                                       Background="#ffddbe">
-                                <ListBox PointerReleased="SelectingItemsControl_OnPointerReleased">
-                                    <ListBox.Items>
-                                        <x:Int32>1</x:Int32>
-                                        <x:Int32>2</x:Int32>
-                                    </ListBox.Items>
-                                    
+                                <ListBox PointerReleased="SelectingItemsControl_OnPointerReleased"
+                                         ItemsSource="{Binding ScoreLists[0]}">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
-                                            <listEntries:ScoredUserListEntry NumberedPlace="{Binding}"/>
+                                            <listEntries:ScoredUserListEntry Scores="{Binding}"/>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                 </ListBox>
@@ -125,16 +121,11 @@
                             
                             <controls:TriviaUsersList Grid.Column="2"
                                                       Background="#9d665f">
-                                <ListBox PointerReleased="SelectingItemsControl_OnPointerReleased">
-                                    <ListBox.Items>
-                                        <x:Int32>3</x:Int32>
-                                        <x:Int32>4</x:Int32>
-                                        <x:Int32>5</x:Int32>
-                                    </ListBox.Items>
-                                    
+                                <ListBox PointerReleased="SelectingItemsControl_OnPointerReleased"
+                                         ItemsSource="{Binding ScoreLists[1]}">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
-                                            <listEntries:ScoredUserListEntry NumberedPlace="{Binding}"/>
+                                            <listEntries:ScoredUserListEntry Scores="{Binding}"/>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                 </ListBox>
@@ -217,47 +208,20 @@
                     <controls:TriviaUsersList Grid.Row="2"
                                               Margin="160 0"
                                               CornerRadius="30 30 0 0">
-                        <ListBox PointerReleased="SelectingItemsControl_OnPointerReleased">
-                            <ListBox.Items>
-                                <x:Int32>6</x:Int32>
-                                <x:Int32>7</x:Int32>
-                                <x:Int32>8</x:Int32>
-                                <x:Int32>9</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                            </ListBox.Items>
-                                    
+                        <ListBox PointerReleased="SelectingItemsControl_OnPointerReleased"
+                                 ItemsSource="{Binding ScoreLists[2]}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <listEntries:ScoredUserListEntry NumberedPlace="{Binding}"/>
+                                    <listEntries:ScoredUserListEntry Scores="{Binding}"/>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
                         
                         <controls:TriviaUsersList.Styles>
+                            <Style Selector="TextBlock.primary-text, TextBlock.secondary-text">
+                                <Setter Property="FontSize" Value="25"/>
+                            </Style>
+                            
                             <Style Selector="Border#PART_Pfp">
                                 <Setter Property="Width" Value="30"/>
                                 <Setter Property="Height" Value="30"/>
