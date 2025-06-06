@@ -167,8 +167,7 @@ public class Communicator : IDisposable
             }
             catch (IOException e)
             {
-                Console.Error.WriteLine("IO Exception occured; Assuming forced disconnection");
-                Console.Error.WriteLine(e);
+                Console.Error.WriteLine($"IO Exception occured ({e.Message}); Assuming forced disconnection");
                 return;
             }
 
