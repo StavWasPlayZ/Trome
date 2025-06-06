@@ -1,5 +1,7 @@
 #include "SqliteDatabase.h"
 
+#include "infrastructure/model/UserModel.h"
+
 #include <iostream>
 #include <sstream>
 
@@ -341,18 +343,18 @@ float SqliteDatabase::queryPlayerAverageAnsTime(const std::string &username) con
     return static_cast<float>(totalTime) / totalAns;
 }
 
-std::unordered_map<std::string, int> SqliteDatabase::queryHighScores(const int limit) const
+std::map<UserModel, int> SqliteDatabase::queryHighScores(const int limit) const
 {
     std::ostringstream builder;
-    builder << "SELECT users.username, stats.points "
+    builder << "SELECT users.id, users.username, stats.points "
         << "FROM " << TABLE_USERS << " users "
         << "JOIN " << TABLE_STATISTICS << " stats "
-        << "ON users.id = stats.user_id "
+            << "ON users.id = stats.user_id "
         << "ORDER BY stats.points DESC "
         << "LIMIT " << limit <<
     ";";
 
-    std::unordered_map<std::string, int> results;
+    std::map<UserModel, int> results;
 
     consumeSql(
         builder.str(),
@@ -360,7 +362,10 @@ std::unordered_map<std::string, int> SqliteDatabase::queryHighScores(const int l
         [&results](const std::map<std::string, std::optional<std::string>> &row)
         {
             results.emplace(
-                row.at("username").value(),
+                UserModel(
+                    std::stoi(row.at("id").value()),
+                    row.at("username").value()
+                ),
                 std::stoi(row.at("points").value())
             );
         }
