@@ -218,16 +218,16 @@ std::list<Question> SqliteDatabase::queryQuestions(const int amount) const
     );
 }
 
-void SqliteDatabase::addQuestions(const std::vector<Question> questions, const std::optional<std::string>& authorName) const
+void SqliteDatabase::addQuestions(const std::vector<Question> questions,
+                                  const std::optional<std::string> &authorName) const
 {
-    const std::string authorId = authorName.has_value()
-        ? std::to_string(queryIdOfUser(*authorName))
-        : "NULL";
+    const std::string authorId = authorName.has_value() ? std::to_string(queryIdOfUser(*authorName)) : "NULL";
 
     std::ostringstream builder;
 
-    builder << "INSERT INTO " << TABLE_QUESTIONS << " (author_id, question, correct, wrong_1, wrong_2, wrong_3)"
-        " VALUES ";
+    builder << "INSERT INTO " << TABLE_QUESTIONS
+            << " (author_id, question, correct, wrong_1, wrong_2, wrong_3)"
+               " VALUES ";
 
     bool first = true;
 
@@ -239,10 +239,7 @@ void SqliteDatabase::addQuestions(const std::vector<Question> questions, const s
         }
         first = false;
 
-
-        builder << "("
-            << authorId << ", "
-            << '\'' << question.prompt << '\'';
+        builder << "(" << authorId << ", " << '\'' << question.prompt << '\'';
 
         for (const std::string &answer : question.answers)
         {
@@ -255,30 +252,56 @@ void SqliteDatabase::addQuestions(const std::vector<Question> questions, const s
     execSql(builder.str());
 }
 
-void SqliteDatabase::addTime(const std::string &username, const int time) const
+void SqliteDatabase::addToStats(const std::string &username, const int time, const int answers,
+                                const int correctAnswers, const int points, const int games) const
 {
-	addToColumn(username, "total_time", time, TABLE_STATISTICS);
+    std::ostringstream builder;
+
+    builder << "INSERT INTO " << TABLE_STATISTICS
+        << "(user_id, total_time, correct_ans, total_ans, games_played, points) "
+        << "VALUES ("
+            << "(" << genQueryUserIdStr(username) << "), "
+            << time << ", "
+            << correctAnswers << ", "
+            << answers << ", "
+            << games << ", "
+            << points
+        << ") "
+        << "ON CONFLICT(user_id) DO UPDATE SET "
+            "total_time = total_time + excluded.total_time, "
+            "correct_ans = correct_ans + excluded.correct_ans, "
+            "total_ans = total_ans + excluded.total_ans, "
+            "games_played = games_played + excluded.games_played, "
+            "points = points + excluded.points"
+    ";";
+
+    execSql(builder.str());
 }
 
-void SqliteDatabase::addTotalAns(const std::string &username, const int ans) const
-{
-    addToColumn(username, "total_ans", ans, TABLE_STATISTICS);
-}
-
-void SqliteDatabase::addCorrectAns(const std::string &username, const int ans) const
-{
-    addToColumn(username, "correct_ans", ans, TABLE_STATISTICS);
-}
-
-void SqliteDatabase::addGamesPlayed(const std::string &username, const int games) const
-{
-    addToColumn(username, "games_played", games, TABLE_STATISTICS);
-}
-
-void SqliteDatabase::addPoints(const std::string &username, const int points) const
-{
-    addToColumn(username, "points", points, TABLE_STATISTICS);
-}
+// void SqliteDatabase::addTime(const std::string &username, const int time) const
+// {
+// 	addToColumn(username, "total_time", time, TABLE_STATISTICS);
+// }
+//
+// void SqliteDatabase::addTotalAns(const std::string &username, const int ans) const
+// {
+//     addToColumn(username, "total_ans", ans, TABLE_STATISTICS);
+// }
+//
+// void SqliteDatabase::addCorrectAns(const std::string &username, const int ans) const
+// {
+//     addToColumn(username, "correct_ans", ans, TABLE_STATISTICS);
+// }
+//
+// void SqliteDatabase::addGamesPlayed(const std::string &username, const int games) const
+// {
+//     addToColumn(username, "games_played", games, TABLE_STATISTICS);
+// }
+//
+// void SqliteDatabase::addPoints(const std::string &username, const int points) const
+// {
+//     addToColumn(username, "points", points, TABLE_STATISTICS);
+// }
 
 int SqliteDatabase::queryTime(const std::string &username) const
 {

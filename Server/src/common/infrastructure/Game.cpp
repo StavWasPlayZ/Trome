@@ -175,17 +175,13 @@ void Game::submitGameStatsToDB(const LoggedUser &user) const
     const GameData &data = this->m_playersData.at(&user);
     const std::string &username = user.getUsername();
 
-    const std::chrono::seconds gameplayTime = std::chrono::duration_cast<std::chrono::seconds>(
-        utils::getCurrTimeMillis() - this->m_startTime
+    m_database.addToStats(
+        username,
+        data.getPlaytime().count(),
+        data.currentQuestionIndex, // By this point it should be 1-based and not 0-based.
+        data.correctAnswerCount,
+        data.points
     );
-
-    m_database.addTime(username, gameplayTime.count());
-
-    m_database.addCorrectAns(username, data.correctAnswerCount);
-    m_database.addPoints(username, data.points);
-    m_database.addTotalAns(username, data.currentQuestionIndex); // By this point it should be 1-based and not 0-based.
-
-    m_database.addGamesPlayed(username);
 }
 
 void Game::removePlayer(const LoggedUser &player)
