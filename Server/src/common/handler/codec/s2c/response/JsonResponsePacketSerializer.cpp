@@ -220,6 +220,31 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const LeaveGameResponse 
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const GetQuestionResponse &response)
 {
+    return serializeResponse(static_cast<const QuestionResponse &>(response));
+}
+
+OBuffer JsonResponsePacketSerializer::serializeResponse(const SubmitAnswerResponse &response)
+{
+    return serializeResponse(static_cast<const QuestionResponse &>(response));
+}
+
+
+OBuffer JsonResponsePacketSerializer::serializeResponse(const GetGameResultResponse &response)
+{
+    nlohmann::json data;
+
+    nlohmann::json& resultsObj = data["results"] = nlohmann::json::array();
+
+    for (const PlayerResult &result : response.results)
+    {
+        resultsObj.push_back(ProtocolPacketSerializer::serializeAsJson(result));
+    }
+
+    return serialize(response.id, data);
+}
+
+OBuffer JsonResponsePacketSerializer::serializeResponse(const QuestionResponse &response)
+{
     nlohmann::json data;
 
     if (response.question.has_value())
@@ -229,35 +254,15 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetQuestionRespons
 
     data["points"] = response.points;
 
-    return serialize(response.id, data);
-}
-
-OBuffer JsonResponsePacketSerializer::serializeResponse(const SubmitAnswerResponse &response)
-{
-    nlohmann::json data;
-
-    if (response.newQuestion.has_value())
+    if (response.results.has_value())
     {
-        data["new_question"] = ProtocolPacketSerializer::serializeAsJson(response.newQuestion.value());
+        nlohmann::json& resultsObj = data["results"] = nlohmann::json::array();
+
+        for (const PlayerResult &result : response.results.value())
+        {
+            resultsObj.push_back(ProtocolPacketSerializer::serializeAsJson(result));
+        }
     }
-
-    data["points"] = response.points;
-
-    return serialize(response.id, data);
-}
-
-
-OBuffer JsonResponsePacketSerializer::serializeResponse(const GetGameResultResponse &response)
-{
-    nlohmann::json data;
-    nlohmann::json resultsArr = nlohmann::json::array();
-
-    for (const PlayerResult& result : response.results)
-    {
-        resultsArr.push_back(ProtocolPacketSerializer::serializeAsJson(result));
-    }
-
-    data["results"] = resultsArr;
 
     return serialize(response.id, data);
 }

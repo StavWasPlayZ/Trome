@@ -11,8 +11,8 @@ using Avalonia.Controls;
 using Avalonia.Threading;
 using Trivia.Codec.C2S.Request;
 using Trivia.Codec.S2C;
-using Trivia.Codec.S2C.Response;
 using Trivia.Codec.S2C.Response.Packets;
+using Trivia.Codec.S2C.Response.Packets.Impl;
 using Trivia.Exceptions;
 
 namespace Trivia;
@@ -167,8 +167,7 @@ public class Communicator : IDisposable
             }
             catch (IOException e)
             {
-                Console.Error.WriteLine("IO Exception occured; Assuming forced disconnection");
-                Console.Error.WriteLine(e);
+                Console.Error.WriteLine($"IO Exception occured ({e.Message}); Assuming forced disconnection");
                 return;
             }
 

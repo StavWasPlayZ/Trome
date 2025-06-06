@@ -24,6 +24,7 @@ struct GameData
 
     std::chrono::milliseconds getTimeSinceQuestionRoll() const;
     std::chrono::seconds getAverageAnswerTime() const;
+    std::chrono::seconds getPlaytime() const;
     int getAnswersRotation() const;
 
     std::chrono::milliseconds getRoundTime() const;

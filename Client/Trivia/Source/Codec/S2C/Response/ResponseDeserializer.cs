@@ -1,4 +1,5 @@
 using Trivia.Codec.S2C.Response.Packets;
+using Trivia.Codec.S2C.Response.Packets.Impl;
 
 namespace Trivia.Codec.S2C.Response;
 

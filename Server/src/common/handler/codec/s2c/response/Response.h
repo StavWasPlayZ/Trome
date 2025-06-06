@@ -154,29 +154,40 @@ struct LeaveGameResponse : ProtocolResponse
     LeaveGameResponse();
 };
 
-struct GetQuestionResponse : ProtocolResponse
-{
-    explicit GetQuestionResponse(const std::optional<UserQuestion> &question, int points);
 
-    const int points;
+struct QuestionResponse : ProtocolResponse
+{
+    explicit QuestionResponse(ResponseCode id, const std::optional<UserQuestion> &question, int points,
+                              const std::optional<std::vector<PlayerResult>> &results);
 
     /**
      * Empty for if there are no more questions.
      */
     const std::optional<UserQuestion> question;
-};
-
-struct SubmitAnswerResponse : ProtocolResponse
-{
-    SubmitAnswerResponse(const std::optional<UserQuestion> &newQuestion, int points);
 
     const int points;
 
     /**
-     * Empty for if there are no more questions.
+     * If the game has ended during the response period, then the results will be provided here.
      */
-    const std::optional<UserQuestion> newQuestion;
+    const std::optional<std::vector<PlayerResult>> results;
 };
+
+struct GetQuestionResponse : QuestionResponse
+{
+    GetQuestionResponse(const std::optional<UserQuestion> &question, int points,
+                        const std::optional<std::vector<PlayerResult>> &results = std::nullopt);
+};
+
+/**
+ * Contains the new, next question, if one exists.
+ */
+struct SubmitAnswerResponse : QuestionResponse
+{
+    SubmitAnswerResponse(const std::optional<UserQuestion> &question, int points,
+                        const std::optional<std::vector<PlayerResult>> &results = std::nullopt);
+};
+
 
 struct [[deprecated(
     "The Noftifications system has been set in place to allow for automatic, non-polling updates of any "

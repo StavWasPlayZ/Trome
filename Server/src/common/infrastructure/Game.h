@@ -45,6 +45,9 @@ public:
     int getPlayersFinished() const;
 
 
+    std::chrono::milliseconds getStartTime() const;
+
+
     const GameData& getDataOf(const LoggedUser& user) const;
 
     std::vector<PlayerResult> getResults() const;

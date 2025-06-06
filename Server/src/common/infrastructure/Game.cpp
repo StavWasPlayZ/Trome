@@ -63,6 +63,11 @@ int Game::getPlayersFinished() const
     return this->m_room.getAllUsers().size() - this->m_playersRemaining;
 }
 
+std::chrono::milliseconds Game::getStartTime() const
+{
+    return this->m_startTime;
+}
+
 const GameData &Game::getDataOf(const LoggedUser &user) const
 {
     return this->m_playersData.at(&user);
