@@ -106,9 +106,9 @@ struct GetPlayersInRoomResponse : ProtocolResponse
 
 struct GetHighScoresResponse : ProtocolResponse
 {
-    explicit GetHighScoresResponse(const std::vector<std::pair<std::string, int>> &stats);
+    explicit GetHighScoresResponse(const std::vector<std::pair<LoggedUser*, int>> &stats);
 
-    const std::vector<std::pair<std::string, int>> stats;
+    const std::vector<std::pair<LoggedUser*, int>> stats;
 };
 
 struct GetPersonalStatisticsResponse : ProtocolResponse

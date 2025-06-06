@@ -153,12 +153,12 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetHighScoresRespo
 
     nlohmann::json scoresArr = nlohmann::json::array();
 
-    for (const auto& [username, score] : response.stats)
+    for (const auto& [user, score] : response.stats)
     {
         scoresArr.push_back(
             {
-                {"username", username},
-                {"score", score}
+                { "user", ProtocolPacketSerializer::serializeAsJson(*user) },
+                { "score", score }
             }
         );
     }

@@ -47,7 +47,7 @@ GetPlayersInRoomResponse::GetPlayersInRoomResponse(const std::vector<LoggedUser*
     players(players)
 {}
 
-GetHighScoresResponse::GetHighScoresResponse(const std::vector<std::pair<std::string, int>> &stats) :
+GetHighScoresResponse::GetHighScoresResponse(const std::vector<std::pair<LoggedUser*, int>> &stats) :
     ProtocolResponse(ResponseCode::GET_HIGH_SCORES),
     stats(stats)
 {}

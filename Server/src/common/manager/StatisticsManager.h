@@ -4,15 +4,17 @@
 #include "infrastructure/UserStatistics.h"
 
 #include <string>
+#include <utility>
 #include <vector>
-#include <utility> // for std::pair
+
+class LoggedUser;
 
 class StatisticsManager
 {
 public:
     explicit StatisticsManager(const IDatabase& db);
 
-    std::vector<std::pair<std::string, int>> getHighScores() const;
+    std::vector<std::pair<LoggedUser*, int>> getHighScores() const;
     UserStatistics getUserStatistics(const std::string& username) const;
 
 private:
