@@ -262,26 +262,14 @@
                         <!--TODO: This is copied directly from StatisticsView. Make it its own control -->
                         <controls:TriviaUsersList Margin="50 0"
                                                   CornerRadius="30">
-                            <ListBox>
-                                <ListBox.Items>
-                                    <x:Int32>4</x:Int32>
-                                    <x:Int32>5</x:Int32>
-                                    <x:Int32>6</x:Int32>
-                                    <x:Int32>7</x:Int32>
-                                    <x:Int32>8</x:Int32>
-                                    <x:Int32>9</x:Int32>
-                                    <x:Int32>10</x:Int32>
-                                    <x:Int32>10</x:Int32>
-                                    <x:Int32>10</x:Int32>
-                                    <x:Int32>10</x:Int32>
-                                    <x:Int32>10</x:Int32>
-                                    <x:Int32>10</x:Int32>
-                                    <x:Int32>10</x:Int32>
-                                </ListBox.Items>
-                                        
+                            <ListBox ItemsSource="{Binding List3Results}">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
-                                        <!-- <listEntries:AfterGameListEntry Result="{Binding}"/> -->
+                                        <listEntries:AfterGameListEntry Result="{Binding}"
+                                                                        RoomModel="{
+                                                                            Binding DataContext.RoomModel,
+                                                                            ElementName=AfterGameViewModelControl
+                                                                        }"/>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
