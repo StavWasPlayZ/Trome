@@ -68,7 +68,7 @@ public:
 
     UserQuestion setFirstQuestionForUser(const LoggedUser& user);
 
-    void handleUserLeft(const LoggedUser& user);
+    void handlePlayerFinished(const LoggedUser& user);
 
 private:
     /**

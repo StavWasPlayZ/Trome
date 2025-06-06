@@ -110,7 +110,7 @@ std::optional<UserQuestion> Game::generateNewQuestionForUser(const LoggedUser &u
 
     if (data.isFinished)
     {
-        handleUserLeft(user);
+        handlePlayerFinished(user);
         return std::nullopt;
     }
 
@@ -124,32 +124,12 @@ UserQuestion Game::setFirstQuestionForUser(const LoggedUser &user)
     return getQuestionForUser(user).value();
 }
 
-void Game::handleUserLeft(const LoggedUser &user)
+void Game::handlePlayerFinished(const LoggedUser &user)
 {
-    // removePlayer(user);
-
-    // Think you can get away?
-    // ehe~
     submitGameStatsToDB(user);
 
-    // ⠀⠀⠀⠀⢀⠎⠂⠀⠀⠀⣀⣠⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧
-    // ⠀⡰⠓⠈⠡⠀⢀⣠⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-    // ⠀⡇⠀⠀⣀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⣿⣿⣿⣿⣿⣿⣿
-    // ⢀⣰⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⣻⣿⠃⢸⣿⣿⣿⣿⣿⣿
-    // ⠀⠙⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠋⢠⣿⠏⠀⠀⢿⣿⣿⣿⣿⣿
-    // ⠀⠀⠈⣹⣿⣿⣿⣿⡿⠿⣻⣿⣿⣟⡉⠁⠀⠀⢠⣿⠟⠈⠉⠒⠨⢿⣿⣿⣿⣿
-    // ⠀⣠⣾⡿⠟⣿⣿⣿⡇⠈⠏⠭⠜⠚⢻⡆⠀⣠⠿⠁.⠳     ⢿⣿⣿
-    // ⠀⠀⠀⠀⠀⢸⣿⣿⣅⠀⠐⠄⣈⡒⠚⠁⠞⠁⠀⠀ .---. ⣿⣿⣿
-    // ⠀⠀⠀⠀⠀⣴⣿⣿⣿⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀  ⢀⣾⣿⣿⣿
-    // ⠀⠀⠀⠀⠀⣿⣿⢿⣿⣷⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣾⣿⣿⡏⠀
-    // ⠀⠀⠀⠀⡜⠿⢡⠋⣿⢻⣿⣆⡀⠀⠈⠳⢂⣤⡤⠄⠀⠀⠀⣠⣿⣽⣿⣿⡇⠀
-    // ⠀⠀⠀⠀⠇⠆⡇⠀⠀⣸⠥⠻⣯⠂⢄⠀⠀ ⠀⣀⣤⢴⣿⢹⠇⠁⣿⡏⠀⠀
-    // ⠀⠀⠀⠀⠃⡰⠁⡠⠊⠀⠀⠀⠇⠑⡤⣉⣒⡂⠅⠊⡇⠀⠙⠐⡴⢂⢀⠇⠀⠀
-    // ⠀⠀⠀⠀⠎⠀⠎⠀⠀⠀⢀⠔⠃⡞⢀⠁⠇⡇⢱⠀⢇⡀⠀⢰⠀⢾⠃⠀⠀⠀
-    // ⠀⠀⠈⠀⠄⡚⠀⢀⣠⠤⢈⣢⡔⠀⡘⠀⠀⢁⠀⢢⣘⣁⣀⣸⡴⠜⢧⢀⡀⠀
-
-
-    //NOTE: We do not actually remove the player in question, but wait until the game truly finishes.
+    // removePlayer(user);
+    //NOTE: We do NOT actually remove the player in question, but wait until the game truly finishes.
     // This is so that said player may still be shown in the after-game view.
 
     m_playersRemaining--;
@@ -167,7 +147,7 @@ void Game::populateQuestions()
 {
     std::list<Question> questions;
 
-    if (!MOCK)
+    if constexpr (!MOCK)
     {
         questions = this->m_database.queryQuestions(m_room.getData().questionsCount);
     }
