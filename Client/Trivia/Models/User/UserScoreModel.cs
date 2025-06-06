@@ -1,7 +1,19 @@
+using Trivia.Models.Raw;
+
 namespace Trivia.Models.User;
 
-public readonly record struct UserScoreModel
+public record UserScoreModel : UserScore
 {
-    public Raw.User User { get; init; }
-    public int Score { get; init; }
+    public required int Place { get; init; }
+
+
+    public static UserScoreModel FromUserScore(UserScore score, int place)
+    {
+        return new UserScoreModel
+        {
+            User = score.User,
+            Place = place,
+            Points = score.Points
+        };
+    }
 }
