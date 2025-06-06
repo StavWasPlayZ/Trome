@@ -253,7 +253,7 @@ public class Communicator : IDisposable
             var rawRequest = request.Serialize();
 
             VerboseLog($"Sending packet: {request}");
-            VerboseLog($"In raw form: {Encoding.UTF8.GetString(rawRequest, 0, rawRequest.Length)}");
+            VerboseLog($"In raw form: {Encoding.UTF8.GetString(rawRequest, 5, rawRequest.Length - 5)}");
             
             _clientSocket!.GetStream().Write(rawRequest, 0, rawRequest.Length);
         }
