@@ -168,7 +168,7 @@
         <Style Selector="^:nth-last-child(1) > listEntries|AfterGameListEntry">
             <Setter Property="CornerRadius" Value="0 0 25 25"/>
         </Style>
-        <Style Selector="^:nth-child(1):nth-last-child(1) > listEntries|RoomUserListEntry">
+        <Style Selector="^:nth-child(1):nth-last-child(1) > listEntries|AfterGameListEntry">
             <Setter Property="CornerRadius" Value="25 25 25 25"/>
         </Style>
     </Style>
