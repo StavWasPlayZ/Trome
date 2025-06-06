@@ -16,8 +16,7 @@ std::vector<std::pair<UserModel, int>> StatisticsManager::getHighScores() const
     std::vector<std::pair<UserModel, int>> results(resultsRaw.begin(), resultsRaw.end());
 
     // Sort before returning
-    std::sort(
-        results.begin(), results.end(),
+    std::ranges::sort(results,
         [](const auto &a, const auto &b) {
             return a.second > b.second;
         }
