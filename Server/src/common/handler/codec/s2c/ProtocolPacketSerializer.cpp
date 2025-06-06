@@ -9,16 +9,19 @@
 #include <netinet/in.h>
 #endif
 
+#include "infrastructure/model/UserModel.h"
+
 #include <cstring>
 
-OBuffer ProtocolPacketSerializer::serialize(const S2CPacketType packetType, const unsigned char msgCode, const nlohmann::json &data)
+OBuffer ProtocolPacketSerializer::serialize(const S2CPacketType packetType, const unsigned char msgCode,
+                                            const nlohmann::json &data)
 {
     const std::string dataStr = data.dump();
 
     const int len = SIZE_PACKET_TYPE + SIZE_CODE + SIZE_JSON_LEN + dataStr.size();
-    unsigned char* const buffer = new unsigned char[len];
+    unsigned char *const buffer = new unsigned char[len];
 
-    unsigned char* writeBuffer = buffer;
+    unsigned char *writeBuffer = buffer;
 
     // Serializing:
 
@@ -38,6 +41,15 @@ OBuffer ProtocolPacketSerializer::serialize(const S2CPacketType packetType, cons
     return OBuffer(buffer, len);
 }
 
+nlohmann::json ProtocolPacketSerializer::serializeAsJson(const UserModel &player)
+{
+    nlohmann::json result;
+
+    result["id"] = player.id;
+    result["username"] = player.username;
+
+    return result;
+}
 
 nlohmann::json ProtocolPacketSerializer::serializeAsJson(const LoggedUser &player)
 {

@@ -157,7 +157,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetHighScoresRespo
     {
         scoresArr.push_back(
             {
-                { "user", ProtocolPacketSerializer::serializeAsJson(*user) },
+                { "user", ProtocolPacketSerializer::serializeAsJson(user) },
                 { "points", score }
             }
         );

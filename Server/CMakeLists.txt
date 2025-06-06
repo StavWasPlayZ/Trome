@@ -124,6 +124,9 @@ add_executable (Server
 
   "src/common/handler/RoomRequestHandler.cpp"
   "src/common/handler/RoomRequestHandler.h"
+
+  "src/common/infrastructure/model/UserModel.cpp"
+  "src/common/infrastructure/model/UserModel.h"
 )
 
 # Platform-specific sources

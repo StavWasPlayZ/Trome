@@ -61,7 +61,7 @@ public:
 
     float queryPlayerAverageAnsTime(const std::string &username) const override;
 
-    std::unordered_map<std::string, int> queryHighScores(int limit = 20) const override;
+    std::map<UserModel, int> queryHighScores(int limit = 20) const override;
 
 protected:
 	unsigned int queryIdOfUser(const std::string &username) const override;
