@@ -52,8 +52,8 @@ GetHighScoresResponse::GetHighScoresResponse(const std::vector<std::pair<UserMod
     stats(stats)
 {}
 
-GetPersonalStatisticsResponse::GetPersonalStatisticsResponse(const UserStatistics &stats) :
-    ProtocolResponse(ResponseCode::GET_PERSONAL_STATISTICS),
+GetUserStatisticsResponse::GetUserStatisticsResponse(const UserStatistics &stats) :
+    ProtocolResponse(ResponseCode::GET_USER_STATISTICS),
     stats(stats)
 {}
 

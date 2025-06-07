@@ -63,6 +63,8 @@ public:
 
     std::map<UserModel, int> queryHighScores(int limit = 20) const override;
 
+    std::optional<UserStatistics> getUserStatisticsById(unsigned int id) const override;
+
 protected:
 	unsigned int queryIdOfUser(const std::string &username) const override;
     void addToColumn(const std::string &username, const std::string &column, int n, const std::string &table) const override;
