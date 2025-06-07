@@ -5,20 +5,16 @@ using Avalonia.Data.Converters;
 
 namespace Trivia.Converters;
 
-/**
- * Performs simple multiplication for the provided value
- */
-public class MultiplicationConverter : IValueConverter
-{
+public class InvalidStaterConverter : IValueConverter
+{   
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is not double val || parameter is not string param)
+        if (value is not int val)
         {
-            Console.WriteLine(parameter?.GetType());
             return new BindingNotification(new InvalidCastException(), BindingErrorType.Error);
         }
-        
-        return val * double.Parse(param);
+
+        return val < 0 ? "----" : val;
     }
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

@@ -11,7 +11,7 @@
                                     QuestionsAnswered="12"
                                     QuestionsAnsweredCorrectly="12"
                                     TimeOnQuestionOverall="12"
-                                    TimeOnQuestionsAvg="12"/>
+                                    TimeOnQuestionsAvg="-1"/>
                 
             </controls:StatsPopup.Stats>
         </controls:StatsPopup>
@@ -82,7 +82,8 @@
                                            Foreground="#BE64B7"
                                            Text="{
                                                Binding Stats.TimeOnQuestionsAvg,
-                                               RelativeSource={RelativeSource TemplatedParent}
+                                               RelativeSource={RelativeSource TemplatedParent},
+                                               Converter={StaticResource InvalidStaterConverter}
                                            }"/>
                                 
                                 <TextBlock Grid.Row="4"
