@@ -95,7 +95,7 @@ public:
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serializeResponse(const GetPersonalStatisticsResponse &response);
+    static OBuffer serializeResponse(const GetUserStatisticsResponse &response);
 
     /**
      * Returns: The serialized object.

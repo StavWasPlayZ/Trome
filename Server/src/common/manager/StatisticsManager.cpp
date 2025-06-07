@@ -25,14 +25,7 @@ std::vector<std::pair<UserModel, int>> StatisticsManager::getHighScores() const
     return results;
 }
 
-UserStatistics StatisticsManager::getUserStatistics(const std::string &username) const
+std::optional<UserStatistics> StatisticsManager::getUserStatistics(const unsigned int id) const
 {
-    return UserStatistics(
-        m_database.queryGamesPlayed(username),
-        m_database.queryTotalAns(username),
-        m_database.queryCorrectAns(username),
-        m_database.queryTime(username),
-        m_database.queryPlayerAverageAnsTime(username),
-        m_database.queryPoints(username)
-    );
+    return m_database.getUserStatisticsById(id);
 }

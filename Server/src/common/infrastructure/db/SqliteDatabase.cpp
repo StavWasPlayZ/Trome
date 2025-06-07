@@ -335,12 +335,7 @@ float SqliteDatabase::queryPlayerAverageAnsTime(const std::string &username) con
     const int totalTime = queryTime(username);
     const int totalAns = queryTotalAns(username);
 
-    if (totalAns == -1 || totalAns == 0 || totalTime == -1)
-    {
-        return -1;
-    }
-
-    return static_cast<float>(totalTime) / totalAns;
+    return calcAverageAnswerTime(totalTime, totalAns);
 }
 
 std::map<UserModel, int> SqliteDatabase::queryHighScores(const int limit) const
@@ -372,6 +367,40 @@ std::map<UserModel, int> SqliteDatabase::queryHighScores(const int limit) const
     );
 
 	return results;
+}
+
+std::optional<UserStatistics> SqliteDatabase::getUserStatisticsById(const unsigned int id) const
+{
+    std::ostringstream builder;
+
+    builder << "SELECT * FROM " << TABLE_STATISTICS
+        << " WHERE user_id = " << id
+    << ";";
+
+    std::list<UserStatistics> results = querySql<UserStatistics>(
+        builder.str(),
+        [](const std::map<std::string, std::optional<std::string>> &row) -> UserStatistics
+        {
+            const int totalTime = std::stoi(row.at("total_time").value());
+            const int totalAns = std::stoi(row.at("total_ans").value());
+
+            return UserStatistics(
+                std::stoi(row.at("points").value()),
+                std::stoi(row.at("games_played").value()),
+                totalAns,
+                std::stoi(row.at("correct_ans").value()),
+                totalTime,
+                calcAverageAnswerTime(totalTime, totalAns)
+            );
+        }
+    );
+
+    if (results.empty())
+    {
+        return std::nullopt;
+    }
+
+    return *results.begin();
 }
 
 

@@ -6,7 +6,6 @@
 
 #include <infrastructure/RoomData.h>
 #include <optional>
-#include <string>
 #include <vector>
 
 #ifdef ERROR
@@ -27,7 +26,7 @@ enum class ResponseCode : unsigned char
 	GET_ROOMS,
 	GET_PLAYERS_IN_ROOM,
 	GET_HIGH_SCORES,
-	GET_PERSONAL_STATISTICS,
+	GET_USER_STATISTICS,
 	CLOSE_ROOM,
 	START_GAME,
 	GET_ROOM_STATE,
@@ -111,9 +110,9 @@ struct GetHighScoresResponse : ProtocolResponse
     const std::vector<std::pair<UserModel, int>> stats;
 };
 
-struct GetPersonalStatisticsResponse : ProtocolResponse
+struct GetUserStatisticsResponse : ProtocolResponse
 {
-    explicit GetPersonalStatisticsResponse(const UserStatistics &stats);
+    explicit GetUserStatisticsResponse(const UserStatistics &stats);
 
     const UserStatistics stats;
 };

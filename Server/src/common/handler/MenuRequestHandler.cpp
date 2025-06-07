@@ -5,6 +5,7 @@
 #include "RoomMemberRequestHandler.h"
 #include "codec/c2s/request/Request.h"
 #include "codec/s2c/response/ErrorResponse.h"
+#include "infrastructure/Server.h"
 
 MenuRequestHandler::MenuRequestHandler(const RequestHandlerFactory &handlerFactory) : IRequestHandler(handlerFactory)
 {}
@@ -18,7 +19,7 @@ bool MenuRequestHandler::isRequestRelevant(const RequestInfo &info) const
     case RequestCode::CREATE_ROOM:
     case RequestCode::GET_ROOMS:
     case RequestCode::GET_HIGH_SCORES:
-    case RequestCode::GET_PERSONAL_STATISTICS:
+    case RequestCode::GET_USER_STATISTICS:
     case RequestCode::LOGOUT:
         return true;
 
@@ -38,8 +39,8 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo &info, const P
         return getRooms(info, static_cast<const GetRoomsRequest &>(request));
     case RequestCode::GET_HIGH_SCORES:
         return getHighScores(info, static_cast<const GetHighScoresRequest &>(request));
-    case RequestCode::GET_PERSONAL_STATISTICS:
-        return getPersonalStatistics(info, static_cast<const GetPersonalStatisticsRequest &>(request));
+    case RequestCode::GET_USER_STATISTICS:
+        return getUserStatistics(info, static_cast<const GetUserStatisticsRequest &>(request));
     case RequestCode::LOGOUT:
         return logout(info, static_cast<const LogoutRequest &>(request));
 
@@ -119,15 +120,19 @@ RequestResult MenuRequestHandler::getHighScores(const RequestInfo &, const GetHi
     );
 }
 
-RequestResult MenuRequestHandler::getPersonalStatistics(const RequestInfo& info, const GetPersonalStatisticsRequest &) const
+RequestResult MenuRequestHandler::getUserStatistics(const RequestInfo& info, const GetUserStatisticsRequest &request) const
 {
     const StatisticsManager &sManager = m_handlerFactory.getStatisticsManager();
+    const std::optional<UserStatistics> stats = sManager.getUserStatistics(request.userId);
+
+    if (!stats.has_value())
+    {
+        return RequestResult(new ErrorResponse(ErrorStatus::UNKNOWN_RESOURCE, info.id));
+    }
 
     return RequestResult(
-        new GetPersonalStatisticsResponse(
-            sManager.getUserStatistics(
-                getUserByInfo(info).getUsername()
-            )
+        new GetUserStatisticsResponse(
+            sManager.getUserStatistics(request.userId).value()
         )
     );
 }

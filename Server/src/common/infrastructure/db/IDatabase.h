@@ -1,6 +1,7 @@
 #pragma once
 
 #include "infrastructure/Question.h"
+#include "infrastructure/UserStatistics.h"
 #include "infrastructure/model/UserModel.h"
 
 #include <ctre.hpp>
@@ -83,8 +84,12 @@ public:
 
 	virtual std::map<UserModel, int> queryHighScores(int limit = 20) const = 0;
 
+    virtual std::optional<UserStatistics> getUserStatisticsById(unsigned int id) const = 0;
+
 protected:
     IDatabase() = default;
+
+    static float calcAverageAnswerTime(int totalTime, int totalAns);
 
 	
 	/**
