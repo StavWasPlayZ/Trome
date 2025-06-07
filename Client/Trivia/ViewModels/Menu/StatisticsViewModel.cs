@@ -17,27 +17,23 @@ public class StatisticsViewModel : PageViewModel
     private const int Lists = 3;
     private const int MockUsers = 30;
     
-    private List<UserScoreModel>? _scores;
+    private List<UserScore>? _scores;
 
     public StatisticsViewModel(IScreen hostScreen) : base(hostScreen)
     {
         this.WhenActivated(disposables =>
         {
             FetchHighScores().DisposeWith(disposables);
-        }); 
+        });
     }
 
     public StatisticsViewModel()
     {
         _scores = Enumerable.Range(1, MockUsers)
-            .Select(i => new UserScoreModel
+            .Select(User.CreateMock)
+            .Select(user => new UserScore
             {
-                Place = i,
-                User = new User
-                {
-                    Id = i,
-                    Username = $"User {i}",
-                },
+                User = user,
                 Points = 69420
             })
             .ToList();
@@ -49,46 +45,62 @@ public class StatisticsViewModel : PageViewModel
     private async Task FetchHighScores()
     {
         var response = await Comm.SendRequestAwaitResponse<GetHighScoresResponse>(new GetHighScoresRequest());
-        
-        _scores = response.HighScores
-            .Select((score, i) => UserScoreModel.FromUserScore(score, i + 1))
-            .ToList();
+
+        _scores = [..response.HighScores];
         
         GenScoreLists();
     }
 
     private void GenScoreLists()
     {
-        var scores = new List<UserScoreModel?>[Lists];
+        var scores = new List<UserScoreModel>[Lists];
         
         scores[0] = PickScoreOrNull(0, 2);
         scores[1] = PickScoreOrNull(2, 3);
         
         scores[2] = _scores!.Count > 4
             ? _scores[4..]
-                .Select(UserScoreModel? (x) => x)
+                .Select((uScores, i) => new UserScoreModel
+                {
+                    Place = i + 5,
+                    Scores = uScores
+                })
                 .ToList()
             : [];
-        
+
+        Show2ndList = scores[2].Count != 0;
         ScoreLists = scores;
     }
 
-    private List<UserScoreModel?> PickScoreOrNull(int start, int count)
+    private List<UserScoreModel> PickScoreOrNull(int start, int count)
     {
         return Enumerable.Range(start, count)
-            .Select(_scores!.ElementAtOrDefault)
+            .Select(i => new UserScoreModel
+            {
+                Place = start + i + 1,
+                Scores = _scores!.ElementAtOrDefault(i)
+            })
             .ToList();
     }
     
     
-    private List<UserScoreModel?>[] _scoreLists = Enumerable.Range(0, Lists)
-        .Select(_ => new List<UserScoreModel?>())
+    private List<UserScoreModel>[] _scoreLists = Enumerable.Range(0, Lists)
+        .Select(_ => new List<UserScoreModel>())
         .ToArray();
 
-    public List<UserScoreModel?>[] ScoreLists
+    public List<UserScoreModel>[] ScoreLists
     {
         get => _scoreLists;
         set => this.RaiseAndSetIfChanged(ref _scoreLists, value);
+    }
+
+
+    private bool _show2ndList;
+
+    public bool Show2ndList
+    {
+        get => _show2ndList;
+        set => this.RaiseAndSetIfChanged(ref _show2ndList, value);
     }
     
 

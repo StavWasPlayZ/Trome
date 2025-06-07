@@ -38,11 +38,7 @@ public class AfterGameViewModel : SubRoomViewModel
     public AfterGameViewModel()
     {
         Results = Enumerable.Range(1, MockUsers)
-            .Select(i => new User
-            {
-                Id = i,
-                Username = $"User {i}",
-            })
+            .Select(User.CreateMock)
             .Select(user => new PlayerResultModel
             {
                 Place = user.Id,

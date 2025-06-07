@@ -11,35 +11,48 @@
 
                 <ListBox.ItemsSource>
                     <generic:List x:TypeArguments="models:UserScoreModel">
-                        <models:UserScoreModel Place="1"
-                                               Points="69420">
-                            
-                            <models:UserScoreModel.User>
-                                <raw:User Username="USERNAME"
-                                                Id="1"/>
-                            </models:UserScoreModel.User>
-                            
+                        <models:UserScoreModel Place="1">
+                            <models:UserScoreModel.Scores>
+                                <raw:UserScore Points="69420">
+                                    
+                                    <raw:UserScore.User>
+                                        <raw:User Username="USERNAME"
+                                                        Id="1"/>
+                                    </raw:UserScore.User>
+                                    
+                                </raw:UserScore>
+                            </models:UserScoreModel.Scores>
                         </models:UserScoreModel>
                         
-                        <models:UserScoreModel Place="2"
-                                               Points="69420">
-                            
-                            <models:UserScoreModel.User>
-                                <raw:User Username="USERNAME"
-                                                Id="1"/>
-                            </models:UserScoreModel.User>
-                            
+                        <models:UserScoreModel Place="2">
+                            <models:UserScoreModel.Scores>
+                                <raw:UserScore Points="69420">
+                                    
+                                    <raw:UserScore.User>
+                                        <raw:User Username="USERNAME"
+                                                  Id="2"/>
+                                    </raw:UserScore.User>
+                                    
+                                </raw:UserScore>
+                            </models:UserScoreModel.Scores>
                         </models:UserScoreModel>
                         
-                        <models:UserScoreModel Place="3"
-                                               Points="69420">
-                            
-                            <models:UserScoreModel.User>
-                                <raw:User Username="USERNAME"
-                                                Id="1"/>
-                            </models:UserScoreModel.User>
-                            
+                        <models:UserScoreModel Place="3">
+                            <models:UserScoreModel.Scores>
+                                <raw:UserScore Points="69420">
+                                    
+                                    <raw:UserScore.User>
+                                        <raw:User Username="USERNAME"
+                                                  Id="3"/>
+                                    </raw:UserScore.User>
+                                    
+                                </raw:UserScore>
+                            </models:UserScoreModel.Scores>
                         </models:UserScoreModel>
+                        
+                        <models:UserScoreModel Place="4"/>
+                        <models:UserScoreModel Place="5"/>
+                        
                     </generic:List>
                 </ListBox.ItemsSource>
                 
@@ -57,6 +70,11 @@
 
     <Style Selector="controls|ScoredUserListEntry">
         <!-- Set Defaults -->
+        <Setter Property="IsEmptySlot" Value="{
+                                           Binding $self.Scores.Scores,
+                                           Converter={x:Static ObjectConverters.IsNull}
+                                       }"/>
+        
         <Setter Property="Background" Value="#9d4d95"/>
         <Setter Property="Padding" Value="10 10"/>
         
@@ -75,7 +93,10 @@
                                    Margin="5 0 2 0"
                                    Width="25"
                                    TextAlignment="End"
-                                   Text="{Binding $parent[controls:ScoredUserListEntry].Scores.Place, StringFormat={}{0}.}"/>
+                                   Text="{
+                                       Binding $parent[controls:ScoredUserListEntry].Scores.Place,
+                                       StringFormat={}{0}.
+                                   }"/>
 
                         <Border x:Name="PART_Pfp"
                                 Grid.Column="1"
@@ -90,8 +111,9 @@
                                    VerticalAlignment="Center"
                                    FontSize="30"
                                    Text="{
-                                       Binding Scores.User.Username,
-                                       RelativeSource={RelativeSource TemplatedParent}
+                                       Binding Scores.Scores.User.Username,
+                                       RelativeSource={RelativeSource TemplatedParent},
+                                       FallbackValue='EMPTY'
                                    }"/>
                     
                         <TextBlock Classes="secondary-text"
@@ -100,8 +122,9 @@
                                    TextAlignment="End"
                                    FontSize="30"
                                    Text="{
-                                       Binding Scores.Points,
-                                       RelativeSource={RelativeSource TemplatedParent}
+                                       Binding Scores.Scores.Points,
+                                       RelativeSource={RelativeSource TemplatedParent},
+                                       FallbackValue=''
                                    }"/>
 
                     </Grid>
@@ -121,18 +144,38 @@
                 <Setter Property="Css" Value="* { fill: #813e7a; }"/>
             </Style>
         </Style>
-                                        
+        
         <Style Selector="^ TextBlock.primary-text, ^ TextBlock.secondary-text">
             <Setter Property="Foreground" Value="White"/>
+        </Style>
+        
+        <Style Selector="^[IsEmptySlot=True]">
+            <Setter Property="Background" Value="#582c54"/>
+            
+            <Style Selector="^ Border#PART_Pfp">
+                <Setter Property="Background" Value="#b580b0"/>
+                                                
+                <Style Selector="^ > Svg">
+                    <Setter Property="Path" Value="avares://Trivia/Assets/Icons/three-squares.svg"/>
+                    <Setter Property="Css" Value="* { fill: #d8bcd5; }"/>
+                    <Setter Property="Margin" Value="6"/>
+                </Style>
+            </Style>
         </Style>
         
     </Style>
     
     <Style Selector="controls1|TriviaUsersList ListBoxItem">
-        <Style Selector="^:pointerover > controls|ScoredUserListEntry">
-            <Setter Property="Background" Value="#B456AB"/>
+        <Style Selector="^:pointerover">
+            <Style Selector="^ > controls|ScoredUserListEntry[IsEmptySlot=False]">
+                <Setter Property="Background" Value="#B456AB"/>
+            </Style>
+            <Style Selector="^ > controls|ScoredUserListEntry[IsEmptySlot=True]">
+                <Setter Property="Background" Value="#52294E"/>
+            </Style>
         </Style>
-        <Style Selector="^:pressed > controls|ScoredUserListEntry">
+        
+        <Style Selector="^:pressed > controls|ScoredUserListEntry[IsEmptySlot=False]">
             <Setter Property="Background" Value="#85437D"/>
         </Style>
         
