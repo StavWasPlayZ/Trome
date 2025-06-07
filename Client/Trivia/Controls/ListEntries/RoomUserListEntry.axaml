@@ -34,10 +34,7 @@
                         <DataTemplate>
                             <controls:RoomUserListEntry User="{Binding}"
                                                         IsAdmin="{Binding IsAdmin}"
-                                                        IsCurrentUser="{Binding IsCurrentUser}"
-                                                        IsEmptySlot="{Binding
-                                                            Converter={x:Static ObjectConverters.IsNull}
-                                                        }"/>
+                                                        IsCurrentUser="{Binding IsCurrentUser}"/>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                     
@@ -48,6 +45,11 @@
 
     <Style Selector="controls|RoomUserListEntry">
         <!-- Set Defaults -->
+        <Setter Property="IsEmptySlot" Value="{
+                                           Binding $self.User,
+                                           Converter={x:Static ObjectConverters.IsNull}
+                                       }"/>
+        
         <Setter Property="Background" Value="#9d4d95"/>
         <Setter Property="Padding" Value="10 10"/>
 
