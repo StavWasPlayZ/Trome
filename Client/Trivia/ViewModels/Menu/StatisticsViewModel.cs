@@ -95,8 +95,10 @@ public class StatisticsViewModel : PageViewModel
     }
 
 
+    // ReSharper disable once InconsistentNaming
     private bool _show2ndList;
 
+    // ReSharper disable once InconsistentNaming
     public bool Show2ndList
     {
         get => _show2ndList;
