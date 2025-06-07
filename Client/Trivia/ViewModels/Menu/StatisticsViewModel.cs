@@ -106,23 +106,23 @@ public class StatisticsViewModel : PageViewModel
     }
     
 
-    public ReactiveCommand<UserScore, Unit>? ShowStatsPopup { get; } =
-        ReactiveCommand.CreateFromTask<UserScore>(ShowUserStatsPopup);
+    public ReactiveCommand<User, Unit>? ShowStatsPopup { get; } =
+        ReactiveCommand.CreateFromTask<User>(ShowUserStatsPopup);
 
-    private static async Task ShowUserStatsPopup(UserScore scoreModel)
+    private static async Task ShowUserStatsPopup(User user)
     {
         if (MainWindowViewModel == null)
             return;
 
         var response = await Comm.SendRequestAwaitResponse<GetUserStatisticsResponse>(
-            new GetUserStatisticsRequest(scoreModel.User.Id)
+            new GetUserStatisticsRequest(user.Id)
         );
 
         MainWindowViewModel.PopupContents = new StatsPopup
         {
             CloseCommand = MainWindowViewModel.CloseDialogCommand,
             Stats = response.Stats,
-            Username = scoreModel.User.Username
+            Username = user.Username
         };
     }
 }

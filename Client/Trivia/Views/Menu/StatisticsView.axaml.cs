@@ -24,7 +24,7 @@ public partial class StatisticsView : PageViewControl<StatisticsViewModel>
         if (scores is null)
             return;
         
-        ViewModel?.ShowStatsPopup?.Execute(scores).Subscribe();
+        ViewModel?.ShowStatsPopup?.Execute(scores.User).Subscribe();
         
         listbox.SelectedItem = null;
     }
