@@ -47,13 +47,13 @@ GetPlayersInRoomResponse::GetPlayersInRoomResponse(const std::vector<LoggedUser*
     players(players)
 {}
 
-GetHighScoresResponse::GetHighScoresResponse(const std::vector<std::pair<std::string, int>> &stats) :
+GetHighScoresResponse::GetHighScoresResponse(const std::vector<std::pair<UserModel, int>> &stats) :
     ProtocolResponse(ResponseCode::GET_HIGH_SCORES),
     stats(stats)
 {}
 
-GetPersonalStatisticsResponse::GetPersonalStatisticsResponse(const UserStatistics &stats) :
-    ProtocolResponse(ResponseCode::GET_PERSONAL_STATISTICS),
+GetUserStatisticsResponse::GetUserStatisticsResponse(const UserStatistics &stats) :
+    ProtocolResponse(ResponseCode::GET_USER_STATISTICS),
     stats(stats)
 {}
 

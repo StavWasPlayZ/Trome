@@ -32,8 +32,8 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const ProtocolResponse &
         return serializeResponse(static_cast<const GetPlayersInRoomResponse&>(response));
     case ResponseCode::GET_HIGH_SCORES:
         return serializeResponse(static_cast<const GetHighScoresResponse&>(response));
-    case ResponseCode::GET_PERSONAL_STATISTICS:
-        return serializeResponse(static_cast<const GetPersonalStatisticsResponse&>(response));
+    case ResponseCode::GET_USER_STATISTICS:
+        return serializeResponse(static_cast<const GetUserStatisticsResponse&>(response));
     case ResponseCode::CLOSE_ROOM:
         return serializeResponse(static_cast<const CloseRoomResponse&>(response));
     case ResponseCode::START_GAME:
@@ -153,12 +153,12 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetHighScoresRespo
 
     nlohmann::json scoresArr = nlohmann::json::array();
 
-    for (const auto& [username, score] : response.stats)
+    for (const auto& [user, score] : response.stats)
     {
         scoresArr.push_back(
             {
-                {"username", username},
-                {"score", score}
+                { "user", ProtocolPacketSerializer::serializeAsJson(user) },
+                { "points", score }
             }
         );
     }
@@ -168,7 +168,7 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetHighScoresRespo
     return serialize(response.id, data);
 }
 
-OBuffer JsonResponsePacketSerializer::serializeResponse(const GetPersonalStatisticsResponse &response)
+OBuffer JsonResponsePacketSerializer::serializeResponse(const GetUserStatisticsResponse &response)
 {
     nlohmann::json data;
 

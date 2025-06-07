@@ -1,11 +1,13 @@
 #pragma once
 
 #include "infrastructure/Question.h"
+#include "infrastructure/UserStatistics.h"
+#include "infrastructure/model/UserModel.h"
 
 #include <ctre.hpp>
 #include <list>
+#include <map>
 #include <optional>
-#include <unordered_map>
 
 class IDatabase
 {
@@ -62,12 +64,14 @@ public:
 
 
     // Adding to statistics:
+    virtual void addToStats(const std::string &username, int time, int answers, int correctAnswers, int points,
+                            int games = 1) const = 0;
 
-	virtual void addTime(const std::string &username, int time) const = 0;
-	virtual void addTotalAns(const std::string &username, int ans = 1) const = 0;
-	virtual void addCorrectAns(const std::string &username, int ans = 1) const = 0;
-	virtual void addGamesPlayed(const std::string &username, int games = 1) const = 0;
-	virtual void addPoints(const std::string &username, int points) const = 0;
+	// virtual void addTime(const std::string &username, int time) const = 0;
+	// virtual void addTotalAns(const std::string &username, int ans = 1) const = 0;
+	// virtual void addCorrectAns(const std::string &username, int ans = 1) const = 0;
+	// virtual void addGamesPlayed(const std::string &username, int games = 1) const = 0;
+	// virtual void addPoints(const std::string &username, int points) const = 0;
 
     // Retrieving statistics:
 
@@ -78,10 +82,14 @@ public:
 	virtual int queryPoints(const std::string &username) const = 0;
     virtual float queryPlayerAverageAnsTime(const std::string &username) const = 0;
 
-	virtual std::unordered_map<std::string, int> queryHighScores(int limit = 20) const = 0;
+	virtual std::map<UserModel, int> queryHighScores(int limit = 20) const = 0;
+
+    virtual std::optional<UserStatistics> getUserStatisticsById(unsigned int id) const = 0;
 
 protected:
     IDatabase() = default;
+
+    static float calcAverageAnswerTime(int totalTime, int totalAns);
 
 	
 	/**
@@ -92,7 +100,7 @@ protected:
 	/**
 	* Adds `n` to the specified column for the given user.
 	*
-	* Said column must be numerable.
+	* Said column must be a numerable.
 	*/
     virtual void addToColumn(const std::string &username, const std::string &column, int n,
                              const std::string &table) const = 0;
