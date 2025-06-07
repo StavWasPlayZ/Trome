@@ -67,7 +67,8 @@ public class StatisticsViewModel : PageViewModel
                 })
                 .ToList()
             : [];
-        
+
+        Show2ndList = scores[2].Count != 0;
         ScoreLists = scores;
     }
 
@@ -91,6 +92,15 @@ public class StatisticsViewModel : PageViewModel
     {
         get => _scoreLists;
         set => this.RaiseAndSetIfChanged(ref _scoreLists, value);
+    }
+
+
+    private bool _show2ndList;
+
+    public bool Show2ndList
+    {
+        get => _show2ndList;
+        set => this.RaiseAndSetIfChanged(ref _show2ndList, value);
     }
     
 
