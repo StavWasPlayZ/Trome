@@ -15,7 +15,7 @@ namespace Trivia.ViewModels.Menu;
 public class StatisticsViewModel : PageViewModel
 {
     private const int Lists = 3;
-    private const int MockUsers = 1;
+    private const int MockUsers = 0;
     
     private List<UserScore>? _scores;
 
