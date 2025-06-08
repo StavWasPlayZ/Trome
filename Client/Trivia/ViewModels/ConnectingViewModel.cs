@@ -3,6 +3,7 @@ using System.Reactive.Disposables;
 using System.Reactive.Threading.Tasks;
 using Avalonia.Threading;
 using ReactiveUI;
+using Trivia.Services;
 using Trivia.ViewModels.Auth;
 
 namespace Trivia.ViewModels;
@@ -13,6 +14,9 @@ public class ConnectingViewModel : PageViewModel
     {
         this.WhenActivated(disposables =>
         {
+            if (!InitMusicService())
+                return;
+            
             Communicator.Instance.Connect()
                 .ToObservable()
                 .Subscribe(
@@ -22,9 +26,33 @@ public class ConnectingViewModel : PageViewModel
                 .DisposeWith(disposables);
         });
     }
-    
+
+    private bool InitMusicService()
+    {
+        try
+        {
+            MusicService.Initialize();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            MusicServiceFailed = true;
+            return false;
+        }
+        
+        return true;
+    }
+
     public ConnectingViewModel() { }
     
+    
+    private bool _musicServiceFailed;
+
+    public bool MusicServiceFailed
+    {
+        get => _musicServiceFailed;
+        set => this.RaiseAndSetIfChanged(ref _musicServiceFailed, value);
+    }
     
     private bool _connectionFailed;
 

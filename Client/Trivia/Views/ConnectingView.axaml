@@ -20,14 +20,24 @@
         
         <ContentControl VerticalAlignment="Center"
                         HorizontalAlignment="Center"
-                        Classes.fail-message="{Binding ConnectionFailed}">
+                        Classes.music-conn-failed="{Binding MusicServiceFailed}"
+                        Classes.server-conn-failed="{Binding ConnectionFailed}"
+                        Margin="50 0">
             
             <ContentControl.Styles>
                 <Style Selector="TextBlock">
                     <Setter Property="FontSize" Value="70"/>
+                    <Setter Property="TextWrapping" Value="Wrap"/>
+                    <Setter Property="TextAlignment" Value="Center"/>
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                </Style>
+                <Style Selector="TextBlock.description">
+                    <Setter Property="FontSize" Value="50"/>
+                    <Setter Property="Margin" Value="0 10 0 0"/>
+                    <Setter Property="Opacity" Value="0.85"/>
                 </Style>
                 
-                <Style Selector="ContentControl:not(.fail-message)">
+                <Style Selector="ContentControl">
                     <Setter Property="ContentTemplate">
                         <!-- ReSharper disable once Xaml.RedundantResource -->
                         <DataTemplate>
@@ -36,13 +46,33 @@
                     </Setter>
                 </Style>
             
-                <Style Selector="ContentControl.fail-message">
+                <Style Selector="ContentControl.server-conn-failed">
                     <Setter Property="ContentTemplate">
                         <!-- ReSharper disable once Xaml.RedundantResource -->
                         <DataTemplate>
                             <StackPanel>
-                                <TextBlock HorizontalAlignment="Center">CONNECTION FAILED.</TextBlock>
-                                <TextBlock HorizontalAlignment="Center">RESTART GAME TO TRY AGAIN.</TextBlock>
+                                <TextBlock>
+                                    CONNECTION FAILED.
+                                </TextBlock>
+                                <TextBlock Classes="description">
+                                    RESTART THE GAME TO TRY AGAIN.
+                                </TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </Setter>
+                </Style>
+                
+                <Style Selector="ContentControl.music-conn-failed">
+                    <Setter Property="ContentTemplate">
+                        <!-- ReSharper disable once Xaml.RedundantResource -->
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock>
+                                    VLC INITIALIZATION FAILED.
+                                </TextBlock>
+                                <TextBlock Classes="description">
+                                    INSTALL VLC DEPENDENCIES, RESTART THE GAME AND TRY AGAIN.
+                                </TextBlock>
                             </StackPanel>
                         </DataTemplate>
                     </Setter>

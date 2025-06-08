@@ -13,8 +13,9 @@ public class App : Application
     
     //TODO: Maybe maybe maybe make this a dependency injection
     public static ApplicationService AppService { get; } = new();
+    public static MusicService MusicService => MusicService.Instance;
 
-    
+
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
