@@ -39,6 +39,9 @@ public class ConnectingViewModel : PageViewModel
             return false;
         }
         
+        App.MusicService.LoadBackgroundTrack();
+        App.MusicService.LoadTriviaTrack();
+        
         return true;
     }
 
@@ -63,10 +66,7 @@ public class ConnectingViewModel : PageViewModel
 
     private void OnConnectionEstablished()
     {
-        App.MusicService.LoadBackgroundTrack();
-        App.MusicService.LoadTriviaTrack();
-        
-        App.MusicService.PlayBackgroundTrack();
+        // App.MusicService.PlayBackgroundTrack();
         
         Dispatcher.UIThread.Post(() => NavigateAndReset(new LoginViewModel(HostScreen)));
     }

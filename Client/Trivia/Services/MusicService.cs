@@ -16,7 +16,7 @@ public class MusicService : IDisposable
     {
         Core.Initialize();
         
-        _libvlc = new LibVLC();
+        _libvlc = new LibVLC("--aout=directsound");
         _backgroundTrack = new Track(_libvlc);
         _triviaTrack = new Track(_libvlc);
     }

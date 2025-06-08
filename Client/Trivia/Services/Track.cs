@@ -8,12 +8,8 @@ namespace Trivia.Services;
 public class Track(LibVLC libvlc) : IDisposable
 {
     private MediaPlayer Player { get; } = new(libvlc);
-
-    private Media? Media
-    {
-        get => Player.Media;
-        set => Player.Media = value;
-    }
+    
+    public SoundMeta CurrentTrack { get; private set; }
 
 
     private string? _tempFilePath;
@@ -28,12 +24,19 @@ public class Track(LibVLC libvlc) : IDisposable
             assetStream.CopyTo(fileStream);
         }
     
-        Media = new Media(libvlc, _tempFilePath);
+        Player.Media = new Media(libvlc, _tempFilePath);
+        CurrentTrack = soundMeta;
     }
 
     public void Play()
     {
         Player.Play();
+
+        Player.TimeChanged += (sender, args) =>
+        {
+            Player.Volume = 100;
+            Player.Mute = false;
+        };
     }
 
     public void Dispose()
