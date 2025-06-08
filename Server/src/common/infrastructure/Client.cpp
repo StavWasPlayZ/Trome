@@ -62,11 +62,16 @@ void Client::setAndStartThread(const std::function<void()> &threadFunc)
 void Client::sendNotification(const ProtocolNotification& notification)
 {
     Communicator::getInstance().sendMsg(*this,
-        NotificationPacketSerializer::serialize(notification)
+        NotificationPacketSerializer::serialize(notification, *this->cryptoAlgorithem)
     );
 }
 
 void Client::handleDisconnecting() const
 {
     Server::getInstance().getLoginManager().getUserByClient(*this).handleDisconnecting();
+}
+
+ICryptoAlgorithm* Client::getCryptoAlgorithm() const
+{
+    return this->cryptoAlgorithem;
 }

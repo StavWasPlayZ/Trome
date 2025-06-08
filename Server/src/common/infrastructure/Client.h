@@ -55,6 +55,8 @@ public:
 
     void handleDisconnecting() const;
 
+    ICryptoAlgorithm* getCryptoAlgorithm() const;
+
 private:
 	const std::future<void>* thread;
 

@@ -13,6 +13,7 @@ using Trivia.Codec.C2S.Request;
 using Trivia.Codec.S2C;
 using Trivia.Codec.S2C.Response.Packets;
 using Trivia.Codec.S2C.Response.Packets.Impl;
+using Trivia.CryptoAlgorithm;
 using Trivia.Exceptions;
 
 namespace Trivia;
@@ -43,6 +44,8 @@ public class Communicator : IDisposable
     public bool IsConnected => _clientSocket?.Connected ?? false;
 
     private TcpClient? _clientSocket;
+    
+    static ICryptoAlgorithm _cryptoAlgorithm = new NoEncryption();
     
     private Communicator() { }
 
@@ -213,12 +216,9 @@ public class Communicator : IDisposable
         if (read == 0 || !IsConnected)
             return null;
         
-        // TODO: Decrypt here
-        
         var json = Encoding.UTF8.GetString(jsonRaw, 0, jsonRaw.Length);
-
         
-        return PacketDeserializer.Deserialize((S2CPacketType) packetType, (byte) code, json);
+        return PacketDeserializer.Deserialize((S2CPacketType) packetType, (byte) code, _cryptoAlgorithm.Decrypt(json));
     }
 
     private byte? ReadSingleByte()
@@ -252,7 +252,7 @@ public class Communicator : IDisposable
                 request = _outgoingRequests.Dequeue();
             }
             
-            var rawRequest = request.Serialize();
+            var rawRequest = request.Serialize(_cryptoAlgorithm);
 
             VerboseLog($"Sending packet: {request}");
             VerboseLog($"In raw form: {Encoding.UTF8.GetString(rawRequest, 5, rawRequest.Length - 5)}");

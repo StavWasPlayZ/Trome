@@ -292,7 +292,7 @@ void CommonCommunicator::_handleClient(Client& client)
 
 void CommonCommunicator::_dispatchResponse(Client &client, const ProtocolResponse &response) const
 {
-    sendMsg(client, JsonResponsePacketSerializer::serializeResponse(response));
+    sendMsg(client, JsonResponsePacketSerializer::serializeResponse(response, *client.getCryptoAlgorithm()));
 }
 
 RequestInfo CommonCommunicator::_waitForClientRequest(const Client &client)
@@ -328,7 +328,7 @@ RequestInfo CommonCommunicator::_waitForClientRequest(const Client &client)
             std::chrono::system_clock::to_time_t(
                 std::chrono::system_clock::now()
             ),
-            JsonRequestPacketDeserializer::readJson(data, jsonLen)
+            JsonRequestPacketDeserializer::readJson(data, jsonLen, *client.getCryptoAlgorithm())
         );
     }
     catch (const std::exception &)
