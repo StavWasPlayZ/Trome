@@ -18,20 +18,11 @@
                         Stretch="UniformToFill" />
         </Border.Background>
         
-        <Border.Styles>
-            <!--NOTE: Taken from ClosingView -->
-            <Style Selector="TextBlock">
-                <Setter Property="FontSize" Value="70"/>
-                <Setter Property="TextWrapping" Value="Wrap"/>
-                <Setter Property="TextAlignment" Value="Center"/>
-                <Setter Property="HorizontalAlignment" Value="Center"/>
-            </Style>
-        </Border.Styles>
-        
-        <TextBlock VerticalAlignment="Center">
+        <TextBlock VerticalAlignment="Center"
+                   HorizontalAlignment="Center"
+                   FontSize="70">
             CLOSING...
         </TextBlock>
-        
     </Border>
 
 </UserControl>
