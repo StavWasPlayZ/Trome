@@ -17,7 +17,7 @@ enum class RequestCode : unsigned char
 	CREATE_ROOM,
     GET_ROOMS,
     GET_HIGH_SCORES,
-    GET_PERSONAL_STATISTICS,
+    GET_USER_STATISTICS,
     CLOSE_ROOM,
     START_GAME,
     GET_ROOM_STATE,
@@ -82,7 +82,7 @@ struct GetPlayersInRoomRequest : ProtocolRequest
 
 struct JoinRoomRequest : ProtocolRequest
 {
-    explicit JoinRoomRequest(unsigned int roomID);
+    explicit JoinRoomRequest(unsigned int roomId);
 
     const unsigned int roomID;
 };
@@ -99,8 +99,11 @@ struct GetHighScoresRequest : ProtocolRequest
 {
 };
 
-struct GetPersonalStatisticsRequest : ProtocolRequest
+struct GetUserStatisticsRequest : ProtocolRequest
 {
+    explicit GetUserStatisticsRequest(unsigned int userId);
+
+    const unsigned int userId;
 };
 
 struct CloseRoomRequest : ProtocolRequest

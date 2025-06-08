@@ -93,7 +93,7 @@ void Room::removeUser(LoggedUser &user)
 
     if (getCurrentGame().has_value())
     {
-        getCurrentGame().value()->handleUserLeft(user);
+        getCurrentGame().value()->handlePlayerFinished(user);
     }
 
 

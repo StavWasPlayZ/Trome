@@ -47,13 +47,13 @@ GetPlayersInRoomResponse::GetPlayersInRoomResponse(const std::vector<LoggedUser*
     players(players)
 {}
 
-GetHighScoresResponse::GetHighScoresResponse(const std::vector<std::pair<std::string, int>> &stats) :
+GetHighScoresResponse::GetHighScoresResponse(const std::vector<std::pair<UserModel, int>> &stats) :
     ProtocolResponse(ResponseCode::GET_HIGH_SCORES),
     stats(stats)
 {}
 
-GetPersonalStatisticsResponse::GetPersonalStatisticsResponse(const UserStatistics &stats) :
-    ProtocolResponse(ResponseCode::GET_PERSONAL_STATISTICS),
+GetUserStatisticsResponse::GetUserStatisticsResponse(const UserStatistics &stats) :
+    ProtocolResponse(ResponseCode::GET_USER_STATISTICS),
     stats(stats)
 {}
 
@@ -78,20 +78,26 @@ UpdateRoomDataResponse::UpdateRoomDataResponse() :
     ProtocolResponse(ResponseCode::UPDATE_ROOM_DATA)
 {}
 
-LeaveGameResponse::LeaveGameResponse() : 
+LeaveGameResponse::LeaveGameResponse() :
     ProtocolResponse(ResponseCode::LEAVE_GAME)
 {}
 
-GetQuestionResponse::GetQuestionResponse(const std::optional<UserQuestion> &question, const int points) :
-    ProtocolResponse(ResponseCode::GET_QUESTION),
+QuestionResponse::QuestionResponse(const ResponseCode id, const std::optional<UserQuestion> &question, const int points,
+                                   const std::optional<std::vector<PlayerResult>> &results) :
+    ProtocolResponse(id),
+    question(question),
     points(points),
-    question(question)
+    results(results)
 {}
 
-SubmitAnswerResponse::SubmitAnswerResponse(const std::optional<UserQuestion> &newQuestion, const int points) :
-    ProtocolResponse(ResponseCode::SUBMIT_ANSWER),
-    points(points),
-    newQuestion(newQuestion)
+GetQuestionResponse::GetQuestionResponse(const std::optional<UserQuestion> &question, const int points,
+                                         const std::optional<std::vector<PlayerResult>> &results) :
+    QuestionResponse(ResponseCode::GET_QUESTION, question, points, results)
+{}
+
+SubmitAnswerResponse::SubmitAnswerResponse(const std::optional<UserQuestion> &question, const int points,
+                                           const std::optional<std::vector<PlayerResult>> &results) :
+    QuestionResponse(ResponseCode::SUBMIT_ANSWER, question, points, results)
 {}
 
 GetGameResultResponse::GetGameResultResponse(const std::vector<PlayerResult>& results) :

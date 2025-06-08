@@ -21,7 +21,7 @@
         </Panel.Background>
 
         <controls:TriviaMenuPanel Title="STATISTICS"
-                                    BackButtonCommand="{Binding NavigateBackCommand}">
+                                  BackButtonCommand="{Binding NavigateBackCommand}">
             <Panel>
                 
                 <Grid RowDefinitions="Auto, 14, *"
@@ -36,15 +36,11 @@
                             
                             <controls:TriviaUsersList Grid.Column="0"
                                                       Background="#ffddbe">
-                                <ListBox PointerReleased="SelectingItemsControl_OnPointerReleased">
-                                    <ListBox.Items>
-                                        <x:Int32>1</x:Int32>
-                                        <x:Int32>2</x:Int32>
-                                    </ListBox.Items>
-                                    
+                                <ListBox PointerReleased="SelectingItemsControl_OnPointerReleased"
+                                         ItemsSource="{Binding ScoreLists[0]}">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
-                                            <listEntries:ScoredUserListEntry NumberedPlace="{Binding}"/>
+                                            <listEntries:ScoredUserListEntry Scores="{Binding}"/>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                 </ListBox>
@@ -64,7 +60,7 @@
                                     </Style>
                                 
                                     <Style Selector="ListBoxItem:nth-child(1)">
-                                        <Style Selector="^ > listEntries|ScoredUserListEntry">
+                                        <Style Selector="^ > listEntries|ScoredUserListEntry[IsEmptySlot=False]">
                                             <Setter Property="Background" Value="#fdb33a"/>
                                             
                                             <Style Selector="^ Border#PART_Pfp">
@@ -83,16 +79,40 @@
                                             </Style>
                                         </Style>
                                         
-                                        <Style Selector="^:pointerover > listEntries|ScoredUserListEntry">
+                                        <Style Selector="^:pointerover > listEntries|ScoredUserListEntry[IsEmptySlot=False]">
                                             <Setter Property="Background" Value="#FFC258"/>
                                         </Style>
-                                        <Style Selector="^:pressed listEntries|ScoredUserListEntry">
+                                        <Style Selector="^:pressed listEntries|ScoredUserListEntry[IsEmptySlot=False]">
                                             <Setter Property="Background" Value="#EDA73C"/>
+                                        </Style>
+                                        
+                                        
+                                        <Style Selector="^ > listEntries|ScoredUserListEntry[IsEmptySlot=True]">
+                                            <Setter Property="Background" Value="#D08240"/>
+                                            
+                                            <Style Selector="^ Border#PART_Pfp">
+                                                <Setter Property="Background" Value="#ffdbb8"/>
+                                            
+                                                <Style Selector="^ > Svg">
+                                                    <Setter Property="Css" Value="* { fill: #c9731e; }"/>
+                                                </Style>
+                                            </Style>
+                                            
+                                            <Style Selector="^ TextBlock.primary-text">
+                                                <Setter Property="Foreground" Value="#ffdbb8"/>
+                                            </Style>
+                                            <Style Selector="^ TextBlock.secondary-text">
+                                                <Setter Property="Foreground" Value="#ffdbb8"/>
+                                            </Style>
+                                        </Style>
+                                        
+                                        <Style Selector="^:pointerover > listEntries|ScoredUserListEntry[IsEmptySlot=True]">
+                                            <Setter Property="Background" Value="#C57C3D"/>
                                         </Style>
                                     </Style>
                                     
                                     <Style Selector="ListBoxItem:nth-child(2)">
-                                        <Style Selector="^ > listEntries|ScoredUserListEntry">
+                                        <Style Selector="^ > listEntries|ScoredUserListEntry[IsEmptySlot=False]">
                                             <Setter Property="Background" Value="#b4483a"/>
                                             
                                             <Style Selector="^ Border#PART_Pfp">
@@ -111,11 +131,35 @@
                                             </Style>
                                         </Style>
                                         
-                                        <Style Selector="^:pointerover > listEntries|ScoredUserListEntry">
+                                        <Style Selector="^:pointerover > listEntries|ScoredUserListEntry[IsEmptySlot=False]">
                                             <Setter Property="Background" Value="#B45C46"/>
                                         </Style>
-                                        <Style Selector="^:pressed listEntries|ScoredUserListEntry">
+                                        <Style Selector="^:pressed listEntries|ScoredUserListEntry[IsEmptySlot=False]">
                                             <Setter Property="Background" Value="#A74336"/>
+                                        </Style>
+                                        
+                                        
+                                        <Style Selector="^ > listEntries|ScoredUserListEntry[IsEmptySlot=True]">
+                                            <Setter Property="Background" Value="#72372E"/>
+                                            
+                                            <Style Selector="^ Border#PART_Pfp">
+                                                <Setter Property="Background" Value="#be6c62"/>
+                                            
+                                                <Style Selector="^ > Svg">
+                                                    <Setter Property="Css" Value="* { fill: #ffa69a; }"/>
+                                                </Style>
+                                            </Style>
+                                            
+                                            <Style Selector="^ TextBlock.primary-text">
+                                                <Setter Property="Foreground" Value="#ffa69a"/>
+                                            </Style>
+                                            <Style Selector="^ TextBlock.secondary-text">
+                                                <Setter Property="Foreground" Value="#ffa69a"/>
+                                            </Style>
+                                        </Style>
+                                        
+                                        <Style Selector="^:pointerover > listEntries|ScoredUserListEntry[IsEmptySlot=True]">
+                                            <Setter Property="Background" Value="#683229"/>
                                         </Style>
                                     </Style>
                                     
@@ -125,16 +169,11 @@
                             
                             <controls:TriviaUsersList Grid.Column="2"
                                                       Background="#9d665f">
-                                <ListBox PointerReleased="SelectingItemsControl_OnPointerReleased">
-                                    <ListBox.Items>
-                                        <x:Int32>3</x:Int32>
-                                        <x:Int32>4</x:Int32>
-                                        <x:Int32>5</x:Int32>
-                                    </ListBox.Items>
-                                    
+                                <ListBox PointerReleased="SelectingItemsControl_OnPointerReleased"
+                                         ItemsSource="{Binding ScoreLists[1]}">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
-                                            <listEntries:ScoredUserListEntry NumberedPlace="{Binding}"/>
+                                            <listEntries:ScoredUserListEntry Scores="{Binding}"/>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                 </ListBox>
@@ -152,7 +191,7 @@
                                     </Style>
                                     
                                     <Style Selector="ListBoxItem:nth-child(1)">
-                                        <Style Selector="^ > listEntries|ScoredUserListEntry">
+                                        <Style Selector="^ > listEntries|ScoredUserListEntry[IsEmptySlot=False]">
                                             <Setter Property="Background" Value="#d29188"/>
                                             
                                             <Style Selector="^ Border#PART_Pfp">
@@ -179,8 +218,33 @@
                                         </Style>
                                     </Style>
                                     
+                                    <Style Selector="ListBoxItem:nth-child(1)">
+                                        <Style Selector="^ > listEntries|ScoredUserListEntry[IsEmptySlot=True]">
+                                            <Setter Property="Background" Value="#8A5951"/>
+                                            
+                                            <Style Selector="^ Border#PART_Pfp">
+                                                <Setter Property="Background" Value="#f3c1bc"/>
+                                            
+                                                <Style Selector="^ > Svg">
+                                                    <Setter Property="Css" Value="* { fill: #ae6e65; }"/>
+                                                </Style>
+                                            </Style>
+                                            
+                                            <Style Selector="^ TextBlock.primary-text">
+                                                <Setter Property="Foreground" Value="White"/>
+                                            </Style>
+                                            <Style Selector="^ TextBlock.secondary-text">
+                                                <Setter Property="Foreground" Value="#ffcdc7"/>
+                                            </Style>
+                                        </Style>
+                                        
+                                        <Style Selector="^:pointerover > listEntries|ScoredUserListEntry">
+                                            <Setter Property="Background" Value="#82544C"/>
+                                        </Style>
+                                    </Style>
+                                    
                                     <Style Selector="ListBoxItem:not(:nth-child(1))">
-                                        <Style Selector="^ > listEntries|ScoredUserListEntry">
+                                        <Style Selector="^ > listEntries|ScoredUserListEntry[IsEmptySlot=False]">
                                             <Setter Property="Background" Value="#fac8c2"/>
                                             
                                             <Style Selector="^ Border#PART_Pfp">
@@ -207,6 +271,31 @@
                                         </Style>
                                     </Style>
                                     
+                                    <Style Selector="ListBoxItem:not(:nth-child(1))">
+                                        <Style Selector="^ > listEntries|ScoredUserListEntry[IsEmptySlot=True]">
+                                            <Setter Property="Background" Value="#E1AFA8"/>
+                                            
+                                            <Style Selector="^ Border#PART_Pfp">
+                                                <Setter Property="Background" Value="#fff1ef"/>
+                                            
+                                                <Style Selector="^ > Svg">
+                                                    <Setter Property="Css" Value="* { fill: #c98f87; }"/>
+                                                </Style>
+                                            </Style>
+                                            
+                                            <Style Selector="^ TextBlock.primary-text">
+                                                <Setter Property="Foreground" Value="#fff1ef"/>
+                                            </Style>
+                                            <Style Selector="^ TextBlock.secondary-text">
+                                                <Setter Property="Foreground" Value="#fff1ef"/>
+                                            </Style>
+                                        </Style>
+                                        
+                                        <Style Selector="^:pointerover > listEntries|ScoredUserListEntry">
+                                            <Setter Property="Background" Value="#D9A8A3"/>
+                                        </Style>
+                                    </Style>
+                                    
                                 </controls:TriviaUsersList.Styles>
                                 
                             </controls:TriviaUsersList>
@@ -216,48 +305,22 @@
                     
                     <controls:TriviaUsersList Grid.Row="2"
                                               Margin="160 0"
-                                              CornerRadius="30 30 0 0">
-                        <ListBox PointerReleased="SelectingItemsControl_OnPointerReleased">
-                            <ListBox.Items>
-                                <x:Int32>6</x:Int32>
-                                <x:Int32>7</x:Int32>
-                                <x:Int32>8</x:Int32>
-                                <x:Int32>9</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                                <x:Int32>10</x:Int32>
-                            </ListBox.Items>
-                                    
+                                              CornerRadius="30 30 0 0"
+                                              IsVisible="{Binding Show2ndList}">
+                        <ListBox PointerReleased="SelectingItemsControl_OnPointerReleased"
+                                 ItemsSource="{Binding ScoreLists[2]}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <listEntries:ScoredUserListEntry NumberedPlace="{Binding}"/>
+                                    <listEntries:ScoredUserListEntry Scores="{Binding}"/>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
                         
                         <controls:TriviaUsersList.Styles>
+                            <Style Selector="TextBlock.primary-text, TextBlock.secondary-text">
+                                <Setter Property="FontSize" Value="25"/>
+                            </Style>
+                            
                             <Style Selector="Border#PART_Pfp">
                                 <Setter Property="Width" Value="30"/>
                                 <Setter Property="Height" Value="30"/>
@@ -274,7 +337,8 @@
                 </Grid>
                 
                 <Button Classes="action-button"
-                        Command="{Binding ShowStatsPopup}">
+                        Command="{Binding ShowStatsPopup}"
+                        CommandParameter="{Binding AppService.SessionUser}">
                     
                     <StackPanel Orientation="Horizontal"
                                 Spacing="7">

@@ -4,6 +4,16 @@
 
 IDatabase::~IDatabase() = default;
 
+float IDatabase::calcAverageAnswerTime(const int totalTime, const int totalAns)
+{
+    if (totalAns == -1 || totalAns == 0 || totalTime == -1)
+    {
+        return -1;
+    }
+
+    return static_cast<float>(totalTime) / totalAns;
+}
+
 void IDatabase::validateSignupInfo(
     const std::string& password,
     const std::string& email,

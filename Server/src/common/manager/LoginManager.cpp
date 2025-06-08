@@ -112,6 +112,11 @@ LoggedUser &LoginManager::getUserByClient(const Client &client) const
     return *this->m_clientToLoggedUser.at(&client);
 }
 
+LoggedUser &LoginManager::getUserByUsername(const std::string &username)
+{
+    return this->m_loggedUsers.at(username);
+}
+
 bool LoginManager::isLoggedIn(const unsigned int id) const
 {
     return this->m_loggedUsersById.contains(id);

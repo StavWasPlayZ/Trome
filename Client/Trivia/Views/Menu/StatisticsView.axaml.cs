@@ -1,6 +1,7 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Trivia.Models.User;
 using Trivia.ViewModels.Menu;
 
 namespace Trivia.Views.Menu;
@@ -18,8 +19,12 @@ public partial class StatisticsView : PageViewControl<StatisticsViewModel>
         
         if (listbox.SelectedItem == null)
             return;
+
+        var scores = (listbox.SelectedItem as UserScoreModel)!.Scores;
+        if (scores is null)
+            return;
         
-        ViewModel?.ShowStatsPopup?.Execute().Subscribe();
+        ViewModel?.ShowStatsPopup?.Execute(scores.User).Subscribe();
         
         listbox.SelectedItem = null;
     }

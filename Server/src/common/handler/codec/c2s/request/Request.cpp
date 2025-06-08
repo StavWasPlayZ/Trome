@@ -22,17 +22,18 @@ SignupRequest::SignupRequest(
     birthdate(birthdate)
 {}
 
-// GetPlayersInRoomRequest::GetPlayersInRoomRequest(const unsigned int roomID) : roomID(roomID)
-// {
-// }
-
 ProtocolRequest::~ProtocolRequest() = default;
 
-ProtocolRequest *ProtocolRequest::fromRequest(const RequestInfo &info) {
+ProtocolRequest *ProtocolRequest::fromRequest(const RequestInfo &info)
+{
     return JsonRequestPacketDeserializer::deserialize(info);
 }
 
-JoinRoomRequest::JoinRoomRequest(const unsigned int roomID) : roomID(roomID)
+JoinRoomRequest::JoinRoomRequest(const unsigned int roomId) : roomID(roomId)
+{
+}
+
+GetUserStatisticsRequest::GetUserStatisticsRequest(const unsigned int userId) : userId(userId)
 {
 }
 
