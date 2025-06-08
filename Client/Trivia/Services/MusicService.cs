@@ -9,22 +9,44 @@ public class MusicService : IDisposable
     private MusicService() { }
     
     private LibVLC? _libvlc;
-    private MediaPlayer? _backgroundPlayer, _triviaPlayer;
+
+    private Track? _backgroundTrack, _triviaTrack;
 
     public void Initialize()
     {
         Core.Initialize();
         
         _libvlc = new LibVLC();
-        _backgroundPlayer = new MediaPlayer(_libvlc);
-        _triviaPlayer = new MediaPlayer(_libvlc);
+        _backgroundTrack = new Track(_libvlc);
+        _triviaTrack = new Track(_libvlc);
     }
+    
+    
+    public void LoadBackgroundTrack(SoundMeta? soundMeta = null)
+    {
+        _backgroundTrack?.LoadSound(soundMeta ?? MusicTracks.Background);
+    }
+    public void LoadTriviaTrack(SoundMeta? soundMeta = null)
+    {
+        _triviaTrack?.LoadSound(soundMeta ?? MusicTracks.TriviaStress);
+    }
+    
+    public void PlayBackgroundTrack()
+    {
+        _backgroundTrack?.Play();
+    }
+    public void PlayTriviaTrack()
+    {
+        _triviaTrack?.Play();
+    }
+    
 
     public void Dispose()
     {
-        _backgroundPlayer?.Dispose();
         _libvlc?.Dispose();
-        _triviaPlayer?.Dispose();
+        
+        _backgroundTrack?.Dispose();
+        _triviaTrack?.Dispose();
         
         GC.SuppressFinalize(this);
     }

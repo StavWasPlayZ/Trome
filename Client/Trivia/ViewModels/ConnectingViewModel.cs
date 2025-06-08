@@ -63,6 +63,10 @@ public class ConnectingViewModel : PageViewModel
 
     private void OnConnectionEstablished()
     {
+        App.MusicService.LoadBackgroundTrack();
+        App.MusicService.LoadTriviaTrack();
+        
+        App.MusicService.PlayBackgroundTrack();
         
         Dispatcher.UIThread.Post(() => NavigateAndReset(new LoginViewModel(HostScreen)));
     }
