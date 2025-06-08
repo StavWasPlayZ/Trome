@@ -1,5 +1,8 @@
 #include "NoEncyption.h"
 
+NoEncyption::NoEncyption() : ICryptoAlgorithm()
+{}
+
 std::string NoEncyption::encrypt(const std::string &message) const override
 {
     return message;
