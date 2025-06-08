@@ -1,5 +1,4 @@
 using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
 using Avalonia.LogicalTree;
@@ -19,16 +18,7 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
     
     public MainWindow()
     {
-        this.WhenActivated(_ =>
-        {
-            ViewModel?.Router.Navigate.Execute(
-                // If we're in design mode, strictly use the mock constructor instead.
-                !Design.IsDesignMode
-                    ? new ConnectingViewModel(ViewModel)
-                    : new ConnectingViewModel()
-            );
-        });
-        
+        this.WhenActivated(_ => { });
         InitializeComponent();
     }
 
