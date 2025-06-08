@@ -127,7 +127,7 @@ add_executable (Server
 
   "src/common/infrastructure/model/UserModel.cpp"
   "src/common/infrastructure/model/UserModel.h"
-)
+ "src/common/infrastructure/cryptoAlgorithm/ICryptoAlgorithm.h" "src/common/infrastructure/cryptoAlgorithm/ICryptoAlgorithm.cpp")
 
 # Platform-specific sources
 if (WIN32)
