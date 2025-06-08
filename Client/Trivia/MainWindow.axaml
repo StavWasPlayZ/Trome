@@ -13,7 +13,7 @@
         CanResize="False"
         Title="Trivia"
         
-        DetachedFromLogicalTree="OnDetachedFromLogicalTree">
+        Closing="Window_OnClosing">
     
     <Design.DataContext>
         <vm:MainWindowViewModel />

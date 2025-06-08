@@ -39,7 +39,6 @@ public class Track(LibVLC libvlc) : IDisposable
     public void Dispose()
     {
         Player.Dispose();
-        Media?.Dispose();
 
         if (_tempFilePath != null)
         {

@@ -12,6 +12,10 @@ public class MainWindowViewModel : ViewModelBase, IScreen, IActivatableViewModel
     public RoutingState Router { get; } = new();
 
     public ReactiveCommand<Unit, Unit>? CloseDialogCommand { get; }
+    
+    
+    public bool AllowClosing { get; set; }
+    public bool IsCloseProcessing { get; set; }
 
 
     public MainWindowViewModel()
@@ -35,10 +39,8 @@ public class MainWindowViewModel : ViewModelBase, IScreen, IActivatableViewModel
 
     public void HandleClosing()
     {
+        IsCloseProcessing = true;
         Router.NavigateAndReset.Execute(new ClosingViewModel(this));
-        
-        App.MusicService.Dispose();
-        Communicator.Instance.Dispose();
     }
 
 

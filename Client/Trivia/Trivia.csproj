@@ -76,6 +76,10 @@
         <DependentUpon>AfterGameUserListEntry.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Views\ClosingView.axaml.cs">
+        <DependentUpon>ClosingView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
