@@ -22,6 +22,7 @@ public class MainWindowViewModel : ViewModelBase, IScreen
 
     public void HandleClosing()
     {
+        App.MusicService.Dispose();
         Communicator.Instance.Dispose();
     }
 

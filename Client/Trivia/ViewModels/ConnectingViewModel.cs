@@ -3,7 +3,6 @@ using System.Reactive.Disposables;
 using System.Reactive.Threading.Tasks;
 using Avalonia.Threading;
 using ReactiveUI;
-using Trivia.Services;
 using Trivia.ViewModels.Auth;
 
 namespace Trivia.ViewModels;
@@ -31,7 +30,7 @@ public class ConnectingViewModel : PageViewModel
     {
         try
         {
-            MusicService.Initialize();
+            App.MusicService.Initialize();
         }
         catch (Exception e)
         {
@@ -62,9 +61,12 @@ public class ConnectingViewModel : PageViewModel
         set => this.RaiseAndSetIfChanged(ref _connectionFailed, value);
     }
 
-    private void OnConnectionEstablished() =>
+    private void OnConnectionEstablished()
+    {
+        
         Dispatcher.UIThread.Post(() => NavigateAndReset(new LoginViewModel(HostScreen)));
-    
+    }
+
     private void OnConnectionFailed(Exception e)
     {
         Console.Error.WriteLine(e);
