@@ -5,76 +5,78 @@
 
 #include "handler/codec/s2c/ProtocolPacketSerializer.h"
 
+#include "infrastructure/cryptoAlgorithm/ICryptoAlgorithm.h"
+
 // fucking windows and their stupidass macros cost me 1 hour 30
 #ifdef ERROR
 #undef ERROR
 #endif
 
-OBuffer JsonResponsePacketSerializer::serializeResponse(const ProtocolResponse &response)
+OBuffer JsonResponsePacketSerializer::serializeResponse(const ProtocolResponse &response, ICryptoAlgorithm& cryptoAlgorythm)
 {
     switch (response.id)
     {
     case ResponseCode::ERROR:
-        return serializeResponse(static_cast<const ErrorResponse&>(response));
+        return serializeResponse(static_cast<const ErrorResponse&>(response), cryptoAlgorythm);
     case ResponseCode::LOGIN:
-        return serializeResponse(static_cast<const LoginResponse&>(response));
+        return serializeResponse(static_cast<const LoginResponse&>(response), cryptoAlgorythm);
     case ResponseCode::SIGNUP:
-        return serializeResponse(static_cast<const SignupResponse&>(response));
+        return serializeResponse(static_cast<const SignupResponse&>(response), cryptoAlgorythm);
     case ResponseCode::LOGOUT:
-        return serializeResponse(static_cast<const LogoutResponse&>(response));
+        return serializeResponse(static_cast<const LogoutResponse&>(response), cryptoAlgorythm);
     case ResponseCode::JOIN_ROOM:
-        return serializeResponse(static_cast<const JoinRoomResponse&>(response));
+        return serializeResponse(static_cast<const JoinRoomResponse&>(response), cryptoAlgorythm);
     case ResponseCode::CREATE_ROOM:
-        return serializeResponse(static_cast<const CreateRoomResponse&>(response));
+        return serializeResponse(static_cast<const CreateRoomResponse&>(response), cryptoAlgorythm);
     case ResponseCode::GET_ROOMS:
-        return serializeResponse(static_cast<const GetRoomsResponse&>(response));
+        return serializeResponse(static_cast<const GetRoomsResponse&>(response), cryptoAlgorythm);
     case ResponseCode::GET_PLAYERS_IN_ROOM:
-        return serializeResponse(static_cast<const GetPlayersInRoomResponse&>(response));
+        return serializeResponse(static_cast<const GetPlayersInRoomResponse&>(response), cryptoAlgorythm);
     case ResponseCode::GET_HIGH_SCORES:
-        return serializeResponse(static_cast<const GetHighScoresResponse&>(response));
+        return serializeResponse(static_cast<const GetHighScoresResponse&>(response), cryptoAlgorythm);
     case ResponseCode::GET_USER_STATISTICS:
-        return serializeResponse(static_cast<const GetUserStatisticsResponse&>(response));
+        return serializeResponse(static_cast<const GetUserStatisticsResponse&>(response), cryptoAlgorythm);
     case ResponseCode::CLOSE_ROOM:
-        return serializeResponse(static_cast<const CloseRoomResponse&>(response));
+        return serializeResponse(static_cast<const CloseRoomResponse&>(response), cryptoAlgorythm);
     case ResponseCode::START_GAME:
-        return serializeResponse(static_cast<const StartGameResponse&>(response));
+        return serializeResponse(static_cast<const StartGameResponse&>(response), cryptoAlgorythm);
     case ResponseCode::GET_ROOM_STATE:
-        return serializeResponse(static_cast<const GetRoomStateResponse&>(response));
+        return serializeResponse(static_cast<const GetRoomStateResponse&>(response), cryptoAlgorythm);
     case ResponseCode::LEAVE_ROOM:
-        return serializeResponse(static_cast<const LeaveRoomResponse&>(response));
+        return serializeResponse(static_cast<const LeaveRoomResponse&>(response), cryptoAlgorythm);
     case ResponseCode::UPDATE_ROOM_DATA:
-        return serializeResponse(static_cast<const UpdateRoomDataResponse&>(response));
+        return serializeResponse(static_cast<const UpdateRoomDataResponse&>(response), cryptoAlgorythm);
     case ResponseCode::LEAVE_GAME:
-        return serializeResponse(static_cast<const LeaveGameResponse&>(response));
+        return serializeResponse(static_cast<const LeaveGameResponse&>(response), cryptoAlgorythm);
     case ResponseCode::GET_QUESTION:
-        return serializeResponse(static_cast<const GetQuestionResponse&>(response));
+        return serializeResponse(static_cast<const GetQuestionResponse&>(response), cryptoAlgorythm);
     case ResponseCode::SUBMIT_ANSWER:
-        return serializeResponse(static_cast<const SubmitAnswerResponse&>(response));
+        return serializeResponse(static_cast<const SubmitAnswerResponse&>(response), cryptoAlgorythm);
     case ResponseCode::GET_GAME_RESULT:
-        return serializeResponse(static_cast<const GetGameResultResponse&>(response));
+        return serializeResponse(static_cast<const GetGameResultResponse&>(response), cryptoAlgorythm);
 
     default: throw std::invalid_argument("Invalid response ID");
     }
 }
 
 
-OBuffer JsonResponsePacketSerializer::serializeResponse(const LoginResponse &response)
+OBuffer JsonResponsePacketSerializer::serializeResponse(const LoginResponse &response, ICryptoAlgorithm& cryptoAlgorythm)
 {
 	nlohmann::json data;
 	serializeRegistrationResponseToJson(data, response);
 
-	return serialize(response.id, data);
+	return serialize(response.id, data, cryptoAlgorythm);
 }
 
-OBuffer JsonResponsePacketSerializer::serializeResponse(const SignupResponse &response)
+OBuffer JsonResponsePacketSerializer::serializeResponse(const SignupResponse &response, ICryptoAlgorithm& cryptoAlgorythm)
 {
 	nlohmann::json data;
 	serializeRegistrationResponseToJson(data, response);
 
-	return serialize(response.id, data);
+	return serialize(response.id, data, cryptoAlgorythm);
 }
 
-OBuffer JsonResponsePacketSerializer::serializeResponse(const ErrorResponse &response)
+OBuffer JsonResponsePacketSerializer::serializeResponse(const ErrorResponse &response, ICryptoAlgorithm& cryptoAlgorythm)
 {
     nlohmann::json data;
 
@@ -86,15 +88,15 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const ErrorResponse &res
         data["context"] = response.context.value();
     }
 
-    return serialize(response.id, data);
+    return serialize(response.id, data, cryptoAlgorythm);
 }
 
-OBuffer JsonResponsePacketSerializer::serializeResponse(const LogoutResponse &response)
+OBuffer JsonResponsePacketSerializer::serializeResponse(const LogoutResponse &response, ICryptoAlgorithm& cryptoAlgorythm)
 {
-    return serialize(response.id, nlohmann::json::object());
+    return serialize(response.id, nlohmann::json::object(), cryptoAlgorythm);
 }
 
-OBuffer JsonResponsePacketSerializer::serializeResponse(const JoinRoomResponse &response)
+OBuffer JsonResponsePacketSerializer::serializeResponse(const JoinRoomResponse &response, ICryptoAlgorithm& cryptoAlgorythm)
 {
     nlohmann::json data;
 
@@ -106,20 +108,20 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const JoinRoomResponse &
         data["players"].push_back(ProtocolPacketSerializer::serializeAsJson(*user));
     }
 
-    return serialize(response.id, data);
+    return serialize(response.id, data, cryptoAlgorythm);
 }
 
-OBuffer JsonResponsePacketSerializer::serializeResponse(const CreateRoomResponse &response)
+OBuffer JsonResponsePacketSerializer::serializeResponse(const CreateRoomResponse &response, ICryptoAlgorithm& cryptoAlgorythm)
 {
     nlohmann::json data;
 
     data["room_id"] = response.roomId;
     data["data"] = ProtocolPacketSerializer::serializeAsJson(response.data);
 
-    return serialize(response.id, data);
+    return serialize(response.id, data, cryptoAlgorythm);
 }
 
-OBuffer JsonResponsePacketSerializer::serializeResponse(const GetRoomsResponse &response)
+OBuffer JsonResponsePacketSerializer::serializeResponse(const GetRoomsResponse &response, ICryptoAlgorithm& cryptoAlgorythm)
 {
     nlohmann::json data;
 
@@ -130,10 +132,10 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetRoomsResponse &
         rooms.push_back(ProtocolPacketSerializer::serializeAsJson(*room));
 	}
 
-    return serialize(response.id, data);
+    return serialize(response.id, data, cryptoAlgorythm);
 }
 
-OBuffer JsonResponsePacketSerializer::serializeResponse(const GetPlayersInRoomResponse &response)
+OBuffer JsonResponsePacketSerializer::serializeResponse(const GetPlayersInRoomResponse &response, ICryptoAlgorithm& cryptoAlgorythm)
 {
     nlohmann::json data;
 
@@ -144,10 +146,10 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetPlayersInRoomRe
         data["players"].push_back(ProtocolPacketSerializer::serializeAsJson(*user));
     }
 
-    return serialize(response.id, data);
+    return serialize(response.id, data, cryptoAlgorythm);
 }
 
-OBuffer JsonResponsePacketSerializer::serializeResponse(const GetHighScoresResponse &response)
+OBuffer JsonResponsePacketSerializer::serializeResponse(const GetHighScoresResponse &response, ICryptoAlgorithm& cryptoAlgorythm)
 {
     nlohmann::json data;
 
@@ -165,10 +167,10 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetHighScoresRespo
 
     data["high_scores"] = scoresArr;
 
-    return serialize(response.id, data);
+    return serialize(response.id, data, cryptoAlgorythm);
 }
 
-OBuffer JsonResponsePacketSerializer::serializeResponse(const GetUserStatisticsResponse &response)
+OBuffer JsonResponsePacketSerializer::serializeResponse(const GetUserStatisticsResponse &response, ICryptoAlgorithm& cryptoAlgorythm)
 {
     nlohmann::json data;
 
@@ -181,55 +183,55 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetUserStatisticsR
     stats["time_on_question_overall"] = response.stats.timeOnQuestionsOverall;
     stats["time_on_questions_avg"] = response.stats.timePerQuestionsAvg;
 
-    return serialize(response.id, data);
+    return serialize(response.id, data, cryptoAlgorythm);
 }
 
-OBuffer JsonResponsePacketSerializer::serializeResponse(const CloseRoomResponse &response)
+OBuffer JsonResponsePacketSerializer::serializeResponse(const CloseRoomResponse &response, ICryptoAlgorithm& cryptoAlgorythm)
 {
-    return serialize(response.id, nlohmann::json::object());
+    return serialize(response.id, nlohmann::json::object(), cryptoAlgorythm);
 }
 
-OBuffer JsonResponsePacketSerializer::serializeResponse(const StartGameResponse &response)
+OBuffer JsonResponsePacketSerializer::serializeResponse(const StartGameResponse &response, ICryptoAlgorithm& cryptoAlgorythm)
 {
-    return serialize(response.id, nlohmann::json::object());
+    return serialize(response.id, nlohmann::json::object(), cryptoAlgorythm);
 }
 
-OBuffer JsonResponsePacketSerializer::serializeResponse(const LeaveRoomResponse &response)
+OBuffer JsonResponsePacketSerializer::serializeResponse(const LeaveRoomResponse &response, ICryptoAlgorithm& cryptoAlgorythm)
 {
-    return serialize(response.id, nlohmann::json::object());
+    return serialize(response.id, nlohmann::json::object(), cryptoAlgorythm);
 }
 
-OBuffer JsonResponsePacketSerializer::serializeResponse(const GetRoomStateResponse &response)
+OBuffer JsonResponsePacketSerializer::serializeResponse(const GetRoomStateResponse &response, ICryptoAlgorithm& cryptoAlgorythm)
 {
     nlohmann::json data;
 
     data["room"] = ProtocolPacketSerializer::serializeAsJson(response.room);
 
-    return serialize(response.id, data);
+    return serialize(response.id, data, cryptoAlgorythm);
 }
 
-OBuffer JsonResponsePacketSerializer::serializeResponse(const UpdateRoomDataResponse &response)
+OBuffer JsonResponsePacketSerializer::serializeResponse(const UpdateRoomDataResponse &response, ICryptoAlgorithm& cryptoAlgorythm)
 {
-    return serialize(response.id, nlohmann::json::object());
+    return serialize(response.id, nlohmann::json::object(), cryptoAlgorythm);
 }
 
-OBuffer JsonResponsePacketSerializer::serializeResponse(const LeaveGameResponse &response)
+OBuffer JsonResponsePacketSerializer::serializeResponse(const LeaveGameResponse &response, ICryptoAlgorithm& cryptoAlgorythm)
 {
-    return serialize(response.id, nlohmann::json::object());
+    return serialize(response.id, nlohmann::json::object(), cryptoAlgorythm);
 }
 
-OBuffer JsonResponsePacketSerializer::serializeResponse(const GetQuestionResponse &response)
+OBuffer JsonResponsePacketSerializer::serializeResponse(const GetQuestionResponse &response, ICryptoAlgorithm& cryptoAlgorythm)
 {
-    return serializeResponse(static_cast<const QuestionResponse &>(response));
+    return serializeResponse(static_cast<const QuestionResponse &>(response), cryptoAlgorythm);
 }
 
-OBuffer JsonResponsePacketSerializer::serializeResponse(const SubmitAnswerResponse &response)
+OBuffer JsonResponsePacketSerializer::serializeResponse(const SubmitAnswerResponse &response, ICryptoAlgorithm& cryptoAlgorythm)
 {
-    return serializeResponse(static_cast<const QuestionResponse &>(response));
+    return serializeResponse(static_cast<const QuestionResponse &>(response), cryptoAlgorythm);
 }
 
 
-OBuffer JsonResponsePacketSerializer::serializeResponse(const GetGameResultResponse &response)
+OBuffer JsonResponsePacketSerializer::serializeResponse(const GetGameResultResponse &response, ICryptoAlgorithm& cryptoAlgorythm)
 {
     nlohmann::json data;
 
@@ -240,10 +242,10 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetGameResultRespo
         resultsObj.push_back(ProtocolPacketSerializer::serializeAsJson(result));
     }
 
-    return serialize(response.id, data);
+    return serialize(response.id, data, cryptoAlgorythm);
 }
 
-OBuffer JsonResponsePacketSerializer::serializeResponse(const QuestionResponse &response)
+OBuffer JsonResponsePacketSerializer::serializeResponse(const QuestionResponse &response, ICryptoAlgorithm& cryptoAlgorythm)
 {
     nlohmann::json data;
 
@@ -264,12 +266,13 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const QuestionResponse &
         }
     }
 
-    return serialize(response.id, data);
+    return serialize(response.id, data, cryptoAlgorythm);
 }
 
-OBuffer JsonResponsePacketSerializer::serialize(const ResponseCode msgCode, const nlohmann::json &data)
+OBuffer JsonResponsePacketSerializer::serialize(const ResponseCode msgCode, const nlohmann::json &data,
+                                                ICryptoAlgorithm& cryptoAlgorythm)
 {
-    return ProtocolPacketSerializer::serialize(S2CPacketType::RESPONSE, static_cast<unsigned char>(msgCode), data);
+    return ProtocolPacketSerializer::serialize(S2CPacketType::RESPONSE, static_cast<unsigned char>(msgCode), data, cryptoAlgorythm);
 }
 
 

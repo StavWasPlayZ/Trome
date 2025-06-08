@@ -8,6 +8,10 @@
 #include "infrastructure/Room.h"
 #include "response/Response.h"
 
+#include "infrastructure/cryptoAlgorithm/ICryptoAlgorithm.h"
+
+class ICryptoAlgorithm;
+
 class ProtocolPacketSerializer
 {
 public:
@@ -24,7 +28,7 @@ public:
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serialize(S2CPacketType packetType, unsigned char msgCode, const nlohmann::json &data);
+    static OBuffer serialize(S2CPacketType packetType, unsigned char msgCode, const nlohmann::json &data, ICryptoAlgorithm& cryptoAlgorithm);
 
 
     static nlohmann::json serializeAsJson(const UserModel &player);

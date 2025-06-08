@@ -182,7 +182,7 @@ GetGameResultRequest JsonRequestPacketDeserializer::deserializeGetGameResultRequ
     return GetGameResultRequest();
 }
 
-nlohmann::json JsonRequestPacketDeserializer::readJson(const unsigned char *data, const int jsonLen)
+nlohmann::json JsonRequestPacketDeserializer::readJson(const unsigned char *data, const int jsonLen, ICryptoAlgorithm& cryptoAlgorithm)
 {
 	// Avoid naughty buffer overflows
 	if (jsonLen <= 0)
@@ -194,8 +194,10 @@ nlohmann::json JsonRequestPacketDeserializer::readJson(const unsigned char *data
 	std::memcpy(jsonRaw, data, jsonLen * sizeof(char));
 
     const nlohmann::json result = nlohmann::json::parse(
-        // TODO: Decrypt here
-        std::string(jsonRaw, jsonLen));
+        cryptoAlgorithm.decrypt(
+            std::string(jsonRaw, jsonLen)
+        )
+    );
 
     delete[] jsonRaw;
     return result;
