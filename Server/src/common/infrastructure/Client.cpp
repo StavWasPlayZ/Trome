@@ -5,14 +5,15 @@
 
 Client::Client(const SOCKET socket, const IRequestHandler *const requestHandler) :
     socket(socket),
-    thread(nullptr),
-    requestHandler(requestHandler)
+    thread(nullptr), requestHandler(requestHandler), 
+    cryptoAlgorithem(new NoEncryption())
 {}
 
 Client::~Client()
 {
     delete this->requestHandler;
     delete this->thread;
+    delete this->cryptoAlgorithem;
 }
 
 std::unique_lock<std::mutex> Client::acquireSocketWriterLock()
