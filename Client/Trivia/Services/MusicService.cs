@@ -145,6 +145,7 @@ public class MusicService : IDisposable
         // ty avalonia xoxo <3
         
         newTrack.Volume = track.Volume;
+        newTrack.TargetVolume = track.TargetVolume;
     }
     
 
