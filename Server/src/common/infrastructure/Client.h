@@ -67,5 +67,5 @@ private:
 
     std::mutex socketWriterMutex;
 
-    ICryptoAlgorithm* cryptoAlgorithem;
+    ICryptoAlgorithm* cryptoAlgorithm;
 };

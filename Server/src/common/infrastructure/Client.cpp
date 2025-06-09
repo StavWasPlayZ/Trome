@@ -6,14 +6,14 @@
 Client::Client(const SOCKET socket, const IRequestHandler *const requestHandler) :
     socket(socket),
     thread(nullptr), requestHandler(requestHandler), 
-    cryptoAlgorithem(new OTP())
+    cryptoAlgorithm(new OTP())
 {}
 
 Client::~Client()
 {
     delete this->requestHandler;
     delete this->thread;
-    delete this->cryptoAlgorithem;
+    delete this->cryptoAlgorithm;
 }
 
 std::unique_lock<std::mutex> Client::acquireSocketWriterLock()
@@ -62,7 +62,7 @@ void Client::setAndStartThread(const std::function<void()> &threadFunc)
 void Client::sendNotification(const ProtocolNotification& notification)
 {
     Communicator::getInstance().sendMsg(*this,
-        NotificationPacketSerializer::serialize(notification, *this->cryptoAlgorithem)
+        NotificationPacketSerializer::serialize(notification, *this->cryptoAlgorithm)
     );
 }
 
@@ -73,5 +73,5 @@ void Client::handleDisconnecting() const
 
 ICryptoAlgorithm* Client::getCryptoAlgorithm() const
 {
-    return this->cryptoAlgorithem;
+    return this->cryptoAlgorithm;
 }
