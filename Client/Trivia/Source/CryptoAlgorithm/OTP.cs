@@ -12,7 +12,7 @@ public class OTP : ICryptoAlgorithm
         
         foreach (char c in message)
         {
-            encrypted += c ^ Key[pos];
+            encrypted += (char)(c ^ Key[pos]);
             pos++;
             pos %= Key.Length;
         }
@@ -27,7 +27,7 @@ public class OTP : ICryptoAlgorithm
         
         foreach (char c in message)
         {
-            decrypted += c ^ Key[pos];
+            decrypted += (char)(c ^ Key[pos]);
             pos++;
             pos %= Key.Length;
         }
