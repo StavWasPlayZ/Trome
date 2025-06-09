@@ -2,7 +2,7 @@
 
 public class CipherEncryption : ICryptoAlgorithm
 {
-    private static int key = 3;
+    private static readonly int Key = 3;
     public CipherEncryption() { }
 
     public string Encrypt(string message)
@@ -10,7 +10,7 @@ public class CipherEncryption : ICryptoAlgorithm
         string encrypted = "";
         foreach (char c in message)
         {
-            encrypted += (char)(c + key);
+            encrypted += (char)(c + Key);
         }
         
         return encrypted;
@@ -21,7 +21,7 @@ public class CipherEncryption : ICryptoAlgorithm
         string decrypted = "";
         foreach (char c in message)
         {
-            decrypted += (char)(c - key);
+            decrypted += (char)(c - Key);
         }
         
         return decrypted;
