@@ -19,9 +19,9 @@ public interface IProtocolRequest
     
     private byte[] SerializeToProtocol(string data, ICryptoAlgorithm cryptoAlgorithm)
     {
-        var strBytes = Encoding.UTF8.GetBytes(cryptoAlgorithm.Encrypt(data));
+        var strBytes = Encoding.GetEncoding("ISO-8859-1").GetBytes(cryptoAlgorithm.Encrypt(data));
         var lenBytes = BitConverter.GetBytes(strBytes.Length);
-
+        
         // Convert to little-endian format, if needed
         if (BitConverter.IsLittleEndian)
         {

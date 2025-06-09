@@ -45,7 +45,7 @@ public class Communicator : IDisposable
 
     private TcpClient? _clientSocket;
     
-    static ICryptoAlgorithm _cryptoAlgorithm = new NoEncryption();
+    static ICryptoAlgorithm _cryptoAlgorithm = new CipherEncryption();
     
     private Communicator() { }
 
@@ -216,7 +216,7 @@ public class Communicator : IDisposable
         if (read == 0 || !IsConnected)
             return null;
         
-        var json = Encoding.UTF8.GetString(jsonRaw, 0, jsonRaw.Length);
+        var json = Encoding.GetEncoding("ISO-8859-1").GetString(jsonRaw, 0, jsonRaw.Length);
         
         return PacketDeserializer.Deserialize((S2CPacketType) packetType, (byte) code, _cryptoAlgorithm.Decrypt(json));
     }
@@ -255,7 +255,7 @@ public class Communicator : IDisposable
             var rawRequest = request.Serialize(_cryptoAlgorithm);
 
             VerboseLog($"Sending packet: {request}");
-            VerboseLog($"In raw form: {Encoding.UTF8.GetString(rawRequest, 5, rawRequest.Length - 5)}");
+            VerboseLog($"In raw form: {Encoding.GetEncoding("ISO-8859-1").GetString(rawRequest, 5, rawRequest.Length - 5)}");
             
             _clientSocket!.GetStream().Write(rawRequest, 0, rawRequest.Length);
         }
