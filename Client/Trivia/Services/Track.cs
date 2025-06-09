@@ -32,6 +32,12 @@ public class Track : IDisposable
         // Just immediately load it
         LoadTrack();
     }
+    
+    public bool IsMuted => Volume == 0;
+    public void Mute()
+    {
+        Volume = 0f;
+    }
 
     private void LoadTrack()
     {
@@ -46,7 +52,8 @@ public class Track : IDisposable
         
         _volumeSampleProvider = new VolumeSampleProvider(sampleProvider);
     }
-
+    
+    
     public void Dispose()
     {
         _oggReader?.Dispose();
