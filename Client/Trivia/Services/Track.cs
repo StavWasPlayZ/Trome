@@ -1,53 +1,55 @@
-using System;
+﻿using System;
 using System.IO;
 using Avalonia.Platform;
-using LibVLCSharp.Shared;
+using NAudio.Vorbis;
+using NAudio.Wave;
+using NAudio.Wave.SampleProviders;
 
 namespace Trivia.Services;
 
-public class Track(LibVLC libvlc) : IDisposable
+public class Track : IDisposable
 {
-    private MediaPlayer Player { get; } = new(libvlc);
+    public SoundMeta Sound { get; }
+
+    // Expose the volume sound provider as the "actual" sample provider.
+    // So that the volume may be controlled.
+    public ISampleProvider SampleProvider => _volumeSampleProvider!;
     
-    public SoundMeta CurrentTrack { get; private set; }
-
-
-    private string? _tempFilePath;
-
-    public void LoadSound(SoundMeta soundMeta)
+    public float Volume
     {
-        _tempFilePath = Path.GetTempFileName();
-    
-        using (var assetStream = AssetLoader.Open(new Uri(soundMeta.Path)))
-        {
-            using var fileStream = File.OpenWrite(_tempFilePath);
-            assetStream.CopyTo(fileStream);
-        }
-    
-        Player.Media = new Media(libvlc, _tempFilePath);
-        CurrentTrack = soundMeta;
+        get => _volumeSampleProvider!.Volume;
+        set => _volumeSampleProvider!.Volume = value;
     }
 
-    public void Play()
-    {
-        Player.Play();
+    private VolumeSampleProvider? _volumeSampleProvider;
 
-        Player.TimeChanged += (sender, args) =>
-        {
-            Player.Volume = 100;
-            Player.Mute = false;
-        };
+    private VorbisWaveReader? _oggReader;
+    
+    public Track(SoundMeta sound)
+    {
+        Sound = sound;
+        
+        // Just immediately load it
+        LoadTrack();
+    }
+
+    private void LoadTrack()
+    {
+        var uri = new Uri(Sound.Path);
+        var fileStream = AssetLoader.Open(uri);
+        
+        if (fileStream == null)
+            throw new FileNotFoundException($"Resource not found: {Sound.Path}");
+        
+        _oggReader = new VorbisWaveReader(fileStream);
+        var sampleProvider = _oggReader.ToSampleProvider();
+        
+        _volumeSampleProvider = new VolumeSampleProvider(sampleProvider);
     }
 
     public void Dispose()
     {
-        Player.Dispose();
-
-        if (_tempFilePath != null)
-        {
-            File.Delete(_tempFilePath);
-        }
-        
+        _oggReader?.Dispose();
         GC.SuppressFinalize(this);
     }
 }

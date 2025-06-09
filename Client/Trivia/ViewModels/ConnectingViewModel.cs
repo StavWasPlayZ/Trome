@@ -1,6 +1,7 @@
 using System;
 using System.Reactive.Disposables;
 using System.Reactive.Threading.Tasks;
+using System.Threading;
 using Avalonia.Threading;
 using ReactiveUI;
 using Trivia.ViewModels.Auth;
@@ -39,8 +40,7 @@ public class ConnectingViewModel : PageViewModel
             return false;
         }
         
-        App.MusicService.LoadBackgroundTrack();
-        App.MusicService.LoadTriviaTrack();
+        App.MusicService.LoadTracks();
         
         return true;
     }
@@ -66,6 +66,7 @@ public class ConnectingViewModel : PageViewModel
 
     private void OnConnectionEstablished()
     {
+        // App.MusicService.Play();
         // App.MusicService.PlayBackgroundTrack();
         
         Dispatcher.UIThread.Post(() => NavigateAndReset(new LoginViewModel(HostScreen)));
