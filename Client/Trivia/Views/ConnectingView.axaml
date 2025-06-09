@@ -20,7 +20,6 @@
         
         <ContentControl VerticalAlignment="Center"
                         HorizontalAlignment="Center"
-                        Classes.music-conn-failed="{Binding MusicServiceFailed}"
                         Classes.server-conn-failed="{Binding ConnectionFailed}"
                         Margin="50 0">
             
@@ -56,22 +55,6 @@
                                 </TextBlock>
                                 <TextBlock Classes="description">
                                     RESTART THE GAME TO TRY AGAIN.
-                                </TextBlock>
-                            </StackPanel>
-                        </DataTemplate>
-                    </Setter>
-                </Style>
-                
-                <Style Selector="ContentControl.music-conn-failed">
-                    <Setter Property="ContentTemplate">
-                        <!-- ReSharper disable once Xaml.RedundantResource -->
-                        <DataTemplate>
-                            <StackPanel>
-                                <TextBlock>
-                                    VLC INITIALIZATION FAILED.
-                                </TextBlock>
-                                <TextBlock Classes="description">
-                                    INSTALL VLC DEPENDENCIES, RESTART THE GAME AND TRY AGAIN.
                                 </TextBlock>
                             </StackPanel>
                         </DataTemplate>

@@ -31,7 +31,7 @@ public class ClosingViewModel : PageViewModel
 
     private static void DisposeStuff()
     {
-        App.MusicService.Dispose();
+        App.MusicService?.Dispose();
         Communicator.Instance.Dispose();
     }
 }

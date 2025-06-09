@@ -35,10 +35,10 @@
                     <TextBlock Grid.Column="0">MASTER VOLUME</TextBlock>
                     
                     <Slider Grid.Column="1"
-                            x:Name="QuestionsSlider"
                             Maximum="1"
                             Foreground="#E86568"
-                            Value="{Binding Volume}">
+                            Value="{Binding Volume}"
+                            IsEnabled="{Binding MusicServiceAvailable}">
                                     
                         <Slider.Resources>
                             <!-- ReSharper disable once Xaml.RedundantResource -->
