@@ -34,6 +34,8 @@ public class GameViewModel : GameViewModelBase
         
         this.WhenActivated(disposables =>
         {
+            App.MusicService?.PlayTriviaTrack();
+            
             GetNewQuestion()
                 .DisposeWith(disposables);
             
@@ -171,6 +173,7 @@ public class GameViewModel : GameViewModelBase
         // to have finished the game.
         if (PlayersFinished == RoomModel.PlayersCount)
         {
+            App.MusicService?.PlayBackgroundTrack();
             NavigateAndPop(new AfterGameViewModel(HostScreen, RoomModel, results))!.Subscribe();
         }
         else
