@@ -45,7 +45,7 @@ public class Communicator : IDisposable
 
     private TcpClient? _clientSocket;
     
-    static ICryptoAlgorithm _cryptoAlgorithm = new CipherEncryption();
+    static ICryptoAlgorithm _cryptoAlgorithm = new OTP();
     
     private Communicator() { }
 
