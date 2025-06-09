@@ -39,8 +39,6 @@ public class ConnectingViewModel : PageViewModel
             return false;
         }
         
-        App.MusicService.LoadTracks();
-        
         return true;
     }
 

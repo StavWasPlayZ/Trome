@@ -50,6 +50,9 @@ public class MusicService : IDisposable
         };
 
         _outputDevice.Init(_masterVolumeProvider);
+        
+        
+        LoadTracks();
     }
 
 
