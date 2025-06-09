@@ -13,8 +13,7 @@ public class ConnectingViewModel : PageViewModel
     {
         this.WhenActivated(disposables =>
         {
-            if (!InitMusicService())
-                return;
+            InitMusicService();
             
             Communicator.Instance.Connect()
                 .ToObservable()
@@ -26,32 +25,29 @@ public class ConnectingViewModel : PageViewModel
         });
     }
 
-    private bool InitMusicService()
+    private void InitMusicService()
     {
+        bool succeed;
+        
         try
         {
-            App.MusicService.Initialize();
+            succeed = App.MusicService!.Initialize();
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            MusicServiceFailed = true;
-            return false;
+            succeed = false;
+            
         }
-        
-        return true;
+
+        if (!succeed)
+        {
+            Console.Error.WriteLine("Music service not initialized");
+            App.SetMusicServiceUnavailable();
+        }
     }
 
     public ConnectingViewModel() { }
-    
-    
-    private bool _musicServiceFailed;
-
-    public bool MusicServiceFailed
-    {
-        get => _musicServiceFailed;
-        set => this.RaiseAndSetIfChanged(ref _musicServiceFailed, value);
-    }
     
     private bool _connectionFailed;
 
@@ -63,8 +59,8 @@ public class ConnectingViewModel : PageViewModel
 
     private void OnConnectionEstablished()
     {
-        App.MusicService.Play();
-        App.MusicService.PlayBackgroundTrack(false);
+        App.MusicService?.Play();
+        App.MusicService?.PlayBackgroundTrack(false);
         
         Dispatcher.UIThread.Post(() => NavigateAndReset(new LoginViewModel(HostScreen)));
     }

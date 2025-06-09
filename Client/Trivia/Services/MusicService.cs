@@ -27,13 +27,13 @@ public class MusicService : IDisposable
     private Track? _backgroundTrack;
     private Track? _triviaTrack;
 
-    public void Initialize()
+    public bool Initialize()
     {
         // NAudio unfortunately only works under Windows.
         // The other approach would be to use native OpenAL calls (OpenTK), but that is
         // the most cancerous activity I've yet to have done in this project.
         if (!OperatingSystem.IsWindows())
-            return;
+            return false;
         
         _outputDevice = new WaveOutEvent
         {
@@ -53,6 +53,7 @@ public class MusicService : IDisposable
         
         
         LoadTracks();
+        return true;
     }
 
 

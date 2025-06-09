@@ -13,7 +13,13 @@ public class App : Application
     
     //TODO: Maybe maybe maybe make this a dependency injection
     public static ApplicationService AppService { get; } = new();
-    public static MusicService MusicService => MusicService.Instance;
+
+    public static MusicService? MusicService { get; private set; } = MusicService.Instance;
+
+    public static void SetMusicServiceUnavailable()
+    {
+        MusicService = null;
+    }
 
 
     public override void Initialize()
