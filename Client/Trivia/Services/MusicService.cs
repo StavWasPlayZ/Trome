@@ -10,7 +10,6 @@ public class MusicService : IDisposable
     public static MusicService Instance { get; } = new();
     private MusicService() { }
 
-    // private Track? _backgroundTrack, _triviaTrack;
     private WaveOutEvent? _outputDevice;
     private MixingSampleProvider? _soundMixer;
     
