@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Timers;
 using Avalonia.Platform;
 using NAudio.Vorbis;
 using NAudio.Wave;
@@ -9,6 +10,8 @@ namespace Trivia.Services;
 
 public class Track : IDisposable
 {
+    public static readonly TimeSpan TimeChangedCheckDelay = TimeSpan.FromMilliseconds(10);
+    
     public SoundMeta Sound { get; }
 
     // Expose the volume sound provider as the "actual" sample provider.
@@ -22,8 +25,11 @@ public class Track : IDisposable
     }
 
     private VolumeSampleProvider? _volumeSampleProvider;
-
     private VorbisWaveReader? _oggReader;
+    
+    public event TimeChangedHandler? TimeChanged;
+    private Timer? _timeChangedChecker;
+    private TimeSpan? _oldTimeRead;
     
     public Track(SoundMeta sound)
     {
@@ -52,11 +58,36 @@ public class Track : IDisposable
         
         _volumeSampleProvider = new VolumeSampleProvider(sampleProvider);
     }
+
+
+    public void OnPlayed()
+    {
+        _timeChangedChecker = new Timer(TimeChangedCheckDelay);
+        _timeChangedChecker.AutoReset = true;
+        
+        _timeChangedChecker.Elapsed += (_, _) =>
+        {
+            var currTime = _oggReader!.CurrentTime;
+            if (currTime == _oldTimeRead)
+                return;
+            
+            TimeChanged?.Invoke(currTime);
+            _oldTimeRead = currTime;
+        };
+        
+        _timeChangedChecker.Start();
+    }
     
     
     public void Dispose()
     {
         _oggReader?.Dispose();
+        _timeChangedChecker?.Dispose();
+
+        TimeChanged = null;
+        
         GC.SuppressFinalize(this);
     }
 }
+
+public delegate void TimeChangedHandler(TimeSpan time);

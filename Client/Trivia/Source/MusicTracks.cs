@@ -5,7 +5,7 @@ namespace Trivia.Source;
 
 public static class MusicTracks
 {
-    public static readonly TimeSpan GlobalDuration = TimeSpan.FromSeconds(51.2);
+    public static readonly TimeSpan GlobalDuration = TimeSpan.FromSeconds(51.15);
     
     public static readonly SoundMeta Background = new(
         "avares://Trivia/Assets/Sounds/BGM/background.ogg",

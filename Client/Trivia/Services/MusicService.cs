@@ -1,5 +1,4 @@
 using System;
-using System.Timers;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using Trivia.Source;
@@ -10,7 +9,7 @@ public class MusicService : IDisposable
 {
     private const float MasterVolume = .3f;
 
-    private static readonly TimeSpan PlayLatency = TimeSpan.FromMilliseconds(100);
+    private static readonly TimeSpan PlayLatency = TimeSpan.FromMilliseconds(300);
     
     public static MusicService Instance { get; } = new();
     private MusicService() { }
@@ -21,8 +20,6 @@ public class MusicService : IDisposable
     private VolumeSampleProvider? _masterVolumeProvider;
     private Track? _backgroundTrack;
     private Track? _triviaTrack;
-
-    private Timer? _repeatTimer;
 
     public void Initialize()
     {
@@ -98,21 +95,28 @@ public class MusicService : IDisposable
     public void Play()
     {
         _outputDevice!.Play();
-
-        // Start the track repeater timer
-        _repeatTimer = new Timer(MusicTracks.GlobalDuration - PlayLatency);
-        _repeatTimer.AutoReset = true;
-        _repeatTimer.Elapsed += OnTracksFinished;
         
-        _repeatTimer.Start();
+        _backgroundTrack!.OnPlayed();
+        _triviaTrack!.OnPlayed();
+        
+        // It's enough to subscribe to one of these track's times.
+        _backgroundTrack.TimeChanged += OnTrackTimeChanged;
     }
 
-    private void OnTracksFinished(object? sender, ElapsedEventArgs elapsedEventArgs)
+    private void OnTrackTimeChanged(TimeSpan time)
     {
+        if (time < MusicTracks.GlobalDuration - Track.TimeChangedCheckDelay)
+            return;
+
+        _backgroundTrack!.TimeChanged -= OnTrackTimeChanged;
+        
         ReAddTrack(_backgroundTrack!, LoadBackgroundTrack);
         ReAddTrack(_triviaTrack!, LoadTriviaTrack);
         
-        _repeatTimer!.Interval = MusicTracks.GlobalDuration.TotalMilliseconds;
+        _backgroundTrack!.OnPlayed();
+        _triviaTrack!.OnPlayed();
+        
+        _backgroundTrack!.TimeChanged += OnTrackTimeChanged;
     }
 
     private static void ReAddTrack(Track track, Func<Track> trackLoader)
@@ -137,8 +141,6 @@ public class MusicService : IDisposable
         
         _backgroundTrack?.Dispose();
         _triviaTrack?.Dispose();
-        
-        _repeatTimer?.Dispose();
         
         GC.SuppressFinalize(this);
     }
