@@ -7,9 +7,15 @@ namespace Trivia.Services;
 
 public class MusicService : IDisposable
 {
-    private const float MasterVolume = .3f;
+    private const float MaxMasterVolume = .3f;
 
     private static readonly TimeSpan PlayLatency = TimeSpan.FromMilliseconds(300);
+
+    public float MasterVolume
+    {
+        get => _masterVolumeProvider?.Volume / MaxMasterVolume ?? 0f;
+        set => _masterVolumeProvider!.Volume = value * MaxMasterVolume;
+    }
     
     public static MusicService Instance { get; } = new();
     private MusicService() { }
@@ -40,7 +46,7 @@ public class MusicService : IDisposable
         
         _masterVolumeProvider = new VolumeSampleProvider(_soundMixer)
         {
-            Volume = MasterVolume
+            Volume = MaxMasterVolume
         };
 
         _outputDevice.Init(_masterVolumeProvider);
