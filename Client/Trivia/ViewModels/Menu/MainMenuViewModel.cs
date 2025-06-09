@@ -42,7 +42,7 @@ public class MainMenuViewModel : PageViewModel
 
         ExitCommand = ReactiveCommand.Create(() =>
         {
-            MainWindow.ApplicationLifetime?.Shutdown();
+            MainWindow.Instance!.Close();
         });
     }
 
