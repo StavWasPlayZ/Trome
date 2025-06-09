@@ -1,7 +1,6 @@
 using System;
 using System.Reactive.Disposables;
 using System.Reactive.Threading.Tasks;
-using System.Threading;
 using Avalonia.Threading;
 using ReactiveUI;
 using Trivia.ViewModels.Auth;

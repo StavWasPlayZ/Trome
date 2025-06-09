@@ -7,7 +7,7 @@ namespace Trivia.Services;
 
 public class MusicService : IDisposable
 {
-    private const float MasterVolume = .25f;
+    private const float MasterVolume = .3f;
     
     public static MusicService Instance { get; } = new();
     private MusicService() { }
@@ -73,11 +73,17 @@ public class MusicService : IDisposable
     
     public void PlayBackgroundTrack()
     {
+        _triviaTrack!.Volume = 0;
         _backgroundTrack!.Volume = 1f;
+
+        _masterVolumeProvider!.Volume = MasterVolume * .75f;
     }
     public void PlayTriviaTrack()
     {
+        _backgroundTrack!.Volume = 0;
         _triviaTrack!.Volume = 1f;
+        
+        _masterVolumeProvider!.Volume = MasterVolume;
     }
 
     public void Play()
