@@ -134,6 +134,8 @@ add_executable (Server
   "src/common/infrastructure/cryptoAlgorithm/NoEncryption.cpp"
   "src/common/infrastructure/cryptoAlgorithm/CipherEncryption.h"
   "src/common/infrastructure/cryptoAlgorithm/CipherEncryption.cpp"
+  "src/common/infrastructure/cryptoAlgorithm/OTP.h"
+  "src/common/infrastructure/cryptoAlgorithm/OTP.cpp"
 )
 
 # Platform-specific sources
