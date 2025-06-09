@@ -7,6 +7,8 @@ namespace Trivia.Services;
 
 public class MusicService : IDisposable
 {
+    private const float MasterVolume = .25f;
+    
     public static MusicService Instance { get; } = new();
     private MusicService() { }
 
@@ -35,7 +37,11 @@ public class MusicService : IDisposable
             ReadFully = true
         };
         
-        _masterVolumeProvider = new VolumeSampleProvider(_soundMixer);
+        _masterVolumeProvider = new VolumeSampleProvider(_soundMixer)
+        {
+            Volume = MasterVolume
+        };
+
         _outputDevice.Init(_masterVolumeProvider);
     }
 
