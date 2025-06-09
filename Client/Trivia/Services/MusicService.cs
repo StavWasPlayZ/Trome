@@ -76,19 +76,27 @@ public class MusicService : IDisposable
         return _triviaTrack;
     }
     
-    public void PlayBackgroundTrack()
+    public void PlayBackgroundTrack(bool fade = true)
     {
-        _triviaTrack!.Mute();
-        _backgroundTrack!.Volume = 1f;
-
-        _masterVolumeProvider!.Volume = MasterVolume * .75f;
+        SetVolumes(.75f, 0f, fade);
     }
-    public void PlayTriviaTrack()
+    public void PlayTriviaTrack(bool fade = true)
     {
-        _backgroundTrack!.Mute();
-        _triviaTrack!.Volume = 1f;
-        
-        _masterVolumeProvider!.Volume = MasterVolume;
+        SetVolumes(0f, 1f, fade);
+    }
+
+    private void SetVolumes(float backgroundVolume, float triviaVolume, bool fade)
+    {
+        if (fade)
+        {
+            _backgroundTrack!.TargetVolume = backgroundVolume;
+            _triviaTrack!.TargetVolume = triviaVolume;
+        }
+        else
+        {
+            _backgroundTrack!.Volume = backgroundVolume;
+            _triviaTrack!.Volume = triviaVolume;
+        }
     }
 
     

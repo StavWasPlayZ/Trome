@@ -11,6 +11,7 @@ namespace Trivia.Services;
 public class Track : IDisposable
 {
     public static readonly TimeSpan TimeChangedCheckDelay = TimeSpan.FromMilliseconds(10);
+    private static readonly TimeSpan TransitionTime = TimeSpan.FromSeconds(1.5);
     
     public SoundMeta Sound { get; }
 
@@ -21,8 +22,17 @@ public class Track : IDisposable
     public float Volume
     {
         get => _volumeSampleProvider!.Volume;
-        set => _volumeSampleProvider!.Volume = value;
+        set
+        {
+            _volumeSampleProvider!.Volume = value;
+            TargetVolume = value;
+        }
     }
+
+    /// <summary>
+    /// Linearly interpolates the current volume to this value.
+    /// </summary>
+    public float TargetVolume { get; set; }
 
     private VolumeSampleProvider? _volumeSampleProvider;
     private VorbisWaveReader? _oggReader;
@@ -67,6 +77,9 @@ public class Track : IDisposable
         
         _timeChangedChecker.Elapsed += (_, _) =>
         {
+            // Access the volume field directly to avoid changing TargetVolume too
+            _volumeSampleProvider!.Volume = Lerp(Volume, TargetVolume, 1 / (float)TransitionTime.TotalSeconds / 100);
+            
             var currTime = _oggReader!.CurrentTime;
             if (currTime == _oldTimeRead)
                 return;
@@ -76,6 +89,14 @@ public class Track : IDisposable
         };
         
         _timeChangedChecker.Start();
+    }
+
+    /// <summary>
+    /// Linearly interpolates from a to b in t time.
+    /// </summary>
+    private static float Lerp(float a, float b, float t)
+    {
+        return a + (b - a) * t;
     }
     
     

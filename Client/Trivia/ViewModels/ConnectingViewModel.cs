@@ -66,7 +66,7 @@ public class ConnectingViewModel : PageViewModel
     private void OnConnectionEstablished()
     {
         App.MusicService.Play();
-        App.MusicService.PlayBackgroundTrack();
+        App.MusicService.PlayBackgroundTrack(false);
         
         Dispatcher.UIThread.Post(() => NavigateAndReset(new LoginViewModel(HostScreen)));
     }

@@ -32,7 +32,7 @@ public class FinishedEarlyViewModel : GameViewModelBase
         this.WhenActivated(disposables =>
         {
             Disposable
-                .Create(App.MusicService.PlayBackgroundTrack)
+                .Create(() => App.MusicService.PlayBackgroundTrack())
                 .DisposeWith(disposables);
         });
     }
