@@ -50,7 +50,7 @@
                     </controls:TriviaTextBox>
                     
                     <Grid Grid.Row="1"
-                          RowDefinitions="50, 20, 50, 20, 50"
+                          RowDefinitions="50, 30, 50, 10, 50"
                           ColumnDefinitions="150, 20, *"
                           Margin="35 40">
                         
@@ -63,6 +63,7 @@
                             
                             <Style Selector="controls|TriviaTextBox">
                                 <Setter Property="HorizontalAlignment" Value="Right"/>
+                                <Setter Property="Width" Value="220"/>
                                 <Setter Property="FontSize" Value="35"/>
                                 <Setter Property="Margin" Value="0 5" />
                             </Style>
