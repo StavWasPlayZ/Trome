@@ -53,7 +53,21 @@ public class CreateRoomViewModel : RoomViewModel
                 .Skip(1) // Skip initialization invocation
                 .DistinctUntilChanged()
                 .Throttle(RoomDataUpdateDelay)
+                .Where(_ => IsValidRoomData)
                 .Subscribe(_ => SendRoomData())
+                .DisposeWith(disposables);
+            
+            
+            // Validations
+            
+            this
+                .WhenAnyValue(x => x.SecsPerQuestion)
+                .Subscribe(_ => SecsPerQuestionValid = SecsPerQuestion > 0)
+                .DisposeWith(disposables);
+            
+            this
+                .WhenAnyValue(x => x.MaxPlayers)
+                .Subscribe(_ => MaxPlayersValid = MaxPlayers > 0)
                 .DisposeWith(disposables);
         });
     }
@@ -68,6 +82,25 @@ public class CreateRoomViewModel : RoomViewModel
         CloseRoomCommand = StartGameCommand = NoOpCommand;
     }
 
+
+    private bool _secsPerQuestionValid = true;
+
+    public bool SecsPerQuestionValid
+    {
+        get => _secsPerQuestionValid;
+        set => this.RaiseAndSetIfChanged(ref _secsPerQuestionValid, value);
+    }
+    
+    private bool _maxPlayersValid = true;
+
+    public bool MaxPlayersValid
+    {
+        get => _maxPlayersValid;
+        set => this.RaiseAndSetIfChanged(ref _maxPlayersValid, value);
+    }
+
+
+    private bool IsValidRoomData => SecsPerQuestionValid && MaxPlayersValid;
 
     private void SendRoomData()
     {

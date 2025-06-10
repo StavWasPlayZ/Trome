@@ -63,9 +63,13 @@
                             
                             <Style Selector="controls|TriviaTextBox">
                                 <Setter Property="HorizontalAlignment" Value="Right"/>
-                                <Setter Property="Width" Value="220"/>
+                                <Setter Property="Width" Value="200"/>
                                 <Setter Property="FontSize" Value="35"/>
                                 <Setter Property="Margin" Value="0 5" />
+                            </Style>
+                            
+                            <Style Selector="TextBox:error, TextBox.error">
+                                <Setter Property="Foreground" Value="Crimson"/>
                             </Style>
                         </Grid.Styles>
                         
@@ -154,7 +158,8 @@
                         <controls:TriviaTextBox Grid.Row="2"
                                                 Grid.Column="2"
                                                 ClipToBounds="False">
-                            <TextBox Text="{Binding SecsPerQuestion}"/>
+                            <TextBox Text="{Binding SecsPerQuestion}"
+                                     Classes.error="{Binding !SecsPerQuestionValid}"/>
                         </controls:TriviaTextBox>
                         
                         <TextBlock Grid.Row="4"
@@ -165,7 +170,8 @@
                         </TextBlock>
                         <controls:TriviaTextBox Grid.Row="4"
                                                 Grid.Column="2">
-                            <TextBox Text="{Binding MaxPlayers}"/>
+                            <TextBox Text="{Binding MaxPlayers}"
+                                     Classes.error="{Binding !MaxPlayersValid}"/>
                         </controls:TriviaTextBox>
                     </Grid>
                     
