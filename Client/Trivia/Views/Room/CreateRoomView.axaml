@@ -63,7 +63,7 @@
                             
                             <Style Selector="controls|TriviaTextBox">
                                 <Setter Property="HorizontalAlignment" Value="Right"/>
-                                <Setter Property="Width" Value="200"/>
+                                <Setter Property="Width" Value="175"/>
                                 <Setter Property="FontSize" Value="35"/>
                                 <Setter Property="Margin" Value="0 5" />
                             </Style>
