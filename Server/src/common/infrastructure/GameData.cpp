@@ -13,8 +13,8 @@ GameData::GameData(const Game& game) :
     points(0),
     averageAnswerTime(0),
     answersRotation(0),
-    timeSinceQuestionRoll(game.getStartTime()),
     roundTime(0),
+    timeSinceQuestionRoll(game.getStartTime()),
     game(game)
 {
     rotateAnswers();

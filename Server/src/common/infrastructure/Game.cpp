@@ -29,13 +29,13 @@ void Game::startGame()
     if (m_room.getStatus() == RoomStatus::PLAYING)
         throw std::runtime_error("Game is already in progress");
 
-    populateQuestions();
-    initPlayersData();
-
     m_playersRemaining = m_room.getAllUsers().size();
     m_startTime = utils::getCurrTimeMillis() + std::chrono::seconds(5);
 
     m_roomManager.setRoomPlaying(m_room);
+
+    populateQuestions();
+    initPlayersData();
 }
 
 void Game::endGame() const
