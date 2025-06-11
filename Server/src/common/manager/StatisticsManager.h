@@ -5,7 +5,7 @@
 
 #include <string>
 #include <vector>
-#include <utility> // for std::pair
+#include <utility>
 
 class StatisticsManager
 {

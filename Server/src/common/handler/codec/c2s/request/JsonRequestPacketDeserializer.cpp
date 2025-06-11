@@ -187,15 +187,10 @@ GetGameResultRequest JsonRequestPacketDeserializer::deserializeGetGameResultRequ
 
 AddQuestionRequest JsonRequestPacketDeserializer::deserializeAddQuestionRequest(const nlohmann::json &data)
 {
-    std::vector<std::string> answers;
-    answers.push_back(data.at("correct"));
-    answers.push_back(data.at("wrong1"));
-    answers.push_back(data.at("wrong2"));
-    answers.push_back(data.at("wrong3"));
     return AddQuestionRequest(
         Question(
             data.at("question"),
-            answers
+            data.at("answers")
         )
     );
 }
