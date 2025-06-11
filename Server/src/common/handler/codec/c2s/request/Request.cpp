@@ -48,3 +48,7 @@ UpdateRoomDataRequest::UpdateRoomDataRequest(const RoomData &data) : data(data)
 SubmitAnswerRequest::SubmitAnswerRequest(const int answer) : answer(answer)
 {
 }
+
+KickPlayerRequest::KickPlayerRequest(unsigned int userId) : userId(userId)
+{
+}

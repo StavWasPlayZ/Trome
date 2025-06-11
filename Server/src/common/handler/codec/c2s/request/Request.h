@@ -26,7 +26,8 @@ enum class RequestCode : unsigned char
 	LEAVE_GAME,
 	GET_QUESTION,
 	SUBMIT_ANSWER,
-	GET_GAME_RESULT
+	GET_GAME_RESULT,
+	KICK_PLAYER
 };
 
 struct ProtocolRequest
@@ -157,4 +158,11 @@ struct [[deprecated(
     " This method is therefore useless and should not be used."
 )]] GetGameResultRequest : ProtocolRequest
 {
+};
+
+struct KickPlayerRequest : ProtocolRequest
+{
+    explicit KickPlayerRequest(unsigned int userId);
+
+	const unsigned int userId;
 };
