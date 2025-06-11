@@ -16,7 +16,7 @@ public class SettingsMenuViewModel : PageViewModel
     {
         _volume = App.MusicService?.MasterVolume ?? 0f;
 
-        AddQuestionCommand = NavigateReactiveCommand(() => new AddQuestionViewModel());
+        AddQuestionCommand = NavigateReactiveCommand(() => new AddQuestionViewModel(HostScreen));
         
         this.WhenActivated(disposables =>
         {
