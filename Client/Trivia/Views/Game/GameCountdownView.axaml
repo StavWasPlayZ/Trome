@@ -43,7 +43,7 @@
         
         <TextBlock HorizontalAlignment="Center"
                    VerticalAlignment="Center"
-                   Text="1"/>
+                   Text="{Binding Countdown}"/>
         
     </Panel>
     
