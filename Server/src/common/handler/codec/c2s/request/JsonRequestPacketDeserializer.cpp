@@ -185,7 +185,7 @@ GetGameResultRequest JsonRequestPacketDeserializer::deserializeGetGameResultRequ
 KickPlayerRequest JsonRequestPacketDeserializer::deserializeKickPlayerRequest(const nlohmann::json &data)
 {
     return KickPlayerRequest(
-        data.at("user_id")
+        data.at("username")
     );
 }
 
