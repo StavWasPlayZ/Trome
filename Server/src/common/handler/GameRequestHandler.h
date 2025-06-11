@@ -2,6 +2,7 @@
 
 #include "IRequestHandler.h"
 #include "codec/c2s/request/Request.h"
+#include "codec/s2c/response/ErrorResponse.h"
 
 class Game;
 class RequestHandlerFactory;
@@ -13,7 +14,7 @@ class GameRequestHandler : public IRequestHandler
 public:
     GameRequestHandler(const RequestHandlerFactory& handlerFactory, Game& game);
 
-    bool isRequestRelevant(const RequestInfo& info) const override;
+    std::optional<ErrorStatus> isRequestRelevant(const RequestInfo& info) const override;
 
     RequestResult handleRequest(const RequestInfo& info, const ProtocolRequest& request) const override;
 
