@@ -24,4 +24,6 @@ private:
     RequestResult closeRoom(const RequestInfo & info, const CloseRoomRequest & request) const;
 
     RequestResult updateRoomData(const RequestInfo & info, const UpdateRoomDataRequest & request) const;
+
+    RequestResult kick(const RequestInfo & info, const KickPlayerRequest & request) const;
 };
