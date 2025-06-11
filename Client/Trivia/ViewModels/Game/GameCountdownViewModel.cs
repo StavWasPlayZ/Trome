@@ -42,7 +42,7 @@ public class GameCountdownViewModel : SubRoomViewModel
 
         if (Countdown == 0)
         {
-            NavigateAndPop(new GameViewModel(HostScreen, RoomModel));
+            NavigateAndPop(new GameViewModel(HostScreen, RoomModel))!.Subscribe();
         }
     }
 
