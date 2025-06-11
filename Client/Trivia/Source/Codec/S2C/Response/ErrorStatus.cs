@@ -30,6 +30,7 @@ public enum ErrorStatus
     RoomAlreadyPlaying,
     
     // Game
+    AnswerTooEarly,
     QuestionOutdated,
     AlreadyFinished,
     
