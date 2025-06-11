@@ -2,7 +2,7 @@ using Trivia.ViewModels.Game;
 
 namespace Trivia.Views.Game;
 
-public partial class GameCountdownView : PageViewControl<GameViewModel>
+public partial class GameCountdownView : PageViewControl<GameCountdownViewModel>
 {
     public GameCountdownView()
     {

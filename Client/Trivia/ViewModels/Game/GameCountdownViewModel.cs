@@ -2,14 +2,15 @@ using System;
 using System.Reactive.Disposables;
 using Avalonia.Threading;
 using ReactiveUI;
+using Trivia.Models;
 
 namespace Trivia.ViewModels.Game;
 
-public class GameCountdownViewModel : PageViewModel
+public class GameCountdownViewModel : SubRoomViewModel
 {
-    private DispatcherTimer? _countdownTimer;
+    private readonly DispatcherTimer? _countdownTimer;
 
-    public GameCountdownViewModel(IScreen hostScreen) : base(hostScreen)
+    public GameCountdownViewModel(IScreen hostScreen, RoomModel roomModel) : base(hostScreen, roomModel)
     {
         _countdownTimer = new DispatcherTimer
         {
@@ -41,7 +42,7 @@ public class GameCountdownViewModel : PageViewModel
 
         if (Countdown == 0)
         {
-            NavigateAndPop(new GameViewModel());
+            NavigateAndPop(new GameViewModel(HostScreen, RoomModel))!.Subscribe();
         }
     }
 
