@@ -182,6 +182,13 @@ GetGameResultRequest JsonRequestPacketDeserializer::deserializeGetGameResultRequ
     return GetGameResultRequest();
 }
 
+KickPlayerRequest JsonRequestPacketDeserializer::deserializeKickPlayerRequest(const nlohmann::json &data)
+{
+    return KickPlayerRequest(
+        data.at("user_id")
+    );
+}
+
 nlohmann::json JsonRequestPacketDeserializer::readJson(const unsigned char *data, const int jsonLen)
 {
 	// Avoid naughty buffer overflows
