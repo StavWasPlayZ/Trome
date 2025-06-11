@@ -67,7 +67,7 @@ public class JoinedRoomViewModel : RoomViewModel
     private void OnGameStarted(GameStartedNotification gameStartedNotif)
     {
         NavigateTo(
-            new GameViewModel(
+            new GameCountdownViewModel(
                 HostScreen,
                 RoomModel with
                 {
