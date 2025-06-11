@@ -12,7 +12,7 @@ GameRequestHandler::GameRequestHandler(const RequestHandlerFactory &handlerFacto
     m_game(game)
 {}
 
-bool GameRequestHandler::isRequestRelevant(const RequestInfo &info) const
+std::optional<ErrorStatus> GameRequestHandler::isRequestRelevant(const RequestInfo &info) const
 {
     switch (info.id)
     {
@@ -20,9 +20,9 @@ bool GameRequestHandler::isRequestRelevant(const RequestInfo &info) const
     case RequestCode::LEAVE_GAME:
     case RequestCode::GET_QUESTION:
     case RequestCode::GET_GAME_RESULT:
-        return true;
+        return std::nullopt;
 
-    default: return false;
+    default: return ErrorStatus::ILLEGAL_REQUEST;
     }
 }
 
@@ -126,7 +126,6 @@ QuestionRollResult GameRequestHandler::rollNewUserQuestion(const RequestInfo &in
 {
     const LoggedUser &user = getUserByInfo(info);
     const Room &room = this->m_game.getRoom();
-
 
     const std::optional<UserQuestion> newQuestion = this->m_game.generateNewQuestionForUser(user, didFail);
 

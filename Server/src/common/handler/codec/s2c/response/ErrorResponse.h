@@ -50,6 +50,7 @@ enum class ErrorStatus : unsigned int
     ROOM_ALREADY_PLAYING,
 
     // Game
+    ANSWER_TOO_EARLY,
     QUESTION_OUTDATED,
     ALREADY_FINISHED,
 

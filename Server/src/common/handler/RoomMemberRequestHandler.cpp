@@ -7,12 +7,12 @@ RoomMemberRequestHandler::RoomMemberRequestHandler(const RequestHandlerFactory &
 {
 }
 
-bool RoomMemberRequestHandler::isRequestRelevant(const RequestInfo &info) const
+std::optional<ErrorStatus> RoomMemberRequestHandler::isRequestRelevant(const RequestInfo &info) const
 {
     switch (info.id)
     {
     case RequestCode::LEAVE_ROOM:
-        return true;
+        return std::nullopt;
 
     default:
         return RoomRequestHandler::isRequestRelevant(info);
