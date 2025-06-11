@@ -109,4 +109,9 @@ public:
      * Returns: The deserialized object.
      */
     static GetGameResultRequest deserializeGetGameResultRequest(const nlohmann::json &data);
+
+    /**
+     * Returns: The deserialized object.
+     */
+    static AddQuestionRequest deserializeAddQuestionRequest(const nlohmann::json &data);
 };

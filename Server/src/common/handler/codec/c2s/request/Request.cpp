@@ -48,3 +48,7 @@ UpdateRoomDataRequest::UpdateRoomDataRequest(const RoomData &data) : data(data)
 SubmitAnswerRequest::SubmitAnswerRequest(const int answer) : answer(answer)
 {
 }
+
+AddQuestionRequest::AddQuestionRequest(const Question &question) : question(question)
+{
+}

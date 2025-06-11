@@ -36,7 +36,10 @@ public static class StatusTranscriber
         [ErrorStatus.RoomFull] = _ =>
             "Room is full",
         [ErrorStatus.RoomAlreadyPlaying] = _ =>
-            "Room is already playing"
+            "Room is already playing",
+        
+        [ErrorStatus.QuestionAlreadyExists] = _ =>
+            "Question already exists"
     };
 
 

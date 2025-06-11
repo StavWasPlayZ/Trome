@@ -19,5 +19,6 @@ public enum RequestCode : byte
     LeaveGame,
     GetQuestion,
     SubmitAnswer,
-    GetGameResult
+    GetGameResult,
+    AddQuestion
 }

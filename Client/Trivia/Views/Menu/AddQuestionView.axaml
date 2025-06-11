@@ -1,0 +1,127 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:Trivia.Controls"
+             xmlns:vmmenu="clr-namespace:Trivia.ViewModels.Menu"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
+             x:CompileBindings="True"
+             x:Class="Trivia.Views.Menu.AddQuestionView"
+             x:DataType="vmmenu:AddQuestionViewModel">
+    
+    <Design.DataContext>
+        <vmmenu:AddQuestionViewModel/>
+    </Design.DataContext>
+    
+    
+    <Panel>
+        <Panel.Background>
+            <ImageBrush Source="avares://Trivia/Assets/blobs-l-b49caff1a7941d98b60902da64956ad85dfbe4f9.png"
+                        Stretch="UniformToFill" />            
+        </Panel.Background>
+        
+        <controls:TriviaBackButton Command="{Binding NavigateBackCommand}"/>
+        
+        <controls:TriviaMenuPanel Title="NEW QUESTION"
+                                  DisplayBackButton="False"
+                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="Center">
+            <StackPanel Margin="50"
+                        Spacing="20">
+                
+                <StackPanel.Resources>
+                    <!-- ReSharper disable once Xaml.RedundantResource -->
+                    <SolidColorBrush x:Key="TriviaTextBoxForeground">White</SolidColorBrush>
+                </StackPanel.Resources>
+                
+                <StackPanel.Styles>
+                    <Style Selector="TextBox">
+                        <Setter Property="CaretBrush" Value="White"/>
+                        <Setter Property="Margin" Value="10"/>
+                        <Setter Property="FontSize" Value="40"/>
+                    </Style>
+                    <Style Selector="TextBox TextBlock">
+                        <Setter Property="FontSize" Value="44"/>
+                    </Style>
+                </StackPanel.Styles>
+                
+                
+                <controls:TriviaTextBox Width="600"
+                                        Background="rgba(0, 0, 0, .5)">
+                    <TextBox Text="{Binding Prompt}"
+                             Margin="10"
+                             Watermark="IS IT ILLEGAL TO KILL AN ANT ????"/>
+                </controls:TriviaTextBox>
+                
+                
+                <StackPanel>
+                    
+                    <StackPanel.Styles>
+                        <Style Selector="TextBox">
+                            <Setter Property="FontSize" Value="35"/>
+                        </Style>
+                    </StackPanel.Styles>
+                    
+                    <TextBlock VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               FontSize="60">
+                        ANSWERS
+                    </TextBlock>
+                    
+                    <Grid ColumnDefinitions="*, *"
+                          RowDefinitions="*, *"
+                          Margin="0, 20"
+                          VerticalAlignment="Center"
+                          HorizontalAlignment="Center"
+                          ColumnSpacing="10"
+                          RowSpacing="10">
+                        
+                        <Grid.Styles>
+                            <Style Selector="controls|TriviaTextBox">
+                                <Setter Property="Background" Value="rgba(0, 0, 0, .3)"/>
+                                <Setter Property="Width" Value="250"/>
+                            </Style>
+                        </Grid.Styles>
+                        
+                        <controls:TriviaTextBox Grid.Row="0"
+                                                Grid.Column="0"
+                                                Background="#32EF65D6">
+                            <TextBox Text="{Binding Answers[0]}"
+                                     Watermark="CORRECT"/>
+                        </controls:TriviaTextBox>
+                        
+                        <controls:TriviaTextBox Grid.Row="0"
+                                                Grid.Column="1">
+                            <TextBox Text="{Binding Answers[1]}"
+                                     Watermark="INCORRECT"/>
+                        </controls:TriviaTextBox>
+                        
+                        <controls:TriviaTextBox Grid.Row="1"
+                                                Grid.Column="0">
+                            <TextBox Text="{Binding Answers[2]}"
+                                     Watermark="INCORRECT"/>
+                        </controls:TriviaTextBox>
+                        
+                        <controls:TriviaTextBox Grid.Row="1"
+                                                Grid.Column="1">
+                            <TextBox Text="{Binding Answers[3]}"
+                                     Watermark="NONSENSE"/>
+                        </controls:TriviaTextBox>  
+                    </Grid>
+                </StackPanel>
+                
+                <controls:TriviaButton Command="{Binding AddQuestionCommand}"
+                                       HorizontalAlignment="Center"
+                                       Text="ADD"
+                                       Background="#362034"
+                                       BorderBrush="#ffffff"
+                                       IconColor="#ffffff"
+                                       BorderBrushSelected="#ffffff"
+                                       BorderBrushPressed="#ffffff"
+                                       BorderThickness="3"
+                                       Padding="100,0"/>
+            </StackPanel>
+        </controls:TriviaMenuPanel>
+        
+    </Panel>
+</UserControl>

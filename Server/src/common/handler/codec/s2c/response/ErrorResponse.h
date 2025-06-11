@@ -51,5 +51,8 @@ enum class ErrorStatus : unsigned int
 
     // Game
     QUESTION_OUTDATED,
-    ALREADY_FINISHED
+    ALREADY_FINISHED,
+
+    // Adding Question
+    QUESTION_ALREADY_EXISTS
 };
