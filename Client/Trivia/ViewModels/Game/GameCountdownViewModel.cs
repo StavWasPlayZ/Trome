@@ -8,7 +8,7 @@ namespace Trivia.ViewModels.Game;
 
 public class GameCountdownViewModel : SubRoomViewModel
 {
-    private DispatcherTimer? _countdownTimer;
+    private readonly DispatcherTimer? _countdownTimer;
 
     public GameCountdownViewModel(IScreen hostScreen, RoomModel roomModel) : base(hostScreen, roomModel)
     {
