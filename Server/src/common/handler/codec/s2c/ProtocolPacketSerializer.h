@@ -27,6 +27,8 @@ public:
     static OBuffer serialize(S2CPacketType packetType, unsigned char msgCode, const nlohmann::json &data);
 
 
+    static nlohmann::json serializeAsJson(const UserModel &player);
+    //TODO: Remove when (if) LoggedUser is UserModel
     static nlohmann::json serializeAsJson(const LoggedUser &player);
     static nlohmann::json serializeAsJson(const Room &room);
     static nlohmann::json serializeAsJson(const RoomData &room);

@@ -1,3 +1,5 @@
-﻿namespace Trivia.Codec.S2C.Response.Packets;
+﻿using Trivia.Codec.S2C.Response.Packets.Impl;
 
-public record AddQuestionResponse() : IProtocolResponse;
+namespace Trivia.Codec.S2C.Response.Packets;
+
+public readonly record struct AddQuestionResponse : IProtocolResponse;

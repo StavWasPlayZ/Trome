@@ -1,9 +1,8 @@
 namespace Trivia.Models.Raw;
 
-public readonly record struct RoomData
-{
-    public required string Name { get; init; }
-    public required int MaxPlayers { get; init; }
-    public required int TimePerQuestionSecs { get; init; }
-    public required int QuestionsCount { get; init; }
-}
+public readonly record struct RoomData(
+    string Name,
+    int MaxPlayers,
+    int TimePerQuestionSecs,
+    int QuestionsCount
+);

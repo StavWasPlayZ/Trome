@@ -8,19 +8,26 @@ namespace Trivia.ViewModels.Menu;
 
 public class MainMenuViewModel : PageViewModel
 {
+    public ReactiveCommand<Unit, IRoutableViewModel> PlayCommand { get; }
+    
+    public ReactiveCommand<Unit, IRoutableViewModel> StatisticsCommand { get; }
+    
+    public ReactiveCommand<Unit, IRoutableViewModel> SettingsCommand { get; }
+    
+    public ReactiveCommand<Unit, Unit> LogOutCommand { get; }
+
+    public ReactiveCommand<Unit, Unit> ExitCommand { get; }
+    
     public MainMenuViewModel(IScreen hostScreen) : base(hostScreen)
     {
         PlayCommand = NavigateReactiveCommand(
             () => new JoinRoomMenuViewModel(hostScreen)
         );
+        
         StatisticsCommand = NavigateReactiveCommand(
             () => new StatisticsViewModel(hostScreen)
         );
-        // TODO: Make this to go to settings
-        // this is temp for looking if AddQuestion works
-        SettingsCommand= NavigateReactiveCommand(
-            () => new AddQuestionViewModel(hostScreen)
-        );
+        
         LogOutCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             await Comm.SendRequestAwaitResponse<LogoutResponse>(new LogoutRequest());
@@ -28,25 +35,20 @@ public class MainMenuViewModel : PageViewModel
             // Assuming this just worked.
             NavigateAndReset(new LoginViewModel(hostScreen));
         });
+        
+        SettingsCommand = NavigateReactiveCommand(
+            () => new SettingsMenuViewModel(hostScreen)
+        );
+
+        ExitCommand = ReactiveCommand.Create(() =>
+        {
+            MainWindow.Instance!.Close();
+        });
     }
 
     public MainMenuViewModel()
     {
-        PlayCommand = StatisticsCommand = SettingsCommand = NoOpNavCommand;
-        LogOutCommand = NoOpCommand;
+        SettingsCommand = PlayCommand = StatisticsCommand = NoOpNavCommand;
+        ExitCommand = LogOutCommand = NoOpCommand;
     }
-    
-
-    public ReactiveCommand<Unit, IRoutableViewModel> PlayCommand { get; }
-    
-    public ReactiveCommand<Unit, IRoutableViewModel> StatisticsCommand { get; }
-    
-    public ReactiveCommand<Unit, Unit> LogOutCommand { get; }
-    
-    public ReactiveCommand<Unit, IRoutableViewModel> SettingsCommand { get; }
-
-    public ReactiveCommand<Unit, Unit> ExitCommand { get; } = ReactiveCommand.Create(() =>
-    {
-        MainWindow.ApplicationLifetime?.Shutdown();
-    });
 }

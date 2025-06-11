@@ -1,9 +1,10 @@
 # pragma once
 
-#include "infrastructure/db/IDatabase.h"
 #include "infrastructure/UserStatistics.h"
+#include "infrastructure/db/IDatabase.h"
+#include "infrastructure/model/UserModel.h"
 
-#include <string>
+#include <utility>
 #include <vector>
 #include <utility>
 
@@ -12,8 +13,8 @@ class StatisticsManager
 public:
     explicit StatisticsManager(const IDatabase& db);
 
-    std::vector<std::pair<std::string, int>> getHighScores() const;
-    UserStatistics getUserStatistics(const std::string& username) const;
+    std::vector<std::pair<UserModel, int>> getHighScores() const;
+    std::optional<UserStatistics> getUserStatistics(unsigned int id) const;
 
 private:
 	const IDatabase& m_database;

@@ -63,7 +63,7 @@ struct GameEndedNotification : ProtocolNotification
 {
     explicit GameEndedNotification(const std::vector<PlayerResult> &results);
 
-    const std::vector<PlayerResult>& results;
+    const std::vector<PlayerResult> results;
 };
 
 struct PlayerFinishedNotification : ProtocolNotification

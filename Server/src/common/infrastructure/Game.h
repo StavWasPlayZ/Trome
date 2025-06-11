@@ -45,6 +45,9 @@ public:
     int getPlayersFinished() const;
 
 
+    std::chrono::milliseconds getStartTime() const;
+
+
     const GameData& getDataOf(const LoggedUser& user) const;
 
     std::vector<PlayerResult> getResults() const;
@@ -65,7 +68,7 @@ public:
 
     UserQuestion setFirstQuestionForUser(const LoggedUser& user);
 
-    void handleUserLeft(const LoggedUser& user);
+    void handlePlayerFinished(const LoggedUser& user);
 
 private:
     /**

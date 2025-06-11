@@ -30,10 +30,7 @@
                         <DataTemplate>
                             <listEntries:RoomUserListEntry User="{Binding}"
                                                            IsCurrentUser="{Binding IsCurrentUser}"
-                                                           IsAdmin="{Binding IsAdmin}"
-                                                           IsEmptySlot="{Binding
-                                                               Converter={x:Static ObjectConverters.IsNull}
-                                                           }"/>
+                                                           IsAdmin="{Binding IsAdmin}"/>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                     

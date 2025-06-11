@@ -10,8 +10,6 @@ namespace Trivia.Converters;
  */
 public class MultiplicationConverter : IValueConverter
 {
-    public static readonly MultiplicationConverter Instance = new();
-    
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is not double val || parameter is not string param)

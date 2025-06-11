@@ -32,8 +32,8 @@ ProtocolRequest *JsonRequestPacketDeserializer::deserialize(const RequestInfo &i
     case RequestCode::GET_HIGH_SCORES: return new GetHighScoresRequest(
         deserializeGetHighScoresRequest(info.data)
     );
-    case RequestCode::GET_PERSONAL_STATISTICS: return new GetPersonalStatisticsRequest(
-        deserializeGetPersonalStatisticsRequest(info.data)
+    case RequestCode::GET_USER_STATISTICS: return new GetUserStatisticsRequest(
+        deserializeGetUserStatisticsRequest(info.data)
     );
     case RequestCode::CLOSE_ROOM: return new CloseRoomRequest(
         deserializeCloseRoomRequest(info.data)
@@ -126,9 +126,9 @@ GetHighScoresRequest JsonRequestPacketDeserializer::deserializeGetHighScoresRequ
     return GetHighScoresRequest();
 }
 
-GetPersonalStatisticsRequest JsonRequestPacketDeserializer::deserializeGetPersonalStatisticsRequest(const nlohmann::json &)
+GetUserStatisticsRequest JsonRequestPacketDeserializer::deserializeGetUserStatisticsRequest(const nlohmann::json &data)
 {
-    return GetPersonalStatisticsRequest();
+    return GetUserStatisticsRequest(data.at("user_id"));
 }
 
 CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(const nlohmann::json &)
@@ -206,7 +206,9 @@ nlohmann::json JsonRequestPacketDeserializer::readJson(const unsigned char *data
 	char* const jsonRaw = new char[jsonLen];
 	std::memcpy(jsonRaw, data, jsonLen * sizeof(char));
 
-    const nlohmann::json result = nlohmann::json::parse(std::string(jsonRaw, jsonLen));
+    const nlohmann::json result = nlohmann::json::parse(
+        // TODO: Decrypt here
+        std::string(jsonRaw, jsonLen));
 
     delete[] jsonRaw;
     return result;

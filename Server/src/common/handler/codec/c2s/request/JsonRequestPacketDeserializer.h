@@ -58,7 +58,7 @@ public:
     /**
      * Returns: The deserialized object.
      */
-    static GetPersonalStatisticsRequest deserializeGetPersonalStatisticsRequest(const nlohmann::json &data);
+    static GetUserStatisticsRequest deserializeGetUserStatisticsRequest(const nlohmann::json &data);
 
     /**
      * Returns: The deserialized object.

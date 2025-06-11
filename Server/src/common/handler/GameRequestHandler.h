@@ -5,6 +5,8 @@
 
 class Game;
 class RequestHandlerFactory;
+enum class QuestionRollType;
+struct QuestionRollResult;
 
 class GameRequestHandler : public IRequestHandler
 {
@@ -19,6 +21,8 @@ private:
     RequestResult submitAnswer(const RequestInfo &info, const SubmitAnswerRequest &request) const;
     RequestResult leaveGame(const RequestInfo &info, const LeaveGameRequest &request) const;
 
+    QuestionRollResult rollNewUserQuestion(const RequestInfo &info, bool didFail) const;
+
     /**
      * Invalidates the current, active (or inactive) question, replacing it with the next one.
      */
@@ -27,8 +31,30 @@ private:
     RequestResult getGameResults(const RequestInfo &info, const GetGameResultRequest &request) const;
 
 
-    void handleLastPlayerFinished(const RequestInfo &info) const;
+    std::vector<PlayerResult> handleLastPlayerFinished(const RequestInfo &info) const;
 
 
     Game& m_game;
+};
+
+
+enum class QuestionRollType
+{
+    ROLLED,
+    FINISHED,
+    FINISHED_LAST
+};
+
+struct QuestionRollResult
+{
+    QuestionRollResult(QuestionRollType rollType, const std::optional<UserQuestion>& newQuestion,
+                       const std::optional<std::vector<PlayerResult>>& results = std::nullopt);
+
+    const QuestionRollType rollType;
+    const std::optional<UserQuestion> newQuestion;
+
+    /**
+     * If the player has finished, and finished last - the results will be provided here.
+     */
+    const std::optional<std::vector<PlayerResult>> results;
 };

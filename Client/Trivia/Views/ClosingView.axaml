@@ -1,0 +1,28 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Trivia.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
+             x:CompileBindings="True"
+             x:Class="Trivia.Views.ClosingView"
+             x:DataType="vm:ClosingViewModel">
+    
+    <Design.DataContext>
+        <vm:ClosingViewModel/>
+    </Design.DataContext>
+
+    <Border>
+        <Border.Background>
+            <ImageBrush Source="avares://Trivia/Assets/blobs-l-b49caff1a7941d98b60902da64956ad85dfbe4f9.png"
+                        Stretch="UniformToFill" />
+        </Border.Background>
+        
+        <TextBlock VerticalAlignment="Center"
+                   HorizontalAlignment="Center"
+                   FontSize="70">
+            CLOSING...
+        </TextBlock>
+    </Border>
+
+</UserControl>
