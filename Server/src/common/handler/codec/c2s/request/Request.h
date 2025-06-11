@@ -162,7 +162,7 @@ struct [[deprecated(
 
 struct KickPlayerRequest : ProtocolRequest
 {
-    explicit KickPlayerRequest(const std::string& username);
+    explicit KickPlayerRequest(unsigned int userId);
 
-	const std::string username;
+	const unsigned int userId;
 };

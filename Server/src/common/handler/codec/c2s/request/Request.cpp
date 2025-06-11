@@ -49,6 +49,6 @@ SubmitAnswerRequest::SubmitAnswerRequest(const int answer) : answer(answer)
 {
 }
 
-KickPlayerRequest::KickPlayerRequest(const std::string &username) : username(username)
+KickPlayerRequest::KickPlayerRequest(unsigned int userId) : userId(userId)
 {
 }
