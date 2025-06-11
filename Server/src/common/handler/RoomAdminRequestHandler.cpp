@@ -123,7 +123,8 @@ RequestResult RoomAdminRequestHandler::kick(const RequestInfo &info, const KickP
         },
 
         userVector, 
-        KickedNotification());
+        KickedNotification()
+    );
 
     return RequestResult(
         new KickPlayerResponse()
