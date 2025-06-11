@@ -174,11 +174,26 @@ RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo &info, cons
 
 RequestResult MenuRequestHandler::addQuestion(const RequestInfo &info, const AddQuestionRequest &request) const
 {
-    return RequestResult(
+    try
+    {
         this->m_handlerFactory.getGameManager().addQuestion(
-            info,
             request.question,
             getUserByInfo(info)
-        )
-    );
+        );
+    }
+    catch (const std::runtime_error &e)
+    {
+        // addQuestions will return runtime_error when adding a user with the same question because it's UNIQUE.
+        // Note that the full message reads as follows:
+        // "Error in SQL: UNIQUE constraint failed: questions.question"
+
+        if (std::strstr(e.what(), "UNIQUE") != nullptr)
+        {
+            return RequestResult(new ErrorResponse(ErrorStatus::QUESTION_ALREADY_EXISTS, info.id));
+        }
+
+        return RequestResult(new ErrorResponse(ErrorStatus::INVALID_ARGUMENT, info.id, e.what()));
+    }
+
+    return RequestResult(new AddQuestionResponse());
 }

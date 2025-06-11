@@ -4,19 +4,15 @@
 
 #include "infrastructure/db/IDatabase.h"
 #include "infrastructure/Game.h"
-#include "infrastructure/Room.h"
 #include "infrastructure/Question.h"
 #include "manager/LoggedUser.h"
-#include "handler/codec/s2c/response/Response.h" // for ProtocolRequest
-#include "handler/codec/s2c/response/ErrorResponse.h" // for ErrorResponse
-#include "handler/codec/c2s/request/Request.h" // for RequestInfo
 
 class GameManager
 {
 public:
     GameManager(const IDatabase& database, RoomManager& roomManager);
 
-  /*
+    /*
      * PLEASE CALL VIA Room::createNewGame.
      */
     Game &createGame(Room &room);
@@ -30,7 +26,7 @@ public:
      *
      * NOTE: THE RETURNED RESOURCE MUST BE FREED
      */
-    ProtocolResponse *addQuestion(const RequestInfo &info, const Question &question, const LoggedUser &user);
+    void addQuestion(const Question &question, const LoggedUser &user) const;
 
 private:
 	const IDatabase& m_database;
