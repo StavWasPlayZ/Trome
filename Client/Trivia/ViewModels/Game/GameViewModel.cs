@@ -21,7 +21,7 @@ public class GameViewModel : GameViewModelBase
     
     public ReactiveCommand<int, Unit> SubmitAnswerCommand { get; }
     
-    private DispatcherTimer? _countdownTimer;
+    private readonly DispatcherTimer? _countdownTimer;
     
     
     public GameViewModel(IScreen hostScreen, RoomModel roomModel) : base(hostScreen, roomModel)
