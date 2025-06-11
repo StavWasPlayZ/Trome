@@ -51,7 +51,6 @@
                         <TextBlock>
                             USERNAME
                         </TextBlock>
-                        <TextBlock/>
                     </StackPanel>
                     
                     <controls:TriviaTextBox Grid.Row="0"
@@ -65,7 +64,6 @@
                         <TextBlock>
                             EMAIL
                         </TextBlock>
-                        <TextBlock/>
                     </StackPanel>
                     
                     <controls:TriviaTextBox Grid.Row="1"
@@ -79,7 +77,6 @@
                         <TextBlock Classes.passwords-mismatch="{Binding !DoPasswordsMatch}">
                             PASSWORD
                         </TextBlock>
-                        <TextBlock/>
                     </StackPanel>
                     
                     <controls:TriviaTextBox Grid.Row="2"
@@ -94,7 +91,6 @@
                         <TextBlock Classes.passwords-mismatch="{Binding !DoPasswordsMatch}">
                             REPEAT PASSWORD
                         </TextBlock>
-                        <TextBlock/>
                     </StackPanel>
                     
                     <controls:TriviaTextBox Grid.Row="3"
@@ -109,7 +105,6 @@
                         <TextBlock>
                             PHONE
                         </TextBlock>
-                        <TextBlock/>
                     </StackPanel>
                     
                     <controls:TriviaTextBox Grid.Row="4"

@@ -19,14 +19,13 @@
                         Stretch="UniformToFill" />
         </Panel.Background>
 
-        <Grid
-            VerticalAlignment="Center"
-            ColumnDefinitions="*, *"
-            Height="{
-                Binding $parent[Window].Bounds.Height,
-                Converter={StaticResource MultiplicationConverter},
-                ConverterParameter=0.55
-            }">
+        <Grid VerticalAlignment="Center"
+              ColumnDefinitions="*, *"
+              Height="{
+                  Binding $parent[Window].Bounds.Height,
+                  Converter={StaticResource MultiplicationConverter},
+                  ConverterParameter=0.55
+              }">
     
             <!-- Left Panel -->
             
@@ -62,17 +61,16 @@
                     </StackPanel>
     
                     <Grid Grid.Row="1"
-                                ColumnDefinitions="*, 7, Auto">
+                          ColumnDefinitions="*, Auto"
+                          ColumnSpacing="7">
                         <controls:TriviaButton Grid.Column="0"
                                                Command="{Binding ExitCommand}"
                                                Text="EXIT"
                                                BorderBrush="#F2B2B8"
                                                BorderBrushSelected="Crimson"
                                                BorderBrushPressed="#AF183A"/>
-                        
-                        <Panel Grid.Column="1" />
 
-                        <controls:TriviaButton Grid.Column="2"
+                        <controls:TriviaButton Grid.Column="1"
                                                Command="{Binding SettingsCommand}"
                                                IsIconButton="True"
                                                IconSvgPath="avares://Trivia/Assets/Icons/settings.svg"
