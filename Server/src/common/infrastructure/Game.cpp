@@ -33,7 +33,7 @@ void Game::startGame()
     initPlayersData();
 
     m_playersRemaining = m_room.getAllUsers().size();
-    m_startTime = utils::getCurrTimeMillis();
+    m_startTime = utils::getCurrTimeMillis() + std::chrono::seconds(5);
 
     m_roomManager.setRoomPlaying(m_room);
 }

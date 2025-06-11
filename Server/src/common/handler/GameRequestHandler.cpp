@@ -14,6 +14,11 @@ GameRequestHandler::GameRequestHandler(const RequestHandlerFactory &handlerFacto
 
 std::optional<ErrorStatus> GameRequestHandler::isRequestRelevant(const RequestInfo &info) const
 {
+    if (info.receivalTime < m_game.getStartTime())
+    {
+        return ErrorStatus::ANSWER_TOO_EARLY;
+    }
+
     switch (info.id)
     {
     case RequestCode::SUBMIT_ANSWER:
