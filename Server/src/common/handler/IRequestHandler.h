@@ -4,6 +4,7 @@
 #include "infrastructure/request/RequestInfo.h"
 #include "infrastructure/request/RequestResult.h"
 
+enum class ErrorStatus : unsigned int;
 class LoggedUser;
 struct ProtocolRequest;
 struct RequestInfo;
@@ -18,7 +19,11 @@ public:
     explicit IRequestHandler(const RequestHandlerFactory& handlerFactory);
     virtual ~IRequestHandler();
 
-    virtual bool isRequestRelevant(const RequestInfo& info) const = 0;
+    /**
+     * Checks whether the provided request is relevant to the current state.
+     * If not, returns an error status.
+     */
+    virtual std::optional<ErrorStatus> isRequestRelevant(const RequestInfo& info) const = 0;
     virtual RequestResult handleRequest(const RequestInfo& info, const ProtocolRequest& request) const = 0;
 
 
