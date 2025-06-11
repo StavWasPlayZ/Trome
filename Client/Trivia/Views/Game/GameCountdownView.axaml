@@ -30,7 +30,7 @@
                 </Style>
                 
                 <Style Selector="^[Text=2]">
-                    <Setter Property="FontSize" Value="300"/>
+                    <Setter Property="FontSize" Value="350"/>
                 </Style>
                 
                 <Style Selector="^[Text=1]">
