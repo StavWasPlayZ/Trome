@@ -22,15 +22,15 @@
         <controls:TriviaMenuPanel Title="SETTINGS"
                                   BackButtonCommand="{Binding NavigateBackCommand}">
             
-            <StackPanel>
+            <StackPanel Margin="100"
+                        Spacing="30">
                 <StackPanel.Styles>
                     <Style Selector="TextBlock">
                         <Setter Property="FontSize" Value="40"/>
                     </Style>
                 </StackPanel.Styles>
                 
-                <Grid ColumnDefinitions="*, *"
-                      Margin="100">
+                <Grid ColumnDefinitions="*, *">
                     
                     <TextBlock Grid.Column="0">MASTER VOLUME</TextBlock>
                     
@@ -74,6 +74,28 @@
                         
                     </Slider>
                     
+                </Grid>
+                
+                <Grid ColumnDefinitions="*, *">
+                    <TextBlock Grid.Column="0">ADD QUESTION</TextBlock>
+
+                    <controls:TriviaButton Grid.Column="1"
+                                           Command="{Binding AddQuestionCommand}"
+                                           Width="225"
+                                           Height="50"
+                                           HorizontalAlignment="Left"
+                                           Text=">   ADD QUESTION"
+                                           BorderBrushSelected="LightGray"
+                                           BorderBrushPressed="#ADADAD"
+                                           BorderThickness="3">
+                        
+                        <controls:TriviaButton.Styles>
+                            <Style Selector="TextBlock">
+                                <Setter Property="FontSize" Value="30" />
+                            </Style>
+                        </controls:TriviaButton.Styles>
+                        
+                    </controls:TriviaButton>
                 </Grid>
                 
             </StackPanel>
