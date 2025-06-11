@@ -111,7 +111,7 @@ RequestResult RoomAdminRequestHandler::updateRoomData(const RequestInfo &info, c
 
 RequestResult RoomAdminRequestHandler::kick(const RequestInfo &info, const KickPlayerRequest &request) const 
 {
-    LoggedUser &user = m_handlerFactory.getLoginManager().getUserByUsername(request.username);
+    LoggedUser &user = m_handlerFactory.getLoginManager().getUserById(request.userId);
     m_room.kickUser(user);
 
     setRequestHandlers(
