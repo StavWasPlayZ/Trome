@@ -35,6 +35,7 @@ public:
 
     void addUser(LoggedUser& user);
     void removeUser(LoggedUser& user);
+    void kickUser(LoggedUser& user);
     const std::vector<LoggedUser*>& getAllUsers() const;
 
 
