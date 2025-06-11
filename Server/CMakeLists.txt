@@ -177,6 +177,8 @@ target_compile_definitions(Server PRIVATE CPPHTTPLIB_OPENSSL_SUPPORT)
 
 # In Windows, OpenSSL is not installed nor recognized by default.
 if (WIN32)
+  # Install here: https://slproweb.com/download/Win64OpenSSL-3_5_0.msi
+  # Make sure to install directly to *C:\OpenSSL-Win64*.
   find_package(openssl REQUIRED)
   set(OPENSSL_ROOT_DIR "C:\\OpenSSL-Win64")
   set(OPENSSL_USE_STATIC_LIBS TRUE)
