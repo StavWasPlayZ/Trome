@@ -1,7 +1,6 @@
 #include "RoomRequestHandler.h"
 
 #include "codec/c2s/request/Request.h"
-#include "codec/s2c/response/ErrorResponse.h"
 #include "codec/s2c/response/Response.h"
 
 RoomRequestHandler::RoomRequestHandler(const RequestHandlerFactory &handlerFactory, Room &room) :
@@ -9,16 +8,16 @@ RoomRequestHandler::RoomRequestHandler(const RequestHandlerFactory &handlerFacto
     m_room(room)
 {}
 
-std::optional<ErrorStatus> RoomRequestHandler::isRequestRelevant(const RequestInfo &info) const
+bool RoomRequestHandler::isRequestRelevant(const RequestInfo &info) const
 {
     switch (info.id)
     {
     case RequestCode::GET_PLAYERS_IN_ROOM:
     case RequestCode::GET_ROOM_STATE:
-        return std::nullopt;
+        return true;
 
     default:
-        return ErrorStatus::ILLEGAL_REQUEST;
+        return false;
     }
 }
 

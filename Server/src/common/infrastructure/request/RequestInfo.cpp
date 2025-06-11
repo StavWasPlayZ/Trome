@@ -1,10 +1,8 @@
 #include "RequestInfo.h"
 
-#include "Utils.h"
-
-RequestInfo::RequestInfo(Client& client, const RequestCode id, const nlohmann::json &data) :
+RequestInfo::RequestInfo(Client& client, const RequestCode id, const std::time_t receivalTime, const nlohmann::json &data) :
     client(client),
     id(id),
-    receivalTime(utils::getCurrTimeMillis()),
+    receivalTime(receivalTime),
     data(data)
 {}

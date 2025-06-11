@@ -2,7 +2,6 @@
 
 #include "MenuRequestHandler.h"
 #include "RequestHandlerFactory.h"
-#include "codec/s2c/response/ErrorResponse.h"
 #include "codec/s2c/response/Response.h"
 
 FinishedGameEarlyRequestHandler::FinishedGameEarlyRequestHandler(const RequestHandlerFactory &handlerFactory, Game &game)
@@ -10,15 +9,9 @@ FinishedGameEarlyRequestHandler::FinishedGameEarlyRequestHandler(const RequestHa
     m_game(game)
 {}
 
-std::optional<ErrorStatus> FinishedGameEarlyRequestHandler::isRequestRelevant(const RequestInfo& info) const
+bool FinishedGameEarlyRequestHandler::isRequestRelevant(const RequestInfo& info) const
 {
-    switch (info.id)
-    {
-    case RequestCode::LEAVE_GAME:
-        return std::nullopt;
-
-    default: return ErrorStatus::ILLEGAL_REQUEST;
-    }
+    return info.id == RequestCode::LEAVE_GAME;
 }
 
 RequestResult FinishedGameEarlyRequestHandler::handleRequest(const RequestInfo& info, const ProtocolRequest& request) const

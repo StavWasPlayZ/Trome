@@ -11,7 +11,7 @@ RoomAdminRequestHandler::RoomAdminRequestHandler(const RequestHandlerFactory &ha
     RoomRequestHandler(handlerFactory, room)
 {}
 
-std::optional<ErrorStatus> RoomAdminRequestHandler::isRequestRelevant(const RequestInfo &info) const
+bool RoomAdminRequestHandler::isRequestRelevant(const RequestInfo &info) const
 {
     switch (info.id)
     {
@@ -19,7 +19,7 @@ std::optional<ErrorStatus> RoomAdminRequestHandler::isRequestRelevant(const Requ
     case RequestCode::CLOSE_ROOM:
     case RequestCode::UPDATE_ROOM_DATA:
     case RequestCode::GET_ROOM_STATE:
-        return std::nullopt;
+        return true;
 
     default:
         return RoomRequestHandler::isRequestRelevant(info);

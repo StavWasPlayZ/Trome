@@ -13,7 +13,7 @@ class RoomMemberRequestHandler : public RoomRequestHandler
 public:
     RoomMemberRequestHandler(const RequestHandlerFactory &handlerFactory, Room &room);
 
-    std::optional<ErrorStatus> isRequestRelevant(const RequestInfo &info) const override;
+    bool isRequestRelevant(const RequestInfo &info) const override;
     RequestResult handleRequest(const RequestInfo &info, const ProtocolRequest &request) const override;
 
 private:

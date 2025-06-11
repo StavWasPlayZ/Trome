@@ -10,7 +10,7 @@ class LoginRequestHandler : public IRequestHandler
 public:
     explicit LoginRequestHandler(const RequestHandlerFactory& handlerFactory);
 
-    std::optional<ErrorStatus> isRequestRelevant(const RequestInfo& info) const override;
+    bool isRequestRelevant(const RequestInfo& info) const override;
 
     RequestResult handleRequest(const RequestInfo& info, const ProtocolRequest& request) const override;
 

@@ -8,12 +8,12 @@ class Client;
 
 struct RequestInfo
 {
-    RequestInfo(Client& client, RequestCode id, const nlohmann::json& data);
+    RequestInfo(Client& client, RequestCode id, std::time_t receivalTime, const nlohmann::json& data);
 
     Client& client;
 
     const RequestCode id;
-    const std::chrono::milliseconds receivalTime;
+    const std::time_t receivalTime;
 
     //NOTE: We will not use a buffer *vector* because:
     // a. unconventional

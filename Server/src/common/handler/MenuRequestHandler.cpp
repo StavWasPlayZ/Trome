@@ -10,7 +10,7 @@
 MenuRequestHandler::MenuRequestHandler(const RequestHandlerFactory &handlerFactory) : IRequestHandler(handlerFactory)
 {}
 
-std::optional<ErrorStatus> MenuRequestHandler::isRequestRelevant(const RequestInfo &info) const
+bool MenuRequestHandler::isRequestRelevant(const RequestInfo &info) const
 {
     switch (info.id)
     {
@@ -22,9 +22,9 @@ std::optional<ErrorStatus> MenuRequestHandler::isRequestRelevant(const RequestIn
     case RequestCode::GET_USER_STATISTICS:
     case RequestCode::LOGOUT:
     case RequestCode::ADD_QUESTION:
-        return std::nullopt;
+        return true;
 
-    default: return ErrorStatus::ILLEGAL_REQUEST;
+    default: return false;
     }
 }
 
