@@ -37,8 +37,6 @@ public class GameViewModel : GameViewModelBase
         
         this.WhenActivated(disposables =>
         {
-            App.MusicService?.PlayTriviaTrack();
-            
             GetNewQuestion()
                 .DisposeWith(disposables);
             

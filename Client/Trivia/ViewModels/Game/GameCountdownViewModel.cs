@@ -40,9 +40,17 @@ public class GameCountdownViewModel : SubRoomViewModel
     {
         Countdown--;
 
-        if (Countdown == 0)
+        switch (Countdown)
         {
-            NavigateAndPop(new GameViewModel(HostScreen, RoomModel))!.Subscribe();
+            case 4:
+                App.MusicService?.SilenceAll();
+                break;
+            case 3:
+                App.MusicService?.PlayTriviaTrack();
+                break;
+            case 0:
+                NavigateAndPop(new GameViewModel(HostScreen, RoomModel))!.Subscribe();
+                break;
         }
     }
 

@@ -94,6 +94,11 @@ public class MusicService : IDisposable
     {
         SetVolumes(0f, 1f, fade);
     }
+    
+    public void SilenceAll(bool fade = true)
+    {
+        SetVolumes(0f, 0f, fade);
+    }
 
     private void SetVolumes(float backgroundVolume, float triviaVolume, bool fade)
     {
