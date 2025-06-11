@@ -20,80 +20,97 @@
                         Stretch="UniformToFill" />            
         </Panel.Background>
         
+        <controls:TriviaBackButton Command="{Binding NavigateBackCommand}"/>
+        
         <controls:TriviaMenuPanel Title="NEW QUESTION"
-                                  DisplayBackButton="TRUE"
+                                  DisplayBackButton="False"
                                   VerticalAlignment="Center"
-                                  HorizontalAlignment="Center"
-                                  Width="650"
-                                  Height="500"
-                                  BackButtonCommand="{Binding NavigateBackCommand}">
-            <Grid RowDefinitions="Auto, *, Auto"
-                  Margin="20">
+                                  HorizontalAlignment="Center">
+            <StackPanel Margin="50"
+                        Spacing="20">
                 
-                <Grid.Resources>
+                <StackPanel.Resources>
                     <!-- ReSharper disable once Xaml.RedundantResource -->
                     <SolidColorBrush x:Key="TriviaTextBoxForeground">White</SolidColorBrush>
-                </Grid.Resources>
+                </StackPanel.Resources>
+                
+                <StackPanel.Styles>
+                    <Style Selector="TextBox">
+                        <Setter Property="CaretBrush" Value="White"/>
+                        <Setter Property="Margin" Value="10"/>
+                        <Setter Property="FontSize" Value="40"/>
+                    </Style>
+                    <Style Selector="TextBox TextBlock">
+                        <Setter Property="FontSize" Value="44"/>
+                    </Style>
+                </StackPanel.Styles>
                 
                 
-                <controls:TriviaTextBox Grid.Row="0"
-                                        Margin="0,30, 0, 0"
-                                        Background="rgba(0, 0, 0, .3)">
-                    <TextBox Text="{Binding Prompt}"/>
+                <controls:TriviaTextBox Width="600"
+                                        Background="rgba(0, 0, 0, .5)">
+                    <TextBox Text="{Binding Prompt}"
+                             Margin="10"
+                             Watermark="IS IT ILLEGAL TO KILL AN ANT ????"/>
                 </controls:TriviaTextBox>
                 
                 
-                <Grid Grid.Row="1" 
-                      RowDefinitions="*, Auto, Auto">
-                    <TextBlock Grid.Row="0"
-                               VerticalAlignment="Center"
+                <StackPanel>
+                    
+                    <StackPanel.Styles>
+                        <Style Selector="TextBox">
+                            <Setter Property="FontSize" Value="35"/>
+                        </Style>
+                    </StackPanel.Styles>
+                    
+                    <TextBlock VerticalAlignment="Center"
                                HorizontalAlignment="Center"
-                               Margin="0, 20, 0, 0"
-                               FontSize="50">
+                               FontSize="60">
                         ANSWERS
                     </TextBlock>
                     
-                    <Grid Grid.Row="1"
-                          ColumnDefinitions="Auto, Auto"
+                    <Grid ColumnDefinitions="*, *"
+                          RowDefinitions="*, *"
                           Margin="0, 20"
                           VerticalAlignment="Center"
-                          HorizontalAlignment="Center">
+                          HorizontalAlignment="Center"
+                          ColumnSpacing="10"
+                          RowSpacing="10">
                         
-                        <controls:TriviaTextBox Grid.Column="0"
-                                                Margin="50, 0, 10,0"
-                                                Background="rgba(0, 0, 0, .3)">
-                            <TextBox Text="{Binding Answers[0]}"/>
+                        <Grid.Styles>
+                            <Style Selector="controls|TriviaTextBox">
+                                <Setter Property="Background" Value="rgba(0, 0, 0, .3)"/>
+                                <Setter Property="Width" Value="250"/>
+                            </Style>
+                        </Grid.Styles>
+                        
+                        <controls:TriviaTextBox Grid.Row="0"
+                                                Grid.Column="0"
+                                                Background="#32EF65D6">
+                            <TextBox Text="{Binding Answers[0]}"
+                                     Watermark="CORRECT"/>
                         </controls:TriviaTextBox>
                         
-                        <controls:TriviaTextBox Grid.Column="1"
-                                                Margin="10, 0, 50, 0"
-                                                Background="rgba(0, 0, 0, .3)">
-                            <TextBox Text="{Binding Answers[1]}"/>
-                        </controls:TriviaTextBox>  
-                    </Grid>
-                    
-                    <Grid Grid.Row="2"
-                          ColumnDefinitions="Auto, Auto"
-                          Margin="0, 20"
-                          VerticalAlignment="Center"
-                          HorizontalAlignment="Center">
-                        
-                        <controls:TriviaTextBox Grid.Column="0"
-                                                Margin="50, 0, 10,0"
-                                                Background="rgba(0, 0, 0, .3)">
-                            <TextBox Text="{Binding Answers[2]}"/>
+                        <controls:TriviaTextBox Grid.Row="0"
+                                                Grid.Column="1">
+                            <TextBox Text="{Binding Answers[1]}"
+                                     Watermark="INCORRECT"/>
                         </controls:TriviaTextBox>
                         
-                        <controls:TriviaTextBox Grid.Column="1"
-                                                Margin="10, 0, 50, 0"
-                                                Background="rgba(0, 0, 0, .3)">
-                            <TextBox Text="{Binding Answers[3]}"/>
+                        <controls:TriviaTextBox Grid.Row="1"
+                                                Grid.Column="0">
+                            <TextBox Text="{Binding Answers[2]}"
+                                     Watermark="INCORRECT"/>
+                        </controls:TriviaTextBox>
+                        
+                        <controls:TriviaTextBox Grid.Row="1"
+                                                Grid.Column="1">
+                            <TextBox Text="{Binding Answers[3]}"
+                                     Watermark="NONSENSE"/>
                         </controls:TriviaTextBox>  
                     </Grid>
-                </Grid>
+                </StackPanel>
                 
-                <controls:TriviaButton Grid.Row="2"
-                                       Command="{Binding AddQuestionCommand}"
+                <controls:TriviaButton Command="{Binding AddQuestionCommand}"
                                        HorizontalAlignment="Center"
                                        Text="ADD"
                                        Background="#362034"
@@ -102,9 +119,8 @@
                                        BorderBrushSelected="#ffffff"
                                        BorderBrushPressed="#ffffff"
                                        BorderThickness="3"
-                                       Padding="100,0"
-                                       Margin="0, 20, 0, 0"/>
-            </Grid>
+                                       Padding="100,0"/>
+            </StackPanel>
         </controls:TriviaMenuPanel>
         
     </Panel>
