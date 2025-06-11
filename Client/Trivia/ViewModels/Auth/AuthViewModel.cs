@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using ReactiveUI;
 using Trivia.Codec.S2C.Response;
 using Trivia.Codec.S2C.Response.Packets;
+using Trivia.Codec.S2C.Response.Packets.Impl;
 using Trivia.Models.Raw;
 using Trivia.ViewModels.Menu;
 

@@ -17,6 +17,7 @@ public interface IProtocolRequest
     
     private byte[] SerializeToProtocol(string data)
     {
+        // TODO: Encrypt here
         var strBytes = Encoding.UTF8.GetBytes(data);
         var lenBytes = BitConverter.GetBytes(strBytes.Length);
 

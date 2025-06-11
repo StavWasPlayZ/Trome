@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
@@ -9,7 +10,9 @@ using System.Web;
 using Avalonia.Threading;
 using ReactiveUI;
 using Trivia.Codec.C2S.Request.Packets;
+using Trivia.Codec.S2C.Objects;
 using Trivia.Codec.S2C.Response.Packets;
+using Trivia.Codec.S2C.Response.Packets.Impl;
 using Trivia.Models;
 
 namespace Trivia.ViewModels.Game;
@@ -31,6 +34,8 @@ public class GameViewModel : GameViewModelBase
         
         this.WhenActivated(disposables =>
         {
+            App.MusicService?.PlayTriviaTrack();
+            
             GetNewQuestion()
                 .DisposeWith(disposables);
             
@@ -61,7 +66,7 @@ public class GameViewModel : GameViewModelBase
          Question = response.Question;
          Points = response.Points;
          
-         HandleQuestion();
+         HandleQuestion(response);
     }
 
     
@@ -70,11 +75,11 @@ public class GameViewModel : GameViewModelBase
         await StopCountdown();
         
         var response = await Comm.SendRequestAwaitResponse<SubmitAnswerResponse>(new SubmitAnswerRequest(btnIndex));
-        Question = response.NewQuestion;
+        Question = response.Question;
         Points = response.Points;
 
         CurrQuestionCount++;
-        HandleQuestion();
+        HandleQuestion(response);
     }
 
 
@@ -138,11 +143,11 @@ public class GameViewModel : GameViewModelBase
     }
 
     
-    private void HandleQuestion()
+    private void HandleQuestion(IQuestionResponse response)
     {
         if (Question == null)
         {
-            HandleLastQuestion();
+            HandleLastQuestion(response.Results!);
             return;
         }
 
@@ -160,7 +165,7 @@ public class GameViewModel : GameViewModelBase
         StartCountdown();
     }
 
-    private void HandleLastQuestion()
+    private void HandleLastQuestion(IList<PlayerResult> results)
     {
         PlayersFinished++;
         
@@ -168,7 +173,8 @@ public class GameViewModel : GameViewModelBase
         // to have finished the game.
         if (PlayersFinished == RoomModel.PlayersCount)
         {
-            NavigateAndPop(new AfterGameViewModel(HostScreen, RoomModel))!.Subscribe();
+            App.MusicService?.PlayBackgroundTrack();
+            NavigateAndPop(new AfterGameViewModel(HostScreen, RoomModel, results))!.Subscribe();
         }
         else
         {

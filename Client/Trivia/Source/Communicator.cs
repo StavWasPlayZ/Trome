@@ -11,8 +11,8 @@ using Avalonia.Controls;
 using Avalonia.Threading;
 using Trivia.Codec.C2S.Request;
 using Trivia.Codec.S2C;
-using Trivia.Codec.S2C.Response;
 using Trivia.Codec.S2C.Response.Packets;
+using Trivia.Codec.S2C.Response.Packets.Impl;
 using Trivia.Exceptions;
 
 namespace Trivia;
@@ -87,16 +87,18 @@ public class Communicator : IDisposable
 
         void OnPacketReceived(IS2CPacket packet)
         {
-            if (packet is T wantedResponse)
+            if (packet is not T wantedResponse)
             {
-                onResponse(wantedResponse);
+                if (packet is ErrorResponse errorResponse)
+                {
+                    //TODO: Check if it actually corresponds to the original code
+                    onError?.Invoke(errorResponse);
+                }
+
+                return;
             }
-            else if (packet is ErrorResponse errorResponse)
-            {
-                //TODO: Check if it actually corresponds to the original code
-                onError?.Invoke(errorResponse);
-            }
-            
+
+            onResponse(wantedResponse);
             PacketReceived -= OnPacketReceived;
         }
     }
@@ -167,8 +169,7 @@ public class Communicator : IDisposable
             }
             catch (IOException e)
             {
-                Console.Error.WriteLine("IO Exception occured; Assuming forced disconnection");
-                Console.Error.WriteLine(e);
+                Console.Error.WriteLine($"IO Exception occured ({e.Message}); Assuming forced disconnection");
                 return;
             }
 
@@ -214,6 +215,8 @@ public class Communicator : IDisposable
         if (read == 0 || !IsConnected)
             return null;
         
+        // TODO: Decrypt here
+        
         var json = Encoding.UTF8.GetString(jsonRaw, 0, jsonRaw.Length);
 
         
@@ -254,7 +257,7 @@ public class Communicator : IDisposable
             var rawRequest = request.Serialize();
 
             VerboseLog($"Sending packet: {request}");
-            VerboseLog($"In raw form: {Encoding.UTF8.GetString(rawRequest, 0, rawRequest.Length)}");
+            VerboseLog($"In raw form: {Encoding.UTF8.GetString(rawRequest, 5, rawRequest.Length - 5)}");
             
             _clientSocket!.GetStream().Write(rawRequest, 0, rawRequest.Length);
         }

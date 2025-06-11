@@ -12,12 +12,9 @@ public abstract class GameViewModelBase : SubRoomViewModel
 {
     public ReactiveCommand<Unit, Unit> LeaveGameCommand { get; }
     
-    public RoomModel RoomModel { get; }
 
-    protected GameViewModelBase(IScreen hostScreen, RoomModel roomModel) : base(hostScreen)
-    {
-        RoomModel = roomModel;
-        
+    protected GameViewModelBase(IScreen hostScreen, RoomModel roomModel) : base(hostScreen, roomModel)
+    {        
         LeaveGameCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             await Comm.SendRequestAwaitResponse<LeaveGameResponse>(new LeaveGameRequest());
@@ -27,8 +24,6 @@ public abstract class GameViewModelBase : SubRoomViewModel
 
     protected GameViewModelBase()
     {
-        RoomModel = RoomModel.CreateMockRoom(AppService.SessionUser!);
-
         LeaveGameCommand = NoOpCommand;
         _playersFinished = 2;
     }

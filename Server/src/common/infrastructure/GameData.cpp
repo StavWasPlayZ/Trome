@@ -64,7 +64,15 @@ std::chrono::milliseconds GameData::getTimeSinceQuestionRoll() const
 
 std::chrono::seconds GameData::getAverageAnswerTime() const
 {
-    return this->averageAnswerTime;
+    // if the time is 0 (rounded) return 1 sec
+    return this->averageAnswerTime.count() > 0 ? this->averageAnswerTime : std::chrono::seconds(1);
+}
+
+std::chrono::seconds GameData::getPlaytime() const
+{
+    return std::chrono::duration_cast<std::chrono::seconds>(
+        this->timeSinceQuestionRoll - this->game.getStartTime()
+    );
 }
 
 int GameData::getAnswersRotation() const

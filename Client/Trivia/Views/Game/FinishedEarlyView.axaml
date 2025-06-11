@@ -48,7 +48,7 @@
                                    HorizontalAlignment="Center"
                                    Margin="0,10,0,0"
                                    FontSize="35"
-                                   Opacity="0.8"
+                                   Opacity="0.7"
                                    TextWrapping="Wrap"
                                    TextAlignment="Center"
                                    Text="{Binding EndingLine}"/>
@@ -58,7 +58,7 @@
                                HorizontalAlignment="Center"
                                Margin="0, 10"
                                FontSize="30"
-                               Opacity=".3">
+                               Opacity=".25">
                         <TextBlock.Text>
                             <MultiBinding StringFormat="{}{0}/{1} FINISHED">
                                     <Binding Path="PlayersFinished"/>

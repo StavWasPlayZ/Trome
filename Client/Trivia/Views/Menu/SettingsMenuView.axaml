@@ -1,0 +1,84 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vmmenu="clr-namespace:Trivia.ViewModels.Menu"
+             xmlns:controls="clr-namespace:Trivia.Controls"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
+             x:CompileBindings="True"
+             x:Class="Trivia.Views.Menu.SettingsMenuView"
+             x:DataType="vmmenu:SettingsMenuViewModel">
+    
+    <Design.DataContext>
+        <vmmenu:SettingsMenuViewModel/>
+    </Design.DataContext>
+
+    <Panel>
+        <Panel.Background>
+            <ImageBrush Source="avares://Trivia/Assets/blobs-l-b49caff1a7941d98b60902da64956ad85dfbe4f9.png"
+                        Stretch="UniformToFill" />
+        </Panel.Background>
+
+        <controls:TriviaMenuPanel Title="SETTINGS"
+                                  BackButtonCommand="{Binding NavigateBackCommand}">
+            
+            <StackPanel>
+                <StackPanel.Styles>
+                    <Style Selector="TextBlock">
+                        <Setter Property="FontSize" Value="40"/>
+                    </Style>
+                </StackPanel.Styles>
+                
+                <Grid ColumnDefinitions="*, *"
+                      Margin="100">
+                    
+                    <TextBlock Grid.Column="0">MASTER VOLUME</TextBlock>
+                    
+                    <Slider Grid.Column="1"
+                            Maximum="1"
+                            Foreground="#E86568"
+                            Value="{Binding Volume}"
+                            IsEnabled="{Binding MusicServiceAvailable}">
+                                    
+                        <Slider.Resources>
+                            <!-- ReSharper disable once Xaml.RedundantResource -->
+                            <x:Double x:Key="SliderHorizontalThumbWidth">40</x:Double>
+                            <!-- ReSharper disable once Xaml.RedundantResource -->
+                            <x:Double x:Key="SliderHorizontalThumbHeight">20</x:Double>
+                            
+                            <!-- ReSharper disable once Xaml.RedundantResource -->
+                            <SolidColorBrush x:Key="SliderThumbBackground">#c02b44</SolidColorBrush>
+                            
+                            <!-- ReSharper disable once Xaml.RedundantResource -->
+                            <x:Double x:Key="SliderTrackThemeHeight">7</x:Double>
+                        </Slider.Resources>
+                        
+                        <Slider.Styles>
+                            <Style Selector="Slider /template/ RepeatButton Border">
+                                <Setter Property="Height" Value="10" />
+                            </Style>
+                            
+                            <Style Selector="Slider:pointerover /template/ Thumb">
+                                <Setter Property="Background" Value="#D62C49"/>
+                            </Style>
+                            
+                            <Style Selector="Slider:pressed /template/ Thumb">
+                                <Setter Property="Background" Value="#982A42"/>
+                            </Style>
+                            
+                            <Style Selector="Slider:pointerover /template/ RepeatButton#PART_DecreaseButton,
+                                    Slider:pressed /template/ RepeatButton#PART_DecreaseButton">
+                                <Setter Property="Background" Value="#E86568"/>
+                            </Style>
+                        </Slider.Styles>
+                        
+                    </Slider>
+                    
+                </Grid>
+                
+            </StackPanel>
+            
+        </controls:TriviaMenuPanel>
+    </Panel>
+
+</UserControl>

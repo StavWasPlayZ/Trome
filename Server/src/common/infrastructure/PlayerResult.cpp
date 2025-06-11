@@ -1,20 +1,25 @@
 #include "PlayerResult.h"
 
 PlayerResult::PlayerResult(
-    const std::string &username,
+    const LoggedUser &user,
+    const int playtimeSecs,
     const int correctAnswerCount,
-    const int averageAnswerTime,
+    const int averageAnswerTimeSecs,
     const int points
 ) :
-    username(username),
+    user(user),
+    playtimeSecs(playtimeSecs),
     correctAnswerCount(correctAnswerCount),
-    averageAnswerTime(averageAnswerTime),
+    averageAnswerTimeSecs(averageAnswerTimeSecs),
     points(points)
 {}
 
 PlayerResult::PlayerResult(const LoggedUser& user, const GameData &data) :
-    username(user.getUsername()), 
-    correctAnswerCount(data.correctAnswerCount),
-    averageAnswerTime(data.getAverageAnswerTime().count()),
-    points(data.points)
+    PlayerResult(
+        user,
+        data.getPlaytime().count(),
+        data.correctAnswerCount,
+        data.getAverageAnswerTime().count(),
+        data.points
+    )
 {}

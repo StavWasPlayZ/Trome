@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive.Disposables;
 using ReactiveUI;
 using Trivia.Codec.S2C;
 using Trivia.Codec.S2C.Notification.Packets;
@@ -27,6 +28,13 @@ public class FinishedEarlyViewModel : GameViewModelBase
         base(hostScreen, roomModel)
     {
         PlayersFinished = playersFinished;
+        
+        this.WhenActivated(disposables =>
+        {
+            Disposable
+                .Create(() => App.MusicService?.PlayBackgroundTrack())
+                .DisposeWith(disposables);
+        });
     }
 
     public FinishedEarlyViewModel()
@@ -37,8 +45,8 @@ public class FinishedEarlyViewModel : GameViewModelBase
     {
         switch (packet)
         {
-            case GameEndedNotification:
-                NavigateAndPop(new AfterGameViewModel(HostScreen, RoomModel))!.Subscribe();
+            case GameEndedNotification gameEndedNotif:
+                NavigateAndPop(new AfterGameViewModel(HostScreen, RoomModel, gameEndedNotif.Results))!.Subscribe();
                 break;
             
             default:

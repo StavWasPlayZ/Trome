@@ -44,11 +44,14 @@ public:
 	void addQuestions(std::vector<Question> questions, const std::optional<std::string>& authorName) const override;
 
 
-    void addTime(const std::string &username, int time) const override;
-    void addTotalAns(const std::string &username, int ans = 1) const override;
-    void addCorrectAns(const std::string &username, int ans = 1) const override;
-    void addGamesPlayed(const std::string &username, int games = 1) const override;
-    void addPoints(const std::string &username, int points) const override;
+    void addToStats(const std::string &username, int time, int answers, int correctAnswers, int points,
+                    int games = 1) const override;
+
+    // void addTime(const std::string &username, int time) const override;
+    // void addTotalAns(const std::string &username, int ans = 1) const override;
+    // void addCorrectAns(const std::string &username, int ans = 1) const override;
+    // void addGamesPlayed(const std::string &username, int games = 1) const override;
+    // void addPoints(const std::string &username, int points) const override;
 
     int queryTime(const std::string &username) const override;
     int queryTotalAns(const std::string &username) const override;
@@ -58,7 +61,9 @@ public:
 
     float queryPlayerAverageAnsTime(const std::string &username) const override;
 
-    std::unordered_map<std::string, int> queryHighScores(int limit = 20) const override;
+    std::map<UserModel, int> queryHighScores(int limit = 20) const override;
+
+    std::optional<UserStatistics> getUserStatisticsById(unsigned int id) const override;
 
 protected:
 	unsigned int queryIdOfUser(const std::string &username) const override;

@@ -79,7 +79,10 @@
                                     </StackPanel>
                                     
                                     <Button Grid.Column="2"
-                                            Command="{Binding #JoinMenuViewControl.((vmmenu:JoinRoomMenuViewModel)DataContext).JoinRoomButtonCommand}"
+                                            Command="{
+                                                Binding DataContext.JoinRoomButtonCommand,
+                                                ElementName=JoinMenuViewControl
+                                            }"
                                             CommandParameter="{Binding Id}"
                                             HorizontalAlignment="Right"
                                             VerticalAlignment="Stretch"

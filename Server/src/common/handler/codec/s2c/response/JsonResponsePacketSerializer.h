@@ -95,7 +95,7 @@ public:
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serializeResponse(const GetPersonalStatisticsResponse &response);
+    static OBuffer serializeResponse(const GetUserStatisticsResponse &response);
 
     /**
      * Returns: The serialized object.
@@ -168,6 +168,13 @@ public:
     static OBuffer serializeResponse(const AddQuestionResponse &response);
 
 private:
+    /**
+     * Returns: The serialized object.
+     *
+     * NOTE: The returned resource must be freed.
+     */
+    static OBuffer serializeResponse(const QuestionResponse &response);
+
     static OBuffer serialize(ResponseCode msgCode, const nlohmann::json &data);
 
 	/**
