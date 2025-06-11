@@ -203,6 +203,13 @@ FetchContent_MakeAvailable(ctre)
 target_link_libraries(Server PRIVATE ctre)
 
 
+# MongoDB
+find_package(mongocxx REQUIRED)
+find_package(bsoncxx REQUIRED)
+
+target_link_libraries(Server PRIVATE mongo::bsoncxx_shared mongo::mongocxx_shared)
+
+
 # Support includes starting from relative paths
 target_include_directories(Server PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_include_directories(Server PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/common)
