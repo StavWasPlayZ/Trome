@@ -13,7 +13,9 @@ enum class NotificationCode : unsigned char
     GAME_STARTED,
     GAME_ENDED,
 
-    PLAYER_FINISHED
+    PLAYER_FINISHED,
+
+    KICKED
 };
 
 
@@ -69,4 +71,9 @@ struct GameEndedNotification : ProtocolNotification
 struct PlayerFinishedNotification : ProtocolNotification
 {
     PlayerFinishedNotification();
+};
+
+struct KickedNotification : ProtocolNotification
+{
+    KickedNotification();
 };

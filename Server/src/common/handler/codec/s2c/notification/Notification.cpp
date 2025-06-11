@@ -41,3 +41,7 @@ GameEndedNotification::GameEndedNotification(const std::vector<PlayerResult> &re
 PlayerFinishedNotification::PlayerFinishedNotification() :
     ProtocolNotification(NotificationCode::PLAYER_FINISHED)
 {}
+
+KickedNotification::KickedNotification() : 
+    ProtocolNotification(NotificationCode::KICKED)
+{}
