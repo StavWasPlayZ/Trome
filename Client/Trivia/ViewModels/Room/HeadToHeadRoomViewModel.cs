@@ -70,7 +70,9 @@ public class HeadToHeadRoomViewModel : RoomViewModel
     private void UpdatePlayerFields()
     {
         //TODO: Implement getting points
+        
         Creator = HeadToHeadUserModel.FromUser(Players[0]!, 0);
+        
         Opponent = (Players.Count > 1 && Players[1] is not null)
             ? HeadToHeadUserModel.FromUser(Players[1]!, 0)
             : null;
@@ -88,7 +90,19 @@ public class HeadToHeadRoomViewModel : RoomViewModel
 
     protected override void CommOnPacketReceived(IS2CPacket packet)
     {
-        base.CommOnPacketReceived(packet);
+        switch (packet)
+        {
+            case GameStartedNotification gameStartedNotif:
+                NavigateTo(new GameCountdownViewModel(HostScreen, RoomModel with
+                {
+                    Data = gameStartedNotif.Data
+                }));
+                break;
+            
+            default:
+                base.CommOnPacketReceived(packet);
+                break;
+        }
 
         if (packet is PlayerJoinedRoomNotification or PlayerLeftRoomNotification)
         {
