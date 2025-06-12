@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:room="clr-namespace:Trivia.ViewModels.Room"
              xmlns:controls="clr-namespace:Trivia.Controls"
+             xmlns:cts="clr-namespace:Trivia.Codec.C2S"
              mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
              x:CompileBindings="True"
              x:Class="Trivia.Views.Room.RoomTypeSelectorView"
@@ -34,6 +35,8 @@
                 <Grid ColumnDefinitions="*, *"
                       ColumnSpacing="20">
                     <controls:TriviaButton Grid.Column="0"
+                                           Command="{Binding CreateRoomCommand}"
+                                           CommandParameter="{x:Static cts:RoomType.TriviaRush}"
                                            Text="TRIVIA RUSH"
                                            Background="#362034"
                                            BorderBrush="#b92e2b"
@@ -45,6 +48,8 @@
                                            IconMargin="-1 10 -10 7"/>
                     
                     <controls:TriviaButton Grid.Column="1"
+                                           Command="{Binding CreateRoomCommand}"
+                                           CommandParameter="{x:Static cts:RoomType.HeadToHead}"
                                            Text="HEAD-TO-HEAD"
                                            BorderThickness="3"
                                            BorderBrush="#6154A3"

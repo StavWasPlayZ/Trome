@@ -19,7 +19,7 @@ public class JoinRoomMenuViewModel : PageViewModel
     private static readonly TimeSpan RefreshTime = TimeSpan.FromSeconds(3);
     
     
-    public ReactiveCommand<Unit, Unit> NewRoomButtonCommand { get; }
+    public ReactiveCommand<Unit, IRoutableViewModel> NewRoomButtonCommand { get; }
     
     public ReactiveCommand<int, Unit> JoinRoomButtonCommand { get; }
 
@@ -46,18 +46,7 @@ public class JoinRoomMenuViewModel : PageViewModel
 
     public JoinRoomMenuViewModel(IScreen hostScreen) : base(hostScreen)
     {
-        NewRoomButtonCommand = ReactiveCommand.CreateFromTask(async () =>
-        {
-            var response = await Comm.SendRequestAwaitResponse<CreateRoomResponse>(new CreateRoomRequest());
-            
-            NavigateTo(new CreateRoomViewModel(hostScreen, new RoomModel
-            {
-                Id = response.RoomId,
-                Admin = AppService.SessionUser!,
-                PlayersCount = 1,
-                Data = response.Data
-            }));
-        });
+        NewRoomButtonCommand = NavigateReactiveCommand(() => new RoomTypeSelectorViewModel());
 
         JoinRoomButtonCommand = ReactiveCommand.CreateFromTask<int>(JoinRoom);
 
@@ -91,7 +80,7 @@ public class JoinRoomMenuViewModel : PageViewModel
     public JoinRoomMenuViewModel() : base(null!)
     {
         JoinRoomButtonCommand = ReactiveCommand.Create<int>(_ => { });
-        NewRoomButtonCommand = NoOpCommand;
+        NewRoomButtonCommand = NoOpNavCommand;
         Rooms = RoomModel.GenerateMockRooms(30);
         SelectedRoom = Rooms[0];
     }
