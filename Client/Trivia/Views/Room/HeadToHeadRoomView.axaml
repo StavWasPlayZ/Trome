@@ -55,20 +55,20 @@
                 </Style>
             </TextBox.Styles>
         </TextBox>
-        
+
 
         <Grid ColumnDefinitions="*, *">
-                
+                    
             <Grid.Styles>
                 <Style Selector="Border.user-container">
                     <Setter Property="Width" Value="325"/>
-                        
+                            
                     <Setter Property="VerticalAlignment" Value="Center"/>
                     <Setter Property="HorizontalAlignment" Value="Center"/>
                     <Setter Property="BorderThickness" Value="5"/>
                     <Setter Property="CornerRadius" Value="10"/>
                     <Setter Property="Padding" Value="5"/>
-                    
+                        
                     <Style Selector="^ > Grid">
                         <Style Selector="^ > Border">
                             <Setter Property="Padding" Value="5"/>
@@ -77,11 +77,11 @@
                             <Setter Property="CornerRadius" Value="5"/>
                             <Setter Property="BoxShadow" Value="0 5 0 0 #1f000000"/>
                         </Style>
-                        
+                            
                         <Style Selector="^ > StackPanel">
                             <Setter Property="Margin" Value="10"/>
                             <Setter Property="VerticalAlignment" Value="Center"/>
-                            
+                                
                             <Style Selector="^ > TextBlock:nth-child(2)">
                                 <Setter Property="FontSize" Value="20"/>
                             </Style>
@@ -89,52 +89,67 @@
                     </Style>
                 </Style>
             </Grid.Styles>
-                    
+                        
             <Border Grid.Column="0"
                     Classes="user-container"
                     Background="#362034"
                     BorderBrush="#cd3b0a">
                 <Grid ColumnDefinitions="Auto, *">
-                            
+                                
                     <Border Grid.Column="0">
                         <Svg Path="avares://Trivia/Assets/Icons/person.svg"
                              Css="* { fill: #ffffff }"
                              Height="50"/>
                     </Border>
-                            
+                                
                     <StackPanel Grid.Column="1">
                         <TextBlock Text="{Binding Creator.Username}"/>
-                        
+                            
                         <!--TODO: Re-add points display -->
                         <!-- <TextBlock>69 POINTS</TextBlock> -->
                     </StackPanel>
-                            
+                                
                 </Grid>
             </Border>
-                    
+                        
             <Border Grid.Column="1"
                     Classes="user-container"
                     Background="#362034"
                     BorderBrush="#414990">
                 <Grid ColumnDefinitions="Auto, *">
-                            
+                                
                     <Border Grid.Column="0">
                         <Svg Path="avares://Trivia/Assets/Icons/person.svg"
                              Css="* { fill: #ffffff }"
                              Height="50"/>
                     </Border>
-                            
+                                
                     <StackPanel Grid.Column="1">
                         <TextBlock Text="{
-                            Binding Opponent.Username,
-                            FallbackValue='WAITING...'
-                        }"/>
+                                Binding Opponent.Username,
+                                FallbackValue='WAITING...'
+                            }"/>
                         <!-- <TextBlock>69 POINTS</TextBlock> -->
                     </StackPanel>
-                            
+                                
                 </Grid>
             </Border>
-                    
+                
+        </Grid>
+
+        <Grid RowDefinitions="*, *">
+            <controls:TriviaButton Grid.Row="1"
+                                   Command="{Binding StartGameCommand}"
+                                   IsVisible="{Binding IsAdmin}"
+                                   Text="START GAME"
+                                   Width="300"
+                                   Background="#362034"
+                                   BorderBrush="#B97292"
+                                   IconColor="#ffbbbb"
+                                   BorderThickness="5"
+                                   BorderThicknessSelected="7"
+                                   IconSvgPath="avares://Trivia/Assets/Icons/flag.svg"
+                                   IconMargin="-7 7 -10 7"/>
         </Grid>
 
     </Panel>
