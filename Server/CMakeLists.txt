@@ -219,13 +219,6 @@ FetchContent_MakeAvailable(ctre)
 target_link_libraries(Server PRIVATE ctre)
 
 
-# Crypto++
-# In Windows: vcpkg install cryptopp
-# In Linux (Fedora): sudo dnf install cryptopp cryptopp-devel
-#find_package(cryptopp REQUIRED)
-target_link_libraries(Server PRIVATE cryptopp)
-
-
 # Support includes starting from relative paths
 target_include_directories(Server PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_include_directories(Server PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/common)
