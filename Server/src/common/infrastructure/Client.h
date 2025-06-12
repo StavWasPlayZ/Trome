@@ -5,6 +5,7 @@
 #include "cryptoAlgorithm/NoEncryption.h"
 #include "cryptoAlgorithm/CipherEncryption.h"
 #include "cryptoAlgorithm/OTP.h"
+#include "cryptoAlgorithm/AES.h"
 #include <future>
 #include <functional>
 #include <mutex>

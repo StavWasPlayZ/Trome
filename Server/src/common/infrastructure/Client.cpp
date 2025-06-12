@@ -6,7 +6,7 @@
 Client::Client(const SOCKET socket, const IRequestHandler *const requestHandler) :
     socket(socket),
     thread(nullptr), requestHandler(requestHandler), 
-    cryptoAlgorithm(new OTP())
+    cryptoAlgorithm(new AES())
 {}
 
 Client::~Client()
