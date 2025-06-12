@@ -19,7 +19,7 @@ public class AES : ICryptoAlgorithm
         0x39, 0x81, 0x67, 0xF4, 0x0C, 0xAB, 0x58, 0xE7
     ];
     
-    AES()
+    public AES()
     {}
     public string Encrypt(string message)
     {
