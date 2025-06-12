@@ -1,0 +1,92 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:room="clr-namespace:Trivia.ViewModels.Room"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
+             x:CompileBindings="True"
+             x:Class="Trivia.Views.Room.HeadToHeadRoomView"
+             x:DataType="room:HeadToHeadRoomViewModel">
+    
+    <Design.DataContext>
+        <room:HeadToHeadRoomViewModel/>
+    </Design.DataContext>
+    
+    <Panel>
+        <Panel.Background>
+            <ImageBrush Source="avares://Trivia/Assets/drool-l-95f4c6657e51f40d193e1c5ba6629216d8e38d5b.png"
+                        Stretch="UniformToFill" />
+        </Panel.Background>
+
+        <Grid ColumnDefinitions="*, *">
+                
+            <Grid.Styles>
+                <Style Selector="Border.user-container">
+                    <Setter Property="Width" Value="300"/>
+                        
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Setter Property="BorderThickness" Value="5"/>
+                    <Setter Property="CornerRadius" Value="10"/>
+                    <Setter Property="Padding" Value="5"/>
+                </Style>
+            </Grid.Styles>
+                    
+            <Border Grid.Column="0"
+                    Classes="user-container"
+                    Background="#362034"
+                    BorderBrush="Red">
+                <Grid ColumnDefinitions="Auto, *">
+                            
+                    <Border Grid.Column="0"
+                            Padding="5"
+                            Margin="5"
+                            Background="#6C4669"
+                            CornerRadius="5"
+                            BoxShadow="0 5 0 0 #1f000000">
+                        <Svg Path="avares://Trivia/Assets/Icons/person.svg"
+                             Css="* { fill: #ffffff }"
+                             Height="50"/>
+                    </Border>
+                            
+                    <StackPanel Grid.Column="1"
+                                Margin="10">
+                        <TextBlock VerticalAlignment="Center">USERNAME</TextBlock>
+                        <TextBlock VerticalAlignment="Center"
+                                   FontSize="20">69 POINTS</TextBlock>
+                    </StackPanel>
+                            
+                </Grid>
+            </Border>
+                    
+            <Border Grid.Column="1"
+                    Classes="user-container"
+                    Background="#362034"
+                    BorderBrush="Red">
+                <Grid ColumnDefinitions="Auto, *">
+                            
+                    <Border Grid.Column="0"
+                            Padding="5"
+                            Margin="5"
+                            Background="#6C4669"
+                            CornerRadius="5"
+                            BoxShadow="0 5 0 0 #1f000000">
+                        <Svg Path="avares://Trivia/Assets/Icons/person.svg"
+                             Css="* { fill: #ffffff }"
+                             Height="50"/>
+                    </Border>
+                            
+                    <StackPanel Grid.Column="1"
+                                Margin="10">
+                        <TextBlock VerticalAlignment="Center">USERNAME</TextBlock>
+                        <TextBlock VerticalAlignment="Center"
+                                   FontSize="20">69 POINTS</TextBlock>
+                    </StackPanel>
+                            
+                </Grid>
+            </Border>
+                    
+        </Grid>
+
+    </Panel>
+</UserControl>
