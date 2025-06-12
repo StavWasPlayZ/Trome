@@ -24,3 +24,9 @@ std::vector<unsigned char> ICryptoAlgorithm::ReadFileBytes(const std::string &pa
 
     return buffer;
 }
+
+std::string ICryptoAlgorithm::ReadFileString(const std::string& path)
+{
+    std::vector<unsigned char> bytes = ICryptoAlgorithm::ReadFileBytes(path);
+    return std::string(reinterpret_cast<const char *>(bytes.data()), bytes.size());
+}

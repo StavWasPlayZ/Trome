@@ -148,6 +148,8 @@ add_executable (Server
   "src/common/infrastructure/cryptoAlgorithm/OTP.cpp"
   "src/common/infrastructure/cryptoAlgorithm/AES.h"
   "src/common/infrastructure/cryptoAlgorithm/AES.cpp"
+  "src/common/infrastructure/cryptoAlgorithm/RSA.h"
+  "src/common/infrastructure/cryptoAlgorithm/RSA.cpp"
 )
 
 # Platform-specific sources

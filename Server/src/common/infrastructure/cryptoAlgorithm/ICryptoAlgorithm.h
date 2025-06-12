@@ -15,4 +15,5 @@ public:
 
 protected:
     static std::vector<unsigned char> ReadFileBytes(const std::string &path);
+    static std::string ReadFileString(const std::string &path);
 };
