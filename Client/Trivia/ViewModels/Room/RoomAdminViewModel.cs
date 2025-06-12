@@ -14,8 +14,6 @@ namespace Trivia.ViewModels.Room;
 public class RoomAdminViewModel : RoomViewModel
 {
     private static readonly TimeSpan RoomDataUpdateDelay = TimeSpan.FromMilliseconds(300);
-
-    public ReactiveCommand<Unit, Unit> CloseRoomCommand { get; }
     public ReactiveCommand<Unit, Unit> StartGameCommand { get; }
 
     public RoomAdminViewModel(IScreen hostScreen, RoomModel roomModel) : base(hostScreen, roomModel, [])
@@ -24,14 +22,6 @@ public class RoomAdminViewModel : RoomViewModel
         _questions = roomModel.Data.QuestionsCount;
         _secsPerQuestion = roomModel.Data.TimePerQuestionSecs;
         MaxPlayers = roomModel.Data.MaxPlayers;
-        
-        
-        CloseRoomCommand = ReactiveCommand.CreateFromTask(async () =>
-        {
-            await Comm.SendRequestAwaitResponse<CloseRoomResponse>(new CloseRoomRequest());
-            
-            NavigateBackCommand!.Execute();
-        });
 
         StartGameCommand = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -79,7 +69,7 @@ public class RoomAdminViewModel : RoomViewModel
         _secsPerQuestion = 10;
         MaxPlayers = 10;
         
-        CloseRoomCommand = StartGameCommand = NoOpCommand;
+        StartGameCommand = NoOpCommand;
     }
 
 

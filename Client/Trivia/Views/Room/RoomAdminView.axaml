@@ -186,7 +186,7 @@
                           Height="65">
                             
                         <Button Grid.Column="0"
-                                Command="{Binding CloseRoomCommand}"
+                                Command="{Binding LeaveRoomCommand}"
                                 
                                 VerticalAlignment="Stretch"
                                 Width="90"

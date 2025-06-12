@@ -33,7 +33,7 @@
                  CornerRadius="0 0 10 10"
                  Background="rgba(0, 0, 0, .5)"
                  Foreground="White"
-                 IsEnabled="{Binding IsCreator}"
+                 IsEnabled="{Binding IsAdmin}"
                  Text="{Binding RoomName}">
             
             <TextBox.Styles>
