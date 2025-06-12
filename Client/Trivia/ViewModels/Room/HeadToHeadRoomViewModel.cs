@@ -1,4 +1,5 @@
-﻿using System.Reactive;
+﻿using System.Collections.Generic;
+using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using ReactiveUI;
@@ -7,6 +8,7 @@ using Trivia.Codec.S2C;
 using Trivia.Codec.S2C.Notification.Packets;
 using Trivia.Codec.S2C.Response.Packets;
 using Trivia.Models;
+using Trivia.Models.Raw;
 using Trivia.Models.User;
 using Trivia.ViewModels.Game;
 
@@ -16,8 +18,8 @@ public class HeadToHeadRoomViewModel : RoomViewModel
 {
     public ReactiveCommand<Unit, Unit> StartGameCommand { get; }
 
-    public HeadToHeadRoomViewModel(IScreen hostScreen, RoomModel roomModel) :
-        base(hostScreen, roomModel, [])
+    public HeadToHeadRoomViewModel(IScreen hostScreen, RoomModel roomModel, List<User> players) :
+        base(hostScreen, roomModel, players)
     {
         _roomName = roomModel.Data.Name;
         MaxPlayers = 2;

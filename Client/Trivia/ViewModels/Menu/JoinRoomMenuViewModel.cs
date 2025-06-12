@@ -100,7 +100,7 @@ public class JoinRoomMenuViewModel : PageViewModel
                 break;
             
             case RoomType.HeadToHead:
-                NavigateTo(new HeadToHeadRoomViewModel(HostScreen, response.Room));
+                NavigateTo(new HeadToHeadRoomViewModel(HostScreen, response.Room, [..response.Players]));
                 break;
             
             default:
