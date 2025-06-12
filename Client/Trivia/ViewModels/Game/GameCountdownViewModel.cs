@@ -1,0 +1,65 @@
+using System;
+using System.Reactive.Disposables;
+using Avalonia.Threading;
+using ReactiveUI;
+using Trivia.Models;
+
+namespace Trivia.ViewModels.Game;
+
+public class GameCountdownViewModel : SubRoomViewModel
+{
+    private readonly DispatcherTimer? _countdownTimer;
+
+    public GameCountdownViewModel(IScreen hostScreen, RoomModel roomModel) : base(hostScreen, roomModel)
+    {
+        _countdownTimer = new DispatcherTimer
+        {
+            Interval = TimeSpan.FromSeconds(1)
+        };
+        
+        this.WhenActivated(disposables =>
+        {
+            _countdownTimer.Tick += CountdownTimerOnTick;
+            _countdownTimer.Start();
+            
+            Disposable
+                .Create(() =>
+                {
+                    _countdownTimer.Stop();
+                    _countdownTimer.Tick -= CountdownTimerOnTick;
+                })
+                .DisposeWith(disposables);
+        });
+    }
+
+    public GameCountdownViewModel()
+    {}
+    
+    
+    private void CountdownTimerOnTick(object? sender, EventArgs e)
+    {
+        Countdown--;
+
+        switch (Countdown)
+        {
+            case 4:
+                App.MusicService?.SilenceAll();
+                break;
+            case 3:
+                App.MusicService?.PlayTriviaTrack();
+                break;
+            case 0:
+                NavigateAndPop(new GameViewModel(HostScreen, RoomModel))!.Subscribe();
+                break;
+        }
+    }
+
+    
+    private int _countdown = 5;
+
+    public int Countdown
+    {
+        get => _countdown;
+        set => this.RaiseAndSetIfChanged(ref _countdown, value);
+    }
+}

@@ -11,7 +11,7 @@ class RoomRequestHandler : public IRequestHandler
 public:
     explicit RoomRequestHandler(const RequestHandlerFactory &handlerFactory, Room &room);
 
-    bool isRequestRelevant(const RequestInfo &info) const override;
+    std::optional<ErrorStatus> isRequestRelevant(const RequestInfo &info) const override;
     RequestResult handleRequest(const RequestInfo &info, const ProtocolRequest &request) const override;
 
 protected:

@@ -84,6 +84,10 @@
         <DependentUpon>SettingsMenuView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Views\Game\GameCountdownView.axaml.cs">
+        <DependentUpon>GameCountdownView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
