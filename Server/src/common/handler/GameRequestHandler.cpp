@@ -93,11 +93,20 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
             new FinishedGameEarlyRequestHandler(this->m_handlerFactory, this->m_game)
         );
 
-    case QuestionRollType::FINISHED_LAST:
+    case QuestionRollType::FINISHED_LAST: {
+        const SubmitAnswerResponse* const response = new SubmitAnswerResponse(
+            rollResult.newQuestion,
+            userData.points,
+            rollResult.results
+        );
+
+        this->m_handlerFactory.getGameManager().deleteGame(m_game);
+
         return RequestResult(
-            new SubmitAnswerResponse(rollResult.newQuestion, userData.points, rollResult.results),
+            response,
             this->m_handlerFactory.createRoomRequestHandler(user, room)
         );
+    }
 
     // ReSharper disable once CppDFAUnreachableCode
     default:
@@ -121,6 +130,7 @@ RequestResult GameRequestHandler::leaveGame(const RequestInfo &info, const Leave
         if (this->m_game.isGameComplete())
         {
             handleLastPlayerFinished(info);
+            this->m_handlerFactory.getGameManager().deleteGame(m_game);
         }
     }
 
@@ -138,7 +148,7 @@ QuestionRollResult GameRequestHandler::rollNewUserQuestion(const RequestInfo &in
     {
         const std::vector<PlayerResult> results = handleLastPlayerFinished(info);
 
-        return QuestionRollResult(QuestionRollType::FINISHED_LAST, newQuestion, results);
+        return QuestionRollResult(QuestionRollType::FINISHED_LAST, std::nullopt, results);
     }
 
     // If there is no new question available, we've finished early.
@@ -241,7 +251,6 @@ std::vector<PlayerResult> GameRequestHandler::handleLastPlayerFinished(const Req
         &getUserByInfo(info)
     );
 
-    this->m_handlerFactory.getGameManager().deleteGame(m_game);
     return results;
 }
 
