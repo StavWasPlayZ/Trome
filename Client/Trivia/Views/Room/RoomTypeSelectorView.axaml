@@ -19,7 +19,8 @@
             <ImageBrush Source="avares://Trivia/Assets/blobs-l-b49caff1a7941d98b60902da64956ad85dfbe4f9.png"
                         Stretch="UniformToFill" />
         </Panel.Background>
-        <Panel Background="rgba(0, 0, 0, .2)"/>
+        
+        <controls:TriviaBackButton Command="{Binding NavigateBackCommand}"/>
         
         <Border Background="rgba(0, 0, 0, .2)"
                 HorizontalAlignment="Center"
