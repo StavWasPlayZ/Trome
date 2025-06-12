@@ -19,6 +19,8 @@ namespace Trivia.ViewModels.Room;
 
 public abstract class RoomViewModel : PageViewModel
 {
+    protected static readonly TimeSpan RoomDataUpdateDelay = TimeSpan.FromMilliseconds(300);
+    
     private bool _wasInitiated;
     
     public bool IsAdmin { get; }
@@ -118,6 +120,19 @@ public abstract class RoomViewModel : PageViewModel
         await NavigateBackCommand!.Execute().ToTask();
         await NavigateBackCommand!.Execute().ToTask();
     }
+    
+    protected void UpdateAndSendRoomData(RoomData newData)
+    {
+        if (!IsAdmin)
+            return;
+        
+        RoomModel = RoomModel with
+        {
+            Data = newData
+        }; 
+        
+        Comm.SendRequest(new UpdateRoomDataRequest(RoomModel.Data));
+    } 
 
 
     private void ReAddAllPlayers(List<User> players)

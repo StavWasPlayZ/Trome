@@ -13,7 +13,6 @@ namespace Trivia.ViewModels.Room;
 
 public class RoomAdminViewModel : RoomViewModel
 {
-    private static readonly TimeSpan RoomDataUpdateDelay = TimeSpan.FromMilliseconds(300);
     public ReactiveCommand<Unit, Unit> StartGameCommand { get; }
 
     public RoomAdminViewModel(IScreen hostScreen, RoomModel roomModel) : base(hostScreen, roomModel, [])
@@ -94,18 +93,13 @@ public class RoomAdminViewModel : RoomViewModel
 
     private void SendRoomData()
     {
-        RoomModel = RoomModel with
+        UpdateAndSendRoomData(new RoomData
         {
-            Data = new RoomData
-            {
-                Name = _name,
-                QuestionsCount = _questions,
-                MaxPlayers = MaxPlayers,
-                TimePerQuestionSecs = _secsPerQuestion
-            }
-        }; 
-        
-        Comm.SendRequest(new UpdateRoomDataRequest(RoomModel.Data));
+            Name = _name,
+            QuestionsCount = _questions,
+            MaxPlayers = MaxPlayers,
+            TimePerQuestionSecs = _secsPerQuestion
+        });
     }
 
 

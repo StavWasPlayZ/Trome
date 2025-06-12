@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reactive;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using ReactiveUI;
@@ -31,6 +33,21 @@ public class HeadToHeadRoomViewModel : RoomViewModel
         );
 
         UpdatePlayerFields();
+        
+        
+        this.WhenActivated(disposables =>
+        {
+            this
+                .WhenAnyValue(x => x.RoomName)
+                .Skip(1)
+                .DistinctUntilChanged()
+                .Throttle(RoomDataUpdateDelay)
+                .Subscribe(newName => UpdateAndSendRoomData(RoomModel.Data with
+                {
+                    Name = newName ?? "",
+                }))
+                .DisposeWith(disposables);
+        });
     }
 
     public HeadToHeadRoomViewModel()
@@ -99,6 +116,14 @@ public class HeadToHeadRoomViewModel : RoomViewModel
                 {
                     Data = gameStartedNotif.Data
                 }));
+                break;
+            
+            case RoomDataUpdatedNotification roomDataUpdatedNotif:
+                RoomModel = RoomModel with
+                {
+                    Data = roomDataUpdatedNotif.Data
+                };
+                RoomName = RoomModel.Data.Name;
                 break;
             
             default:
