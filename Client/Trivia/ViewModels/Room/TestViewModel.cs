@@ -30,7 +30,7 @@ public class RoomTypeSelectorViewModel : PageViewModel
     {
         var response = await Comm.SendRequestAwaitResponse<CreateRoomResponse>(new CreateRoomRequest(roomType));
         
-        NavigateTo(new CreateRoomViewModel(HostScreen, new RoomModel
+        NavigateTo(new RoomAdminViewModel(HostScreen, new RoomModel
         {
             Id = response.RoomId,
             Admin = AppService.SessionUser!,

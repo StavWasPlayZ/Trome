@@ -11,14 +11,14 @@ using Trivia.ViewModels.Game;
 
 namespace Trivia.ViewModels.Room;
 
-public class CreateRoomViewModel : RoomViewModel
+public class RoomAdminViewModel : RoomViewModel
 {
     private static readonly TimeSpan RoomDataUpdateDelay = TimeSpan.FromMilliseconds(300);
 
     public ReactiveCommand<Unit, Unit> CloseRoomCommand { get; }
     public ReactiveCommand<Unit, Unit> StartGameCommand { get; }
 
-    public CreateRoomViewModel(IScreen hostScreen, RoomModel roomModel) : base(hostScreen, roomModel, [])
+    public RoomAdminViewModel(IScreen hostScreen, RoomModel roomModel) : base(hostScreen, roomModel, [])
     {
         _name = roomModel.Data.Name;
         _questions = roomModel.Data.QuestionsCount;
@@ -72,7 +72,7 @@ public class CreateRoomViewModel : RoomViewModel
         });
     }
 
-    public CreateRoomViewModel()
+    public RoomAdminViewModel()
     {
         _name = "ROOM NAME";
         _questions = 20;

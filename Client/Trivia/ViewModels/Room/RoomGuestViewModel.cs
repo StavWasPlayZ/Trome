@@ -13,11 +13,11 @@ using Trivia.ViewModels.Game;
 
 namespace Trivia.ViewModels.Room;
 
-public class JoinedRoomViewModel : RoomViewModel
+public class RoomGuestViewModel : RoomViewModel
 {
     public ReactiveCommand<Unit, Unit> LeaveRoomCommand { get; }
     
-    public JoinedRoomViewModel(IScreen hostScreen, RoomModel roomModel, List<User> players) :
+    public RoomGuestViewModel(IScreen hostScreen, RoomModel roomModel, List<User> players) :
         base(hostScreen, roomModel, players)
     {
         LeaveRoomCommand = ReactiveCommand.CreateFromTask(async () =>
@@ -36,7 +36,7 @@ public class JoinedRoomViewModel : RoomViewModel
         });
     }
 
-    public JoinedRoomViewModel()
+    public RoomGuestViewModel()
     {
         LeaveRoomCommand = NoOpCommand;
     }
