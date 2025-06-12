@@ -21,6 +21,6 @@ public:
 private:
     static const std::string keyPath;
     static const std::string ivPath;
-    static const std::vector<unsigned char> key;
-    static const std::vector<unsigned char> iv;
+    static std::vector<unsigned char> key;
+    static std::vector<unsigned char> iv;
 };

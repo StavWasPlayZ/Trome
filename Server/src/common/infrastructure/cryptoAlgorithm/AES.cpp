@@ -3,20 +3,20 @@
 const std::string AES::keyPath = "../../../src/common/infrastructure/cryptoAlgorithm/keys/AESkey.key";
 const std::string AES::ivPath = "../../../src/common/infrastructure/cryptoAlgorithm/keys/AESiv.key";
 
-const std::vector<unsigned char> AES::key = ICryptoAlgorithm::ReadFileBytes(AES::keyPath);
+std::vector<unsigned char> AES::key;
 
-const std::vector<unsigned char> AES::iv = ICryptoAlgorithm::ReadFileBytes(AES::ivPath);
+std::vector<unsigned char> AES::iv;
 
 AES::AES() : ICryptoAlgorithm()
 {
     if (AES::key.size() == 0)
     {
-        throw FileNotFoundException(AES::keyPath);
+        key = ICryptoAlgorithm::ReadFileBytes(AES::keyPath);
     }
 
     if (AES::iv.size() == 0)
     {
-        throw FileNotFoundException(AES::ivPath);
+        iv = ICryptoAlgorithm::ReadFileBytes(AES::ivPath);
     }
 }
 
