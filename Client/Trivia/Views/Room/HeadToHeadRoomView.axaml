@@ -149,7 +149,15 @@
                                    BorderThickness="5"
                                    BorderThicknessSelected="7"
                                    IconSvgPath="avares://Trivia/Assets/Icons/flag.svg"
-                                   IconMargin="-7 7 -10 7"/>
+                                   IconMargin="-7 7 -10 7">
+                
+                <controls:TriviaButton.Styles>
+                    <Style Selector="Button /template/ ContentPresenter:disabled">
+                        <Setter Property="Background" Value="rgba(0, 0, 0, .5)" />
+                    </Style>
+                </controls:TriviaButton.Styles>
+                
+            </controls:TriviaButton>
         </Grid>
 
     </Panel>
