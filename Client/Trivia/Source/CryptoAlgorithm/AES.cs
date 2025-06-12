@@ -10,12 +10,19 @@ public class AES : ICryptoAlgorithm
     private static readonly string KeyPath = "../../../Source/CryptoAlgorithm/Keys/AESkey.key";
     private static readonly string IVPath = "../../../Source/CryptoAlgorithm/Keys/AESiv.key";
     
-    private static readonly byte[] Key = ICryptoAlgorithm.ReadFileBytes(KeyPath);
-    private static readonly byte[] IV = ICryptoAlgorithm.ReadFileBytes(IVPath);
+    private static byte[] Key = [];
+    private static byte[] IV = [];
 
     public AES()
     {
-        throw new FileNotFoundException("AES key not found");
+        if (Key.Length == 0)
+        {
+            Key = ICryptoAlgorithm.ReadFileBytes(KeyPath);
+        }
+        if (IV.Length == 0)
+        {
+            IV = ICryptoAlgorithm.ReadFileBytes(IVPath);
+        }
     }
     public string Encrypt(string message)
     {

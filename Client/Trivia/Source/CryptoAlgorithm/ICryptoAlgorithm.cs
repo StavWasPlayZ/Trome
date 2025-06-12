@@ -11,7 +11,7 @@ public interface ICryptoAlgorithm
     {
         if (!File.Exists(path))
         {
-            throw new FileNotFoundException("The specified file was not found.", path);
+            throw new FileNotFoundException($"\"{path}\" not found");
         }
         return File.ReadAllBytes(path);
     }

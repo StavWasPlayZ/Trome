@@ -44,10 +44,22 @@ public class Communicator : IDisposable
     public bool IsConnected => _clientSocket?.Connected ?? false;
 
     private TcpClient? _clientSocket;
-    
-    static ICryptoAlgorithm _cryptoAlgorithm = new AES();
-    
-    private Communicator() { }
+
+    private ICryptoAlgorithm _cryptoAlgorithm;
+
+    private Communicator()
+    {
+        try
+        {
+            _cryptoAlgorithm = new AES();
+        }
+        catch (FileNotFoundException e)
+        {
+            VerboseLog($"The encryption failed: {e.Message}");
+            Dispatcher.UIThread.Post(MainWindow.Instance!.Close);
+            _cryptoAlgorithm = null!;
+        }
+    }
 
 
     /// <summary>
