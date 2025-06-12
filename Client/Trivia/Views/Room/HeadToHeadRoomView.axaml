@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:room="clr-namespace:Trivia.ViewModels.Room"
+             xmlns:controls="clr-namespace:Trivia.Controls"
              mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
              x:CompileBindings="True"
              x:Class="Trivia.Views.Room.HeadToHeadRoomView"
@@ -17,6 +18,44 @@
             <ImageBrush Source="avares://Trivia/Assets/drool-l-95f4c6657e51f40d193e1c5ba6629216d8e38d5b.png"
                         Stretch="UniformToFill" />
         </Panel.Background>
+        
+        <controls:TriviaBackButton Command="{Binding LeaveRoomCommand}"/>
+        
+        <TextBox VerticalAlignment="Top"
+                 HorizontalAlignment="Center"
+                 Width="600"
+                 FontSize="80"
+                 FontFamily="{StaticResource Born2bSportyFS}"
+                 Padding="0 -10 0 10"
+                 TextAlignment="Center"
+                 BorderBrush="rgba(0, 0, 0, .1)"
+                 BorderThickness="4, 0, 4, 4"
+                 CornerRadius="0 0 10 10"
+                 Background="rgba(0, 0, 0, .5)"
+                 Foreground="White"
+                 IsEnabled="{Binding IsCreator}">
+            
+            <TextBox.Styles>
+                <Style Selector="TextBox[IsEnabled=False], TextBox:pointerover, TextBox:focus-within">
+                    <Setter Property="Foreground" Value="{DynamicResource TriviaTextBoxForeground}"/>
+                                
+                    <Style Selector="^ /template/ Border">    
+                        <Setter Property="Background" Value="rgba(0, 0, 0, .3)"/>
+                        <Setter Property="BorderBrush" Value="rgba(0, 0, 0, .3)"/>
+                        <Setter Property="CornerRadius" Value="0 0 10 10"/>
+                    </Style>
+                </Style>
+                
+                <Style Selector="TextBox:focus-within">
+                    <Style Selector="^ /template/ Border">    
+                        <Setter Property="CornerRadius" Value="0 0 10 10"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                    </Style>
+                </Style>
+            </TextBox.Styles>
+            
+            ROOM NAME
+        </TextBox>
 
         <Grid ColumnDefinitions="*, *">
                 
@@ -35,7 +74,7 @@
             <Border Grid.Column="0"
                     Classes="user-container"
                     Background="#362034"
-                    BorderBrush="Red">
+                    BorderBrush="#cd3b0a">
                 <Grid ColumnDefinitions="Auto, *">
                             
                     <Border Grid.Column="0"
@@ -62,7 +101,7 @@
             <Border Grid.Column="1"
                     Classes="user-container"
                     Background="#362034"
-                    BorderBrush="Red">
+                    BorderBrush="#414990">
                 <Grid ColumnDefinitions="Auto, *">
                             
                     <Border Grid.Column="0"

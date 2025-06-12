@@ -46,7 +46,7 @@ public class JoinRoomMenuViewModel : PageViewModel
 
     public JoinRoomMenuViewModel(IScreen hostScreen) : base(hostScreen)
     {
-        NewRoomButtonCommand = NavigateReactiveCommand(() => new RoomTypeSelectorViewModel());
+        NewRoomButtonCommand = NavigateReactiveCommand(() => new RoomTypeSelectorViewModel(HostScreen));
 
         JoinRoomButtonCommand = ReactiveCommand.CreateFromTask<int>(JoinRoom);
 

@@ -1,4 +1,5 @@
-﻿using System.Reactive;
+﻿using System;
+using System.Reactive;
 using System.Threading.Tasks;
 using ReactiveUI;
 using Trivia.Codec.C2S;
@@ -29,13 +30,21 @@ public class RoomTypeSelectorViewModel : PageViewModel
     private async Task CreateRoom(RoomType roomType)
     {
         var response = await Comm.SendRequestAwaitResponse<CreateRoomResponse>(new CreateRoomRequest(roomType));
-        
-        NavigateTo(new RoomAdminViewModel(HostScreen, new RoomModel
+
+        var roomModel = new RoomModel
         {
             Id = response.RoomId,
             Admin = AppService.SessionUser!,
             PlayersCount = 1,
             Data = response.Data
-        }));
+        };
+        
+        NavigateTo(roomType switch
+        {
+            RoomType.TriviaRush => new RoomAdminViewModel(HostScreen, roomModel),
+            RoomType.HeadToHead => new HeadToHeadRoomViewModel(HostScreen, roomModel, true),
+            
+            _ => throw new ArgumentOutOfRangeException(nameof(roomType), roomType, null)
+        });
     }
 }
