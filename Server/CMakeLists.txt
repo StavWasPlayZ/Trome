@@ -224,8 +224,8 @@ target_link_libraries(Server PRIVATE ctre)
 # Crypto++
 # In Windows: vcpkg install cryptopp
 # In Linux (Fedora): sudo dnf install cryptopp cryptopp-devel
-#find_package(cryptopp REQUIRED)
-target_link_libraries(Server PRIVATE cryptopp)
+find_package(cryptopp CONFIG REQUIRED)
+target_link_libraries(Server PRIVATE cryptopp::cryptopp)
 
 
 # Support includes starting from relative paths
