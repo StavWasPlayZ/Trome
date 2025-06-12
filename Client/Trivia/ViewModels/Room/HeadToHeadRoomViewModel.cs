@@ -1,4 +1,6 @@
 ﻿using ReactiveUI;
+using Trivia.Codec.S2C;
+using Trivia.Codec.S2C.Notification.Packets;
 using Trivia.Models;
 using Trivia.Models.User;
 
@@ -6,28 +8,13 @@ namespace Trivia.ViewModels.Room;
 
 public class HeadToHeadRoomViewModel : RoomViewModel
 {
-    public HeadToHeadUserModel Creator { get; }
-    public HeadToHeadUserModel? Opponent { get; }
-    
     public HeadToHeadRoomViewModel(IScreen hostScreen, RoomModel roomModel) :
         base(hostScreen, roomModel, [])
     {
         _roomName = roomModel.Data.Name;
         MaxPlayers = 2;
 
-        //TODO: Implement getting points
-        var currUser = HeadToHeadUserModel.FromUser(AppService.SessionUser!, 0); 
-        
-        if (IsAdmin)
-        {
-            Creator = currUser;
-            Opponent = null;
-        }
-        else
-        {
-            Creator = HeadToHeadUserModel.FromUser(roomModel.Admin, 0);
-            Opponent = currUser;
-        }
+        UpdatePlayerFields();
     }
 
     public HeadToHeadRoomViewModel()
@@ -39,11 +26,49 @@ public class HeadToHeadRoomViewModel : RoomViewModel
     }
 
 
+    private HeadToHeadUserModel _creator = null!;
+
+    public HeadToHeadUserModel Creator
+    {
+        get => _creator;
+        set => this.RaiseAndSetIfChanged(ref _creator, value);
+    }
+
+    private HeadToHeadUserModel? _opponent;
+
+    public HeadToHeadUserModel? Opponent
+    {
+        get => _opponent;
+        set => this.RaiseAndSetIfChanged(ref _opponent, value);
+    }
+
+
+    private void UpdatePlayerFields()
+    {
+        //TODO: Implement getting points
+        Creator = HeadToHeadUserModel.FromUser(Players[0]!, 0);
+        Opponent = (Players.Count > 1 && Players[1] is not null)
+            ? HeadToHeadUserModel.FromUser(Players[1]!, 0)
+            : null;
+    }
+
+
     private string? _roomName;
 
     public string? RoomName
     {
         get => _roomName;
         set => this.RaiseAndSetIfChanged(ref _roomName, value);
+    }
+
+
+    protected override void CommOnPacketReceived(IS2CPacket packet)
+    {
+        base.CommOnPacketReceived(packet);
+
+        if (packet is PlayerJoinedRoomNotification or PlayerLeftRoomNotification)
+        {
+            UpdatePlayerFields();
+        }
     }
 }
