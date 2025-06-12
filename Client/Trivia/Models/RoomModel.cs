@@ -20,29 +20,27 @@ public record RoomModel : IdentifiableModel
     public static List<RoomModel> GenerateMockRooms(int count)
     {
         return Enumerable.Range(1, count)
-            .Select(i => new RoomModel
+            .Select(i =>
+            {
+                var roomType = i % 3 == 0 ? RoomType.HeadToHead : RoomType.TriviaRush;
+                
+                return new RoomModel
                 {
                     Id = i,
                     Status = RoomStatus.Waiting,
-                    RoomType = i % 3 == 0 ? RoomType.HeadToHead : RoomType.TriviaRush,
-                    
+                    RoomType = roomType,
+
                     Admin = new Raw.User
                     {
                         Id = i,
                         Username = $"User {i}"
                     },
 
-                    PlayersCount = 2,
+                    PlayersCount = roomType == RoomType.HeadToHead ? 1 : 2,
 
-                    Data = new RoomData
-                    {
-                        Name = $"Room {i}",
-                        MaxPlayers = 10,
-                        TimePerQuestionSecs = 7,
-                        QuestionsCount = 15
-                    }
-                }
-            ).ToList();
+                    Data = RoomData.CreateMock($"Room {i}", roomType)
+                };
+            }).ToList();
     }
 
     public static RoomModel CreateMockRoom(Raw.User admin)
@@ -55,13 +53,7 @@ public record RoomModel : IdentifiableModel
 
             PlayersCount = 2,
 
-            Data = new RoomData
-            {
-                Name = "Room 0",
-                MaxPlayers = 10,
-                TimePerQuestionSecs = 7,
-                QuestionsCount = 15
-            }
+            Data = RoomData.CreateMock("Room 0", RoomType.TriviaRush)
         };
     }
 }
