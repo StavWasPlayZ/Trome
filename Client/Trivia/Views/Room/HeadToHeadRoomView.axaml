@@ -56,18 +56,40 @@
             
             ROOM NAME
         </TextBox>
+        
 
         <Grid ColumnDefinitions="*, *">
                 
             <Grid.Styles>
                 <Style Selector="Border.user-container">
-                    <Setter Property="Width" Value="300"/>
+                    <Setter Property="Width" Value="325"/>
                         
                     <Setter Property="VerticalAlignment" Value="Center"/>
                     <Setter Property="HorizontalAlignment" Value="Center"/>
                     <Setter Property="BorderThickness" Value="5"/>
                     <Setter Property="CornerRadius" Value="10"/>
                     <Setter Property="Padding" Value="5"/>
+                    
+                    <Style Selector="^ > Grid">
+                        <Style Selector="^ > Border">
+                            <Setter Property="Padding" Value="5"/>
+                            <Setter Property="Margin" Value="5"/>
+                            <Setter Property="Background" Value="#6C4669"/>
+                            <Setter Property="CornerRadius" Value="5"/>
+                            <Setter Property="BoxShadow" Value="0 5 0 0 #1f000000"/>
+                        </Style>
+                        
+                        <Style Selector="^ > StackPanel">
+                            <Setter Property="Margin" Value="10"/>
+                            
+                            <Style Selector="^ > TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Style>
+                            <Style Selector="^ > TextBlock:nth-child(2)">
+                                <Setter Property="FontSize" Value="20"/>
+                            </Style>
+                        </Style>
+                    </Style>
                 </Style>
             </Grid.Styles>
                     
@@ -77,22 +99,15 @@
                     BorderBrush="#cd3b0a">
                 <Grid ColumnDefinitions="Auto, *">
                             
-                    <Border Grid.Column="0"
-                            Padding="5"
-                            Margin="5"
-                            Background="#6C4669"
-                            CornerRadius="5"
-                            BoxShadow="0 5 0 0 #1f000000">
+                    <Border Grid.Column="0">
                         <Svg Path="avares://Trivia/Assets/Icons/person.svg"
                              Css="* { fill: #ffffff }"
                              Height="50"/>
                     </Border>
                             
-                    <StackPanel Grid.Column="1"
-                                Margin="10">
-                        <TextBlock VerticalAlignment="Center">USERNAME</TextBlock>
-                        <TextBlock VerticalAlignment="Center"
-                                   FontSize="20">69 POINTS</TextBlock>
+                    <StackPanel Grid.Column="1">
+                        <TextBlock>USERNAME</TextBlock>
+                        <TextBlock>69 POINTS</TextBlock>
                     </StackPanel>
                             
                 </Grid>
@@ -104,22 +119,15 @@
                     BorderBrush="#414990">
                 <Grid ColumnDefinitions="Auto, *">
                             
-                    <Border Grid.Column="0"
-                            Padding="5"
-                            Margin="5"
-                            Background="#6C4669"
-                            CornerRadius="5"
-                            BoxShadow="0 5 0 0 #1f000000">
+                    <Border Grid.Column="0">
                         <Svg Path="avares://Trivia/Assets/Icons/person.svg"
                              Css="* { fill: #ffffff }"
                              Height="50"/>
                     </Border>
                             
-                    <StackPanel Grid.Column="1"
-                                Margin="10">
-                        <TextBlock VerticalAlignment="Center">USERNAME</TextBlock>
-                        <TextBlock VerticalAlignment="Center"
-                                   FontSize="20">69 POINTS</TextBlock>
+                    <StackPanel Grid.Column="1">
+                        <TextBlock>USERNAME</TextBlock>
+                        <TextBlock>69 POINTS</TextBlock>
                     </StackPanel>
                             
                 </Grid>
