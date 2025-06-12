@@ -62,6 +62,9 @@ ProtocolRequest *JsonRequestPacketDeserializer::deserialize(const RequestInfo &i
     case RequestCode::GET_GAME_RESULT: return new GetGameResultRequest(
         deserializeGetGameResultRequest(info.data)
     );
+    case RequestCode::ADD_QUESTION: return new AddQuestionRequest(
+        deserializeAddQuestionRequest(info.data)
+    );
 
     default: throw std::invalid_argument("Invalid request ID");
     }
@@ -180,6 +183,16 @@ SubmitAnswerRequest JsonRequestPacketDeserializer::deserializeSubmitAnswerReques
 GetGameResultRequest JsonRequestPacketDeserializer::deserializeGetGameResultRequest(const nlohmann::json &)
 {
     return GetGameResultRequest();
+}
+
+AddQuestionRequest JsonRequestPacketDeserializer::deserializeAddQuestionRequest(const nlohmann::json &data)
+{
+    return AddQuestionRequest(
+        Question(
+            data.at("question"),
+            data.at("answers")
+        )
+    );
 }
 
 nlohmann::json JsonRequestPacketDeserializer::readJson(const unsigned char *data, const int jsonLen, ICryptoAlgorithm& cryptoAlgorithm)

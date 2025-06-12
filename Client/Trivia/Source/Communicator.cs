@@ -90,16 +90,18 @@ public class Communicator : IDisposable
 
         void OnPacketReceived(IS2CPacket packet)
         {
-            if (packet is T wantedResponse)
+            if (packet is not T wantedResponse)
             {
-                onResponse(wantedResponse);
+                if (packet is ErrorResponse errorResponse)
+                {
+                    //TODO: Check if it actually corresponds to the original code
+                    onError?.Invoke(errorResponse);
+                }
+
+                return;
             }
-            else if (packet is ErrorResponse errorResponse)
-            {
-                //TODO: Check if it actually corresponds to the original code
-                onError?.Invoke(errorResponse);
-            }
-            
+
+            onResponse(wantedResponse);
             PacketReceived -= OnPacketReceived;
         }
     }

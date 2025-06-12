@@ -54,6 +54,8 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const ProtocolResponse &
         return serializeResponse(static_cast<const SubmitAnswerResponse&>(response), cryptoAlgorythm);
     case ResponseCode::GET_GAME_RESULT:
         return serializeResponse(static_cast<const GetGameResultResponse&>(response), cryptoAlgorythm);
+    case ResponseCode::ADD_QUESTION:
+        return serializeResponse(static_cast<const AddQuestionResponse&>(response), cryptoAlgorythm);
 
     default: throw std::invalid_argument("Invalid response ID");
     }
@@ -231,11 +233,12 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const SubmitAnswerRespon
 }
 
 
-OBuffer JsonResponsePacketSerializer::serializeResponse(const GetGameResultResponse &response, ICryptoAlgorithm& cryptoAlgorythm)
+OBuffer JsonResponsePacketSerializer::serializeResponse(const GetGameResultResponse &response,
+                                                        ICryptoAlgorithm &cryptoAlgorythm)
 {
     nlohmann::json data;
 
-    nlohmann::json& resultsObj = data["results"] = nlohmann::json::array();
+    nlohmann::json &resultsObj = data["results"] = nlohmann::json::array();
 
     for (const PlayerResult &result : response.results)
     {
@@ -243,6 +246,12 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetGameResultRespo
     }
 
     return serialize(response.id, data, cryptoAlgorythm);
+}
+
+OBuffer JsonResponsePacketSerializer::serializeResponse(const AddQuestionResponse &response,
+                                                        ICryptoAlgorithm &cryptoAlgorythm)
+{
+    return serialize(response.id, nlohmann::json::object(), cryptoAlgorythm);
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const QuestionResponse &response, ICryptoAlgorithm& cryptoAlgorythm)
@@ -270,9 +279,14 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const QuestionResponse &
 }
 
 OBuffer JsonResponsePacketSerializer::serialize(const ResponseCode msgCode, const nlohmann::json &data,
-                                                ICryptoAlgorithm& cryptoAlgorythm)
+    ICryptoAlgorithm& cryptoAlgorythm)
 {
-    return ProtocolPacketSerializer::serialize(S2CPacketType::RESPONSE, static_cast<unsigned char>(msgCode), data, cryptoAlgorythm);
+    return ProtocolPacketSerializer::serialize(
+        S2CPacketType::RESPONSE,
+        static_cast<unsigned char>(msgCode),
+        data,
+        cryptoAlgorythm
+    );
 }
 
 

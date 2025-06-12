@@ -13,6 +13,8 @@ public class ConnectingViewModel : PageViewModel
     {
         this.WhenActivated(disposables =>
         {
+            InitMusicService();
+            
             Communicator.Instance.Connect()
                 .ToObservable()
                 .Subscribe(
@@ -22,9 +24,30 @@ public class ConnectingViewModel : PageViewModel
                 .DisposeWith(disposables);
         });
     }
-    
+
+    private void InitMusicService()
+    {
+        bool succeed;
+        
+        try
+        {
+            succeed = App.MusicService!.Initialize();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            succeed = false;
+            
+        }
+
+        if (!succeed)
+        {
+            Console.Error.WriteLine("Music service not initialized");
+            App.SetMusicServiceUnavailable();
+        }
+    }
+
     public ConnectingViewModel() { }
-    
     
     private bool _connectionFailed;
 
@@ -34,9 +57,14 @@ public class ConnectingViewModel : PageViewModel
         set => this.RaiseAndSetIfChanged(ref _connectionFailed, value);
     }
 
-    private void OnConnectionEstablished() =>
+    private void OnConnectionEstablished()
+    {
+        App.MusicService?.Play();
+        App.MusicService?.PlayBackgroundTrack(false);
+        
         Dispatcher.UIThread.Post(() => NavigateAndReset(new LoginViewModel(HostScreen)));
-    
+    }
+
     private void OnConnectionFailed(Exception e)
     {
         Console.Error.WriteLine(e);

@@ -1,7 +1,7 @@
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
-using Avalonia.LogicalTree;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
 using Trivia.ViewModels;
@@ -15,14 +15,9 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
     
     public static MainWindow? Instance => ApplicationLifetime?.MainWindow as MainWindow;
     
-    
     public MainWindow()
     {
-        this.WhenActivated(_ =>
-        {
-            ViewModel?.Router.Navigate.Execute(new ConnectingViewModel(ViewModel));
-        });
-        
+        this.WhenActivated(_ => { });
         InitializeComponent();
     }
 
@@ -39,8 +34,19 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         ViewModel!.PopupContents = null;
     }
 
-    private void OnDetachedFromLogicalTree(object? sender, LogicalTreeAttachmentEventArgs e)
+    private void Window_OnClosing(object? sender, WindowClosingEventArgs e)
     {
-        ViewModel?.HandleClosing();
+        if (ViewModel == null)
+            return;
+
+        if (ViewModel.AllowClosing)
+            return;
+        
+        e.Cancel = true;
+
+        if (!ViewModel.IsCloseProcessing)
+        {
+            ViewModel?.HandleClosing();
+        }
     }
 }

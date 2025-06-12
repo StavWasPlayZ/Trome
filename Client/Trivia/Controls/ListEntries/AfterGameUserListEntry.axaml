@@ -105,9 +105,11 @@
                         <TextBlock Classes="primary-text"
                                    Grid.Column="2"
                                    VerticalAlignment="Center"
-                                   FontSize="30">
-                            USERNAME
-                        </TextBlock>
+                                   FontSize="30"
+                                   Text="{
+                                       Binding Result.User.Username,
+                                       RelativeSource={RelativeSource TemplatedParent}
+                                   }"/>
                     
                         <TextBlock Classes="secondary-text"
                                    Grid.Column="3"

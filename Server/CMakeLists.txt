@@ -9,6 +9,14 @@ if (POLICY CMP0141)
   set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
 endif()
 
+# In Windows:
+# Follow step 1: https://learn.microsoft.com/en-us/vcpkg/get_started/get-started?pivots=shell-powershell#1---set-up-vcpkg
+# INSTALL DIRECTLY TO C:/.
+if (WIN32)
+  set(CMAKE_TOOLCHAIN_FILE "C:/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "Vcpkg toolchain file")
+  set(CMAKE_PREFIX_PATH "C:/vcpkg/installed/x64-windows/share")
+endif()
+
 project ("Server")
 
 
@@ -40,7 +48,7 @@ add_executable (Server
   "src/common/handler/IRequestHandler.cpp"
   "src/common/handler/RequestHandlerFactory.h"
   "src/common/handler/RequestHandlerFactory.cpp"
-  
+
   "src/common/handler/LoginRequestHandler.h"
   "src/common/handler/LoginRequestHandler.cpp"
   "src/common/handler/MenuRequestHandler.h"
@@ -62,7 +70,7 @@ add_executable (Server
   "src/common/infrastructure/request/RequestInfo.cpp"
   "src/common/infrastructure/request/RequestResult.h"
   "src/common/infrastructure/request/RequestResult.cpp"
-  
+
   "src/common/infrastructure/db/IDatabase.cpp"
   "src/common/infrastructure/db/SqliteDatabase.cpp"
   "src/common/infrastructure/db/SqliteDatabase.tpp"
@@ -83,7 +91,7 @@ add_executable (Server
 
   "src/common/infrastructure/UserStatistics.h"
   "src/common/infrastructure/UserStatistics.cpp"
-  
+
   "src/common/infrastructure/PlayerResult.h"
   "src/common/infrastructure/PlayerResult.cpp"
 
@@ -91,7 +99,7 @@ add_executable (Server
   "src/common/infrastructure/Question.h"
   "src/common/infrastructure/Game.h"
   "src/common/infrastructure/Game.cpp"
-  "src/common/handler/RoomMemberRequestHandler.h" 
+  "src/common/handler/RoomMemberRequestHandler.h"
   "src/common/handler/RoomMemberRequestHandler.cpp"
 
   "src/common/handler/codec/s2c/ProtocolPacketSerializer.cpp"
@@ -106,9 +114,9 @@ add_executable (Server
   "src/common/handler/RoomAdminRequestHandler.h"
 
   "src/common/infrastructure/GameData.cpp"
-  "src/common/infrastructure/GameData.h" 
+  "src/common/infrastructure/GameData.h"
 
-  "src/common/manager/GameManager.h" 
+  "src/common/manager/GameManager.h"
   "src/common/manager/GameManager.cpp"
   "src/common/handler/GameRequestHandler.cpp"
   "src/common/handler/GameRequestHandler.h"
@@ -116,7 +124,7 @@ add_executable (Server
   "src/common/Utils.cpp"
   "src/common/Utils.h"
 
-  "src/common/handler/FinishedGameEarlyRequestHandler.h" 
+  "src/common/handler/FinishedGameEarlyRequestHandler.h"
   "src/common/handler/FinishedGameEarlyRequestHandler.cpp"
 
   "src/common/handler/codec/c2s/request/ProtocolPacketDeserializer.cpp"
@@ -184,11 +192,12 @@ target_link_libraries(Server PRIVATE httplib)
 
 target_compile_definitions(Server PRIVATE CPPHTTPLIB_OPENSSL_SUPPORT)
 
-# In Windows, OpenSSL is not installed nor recognized by default.
+# In Windows: vcpkg install openssl
+# In Linux (Fedora): sudo dnf install openssl-devel
 if (WIN32)
+  # Install here: https://slproweb.com/download/Win64OpenSSL-3_5_0.msi
+  # Make sure to install directly to *C:\OpenSSL-Win64*.
   find_package(openssl REQUIRED)
-  set(OPENSSL_ROOT_DIR "C:\\OpenSSL-Win64")
-  set(OPENSSL_USE_STATIC_LIBS TRUE)
   target_link_libraries(Server PRIVATE OpenSSL::SSL OpenSSL::Crypto)
 else ()
   target_link_libraries(Server PRIVATE ssl crypto)

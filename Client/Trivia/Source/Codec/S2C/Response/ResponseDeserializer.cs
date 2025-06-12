@@ -28,6 +28,7 @@ public static class ResponseDeserializer
             ResponseCode.GetGameResult => PacketDeserializer.Deserialize<GetGameResultResponse>(json),
             ResponseCode.GetQuestion => PacketDeserializer.Deserialize<GetQuestionResponse>(json),
             ResponseCode.SubmitAnswer => PacketDeserializer.Deserialize<SubmitAnswerResponse>(json),
+            ResponseCode.AddQuestion => PacketDeserializer.Deserialize<AddQuestionResponse>(json),
             _ => null
         };
     }

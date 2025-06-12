@@ -104,3 +104,7 @@ GetGameResultResponse::GetGameResultResponse(const std::vector<PlayerResult>& re
     ProtocolResponse(ResponseCode::GET_GAME_RESULT), 
     results(results)
 {}
+
+AddQuestionResponse::AddQuestionResponse() : 
+    ProtocolResponse(ResponseCode::ADD_QUESTION)
+{}

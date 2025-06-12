@@ -4,9 +4,9 @@
 #include "infrastructure/db/IDatabase.h"
 #include "infrastructure/model/UserModel.h"
 
-#include <string>
 #include <utility>
 #include <vector>
+#include <utility>
 
 class StatisticsManager
 {

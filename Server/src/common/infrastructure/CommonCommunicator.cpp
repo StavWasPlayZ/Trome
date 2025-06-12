@@ -246,9 +246,10 @@ void CommonCommunicator::_handleClient(Client& client)
     std::unique_lock<std::mutex> handlerLock = client.acquireRequestHandlerLock();
     const IRequestHandler *const handler = client.getRequestHandler();
 
-    if (!handler->isRequestRelevant(info))
+    const std::optional<ErrorStatus> requestError = handler->isRequestRelevant(info);
+    if (requestError.has_value())
     {
-        _dispatchResponse(client, ErrorResponse(ErrorStatus::ILLEGAL_REQUEST, info.id));
+        _dispatchResponse(client, ErrorResponse(requestError.value(), info.id));
         return;
     }
 
@@ -325,9 +326,6 @@ RequestInfo CommonCommunicator::_waitForClientRequest(const Client &client)
             *this->m_clients.at(client.socket),
 
             static_cast<RequestCode>(reqCode),
-            std::chrono::system_clock::to_time_t(
-                std::chrono::system_clock::now()
-            ),
             JsonRequestPacketDeserializer::readJson(data, jsonLen, *client.getCryptoAlgorithm())
         );
     }

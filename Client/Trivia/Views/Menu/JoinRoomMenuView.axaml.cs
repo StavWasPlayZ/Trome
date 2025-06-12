@@ -2,7 +2,6 @@ using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.LogicalTree;
 using Trivia.Models;
 using Trivia.ViewModels.Menu;
 
@@ -28,11 +27,6 @@ public partial class JoinRoomMenuView : PageViewControl<JoinRoomMenuViewModel>
         {
             CloseRoomPanel();
         }
-    }
-    
-    private void OnAttachedToLogicalTree(object? sender, LogicalTreeAttachmentEventArgs e)
-    {
-        ViewModel?.RunRefreshRoomsThread();
     }
     
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "infrastructure/RoomData.h"
+#include "infrastructure/Question.h"
 
 #include <optional>
 #include <string>
@@ -26,7 +27,8 @@ enum class RequestCode : unsigned char
 	LEAVE_GAME,
 	GET_QUESTION,
 	SUBMIT_ANSWER,
-	GET_GAME_RESULT
+	GET_GAME_RESULT,
+	ADD_QUESTION
 };
 
 struct ProtocolRequest
@@ -157,4 +159,11 @@ struct [[deprecated(
     " This method is therefore useless and should not be used."
 )]] GetGameResultRequest : ProtocolRequest
 {
+};
+
+struct AddQuestionRequest : ProtocolRequest
+{
+    explicit AddQuestionRequest(const Question& question);
+
+    const Question question;
 };
