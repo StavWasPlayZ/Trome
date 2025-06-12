@@ -69,6 +69,7 @@ nlohmann::json ProtocolPacketSerializer::serializeAsJson(const Room &room)
 
     result["id"] = room.getId();
     result["status"] = room.getStatus();
+    result["room_type"] = room.getType();
     result["admin"] = serializeAsJson(room.getAdmin());
 
     result["players_count"] = room.getAllUsers().size();
