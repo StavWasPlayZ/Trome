@@ -34,6 +34,7 @@ public class RoomTypeSelectorViewModel : PageViewModel
         var roomModel = new RoomModel
         {
             Id = response.RoomId,
+            RoomType = roomType,
             Admin = AppService.SessionUser!,
             PlayersCount = 1,
             Data = response.Data
