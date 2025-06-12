@@ -25,11 +25,14 @@ public:
     static CryptoPP::RSA::PublicKey clientPublicKey;
     static bool keysLoaded;
 
+    // SHA1 hash length = 20 bytes
+    const size_t hashLen = 20;
+
     void loadPrivateKeyFromPEM(const std::string &filename);
     void loadPublicKeyFromPEM(const std::string &filename);
     std::string loadPEMFile(const std::string &filename);
 
     // Declare these as private member functions
     size_t getMaxPlaintextSize() const;
-    size_t getCiphertextSize() const;
+    size_t getEncryptedtextSize() const;
 };
