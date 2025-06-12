@@ -5,6 +5,7 @@ using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using Avalonia.Threading;
 using ReactiveUI;
+using Trivia.Codec.C2S;
 using Trivia.Codec.C2S.Request.Packets;
 using Trivia.Codec.S2C.Response;
 using Trivia.Codec.S2C.Response.Packets;
@@ -90,7 +91,21 @@ public class JoinRoomMenuViewModel : PageViewModel
         //TODO: Handle room deleted before refresh
         var response = await Comm.SendRequestAwaitResponse<JoinRoomResponse>(new JoinRoomRequest(roomId));
         
-        NavigateTo(new RoomGuestViewModel(HostScreen, response.Room, [..response.Players]));
+        var room = Rooms.Find(x => x.Id == roomId)!;
+        
+        switch (room.RoomType)
+        {
+            case RoomType.TriviaRush:
+                NavigateTo(new RoomGuestViewModel(HostScreen, response.Room, [..response.Players]));
+                break;
+            
+            case RoomType.HeadToHead:
+                NavigateTo(new HeadToHeadRoomViewModel(HostScreen, response.Room));
+                break;
+            
+            default:
+                throw new Exception("Unknown room type");
+        }
     }
 
     private void OnJoinRoomFailed(Exception exception)
