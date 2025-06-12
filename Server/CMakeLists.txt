@@ -144,6 +144,8 @@ add_executable (Server
   "src/common/infrastructure/cryptoAlgorithm/CipherEncryption.cpp"
   "src/common/infrastructure/cryptoAlgorithm/OTP.h"
   "src/common/infrastructure/cryptoAlgorithm/OTP.cpp"
+  "src/common/infrastructure/cryptoAlgorithm/AES.h"
+  "src/common/infrastructure/cryptoAlgorithm/AES.cpp"
 )
 
 # Platform-specific sources
