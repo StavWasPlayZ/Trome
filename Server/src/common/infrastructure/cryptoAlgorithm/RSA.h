@@ -9,25 +9,23 @@
 #include <cryptopp/filters.h>
 #include <cryptopp/queue.h>
 
-class RSA : public ICryptoAlgorithm
+class RSACrypto : public ICryptoAlgorithm
 {
 public:
-    RSA();
-    std::string encrypt(const std::string &message) const override;
-    std::string decrypt(const std::string &message) const override;
+	RSACrypto();
+
+	std::string encrypt(const std::string &message) const override;
+	std::string decrypt(const std::string &message) const override;
 
 private:
-    static const std::string privateServerPath;
-    static const std::string publicClientPath;
+    static const std::string serverPrivateKeyPath;
+	static const std::string clientPublicKeyPath;
+	static bool keysLoaded;
+	static CryptoPP::RSA::PrivateKey serverPrivateKey;
+	static CryptoPP::RSA::PublicKey clientPublicKey;
 
-    static std::string privateServerKeyStr;
-    static std::string publicClientKeyStr;
-
-    static CryptoPP::RSA::PrivateKey serverPrivateKey;
-    static CryptoPP::RSA::PublicKey clientPublicKey;
-
-    static CryptoPP::AutoSeededRandomPool rng;
-
-    static void LoadPublicKey(const std::string &keyStr);
-    static void LoadPrivateKey(const std::string &keyStr);
+  
+	static std::string loadPEMFile(const std::string &filename);
+	static void loadPrivateKeyFromPEM(const std::string &filename);
+	static void loadPublicKeyFromPEM(const std::string &filename);
 };

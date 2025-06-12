@@ -1,6 +1,4 @@
-﻿using System.Security.Cryptography;
-
-namespace Trivia.CryptoAlgorithm;
+﻿namespace Trivia.CryptoAlgorithm;
 
 public class OTP : ICryptoAlgorithm
 {

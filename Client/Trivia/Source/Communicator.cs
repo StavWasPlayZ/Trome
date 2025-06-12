@@ -51,9 +51,15 @@ public class Communicator : IDisposable
     {
         try
         {
-            _cryptoAlgorithm = new AES();
+            _cryptoAlgorithm = new RSACrypto();
         }
         catch (FileNotFoundException e)
+        {
+            VerboseLog($"The encryption failed: {e.Message}");
+            Dispatcher.UIThread.Post(MainWindow.Instance!.Close);
+            _cryptoAlgorithm = null!;
+        }
+        catch(Exception e)
         {
             VerboseLog($"The encryption failed: {e.Message}");
             Dispatcher.UIThread.Post(MainWindow.Instance!.Close);
