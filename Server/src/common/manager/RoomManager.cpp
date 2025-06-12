@@ -6,14 +6,14 @@ RoomManager::RoomManager(const IDatabase &database) :
     m_database(database)
 {}
 
-Room &RoomManager::createRoom(LoggedUser &admin, const RoomData &data)
+Room &RoomManager::createRoom(LoggedUser &admin, const RoomType roomType, const RoomData &data)
 {
     const unsigned int roomId = Room::generateId();
 
     const auto [entry, _] = this->m_rooms.emplace(
         std::piecewise_construct,
         std::forward_as_tuple(roomId),
-        std::forward_as_tuple(roomId, admin, data, this->m_database, RoomStatus::WAITING)
+        std::forward_as_tuple(roomId, roomType, admin, data, this->m_database, RoomStatus::WAITING)
     );
 
     m_waitingRooms.emplace(roomId, &entry->second);

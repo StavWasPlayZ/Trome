@@ -131,9 +131,9 @@ GetUserStatisticsRequest JsonRequestPacketDeserializer::deserializeGetUserStatis
     return GetUserStatisticsRequest(data.at("user_id"));
 }
 
-CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(const nlohmann::json &)
+CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(const nlohmann::json &data)
 {
-    return CreateRoomRequest();
+    return CreateRoomRequest(data.at("room_type"));
 }
 
 CloseRoomRequest JsonRequestPacketDeserializer::deserializeCloseRoomRequest(const nlohmann::json &)
