@@ -45,7 +45,7 @@ public class GameCountdownViewModel : SubRoomViewModel
             case 4:
                 App.MusicService?.SilenceAll();
                 break;
-            case 3:
+            case 2:
                 App.MusicService?.PlayTriviaTrack();
                 break;
             case 0:
