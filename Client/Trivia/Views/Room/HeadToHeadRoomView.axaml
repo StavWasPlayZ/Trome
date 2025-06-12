@@ -33,7 +33,8 @@
                  CornerRadius="0 0 10 10"
                  Background="rgba(0, 0, 0, .5)"
                  Foreground="White"
-                 IsEnabled="{Binding IsCreator}">
+                 IsEnabled="{Binding IsCreator}"
+                 Text="{Binding RoomName}">
             
             <TextBox.Styles>
                 <Style Selector="TextBox[IsEnabled=False], TextBox:pointerover, TextBox:focus-within">
@@ -53,8 +54,6 @@
                     </Style>
                 </Style>
             </TextBox.Styles>
-            
-            ROOM NAME
         </TextBox>
         
 
@@ -81,10 +80,8 @@
                         
                         <Style Selector="^ > StackPanel">
                             <Setter Property="Margin" Value="10"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
                             
-                            <Style Selector="^ > TextBlock">
-                                <Setter Property="VerticalAlignment" Value="Center"/>
-                            </Style>
                             <Style Selector="^ > TextBlock:nth-child(2)">
                                 <Setter Property="FontSize" Value="20"/>
                             </Style>
@@ -106,8 +103,10 @@
                     </Border>
                             
                     <StackPanel Grid.Column="1">
-                        <TextBlock>USERNAME</TextBlock>
-                        <TextBlock>69 POINTS</TextBlock>
+                        <TextBlock Text="{Binding Creator.Username}"/>
+                        
+                        <!--TODO: Re-add points display -->
+                        <!-- <TextBlock>69 POINTS</TextBlock> -->
                     </StackPanel>
                             
                 </Grid>
@@ -126,8 +125,11 @@
                     </Border>
                             
                     <StackPanel Grid.Column="1">
-                        <TextBlock>USERNAME</TextBlock>
-                        <TextBlock>69 POINTS</TextBlock>
+                        <TextBlock Text="{
+                            Binding Opponent.Username,
+                            FallbackValue='WAITING...'
+                        }"/>
+                        <!-- <TextBlock>69 POINTS</TextBlock> -->
                     </StackPanel>
                             
                 </Grid>

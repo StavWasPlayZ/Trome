@@ -42,7 +42,7 @@ public class RoomTypeSelectorViewModel : PageViewModel
         NavigateTo(roomType switch
         {
             RoomType.TriviaRush => new RoomAdminViewModel(HostScreen, roomModel),
-            RoomType.HeadToHead => new HeadToHeadRoomViewModel(HostScreen, roomModel, true),
+            RoomType.HeadToHead => new HeadToHeadRoomViewModel(HostScreen, roomModel, null),
             
             _ => throw new ArgumentOutOfRangeException(nameof(roomType), roomType, null)
         });
