@@ -12,9 +12,11 @@ public class AES : ICryptoAlgorithm
     
     private static readonly byte[] Key = ICryptoAlgorithm.ReadFileBytes(KeyPath);
     private static readonly byte[] IV = ICryptoAlgorithm.ReadFileBytes(IVPath);
-    
+
     public AES()
-    {}
+    {
+        throw new FileNotFoundException("AES key not found");
+    }
     public string Encrypt(string message)
     {
         using var aes = Aes.Create();

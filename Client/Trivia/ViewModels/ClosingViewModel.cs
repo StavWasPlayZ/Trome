@@ -1,3 +1,4 @@
+using System.IO;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using Avalonia.Threading;
@@ -32,6 +33,13 @@ public class ClosingViewModel : PageViewModel
     private static void DisposeStuff()
     {
         App.MusicService?.Dispose();
-        Communicator.Instance.Dispose();
+        try
+        {
+            Communicator.Instance.Dispose();
+        }
+        catch (FileNotFoundException e)
+        {
+            MainWindow.Instance!.Close();
+        }
     }
 }
