@@ -3,6 +3,8 @@
 #include <chrono>
 #include <string>
 
+enum class RoomType;
+
 /**
  * Represents all fields of a Room customizable by its admin
  */
@@ -12,10 +14,9 @@ struct RoomData
         const std::string &name,
         int maxPlayers,
         int timePerQuestion,
-        int questionsCount
-    );
+        int questionsCount);
 
-    static RoomData ofDefaults();
+    static RoomData ofDefaults(RoomType roomType);
 
     std::string name;
 

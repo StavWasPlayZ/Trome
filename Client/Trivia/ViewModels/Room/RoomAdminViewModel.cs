@@ -11,27 +11,16 @@ using Trivia.ViewModels.Game;
 
 namespace Trivia.ViewModels.Room;
 
-public class CreateRoomViewModel : RoomViewModel
+public class RoomAdminViewModel : RoomViewModel
 {
-    private static readonly TimeSpan RoomDataUpdateDelay = TimeSpan.FromMilliseconds(300);
-
-    public ReactiveCommand<Unit, Unit> CloseRoomCommand { get; }
     public ReactiveCommand<Unit, Unit> StartGameCommand { get; }
 
-    public CreateRoomViewModel(IScreen hostScreen, RoomModel roomModel) : base(hostScreen, roomModel, [])
+    public RoomAdminViewModel(IScreen hostScreen, RoomModel roomModel) : base(hostScreen, roomModel, [])
     {
         _name = roomModel.Data.Name;
         _questions = roomModel.Data.QuestionsCount;
         _secsPerQuestion = roomModel.Data.TimePerQuestionSecs;
         MaxPlayers = roomModel.Data.MaxPlayers;
-        
-        
-        CloseRoomCommand = ReactiveCommand.CreateFromTask(async () =>
-        {
-            await Comm.SendRequestAwaitResponse<CloseRoomResponse>(new CloseRoomRequest());
-            
-            NavigateBackCommand!.Execute();
-        });
 
         StartGameCommand = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -72,14 +61,14 @@ public class CreateRoomViewModel : RoomViewModel
         });
     }
 
-    public CreateRoomViewModel()
+    public RoomAdminViewModel()
     {
         _name = "ROOM NAME";
         _questions = 20;
         _secsPerQuestion = 10;
         MaxPlayers = 10;
         
-        CloseRoomCommand = StartGameCommand = NoOpCommand;
+        StartGameCommand = NoOpCommand;
     }
 
 
@@ -104,18 +93,13 @@ public class CreateRoomViewModel : RoomViewModel
 
     private void SendRoomData()
     {
-        RoomModel = RoomModel with
+        UpdateAndSendRoomData(new RoomData
         {
-            Data = new RoomData
-            {
-                Name = _name,
-                QuestionsCount = _questions,
-                MaxPlayers = MaxPlayers,
-                TimePerQuestionSecs = _secsPerQuestion
-            }
-        }; 
-        
-        Comm.SendRequest(new UpdateRoomDataRequest(RoomModel.Data));
+            Name = _name,
+            QuestionsCount = _questions,
+            MaxPlayers = MaxPlayers,
+            TimePerQuestionSecs = _secsPerQuestion
+        });
     }
 
 

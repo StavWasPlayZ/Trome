@@ -1,7 +1,8 @@
 #pragma once
 
-#include "infrastructure/RoomData.h"
 #include "infrastructure/Question.h"
+#include "infrastructure/Room.h"
+#include "infrastructure/RoomData.h"
 
 #include <optional>
 #include <string>
@@ -95,6 +96,9 @@ struct GetRoomsRequest : ProtocolRequest
 
 struct CreateRoomRequest : ProtocolRequest
 {
+    explicit CreateRoomRequest(RoomType roomType);
+
+    const RoomType roomType;
 };
 
 struct GetHighScoresRequest : ProtocolRequest

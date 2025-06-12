@@ -33,6 +33,10 @@ JoinRoomRequest::JoinRoomRequest(const unsigned int roomId) : roomID(roomId)
 {
 }
 
+CreateRoomRequest::CreateRoomRequest(const RoomType roomType) : roomType(roomType)
+{
+}
+
 GetUserStatisticsRequest::GetUserStatisticsRequest(const unsigned int userId) : userId(userId)
 {
 }

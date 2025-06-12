@@ -5,6 +5,7 @@ using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using Avalonia.Threading;
 using ReactiveUI;
+using Trivia.Codec.C2S;
 using Trivia.Codec.C2S.Request.Packets;
 using Trivia.Codec.S2C.Response;
 using Trivia.Codec.S2C.Response.Packets;
@@ -19,7 +20,7 @@ public class JoinRoomMenuViewModel : PageViewModel
     private static readonly TimeSpan RefreshTime = TimeSpan.FromSeconds(3);
     
     
-    public ReactiveCommand<Unit, Unit> NewRoomButtonCommand { get; }
+    public ReactiveCommand<Unit, IRoutableViewModel> NewRoomButtonCommand { get; }
     
     public ReactiveCommand<int, Unit> JoinRoomButtonCommand { get; }
 
@@ -46,18 +47,7 @@ public class JoinRoomMenuViewModel : PageViewModel
 
     public JoinRoomMenuViewModel(IScreen hostScreen) : base(hostScreen)
     {
-        NewRoomButtonCommand = ReactiveCommand.CreateFromTask(async () =>
-        {
-            var response = await Comm.SendRequestAwaitResponse<CreateRoomResponse>(new CreateRoomRequest());
-            
-            NavigateTo(new CreateRoomViewModel(hostScreen, new RoomModel
-            {
-                Id = response.RoomId,
-                Admin = AppService.SessionUser!,
-                PlayersCount = 1,
-                Data = response.Data
-            }));
-        });
+        NewRoomButtonCommand = NavigateReactiveCommand(() => new RoomTypeSelectorViewModel(HostScreen));
 
         JoinRoomButtonCommand = ReactiveCommand.CreateFromTask<int>(JoinRoom);
 
@@ -91,7 +81,7 @@ public class JoinRoomMenuViewModel : PageViewModel
     public JoinRoomMenuViewModel() : base(null!)
     {
         JoinRoomButtonCommand = ReactiveCommand.Create<int>(_ => { });
-        NewRoomButtonCommand = NoOpCommand;
+        NewRoomButtonCommand = NoOpNavCommand;
         Rooms = RoomModel.GenerateMockRooms(30);
         SelectedRoom = Rooms[0];
     }
@@ -101,7 +91,21 @@ public class JoinRoomMenuViewModel : PageViewModel
         //TODO: Handle room deleted before refresh
         var response = await Comm.SendRequestAwaitResponse<JoinRoomResponse>(new JoinRoomRequest(roomId));
         
-        NavigateTo(new JoinedRoomViewModel(HostScreen, response.Room, [..response.Players]));
+        var room = Rooms.Find(x => x.Id == roomId)!;
+        
+        switch (room.RoomType)
+        {
+            case RoomType.TriviaRush:
+                NavigateTo(new RoomGuestViewModel(HostScreen, response.Room, [..response.Players]));
+                break;
+            
+            case RoomType.HeadToHead:
+                NavigateTo(new HeadToHeadRoomViewModel(HostScreen, response.Room, [..response.Players]));
+                break;
+            
+            default:
+                throw new Exception("Unknown room type");
+        }
     }
 
     private void OnJoinRoomFailed(Exception exception)
