@@ -12,20 +12,24 @@
 class RSACrypto : public ICryptoAlgorithm
 {
 public:
-	RSACrypto();
+    RSACrypto();
 
-	std::string encrypt(const std::string &message) const override;
-	std::string decrypt(const std::string &message) const override;
+    std::string encrypt(const std::string &message) const;
+    std::string decrypt(const std::string &base64Ciphertext) const;
 
-private:
+  private:
     static const std::string serverPrivateKeyPath;
-	static const std::string clientPublicKeyPath;
-	static bool keysLoaded;
-	static CryptoPP::RSA::PrivateKey serverPrivateKey;
-	static CryptoPP::RSA::PublicKey clientPublicKey;
+    static const std::string clientPublicKeyPath;
 
-  
-	static std::string loadPEMFile(const std::string &filename);
-	static void loadPrivateKeyFromPEM(const std::string &filename);
-	static void loadPublicKeyFromPEM(const std::string &filename);
+    static CryptoPP::RSA::PrivateKey serverPrivateKey;
+    static CryptoPP::RSA::PublicKey clientPublicKey;
+    static bool keysLoaded;
+
+    void loadPrivateKeyFromPEM(const std::string &filename);
+    void loadPublicKeyFromPEM(const std::string &filename);
+    std::string loadPEMFile(const std::string &filename);
+
+    // Declare these as private member functions
+    size_t getMaxPlaintextSize() const;
+    size_t getCiphertextSize() const;
 };
