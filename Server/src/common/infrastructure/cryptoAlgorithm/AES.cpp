@@ -1,18 +1,23 @@
 #include "AES.h"
 
-const std::vector<unsigned char> AES::key = 
-{
-    0x2A, 0x8D, 0xB4, 0x6C, 0xC1, 0xFA, 0x12, 0x34,
-    0x7B, 0x9E, 0x56, 0xAF, 0x44, 0xE1, 0x8C, 0x3D
-};
+const std::string AES::keyPath = "../../../src/common/infrastructure/cryptoAlgorithm/keys/AESkey.key";
+const std::string AES::ivPath = "../../../src/common/infrastructure/cryptoAlgorithm/keys/AESiv.key";
 
-const std::vector<unsigned char> AES::iv = {
-    0x1F, 0x26, 0x73, 0x9A, 0x4B, 0xD5, 0xCE, 0x22,
-    0x39, 0x81, 0x67, 0xF4, 0x0C, 0xAB, 0x58, 0xE7
-};
+const std::vector<unsigned char> AES::key = ICryptoAlgorithm::ReadFileBytes(AES::keyPath);
+
+const std::vector<unsigned char> AES::iv = ICryptoAlgorithm::ReadFileBytes(AES::ivPath);
 
 AES::AES() : ICryptoAlgorithm()
 {
+    if (AES::key.size() == 0)
+    {
+        throw FileNotFoundException(AES::keyPath);
+    }
+
+    if (AES::iv.size() == 0)
+    {
+        throw FileNotFoundException(AES::ivPath);
+    }
 }
 
 std::string AES::encrypt(const std::string &message) const

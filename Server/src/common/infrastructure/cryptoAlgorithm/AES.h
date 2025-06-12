@@ -19,6 +19,8 @@ public:
     std::string decrypt(const std::string &message) const override;
 
 private:
+    static const std::string keyPath;
+    static const std::string ivPath;
     static const std::vector<unsigned char> key;
     static const std::vector<unsigned char> iv;
 };

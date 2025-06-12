@@ -4,7 +4,7 @@ ICryptoAlgorithm::ICryptoAlgorithm()
 {
 }
 
-std::vector<unsigned char> ReadFileBytes(const std::string &path)
+std::vector<unsigned char> ICryptoAlgorithm::ReadFileBytes(const std::string &path)
 {
     std::ifstream file(path, std::ios::binary);
     if (!file)
