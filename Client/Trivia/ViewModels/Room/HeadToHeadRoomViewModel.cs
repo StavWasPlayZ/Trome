@@ -13,6 +13,7 @@ public class HeadToHeadRoomViewModel : RoomViewModel
         base(hostScreen, roomModel, [])
     {
         _roomName = roomModel.Data.Name;
+        MaxPlayers = 2;
 
         //TODO: Implement getting points
         var currUser = HeadToHeadUserModel.FromUser(AppService.SessionUser!, 0); 

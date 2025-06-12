@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reactive;
 using System.Reactive.Disposables;
 using ReactiveUI;
-using Trivia.Codec.C2S.Request.Packets;
 using Trivia.Codec.S2C;
 using Trivia.Codec.S2C.Notification.Packets;
-using Trivia.Codec.S2C.Response.Packets;
 using Trivia.Models;
 using Trivia.Models.Raw;
 using Trivia.ViewModels.Game;
@@ -15,17 +12,10 @@ namespace Trivia.ViewModels.Room;
 
 public class RoomGuestViewModel : RoomViewModel
 {
-    public ReactiveCommand<Unit, Unit> LeaveRoomCommand { get; }
-    
     public RoomGuestViewModel(IScreen hostScreen, RoomModel roomModel, List<User> players) :
         base(hostScreen, roomModel, players)
     {
-        LeaveRoomCommand = ReactiveCommand.CreateFromTask(async () =>
-        {
-            await Comm.SendRequestAwaitResponse<LeaveRoomResponse>(new LeaveRoomRequest());
-            
-            NavigateBackCommand!.Execute();
-        });
+        MaxPlayers = RoomModel.Data.MaxPlayers;
         
         this.WhenActivated(disposables =>
         {
@@ -37,9 +27,7 @@ public class RoomGuestViewModel : RoomViewModel
     }
 
     public RoomGuestViewModel()
-    {
-        LeaveRoomCommand = NoOpCommand;
-    }
+    {}
 
 
     protected override void CommOnPacketReceived(IS2CPacket packet)
