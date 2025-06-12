@@ -4,6 +4,8 @@
 #include <vector>
 #include <fstream>
 
+#include "exception/FileNotFoundException.h"
+
 class ICryptoAlgorithm
 {
 public:
