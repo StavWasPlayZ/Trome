@@ -32,7 +32,7 @@ public class AES : ICryptoAlgorithm
         using var encryptor = aes.CreateEncryptor();
         using var ms = new MemoryStream();
         using var cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write);
-        using var sw = new StreamWriter(cs, Encoding.UTF8);
+        using var sw = new StreamWriter(cs, Encoding.GetEncoding("ISO-8859-1"));
 
         sw.Write(message);
         return Convert.ToBase64String(ms.ToArray());
@@ -49,7 +49,7 @@ public class AES : ICryptoAlgorithm
         using var decryptor = aes.CreateDecryptor();
         using var ms = new MemoryStream(Convert.FromBase64String(message));
         using var cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read);
-        using var sr = new StreamReader(cs, Encoding.UTF8);
+        using var sr = new StreamReader(cs, Encoding.GetEncoding("ISO-8859-1"));
 
         return sr.ReadToEnd();
     }
