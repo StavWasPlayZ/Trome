@@ -42,6 +42,8 @@ add_executable (Server
   "src/common/exception/SocketTimeoutException.cpp"
   "src/common/exception/RegexViolationException.cpp"
   "src/common/exception/RegexViolationException.h"
+  "src/common/exception/FileNotFoundException.h"
+  "src/common/exception/FileNotFoundException.cpp"
   "src/common/Constants.h"
 
   "src/common/handler/IRequestHandler.h"
