@@ -1,5 +1,7 @@
 #include "infrastructure/RoomData.h"
 
+#include "Room.h"
+
 RoomData::RoomData(const std::string &name, const int maxPlayers, const int timePerQuestion, const int questionsCount) :
     name(name),
     maxPlayers(maxPlayers),
@@ -8,12 +10,12 @@ RoomData::RoomData(const std::string &name, const int maxPlayers, const int time
 {
 }
 
-RoomData RoomData::ofDefaults()
+RoomData RoomData::ofDefaults(const RoomType roomType)
 {
     return RoomData(
         //TODO: Generate some name from a list
         "NEW ROOM",
-        5,
+        roomType == RoomType::TRIVIA_RUSH ? 5 : 2,
         10,
         25
     );

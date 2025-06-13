@@ -2,10 +2,5 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$/.." vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/cmake-build-debug/_deps/cpphttplib-src" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/cmake-build-debug/_deps/ctre-src" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/cmake-build-debug/_deps/httplib-src" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/out/_deps/ctre-src" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/out/_deps/httplib-src" vcs="Git" />
   </component>
 </project>

@@ -62,6 +62,9 @@ ProtocolRequest *JsonRequestPacketDeserializer::deserialize(const RequestInfo &i
     case RequestCode::GET_GAME_RESULT: return new GetGameResultRequest(
         deserializeGetGameResultRequest(info.data)
     );
+    case RequestCode::ADD_QUESTION: return new AddQuestionRequest(
+        deserializeAddQuestionRequest(info.data)
+    );
 
     default: throw std::invalid_argument("Invalid request ID");
     }
@@ -128,9 +131,9 @@ GetUserStatisticsRequest JsonRequestPacketDeserializer::deserializeGetUserStatis
     return GetUserStatisticsRequest(data.at("user_id"));
 }
 
-CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(const nlohmann::json &)
+CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(const nlohmann::json &data)
 {
-    return CreateRoomRequest();
+    return CreateRoomRequest(data.at("room_type"));
 }
 
 CloseRoomRequest JsonRequestPacketDeserializer::deserializeCloseRoomRequest(const nlohmann::json &)
@@ -180,6 +183,16 @@ SubmitAnswerRequest JsonRequestPacketDeserializer::deserializeSubmitAnswerReques
 GetGameResultRequest JsonRequestPacketDeserializer::deserializeGetGameResultRequest(const nlohmann::json &)
 {
     return GetGameResultRequest();
+}
+
+AddQuestionRequest JsonRequestPacketDeserializer::deserializeAddQuestionRequest(const nlohmann::json &data)
+{
+    return AddQuestionRequest(
+        Question(
+            data.at("question"),
+            data.at("answers")
+        )
+    );
 }
 
 KickPlayerRequest JsonRequestPacketDeserializer::deserializeKickPlayerRequest(const nlohmann::json &data)

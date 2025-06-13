@@ -13,10 +13,17 @@
 LoginRequestHandler::LoginRequestHandler(const RequestHandlerFactory &handlerFactory) : IRequestHandler(handlerFactory)
 {}
 
-bool LoginRequestHandler::isRequestRelevant(const RequestInfo &info) const
+std::optional<ErrorStatus> LoginRequestHandler::isRequestRelevant(const RequestInfo &info) const
 {
-    return ((info.id == RequestCode::LOGIN) || (info.id == RequestCode::SIGNUP))
-        && !this->m_handlerFactory.getLoginManager().isLoggedIn(info.client);
+    switch (info.id)
+    {
+    case RequestCode::LOGIN:
+    case RequestCode::SIGNUP:
+        return std::nullopt;
+
+    default:
+        return ErrorStatus::ILLEGAL_REQUEST;
+    }
 }
 
 RequestResult LoginRequestHandler::handleRequest(const RequestInfo& info, const ProtocolRequest& request) const

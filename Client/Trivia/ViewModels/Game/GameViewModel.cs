@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
-using System.Reactive.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using Avalonia.Threading;
@@ -19,11 +17,11 @@ namespace Trivia.ViewModels.Game;
 
 public class GameViewModel : GameViewModelBase
 {
-    private const int CountdownSleepMs = 10;
+    private static readonly TimeSpan CountdownSleep = TimeSpan.FromSeconds(1/60.0);
     
     public ReactiveCommand<int, Unit> SubmitAnswerCommand { get; }
     
-    private TaskCompletionSource? _countdownCompletion;
+    private readonly DispatcherTimer? _countdownTimer;
     
     
     public GameViewModel(IScreen hostScreen, RoomModel roomModel) : base(hostScreen, roomModel)
@@ -32,17 +30,23 @@ public class GameViewModel : GameViewModelBase
             await SubmitAnswer(btnIndex)
         );
         
+        _countdownTimer = new DispatcherTimer
+        {
+            Interval = CountdownSleep
+        };
+        
         this.WhenActivated(disposables =>
         {
-            App.MusicService?.PlayTriviaTrack();
-            
             GetNewQuestion()
                 .DisposeWith(disposables);
             
-            this
-                .WhenAnyValue(x => x.TimeLeft)
-                .Skip(1)
-                .Subscribe(_ => HandleTimeLeftChanged())
+            _countdownTimer.Tick += CountdownTicked;
+            Disposable
+                .Create(() =>
+                {
+                    _countdownTimer.Tick -= CountdownTicked;
+                    _countdownTimer.Stop();
+                })
                 .DisposeWith(disposables);
         });
     }
@@ -72,7 +76,7 @@ public class GameViewModel : GameViewModelBase
     
     private async Task SubmitAnswer(int btnIndex)
     {
-        await StopCountdown();
+        StopCountdown();
         
         var response = await Comm.SendRequestAwaitResponse<SubmitAnswerResponse>(new SubmitAnswerRequest(btnIndex));
         Question = response.Question;
@@ -83,55 +87,25 @@ public class GameViewModel : GameViewModelBase
     }
 
 
-    private bool _countdownRunning;
     
     private void StartCountdown()
     {
         TimeLeft = TimeSpan.FromSeconds(RoomModel.Data.TimePerQuestionSecs);
-        
-        _countdownRunning = true;
-        _countdownCompletion = new TaskCompletionSource();
-        new Thread(CountdownThread).Start();
+        _countdownTimer!.Start();
     }
     
-    private async Task StopCountdown()
+    private void StopCountdown()
     {
-        _countdownRunning = false;
-        await _countdownCompletion!.Task;
-        _countdownCompletion = null;
+        _countdownTimer!.Stop();
     }
 
-    private void CountdownThread()
+    private void CountdownTicked(object? sender, EventArgs eventArgs)
     {
-        _internalTimeLeft = TimeLeft;
+        TimeLeft -= CountdownSleep;
         
-        while (_countdownRunning)
-        {
-            Thread.Sleep(CountdownSleepMs);
-
-            if (!_countdownRunning)
-                break;
-            
-            _internalTimeLeft -= TimeSpan.FromMilliseconds(CountdownSleepMs);
-            
-            Dispatcher.UIThread.Post(() =>
-            {
-                TimeLeft = _internalTimeLeft;
-            });
-            
-            if (_internalTimeLeft <= TimeSpan.Zero)
-            {
-                _countdownRunning = false;
-            }
-        }
-        
-        _countdownCompletion!.TrySetResult();
-    }
-
-    private void HandleTimeLeftChanged()
-    {
         if (TimeLeft <= TimeSpan.Zero)
         {
+            _countdownTimer!.Stop();
             _ = HandleCountdownEnded();
         }
     }
@@ -217,11 +191,6 @@ public class GameViewModel : GameViewModelBase
         set => this.RaiseAndSetIfChanged(ref _points, value);
     }
     
-    
-    /// <summary>
-    /// Used for syncing the time with the Countdown thread
-    /// </summary>
-    private TimeSpan _internalTimeLeft;
     
     private TimeSpan _timeLeft;
 

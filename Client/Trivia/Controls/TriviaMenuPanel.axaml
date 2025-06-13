@@ -48,7 +48,8 @@
                         Background="rgba(0, 0, 0, .3)"
                         Margin="20 70 20 25"
                         CornerRadius="25 25 25 0"
-                        BoxShadow="0 5 0 0 #1f000000">
+                        BoxShadow="0 5 0 0 #1f000000"
+                        Padding="{TemplateBinding Padding}">
                 
                         <Panel>
                             <TextBlock

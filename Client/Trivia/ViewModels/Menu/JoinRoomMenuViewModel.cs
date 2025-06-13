@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Reactive;
 using System.Reactive.Disposables;
-using System.Threading;
 using System.Threading.Tasks;
+using Avalonia.Threading;
 using ReactiveUI;
+using Trivia.Codec.C2S;
 using Trivia.Codec.C2S.Request.Packets;
 using Trivia.Codec.S2C.Response;
 using Trivia.Codec.S2C.Response.Packets;
@@ -16,13 +17,16 @@ namespace Trivia.ViewModels.Menu;
 
 public class JoinRoomMenuViewModel : PageViewModel
 {
-    private const int RefreshTime = 3000;
+    private static readonly TimeSpan RefreshTime = TimeSpan.FromSeconds(3);
     
     
-    public ReactiveCommand<Unit, Unit> NewRoomButtonCommand { get; }
+    public ReactiveCommand<Unit, IRoutableViewModel> NewRoomButtonCommand { get; }
     
     public ReactiveCommand<int, Unit> JoinRoomButtonCommand { get; }
 
+    
+    private readonly DispatcherTimer? _roomFetcher;
+    
 
     private List<RoomModel> _rooms = [];
 
@@ -40,30 +44,31 @@ public class JoinRoomMenuViewModel : PageViewModel
         set => this.RaiseAndSetIfChanged(ref _room, value);
     }
     
-    
-    private bool _refreshRoomThreadRunning;
 
     public JoinRoomMenuViewModel(IScreen hostScreen) : base(hostScreen)
     {
-        NewRoomButtonCommand = ReactiveCommand.CreateFromTask(async () =>
-        {
-            var response = await Comm.SendRequestAwaitResponse<CreateRoomResponse>(new CreateRoomRequest());
-            
-            NavigateTo(new CreateRoomViewModel(hostScreen, new RoomModel
-            {
-                Id = response.RoomId,
-                Admin = AppService.SessionUser!,
-                PlayersCount = 1,
-                Data = response.Data
-            }));
-        });
+        NewRoomButtonCommand = NavigateReactiveCommand(() => new RoomTypeSelectorViewModel(HostScreen));
 
         JoinRoomButtonCommand = ReactiveCommand.CreateFromTask<int>(JoinRoom);
+
+        _roomFetcher = new DispatcherTimer
+        {
+            Interval = RefreshTime
+        };
         
         this.WhenActivated(disposables =>
         {
+            _roomFetcher.Tick += RefreshRooms;
+            _roomFetcher.Start();
+
+            RefreshRooms().DisposeWith(disposables);
+            
             Disposable
-                .Create(() => _refreshRoomThreadRunning = false)
+                .Create(() =>
+                {
+                    _roomFetcher.Tick -= RefreshRooms;
+                    _roomFetcher.Stop();
+                })
                 .DisposeWith(disposables);
             
             JoinRoomButtonCommand
@@ -71,19 +76,12 @@ public class JoinRoomMenuViewModel : PageViewModel
                 .Subscribe(OnJoinRoomFailed)
                 .DisposeWith(disposables);
         });
-
-        this.WhenActivated(disposables =>
-        {
-            Disposable
-                .Create(() => _refreshRoomThreadRunning = false)
-                .DisposeWith(disposables);
-        });
     }
-    
+
     public JoinRoomMenuViewModel() : base(null!)
     {
         JoinRoomButtonCommand = ReactiveCommand.Create<int>(_ => { });
-        NewRoomButtonCommand = NoOpCommand;
+        NewRoomButtonCommand = NoOpNavCommand;
         Rooms = RoomModel.GenerateMockRooms(30);
         SelectedRoom = Rooms[0];
     }
@@ -93,7 +91,21 @@ public class JoinRoomMenuViewModel : PageViewModel
         //TODO: Handle room deleted before refresh
         var response = await Comm.SendRequestAwaitResponse<JoinRoomResponse>(new JoinRoomRequest(roomId));
         
-        NavigateTo(new JoinedRoomViewModel(HostScreen, response.Room, [..response.Players]));
+        var room = Rooms.Find(x => x.Id == roomId)!;
+        
+        switch (room.RoomType)
+        {
+            case RoomType.TriviaRush:
+                NavigateTo(new RoomGuestViewModel(HostScreen, response.Room, [..response.Players]));
+                break;
+            
+            case RoomType.HeadToHead:
+                NavigateTo(new HeadToHeadRoomViewModel(HostScreen, response.Room, [..response.Players]));
+                break;
+            
+            default:
+                throw new Exception("Unknown room type");
+        }
     }
 
     private void OnJoinRoomFailed(Exception exception)
@@ -112,24 +124,12 @@ public class JoinRoomMenuViewModel : PageViewModel
         }
     }
 
-    public void RunRefreshRoomsThread()
-    {
-        if (_refreshRoomThreadRunning)
-            return;
-        
-        _refreshRoomThreadRunning = true;
-        new Thread(() => _ = RefreshRoomsThread()).Start();
-    }
-    
 
-    private async Task RefreshRoomsThread()
-    {
-        while (_refreshRoomThreadRunning)
-        {            
-            var response = await Communicator.Instance.SendRequestAwaitResponse<GetRoomsResponse>(new GetRoomsRequest());
+    private void RefreshRooms(object? sender, EventArgs e) => _ = RefreshRooms();
 
-            Rooms = [..response.Rooms];
-            Thread.Sleep(RefreshTime);
-        }
+    private async Task RefreshRooms()
+    {
+        var response = await Communicator.Instance.SendRequestAwaitResponse<GetRoomsResponse>(new GetRoomsRequest());
+        Rooms = [..response.Rooms];
     }
 }

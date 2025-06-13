@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Trivia.Codec;
+using Trivia.Codec.C2S;
 using Trivia.Models.Raw;
 
 namespace Trivia.Models;
@@ -9,6 +10,7 @@ public record RoomModel : IdentifiableModel
 {
     public RoomStatus Status { get; init; } = RoomStatus.Waiting;
     public required Raw.User Admin { get; init; }
+    public required RoomType RoomType { get; init; }
     
     public int PlayersCount { get; init; }
     
@@ -18,27 +20,27 @@ public record RoomModel : IdentifiableModel
     public static List<RoomModel> GenerateMockRooms(int count)
     {
         return Enumerable.Range(1, count)
-            .Select(i => new RoomModel
+            .Select(i =>
+            {
+                var roomType = i % 3 == 0 ? RoomType.HeadToHead : RoomType.TriviaRush;
+                
+                return new RoomModel
                 {
                     Id = i,
-                    Status = i % 2 == 0 ? RoomStatus.Waiting : RoomStatus.Playing,
+                    Status = RoomStatus.Waiting,
+                    RoomType = roomType,
+
                     Admin = new Raw.User
                     {
                         Id = i,
                         Username = $"User {i}"
                     },
 
-                    PlayersCount = 2,
+                    PlayersCount = roomType == RoomType.HeadToHead ? 1 : 2,
 
-                    Data = new RoomData
-                    {
-                        Name = $"Room {i}",
-                        MaxPlayers = 10,
-                        TimePerQuestionSecs = 7,
-                        QuestionsCount = 15
-                    }
-                }
-            ).ToList();
+                    Data = RoomData.CreateMock($"Room {i}", roomType)
+                };
+            }).ToList();
     }
 
     public static RoomModel CreateMockRoom(Raw.User admin)
@@ -47,16 +49,11 @@ public record RoomModel : IdentifiableModel
         {
             Id = 0,
             Admin = admin,
+            RoomType = RoomType.TriviaRush,
 
             PlayersCount = 2,
 
-            Data = new RoomData
-            {
-                Name = "Room 0",
-                MaxPlayers = 10,
-                TimePerQuestionSecs = 7,
-                QuestionsCount = 15
-            }
+            Data = RoomData.CreateMock("Room 0", RoomType.TriviaRush)
         };
     }
 }

@@ -44,7 +44,6 @@
                         <TextBlock>
                             USERNAME
                         </TextBlock>
-                        <TextBlock/>
                     </StackPanel>
                     
                     <controls:TriviaTextBox Grid.Row="0"
@@ -58,7 +57,6 @@
                         <TextBlock>
                             PASSWORD
                         </TextBlock>
-                        <TextBlock/>
                     </StackPanel>
                     
                     <controls:TriviaTextBox Grid.Row="1"

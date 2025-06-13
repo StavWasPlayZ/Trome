@@ -113,5 +113,10 @@ public:
     /**
      * Returns: The deserialized object.
      */
+    static AddQuestionRequest deserializeAddQuestionRequest(const nlohmann::json &data);
+
+    /**
+     * Returns: The deserialized object.
+     */
     static KickPlayerRequest deserializeKickPlayerRequest(const nlohmann::json &data);
 };

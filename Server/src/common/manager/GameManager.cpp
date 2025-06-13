@@ -31,3 +31,13 @@ void GameManager::deleteGame(const Game &game)
     game.getRoom().unsetCurrentGame();
     this->m_games.erase(game.getId());
 }
+
+void GameManager::addQuestion(const Question &question, const LoggedUser& user) const
+{
+    // IDatabase::addQuestions requests a vector of questions, yet we only want to pass a single one.
+    // Just wrap the question in a vector:
+    std::vector<Question> questions;
+    questions.push_back(question);
+
+    this->m_database.addQuestions(questions, user.getUsername());
+}

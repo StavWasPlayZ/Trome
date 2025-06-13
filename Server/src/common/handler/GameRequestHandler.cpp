@@ -12,17 +12,22 @@ GameRequestHandler::GameRequestHandler(const RequestHandlerFactory &handlerFacto
     m_game(game)
 {}
 
-bool GameRequestHandler::isRequestRelevant(const RequestInfo &info) const
+std::optional<ErrorStatus> GameRequestHandler::isRequestRelevant(const RequestInfo &info) const
 {
+    if (info.receivalTime < m_game.getStartTime())
+    {
+        return ErrorStatus::ANSWER_TOO_EARLY;
+    }
+
     switch (info.id)
     {
     case RequestCode::SUBMIT_ANSWER:
     case RequestCode::LEAVE_GAME:
     case RequestCode::GET_QUESTION:
     case RequestCode::GET_GAME_RESULT:
-        return true;
+        return std::nullopt;
 
-    default: return false;
+    default: return ErrorStatus::ILLEGAL_REQUEST;
     }
 }
 
@@ -89,10 +94,11 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
         );
 
     case QuestionRollType::FINISHED_LAST:
-        return RequestResult(
-            new SubmitAnswerResponse(rollResult.newQuestion, userData.points, rollResult.results),
-            this->m_handlerFactory.createRoomRequestHandler(user, room)
-        );
+        return finalizeLastPlayerFinished(info, new SubmitAnswerResponse(
+            rollResult.newQuestion,
+            userData.points,
+            rollResult.results
+        ));
 
     // ReSharper disable once CppDFAUnreachableCode
     default:
@@ -116,6 +122,7 @@ RequestResult GameRequestHandler::leaveGame(const RequestInfo &info, const Leave
         if (this->m_game.isGameComplete())
         {
             handleLastPlayerFinished(info);
+            this->m_handlerFactory.getGameManager().deleteGame(m_game);
         }
     }
 
@@ -127,14 +134,13 @@ QuestionRollResult GameRequestHandler::rollNewUserQuestion(const RequestInfo &in
     const LoggedUser &user = getUserByInfo(info);
     const Room &room = this->m_game.getRoom();
 
-
     const std::optional<UserQuestion> newQuestion = this->m_game.generateNewQuestionForUser(user, didFail);
 
     if (this->m_game.isGameComplete())
     {
         const std::vector<PlayerResult> results = handleLastPlayerFinished(info);
 
-        return QuestionRollResult(QuestionRollType::FINISHED_LAST, newQuestion, results);
+        return QuestionRollResult(QuestionRollType::FINISHED_LAST, std::nullopt, results);
     }
 
     // If there is no new question available, we've finished early.
@@ -207,10 +213,11 @@ RequestResult GameRequestHandler::getQuestion(const RequestInfo &info, const Get
         );
 
     case QuestionRollType::FINISHED_LAST:
-        return RequestResult(
-            new GetQuestionResponse(rollResult.newQuestion, userData.points, rollResult.results),
-            this->m_handlerFactory.createRoomRequestHandler(user, this->m_game.getRoom())
-        );
+        return finalizeLastPlayerFinished(info, new GetQuestionResponse(
+            rollResult.newQuestion,
+            userData.points,
+            rollResult.results
+        ));
 
     // ReSharper disable once CppDFAUnreachableCode
     default:
@@ -221,6 +228,21 @@ RequestResult GameRequestHandler::getQuestion(const RequestInfo &info, const Get
 RequestResult GameRequestHandler::getGameResults(const RequestInfo &, const GetGameResultRequest &) const
 {
     return RequestResult(new GetGameResultResponse(m_game.getResults()));
+}
+
+RequestResult GameRequestHandler::finalizeLastPlayerFinished(const RequestInfo &info,
+                                                             const QuestionResponse *const response) const
+{
+    Room &room = this->m_game.getRoom();
+    this->m_handlerFactory.getGameManager().deleteGame(m_game);
+
+    return RequestResult(
+        response,
+        this->m_handlerFactory.createRoomRequestHandler(
+            getUserByInfo(info),
+            room
+        )
+    );
 }
 
 std::vector<PlayerResult> GameRequestHandler::handleLastPlayerFinished(const RequestInfo &info) const
@@ -237,7 +259,6 @@ std::vector<PlayerResult> GameRequestHandler::handleLastPlayerFinished(const Req
         &getUserByInfo(info)
     );
 
-    this->m_handlerFactory.getGameManager().deleteGame(m_game);
     return results;
 }
 

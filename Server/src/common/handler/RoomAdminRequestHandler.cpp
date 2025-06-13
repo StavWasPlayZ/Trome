@@ -11,7 +11,7 @@ RoomAdminRequestHandler::RoomAdminRequestHandler(const RequestHandlerFactory &ha
     RoomRequestHandler(handlerFactory, room)
 {}
 
-bool RoomAdminRequestHandler::isRequestRelevant(const RequestInfo &info) const
+std::optional<ErrorStatus> RoomAdminRequestHandler::isRequestRelevant(const RequestInfo &info) const
 {
     switch (info.id)
     {
@@ -20,7 +20,7 @@ bool RoomAdminRequestHandler::isRequestRelevant(const RequestInfo &info) const
     case RequestCode::UPDATE_ROOM_DATA:
     case RequestCode::GET_ROOM_STATE:
     case RequestCode::KICK_PLAYER:
-        return true;
+        return std::nullopt;
 
     default:
         return RoomRequestHandler::isRequestRelevant(info);
@@ -109,15 +109,15 @@ RequestResult RoomAdminRequestHandler::updateRoomData(const RequestInfo &info, c
     );
 }
 
-RequestResult RoomAdminRequestHandler::kick(const RequestInfo &info, const KickPlayerRequest &request) const 
+RequestResult RoomAdminRequestHandler::kick(const RequestInfo &info, const KickPlayerRequest &request) const
 {
     LoggedUser &user = m_handlerFactory.getLoginManager().getUserById(request.userId);
     m_room.kickUser(user);
 
     setRequestHandlers(
-        [this](const LoggedUser *) 
+        [this](const LoggedUser *)
         {
-            return new MenuRequestHandler(m_handlerFactory); 
+            return new MenuRequestHandler(m_handlerFactory);
         },
 
         {&user}, // makes a std::vector<LoggedUser*> with the kicked player

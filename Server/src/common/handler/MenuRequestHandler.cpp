@@ -10,20 +10,21 @@
 MenuRequestHandler::MenuRequestHandler(const RequestHandlerFactory &handlerFactory) : IRequestHandler(handlerFactory)
 {}
 
-bool MenuRequestHandler::isRequestRelevant(const RequestInfo &info) const
+std::optional<ErrorStatus> MenuRequestHandler::isRequestRelevant(const RequestInfo &info) const
 {
     switch (info.id)
     {
 	case RequestCode::JOIN_ROOM:
-    // case RequestCode::GET_PLAYERS_IN_ROOM:
+    case RequestCode::GET_PLAYERS_IN_ROOM:
     case RequestCode::CREATE_ROOM:
     case RequestCode::GET_ROOMS:
     case RequestCode::GET_HIGH_SCORES:
     case RequestCode::GET_USER_STATISTICS:
     case RequestCode::LOGOUT:
-        return true;
+    case RequestCode::ADD_QUESTION:
+        return std::nullopt;
 
-    default: return false;
+    default: return ErrorStatus::ILLEGAL_REQUEST;
     }
 }
 
@@ -46,6 +47,9 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo &info, const P
 
     // case RequestCode::GET_PLAYERS_IN_ROOM:
     //     return getPlayersInRoom(info, static_cast<const GetPlayersInRoomRequest &>(request));
+
+    case RequestCode::ADD_QUESTION:
+        return addQuestion(info, static_cast<const AddQuestionRequest &>(request));
 
     default: throw std::invalid_argument("Unknown request ID");
     }
@@ -89,11 +93,15 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo &info, const JoinRo
     );
 }
 
-RequestResult MenuRequestHandler::createRoom(const RequestInfo& info, const CreateRoomRequest &) const
+RequestResult MenuRequestHandler::createRoom(const RequestInfo& info, const CreateRoomRequest &request) const
 {
     RoomManager &rManager = m_handlerFactory.getRoomManager();
 
-    Room& room = rManager.createRoom(getUserByInfo(info), RoomData::ofDefaults());
+    Room& room = rManager.createRoom(
+        getUserByInfo(info),
+        request.roomType,
+        RoomData::ofDefaults(request.roomType)
+    );
 
     return RequestResult(
         new CreateRoomResponse(room.getId(), room.getData()),
@@ -148,8 +156,8 @@ RequestResult MenuRequestHandler::logout(const RequestInfo &info, const LogoutRe
 
 RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo &info, const GetPlayersInRoomRequest &) const
 {
-    //NOTICE: This behavior was entirely replaced by the notifications' system.
-    // This request was re-purposed to the Room handler to sync players after a match.
+    //NOTICE: This request was entirely replaced by the notification system.
+    // It was re-purposed to the Room handler to sync players after a match.
     return RequestResult(new ErrorResponse(ErrorStatus::SERVER_UNIMPLEMENTED, info.id));
 
     // RoomManager &rManager = m_handlerFactory.getRoomManager();
@@ -166,4 +174,30 @@ RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo &info, cons
     // return RequestResult(
     //     new GetPlayersInRoomResponse(room.value()->getAllUsers())
     // );
+}
+
+RequestResult MenuRequestHandler::addQuestion(const RequestInfo &info, const AddQuestionRequest &request) const
+{
+    try
+    {
+        this->m_handlerFactory.getGameManager().addQuestion(
+            request.question,
+            getUserByInfo(info)
+        );
+    }
+    catch (const std::runtime_error &e)
+    {
+        // addQuestions will return runtime_error when adding a user with the same question because it's UNIQUE.
+        // Note that the full message reads as follows:
+        // "Error in SQL: UNIQUE constraint failed: questions.question"
+
+        if (std::strstr(e.what(), "UNIQUE") != nullptr)
+        {
+            return RequestResult(new ErrorResponse(ErrorStatus::QUESTION_ALREADY_EXISTS, info.id));
+        }
+
+        return RequestResult(new ErrorResponse(ErrorStatus::INVALID_ARGUMENT, info.id, e.what()));
+    }
+
+    return RequestResult(new AddQuestionResponse());
 }

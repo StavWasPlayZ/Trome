@@ -7,6 +7,7 @@
 #include <optional>
 #include <vector>
 
+enum class RoomType;
 class GameManager;
 class RequestHandlerFactory;
 enum class RoomStatus : unsigned int;
@@ -20,7 +21,8 @@ public:
      *
      * Users should be added manually via Room::addUser.
      */
-    Room(unsigned int id, LoggedUser& admin, const RoomData& data, const IDatabase& database, RoomStatus status);
+    Room(unsigned int id, RoomType roomType, LoggedUser& admin, const RoomData& data, const IDatabase& database,
+        RoomStatus status);
     ~Room();
 
     //TODO: Make part of an identifiable (LoggedUser is too)
@@ -42,6 +44,7 @@ public:
     unsigned int getId() const;
 
     const RoomData& getData() const;
+    RoomType getType() const;
     void setData(const RoomData& newData);
 
     LoggedUser& getAdmin() const;
@@ -51,8 +54,9 @@ public:
     void setStatus(RoomStatus status);
 
 private:
-    const unsigned int id;
-    RoomStatus status;
+    const unsigned int m_id;
+    RoomStatus m_status;
+    RoomType m_roomType;
 
     // Made a pointer such that if we'd like to change it in the future
     LoggedUser* m_admin;
@@ -75,6 +79,12 @@ private:
     static unsigned int globalId;
 };
 
+
+enum class RoomType
+{
+    TRIVIA_RUSH,
+    HEAD_TO_HEAD
+};
 
 enum class RoomStatus : unsigned int
 {

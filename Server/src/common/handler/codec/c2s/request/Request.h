@@ -1,5 +1,7 @@
 #pragma once
 
+#include "infrastructure/Question.h"
+#include "infrastructure/Room.h"
 #include "infrastructure/RoomData.h"
 
 #include <optional>
@@ -27,6 +29,7 @@ enum class RequestCode : unsigned char
 	GET_QUESTION,
 	SUBMIT_ANSWER,
 	GET_GAME_RESULT,
+	ADD_QUESTION,
 	KICK_PLAYER
 };
 
@@ -94,6 +97,9 @@ struct GetRoomsRequest : ProtocolRequest
 
 struct CreateRoomRequest : ProtocolRequest
 {
+    explicit CreateRoomRequest(RoomType roomType);
+
+    const RoomType roomType;
 };
 
 struct GetHighScoresRequest : ProtocolRequest
@@ -119,7 +125,7 @@ struct StartGameRequest : ProtocolRequest
 };
 
 struct [[deprecated(
-    "The Noftifications system has been set in place to allow for automatic, non-polling updates of any "
+    "The Notifications system has been set in place to allow for automatic, non-polling updates of any "
     "room state changes."
     " This request/response is therefore useless and should not be used."
 )]] GetRoomStateRequest : ProtocolRequest
@@ -153,11 +159,18 @@ struct SubmitAnswerRequest : ProtocolRequest
 };
 
 struct [[deprecated(
-    "The Noftifications system has been set in place to allow for automatic, non-polling updates of any "
+    "The Notifications system has been set in place to allow for automatic, non-polling updates of any "
     "room state changes."
     " This method is therefore useless and should not be used."
 )]] GetGameResultRequest : ProtocolRequest
 {
+};
+
+struct AddQuestionRequest : ProtocolRequest
+{
+    explicit AddQuestionRequest(const Question& question);
+
+    const Question question;
 };
 
 struct KickPlayerRequest : ProtocolRequest

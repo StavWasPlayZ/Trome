@@ -9,12 +9,13 @@
 
 unsigned int Room::globalId = 0;
 
-Room::Room(const unsigned int id, LoggedUser &admin, const RoomData &data,
+Room::Room(const unsigned int id, const RoomType roomType, LoggedUser &admin, const RoomData &data,
            const IDatabase &database, const RoomStatus status) :
-    id(id),
+    m_id(id),
     // REVIEW: Perhaps could be initialized directly.
-    // On this condition that Not Found it not set.
-    status(status),
+    // On this condition that Not Found does not exist.
+    m_status(status),
+    m_roomType(roomType),
     m_admin(&admin),
     m_metadata(data),
     m_currentGame(nullptr),
@@ -37,7 +38,7 @@ Room::~Room()
 
 bool Room::operator==(const Room &other) const
 {
-    return this->id == other.id;
+    return this->m_id == other.m_id;
 }
 
 unsigned int Room::generateId()
@@ -131,7 +132,7 @@ const std::vector<LoggedUser *> &Room::getAllUsers() const
 
 unsigned int Room::getId() const
 {
-    return this->id;
+    return this->m_id;
 }
 
 const RoomData &Room::getData() const
@@ -142,6 +143,12 @@ const RoomData &Room::getData() const
 void Room::setData(const RoomData &newData)
 {
     this->m_metadata = newData;
+
+    if (m_roomType == RoomType::HEAD_TO_HEAD)
+    {
+        // Disallow any max players count besides 2
+        this->m_metadata.maxPlayers = 2;
+    }
 
     // Dispatch updates to all users.
     IRequestHandler::dispatchNotification(
@@ -164,12 +171,17 @@ void Room::setAdmin(LoggedUser &admin)
 
 RoomStatus Room::getStatus() const
 {
-    return this->status;
+    return this->m_status;
+}
+
+RoomType Room::getType() const
+{
+    return this->m_roomType;
 }
 
 void Room::setStatus(const RoomStatus status)
 {
-    this->status = status;
+    this->m_status = status;
 }
 
 void Room::handleGuestLeft(const LoggedUser &guest) const

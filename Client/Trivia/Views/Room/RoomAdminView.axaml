@@ -7,11 +7,11 @@
              xmlns:room="clr-namespace:Trivia.ViewModels.Room"
              mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
              x:CompileBindings="True"
-             x:Class="Trivia.Views.Room.CreateRoomView"
-             x:DataType="room:CreateRoomViewModel">
+             x:Class="Trivia.Views.Room.RoomAdminView"
+             x:DataType="room:RoomAdminViewModel">
     
     <Design.DataContext>
-        <room:CreateRoomViewModel/>
+        <room:RoomAdminViewModel/>
     </Design.DataContext>
     
     <Panel>
@@ -20,7 +20,8 @@
                         Stretch="UniformToFill" />
         </Panel.Background>
 
-        <Grid ColumnDefinitions="320, 15, *"
+        <Grid ColumnDefinitions="320, *"
+              ColumnSpacing="15"
               Margin="35,35">
             
             <controls:TriviaUsersList Grid.Column="0">
@@ -37,7 +38,7 @@
                 </ListBox>
             </controls:TriviaUsersList>
 
-            <Border Grid.Column="2"
+            <Border Grid.Column="1"
                     Background="#FFCACA"
                     CornerRadius="25"
                     Padding="40 40">
@@ -50,8 +51,10 @@
                     </controls:TriviaTextBox>
                     
                     <Grid Grid.Row="1"
-                          RowDefinitions="50, 20, 50, 20, 50"
-                          ColumnDefinitions="150, 20, *"
+                          RowDefinitions="50, 50, 50"
+                          ColumnDefinitions="150, *"
+                          RowSpacing="20"
+                          ColumnSpacing="20"
                           Margin="35 40">
                         
                         <Grid.Styles>
@@ -63,8 +66,13 @@
                             
                             <Style Selector="controls|TriviaTextBox">
                                 <Setter Property="HorizontalAlignment" Value="Right"/>
+                                <Setter Property="Width" Value="175"/>
                                 <Setter Property="FontSize" Value="35"/>
                                 <Setter Property="Margin" Value="0 5" />
+                            </Style>
+                            
+                            <Style Selector="TextBox:error, TextBox.error">
+                                <Setter Property="Foreground" Value="Crimson"/>
                             </Style>
                         </Grid.Styles>
                         
@@ -76,7 +84,7 @@
                         </TextBlock>
                         
                         <StackPanel Grid.Row="0"
-                                    Grid.Column="2">
+                                    Grid.Column="1">
                             
                             <StackPanel.Styles>
                                 <Style Selector="TextBlock">
@@ -144,38 +152,41 @@
                             </Slider>
                         </StackPanel>
                         
-                        <TextBlock Grid.Row="2"
+                        <TextBlock Grid.Row="1"
                                    Grid.Column="0"
                                    FontSize="35"
                                    Foreground="#813E7A">
                             SEC/Q
                         </TextBlock>
-                        <controls:TriviaTextBox Grid.Row="2"
-                                                Grid.Column="2"
+                        <controls:TriviaTextBox Grid.Row="1"
+                                                Grid.Column="1"
                                                 ClipToBounds="False">
-                            <TextBox Text="{Binding SecsPerQuestion}"/>
+                            <TextBox Text="{Binding SecsPerQuestion}"
+                                     Classes.error="{Binding !SecsPerQuestionValid}"/>
                         </controls:TriviaTextBox>
                         
-                        <TextBlock Grid.Row="4"
+                        <TextBlock Grid.Row="2"
                                    Grid.Column="0"
                                    FontSize="35"
                                    Foreground="#813E7A">
                             PLAYERS
                         </TextBlock>
-                        <controls:TriviaTextBox Grid.Row="4"
-                                                Grid.Column="2">
-                            <TextBox Text="{Binding MaxPlayers}"/>
+                        <controls:TriviaTextBox Grid.Row="2"
+                                                Grid.Column="1">
+                            <TextBox Text="{Binding MaxPlayers}"
+                                     Classes.error="{Binding !MaxPlayersValid}"/>
                         </controls:TriviaTextBox>
                     </Grid>
                     
 
                     <Grid Grid.Row="2"
-                          ColumnDefinitions="Auto, 5 *"
+                          ColumnDefinitions="Auto, *"
+                          ColumnSpacing="5"
                           Margin="50 0"
                           Height="65">
                             
                         <Button Grid.Column="0"
-                                Command="{Binding CloseRoomCommand}"
+                                Command="{Binding LeaveRoomCommand}"
                                 
                                 VerticalAlignment="Stretch"
                                 Width="90"
@@ -211,7 +222,7 @@
                         </Button>
                         
                         <Button Command="{Binding StartGameCommand}"
-                                Grid.Column="2"
+                                Grid.Column="1"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
                                 CornerRadius="5"

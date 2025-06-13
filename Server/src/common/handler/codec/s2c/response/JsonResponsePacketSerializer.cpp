@@ -52,6 +52,8 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const ProtocolResponse &
         return serializeResponse(static_cast<const SubmitAnswerResponse&>(response));
     case ResponseCode::GET_GAME_RESULT:
         return serializeResponse(static_cast<const GetGameResultResponse&>(response));
+    case ResponseCode::ADD_QUESTION:
+        return serializeResponse(static_cast<const AddQuestionResponse&>(response));
 
     default: throw std::invalid_argument("Invalid response ID");
     }
@@ -270,6 +272,11 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const QuestionResponse &
     }
 
     return serialize(response.id, data);
+}
+
+OBuffer JsonResponsePacketSerializer::serializeResponse(const AddQuestionResponse &response)
+{
+    return serialize(response.id, nlohmann::json::object());
 }
 
 OBuffer JsonResponsePacketSerializer::serialize(const ResponseCode msgCode, const nlohmann::json &data)

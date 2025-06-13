@@ -21,5 +21,6 @@ public enum ResponseCode : byte
     GetQuestion,
     SubmitAnswer,
     GetGameResult,
+    AddQuestion,
     KickPlayer
 }

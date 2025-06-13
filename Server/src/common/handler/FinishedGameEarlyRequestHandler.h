@@ -11,7 +11,7 @@ class FinishedGameEarlyRequestHandler : public IRequestHandler
 public:
     explicit FinishedGameEarlyRequestHandler(const RequestHandlerFactory &handlerFactory, Game &game);
 
-    bool isRequestRelevant(const RequestInfo &info) const override;
+    std::optional<ErrorStatus> isRequestRelevant(const RequestInfo &info) const override;
 
     RequestResult handleRequest(const RequestInfo &info, const ProtocolRequest &request) const override;
 

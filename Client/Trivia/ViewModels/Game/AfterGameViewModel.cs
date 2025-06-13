@@ -77,7 +77,7 @@ public class AfterGameViewModel : SubRoomViewModel
                 break;
             
             case GameStartedNotification:
-                NavigateAndPop(new GameViewModel(HostScreen, RoomModel))!.Subscribe();
+                NavigateAndPop(new GameCountdownViewModel(HostScreen, RoomModel))!.Subscribe();
                 break;
             
             default:

@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Disposables;
+using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 using ReactiveUI;
 using Trivia.Codec.C2S.Request.Packets;
@@ -17,7 +19,13 @@ namespace Trivia.ViewModels.Room;
 
 public abstract class RoomViewModel : PageViewModel
 {
+    protected static readonly TimeSpan RoomDataUpdateDelay = TimeSpan.FromMilliseconds(300);
+    
     private bool _wasInitiated;
+    
+    public bool IsAdmin { get; }
+    
+    public ReactiveCommand<Unit, Unit> LeaveRoomCommand { get; }
 
     /// <summary>
     /// </summary>
@@ -30,6 +38,11 @@ public abstract class RoomViewModel : PageViewModel
     protected RoomViewModel(IScreen hostScreen, RoomModel roomModel, List<User> players) :
         base(hostScreen)
     {
+        IsAdmin = AppService.SessionUser! == roomModel.Admin;
+        
+        LeaveRoomCommand = ReactiveCommand.CreateFromTask(LeaveRoom);
+        
+        
         _roomModel = roomModel;
         _players = [];
         
@@ -41,7 +54,7 @@ public abstract class RoomViewModel : PageViewModel
             AppService.SessionUser!
         ];
 
-        ReAddAllPlayers(players);
+        ReAddAllPlayers(players);        
         
         
         this.WhenActivated(disposables =>
@@ -68,6 +81,8 @@ public abstract class RoomViewModel : PageViewModel
     protected RoomViewModel()
     {
         _roomModel = RoomModel.CreateMockRoom(AppService.SessionUser!);
+
+        LeaveRoomCommand = NoOpCommand;
         
         _players = new ObservableCollection<RoomUserModel?>(
             Enumerable.Range(1, 10)
@@ -85,7 +100,39 @@ public abstract class RoomViewModel : PageViewModel
                     };
                 })
         );
+
+        IsAdmin = true;
     }
+    
+    
+    private async Task LeaveRoom()
+    {
+        if (IsAdmin)
+        {
+            await Comm.SendRequestAwaitResponse<CloseRoomResponse>(new CloseRoomRequest());
+        }
+        else
+        {
+            await Comm.SendRequestAwaitResponse<LeaveRoomResponse>(new LeaveRoomRequest());
+        }
+
+        // Assuming Selector -> Room
+        await NavigateBackCommand!.Execute().ToTask();
+        await NavigateBackCommand!.Execute().ToTask();
+    }
+    
+    protected void UpdateAndSendRoomData(RoomData newData)
+    {
+        if (!IsAdmin)
+            return;
+        
+        RoomModel = RoomModel with
+        {
+            Data = newData
+        }; 
+        
+        Comm.SendRequest(new UpdateRoomDataRequest(RoomModel.Data));
+    } 
 
 
     private void ReAddAllPlayers(List<User> players)
