@@ -94,7 +94,7 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
         );
 
     case QuestionRollType::FINISHED_LAST:
-        return finalizeLastPlayerFinished(info, new GetQuestionResponse(
+        return finalizeLastPlayerFinished(info, new SubmitAnswerResponse(
             rollResult.newQuestion,
             userData.points,
             rollResult.results
