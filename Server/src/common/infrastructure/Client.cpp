@@ -5,14 +5,12 @@
 
 Client::Client(const SOCKET socket, const IRequestHandler *const requestHandler) :
     socket(socket),
-    thread(nullptr),
     requestHandler(requestHandler)
 {}
 
 Client::~Client()
 {
     delete this->requestHandler;
-    delete this->thread;
 }
 
 std::unique_lock<std::mutex> Client::acquireSocketWriterLock()
@@ -43,19 +41,22 @@ std::unique_lock<std::mutex> Client::acquireRequestHandlerLock()
     return std::unique_lock(this->requestHandlerMutex);
 }
 
-const std::future<void> &Client::getThread() const
-{
-    return *this->thread;
-}
-
 void Client::setAndStartThread(const std::function<void()> &threadFunc)
 {
-    if (this->thread != nullptr)
+    if (thread.valid())
     {
-        throw std::runtime_error("Client thread already set");
+        throw std::runtime_error("already started");
     }
 
-    this->thread = new std::future(std::async(std::launch::async, threadFunc));
+    this->thread = std::async(std::launch::async, threadFunc);
+}
+
+void Client::waitForExit()
+{
+    if (!thread.valid())
+        return;
+
+    thread.get();
 }
 
 void Client::sendNotification(const ProtocolNotification& notification)
