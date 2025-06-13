@@ -233,13 +233,14 @@ RequestResult GameRequestHandler::getGameResults(const RequestInfo &, const GetG
 RequestResult GameRequestHandler::finalizeLastPlayerFinished(const RequestInfo &info,
                                                              const QuestionResponse *const response) const
 {
+    Room &room = this->m_game.getRoom();
     this->m_handlerFactory.getGameManager().deleteGame(m_game);
 
     return RequestResult(
         response,
         this->m_handlerFactory.createRoomRequestHandler(
             getUserByInfo(info),
-            this->m_game.getRoom()
+            room
         )
     );
 }
