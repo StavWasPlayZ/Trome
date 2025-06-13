@@ -88,7 +88,11 @@ OBuffer NotificationPacketSerializer::serialize(const PlayerFinishedNotification
 
 OBuffer NotificationPacketSerializer::serialize(const PlayerKickedNotification &notification)
 {
-    return serialize(notification.id, nlohmann::json::object());
+    nlohmann::json data;
+
+    data["player_id"] = notification.playerId;
+
+    return serialize(notification.id, data);
 }
 
 OBuffer NotificationPacketSerializer::serialize(const NotificationCode msgCode, const nlohmann::json &data)

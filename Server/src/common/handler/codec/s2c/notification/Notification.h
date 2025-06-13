@@ -75,5 +75,7 @@ struct PlayerFinishedNotification : ProtocolNotification
 
 struct PlayerKickedNotification : ProtocolNotification
 {
-    PlayerKickedNotification();
+    explicit PlayerKickedNotification(unsigned int playerId);
+
+    const unsigned int playerId;
 };
