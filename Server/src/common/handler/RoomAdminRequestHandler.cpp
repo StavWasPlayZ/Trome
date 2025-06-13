@@ -51,7 +51,7 @@ RequestResult RoomAdminRequestHandler::startGame(const RequestInfo &info, const 
     game.startGame();
 
     setRequestHandlers(
-        [this, &game](const LoggedUser *) {
+        [this, &game](const LoggedUser *const) {
             return new GameRequestHandler(this->m_handlerFactory, game);
         },
 
@@ -109,20 +109,10 @@ RequestResult RoomAdminRequestHandler::updateRoomData(const RequestInfo &info, c
     );
 }
 
-RequestResult RoomAdminRequestHandler::kick(const RequestInfo &info, const KickPlayerRequest &request) const
+RequestResult RoomAdminRequestHandler::kick(const RequestInfo &, const KickPlayerRequest &request) const
 {
     LoggedUser &user = m_handlerFactory.getLoginManager().getUserById(request.userId);
     m_room.kickUser(user);
-
-    setRequestHandlers(
-        [this](const LoggedUser *)
-        {
-            return new MenuRequestHandler(m_handlerFactory);
-        },
-
-        {&user}, // makes a std::vector<LoggedUser*> with the kicked player
-        KickedNotification()
-    );
 
     return RequestResult(
         new KickPlayerResponse()

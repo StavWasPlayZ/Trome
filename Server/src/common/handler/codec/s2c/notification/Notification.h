@@ -15,7 +15,7 @@ enum class NotificationCode : unsigned char
 
     PLAYER_FINISHED,
 
-    KICKED
+    PLAYER_KICKED
 };
 
 
@@ -73,7 +73,9 @@ struct PlayerFinishedNotification : ProtocolNotification
     PlayerFinishedNotification();
 };
 
-struct KickedNotification : ProtocolNotification
+struct PlayerKickedNotification : ProtocolNotification
 {
-    KickedNotification();
+    explicit PlayerKickedNotification(unsigned int playerId);
+
+    const unsigned int playerId;
 };
