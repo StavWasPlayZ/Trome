@@ -24,12 +24,12 @@
                                   BackButtonCommand="{Binding NavigateBackCommand}">
             
             <Grid RowDefinitions="Auto, *"
-                  RowSpacing="15"
+                  RowSpacing="20"
                   Margin="50">
                   
                 <TextBlock Grid.Row="0"
                            Margin="0 10"
-                           FontSize="40"
+                           FontSize="35"
                            TextAlignment="Center"
                            TextWrapping="Wrap">
                     Trome was created and submitted as part of the Magshimim National Cyber Program
@@ -42,10 +42,10 @@
                     
                     <Grid.Styles>
                         <Style Selector="TextBlock">
-                            <Setter Property="FontSize" Value="35"/>
+                            <Setter Property="FontSize" Value="30"/>
                         </Style>
                         <Style Selector="TextBlock:nth-child(1)">
-                            <Setter Property="FontSize" Value="60"/>
+                            <Setter Property="FontSize" Value="55"/>
                             <Setter Property="Margin" Value="0 0 0 10"/>
                         </Style>
                     </Grid.Styles>
