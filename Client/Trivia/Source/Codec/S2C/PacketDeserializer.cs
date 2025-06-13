@@ -25,13 +25,13 @@ public static class PacketDeserializer
                 break;
             
             default:
-                Console.Error.WriteLine($"WARNING: Unknown packet type {packetType}");
+                VerboseLog($"WARNING: Unknown packet type {packetType}", Communicator.LogLevel.Warning);
                 return null;
         }
         
         if (result == null)
         {
-            Console.Error.WriteLine($"WARNING: Unknown response code {code}");
+            VerboseLog($"WARNING: Unknown response code {code}", Communicator.LogLevel.Warning);
             return null;
         }
 
