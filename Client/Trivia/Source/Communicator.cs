@@ -31,6 +31,16 @@ public class Communicator : IDisposable
     private bool _disposed;
     
     
+    public enum LogLevel { Info, Warning, Sending, Receiving }
+    public static class AnsiColor
+    {
+        public const string Reset = "\u001b[0m";
+        public const string White = "\u001b[37m";
+        public const string DarkYellow = "\u001b[33m";
+        public const string Blue = "\u001b[34m";
+        public const string DarkCyan = "\u001b[36m";
+    }
+    
     private readonly Queue<IProtocolRequest> _outgoingRequests = [];
     private readonly object _outgoingRequestsCv = new();
     
@@ -171,7 +181,11 @@ public class Communicator : IDisposable
             {
                 if (e.Message.Contains("forcibly closed by the remote host"))
                 {
-                    VerboseLog("Server disconnected; Closing the game");
+                    VerboseLog("Server disconnected; Closing the game", LogLevel.Warning);
+                }
+                else if (e.Message.Contains("connection was aborted by the software in your host machine"))
+                {
+                    VerboseLog("Successfully disconnected");
                 }
                 else
                 {
@@ -265,8 +279,8 @@ public class Communicator : IDisposable
             
             var rawRequest = request.Serialize();
 
-            VerboseLog($"Sending packet: {request}");
-            VerboseLog($"In raw form: {Encoding.UTF8.GetString(rawRequest, 5, rawRequest.Length - 5)}");
+            VerboseLog($"Sending packet: {request}", LogLevel.Sending);
+            VerboseLog($"In raw form: {Encoding.UTF8.GetString(rawRequest, 5, rawRequest.Length - 5)}", LogLevel.Sending);
             
             _clientSocket!.GetStream().Write(rawRequest, 0, rawRequest.Length);
         }
@@ -293,17 +307,27 @@ public class Communicator : IDisposable
 
 
     [Conditional("DEBUG")]
-    private static void VerboseLog(string message)
+    private static void VerboseLog(string message, LogLevel level = LogLevel.Info)
     {
         if (!Verbose)
             return;
         
-        Log(message);
+        Log(message, level);
     }
     
-    private static void Log(string message)
+
+    private static void Log(string message, LogLevel level = LogLevel.Info)
     {
-        Console.WriteLine($"[{nameof(Communicator)}] {message}");
+        string color = level switch
+        {
+            LogLevel.Info => AnsiColor.Reset,
+            LogLevel.Warning => AnsiColor.DarkYellow,
+            LogLevel.Sending => AnsiColor.Blue,
+            LogLevel.Receiving => AnsiColor.DarkCyan,
+            _ => AnsiColor.Reset
+        };
+
+        Console.WriteLine($"{color}[{nameof(Communicator)}] {message}{AnsiColor.Reset}");
     }
 }
 

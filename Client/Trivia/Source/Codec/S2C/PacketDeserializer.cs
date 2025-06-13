@@ -15,7 +15,7 @@ public static class PacketDeserializer
         switch (packetType)
         {
             case S2CPacketType.Response:
-                VerboseLog($"Received response of code {code}: {json}");
+                VerboseLog($"Received response of code {code}: {json}", Communicator.LogLevel.Receiving);
                 result = ResponseDeserializer.Deserialize((ResponseCode) code, json);
                 break;
             
@@ -35,7 +35,7 @@ public static class PacketDeserializer
             return null;
         }
 
-        VerboseLog($"Successfully parsed as: {result}");
+        VerboseLog($"Successfully parsed as: {result}", Communicator.LogLevel.Receiving);
         return result;
     }
     
@@ -47,16 +47,24 @@ public static class PacketDeserializer
     
     //TODO: Consider a logging library
     [Conditional("DEBUG")]
-    private static void VerboseLog(string message)
+    private static void VerboseLog(string message, Communicator.LogLevel level = Communicator.LogLevel.Info)
     {
         if (!Communicator.Verbose)
             return;
         
-        Log(message);
+        Log(message, level);
     }
     
-    private static void Log(string message)
+    private static void Log(string message, Communicator.LogLevel level = Communicator.LogLevel.Info)
     {
-        Console.WriteLine($"[{nameof(PacketDeserializer)}] {message}");
+        string color = level switch
+        {
+            Communicator.LogLevel.Warning => Communicator.AnsiColor.DarkYellow,
+            Communicator.LogLevel.Sending => Communicator.AnsiColor.Blue,
+            Communicator.LogLevel.Receiving => Communicator.AnsiColor.DarkCyan,
+            _ => Communicator.AnsiColor.White
+        };
+
+        Console.WriteLine($"{color}[{nameof(Communicator)}] {message}{Communicator.AnsiColor.Reset}");
     }
 }
