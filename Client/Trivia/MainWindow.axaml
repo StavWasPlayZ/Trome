@@ -11,7 +11,7 @@
         Icon="/Assets/avalonia-logo.ico"
         Width="1000" Height="600"
         CanResize="False"
-        Title="Trivia"
+        Title="Trome"
         
         Closing="Window_OnClosing">
     
