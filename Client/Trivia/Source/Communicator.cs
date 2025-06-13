@@ -169,15 +169,15 @@ public class Communicator : IDisposable
             }
             catch (IOException e)
             {
-                if (e.Message ==
-                    "Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host..")
+                if (e.Message.Contains("forcibly closed by the remote host"))
                 {
-                    VerboseLog("Server disconnected, closing window.");
+                    VerboseLog("Server disconnected; Closing the game");
                 }
                 else
                 {
                     Console.Error.WriteLine($"IO Exception occured ({e.Message}); Assuming forced disconnection");   
                 }
+                
                 Dispatcher.UIThread.Post(MainWindow.Instance!.Close);
                 return;
             }
