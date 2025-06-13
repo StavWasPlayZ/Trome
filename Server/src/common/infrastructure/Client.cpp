@@ -43,6 +43,11 @@ std::unique_lock<std::mutex> Client::acquireRequestHandlerLock()
     return std::unique_lock(this->requestHandlerMutex);
 }
 
+const std::future<void> *Client::getThread() const
+{
+    return this->thread;
+}
+
 void Client::setAndStartThread(const std::function<void()> &threadFunc)
 {
     if (this->thread != nullptr)
@@ -51,14 +56,6 @@ void Client::setAndStartThread(const std::function<void()> &threadFunc)
     }
 
     this->thread = new std::future(std::async(std::launch::async, threadFunc));
-}
-
-void Client::waitForExit() const
-{
-    if (thread == nullptr)
-        return;
-
-    thread->wait();
 }
 
 void Client::sendNotification(const ProtocolNotification& notification)
