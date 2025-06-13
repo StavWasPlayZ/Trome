@@ -108,6 +108,33 @@ void Room::removeUser(LoggedUser &user)
     }
 }
 
+void Room::kickUser(LoggedUser &user)
+{
+    const auto it = std::ranges::find(this->m_users, &user);
+
+    if (it == m_users.end())
+        return;
+
+    m_users.erase(it);
+    user.removeFromRoom();
+
+
+    IRequestHandler::setRequestHandlers(
+        [this](const LoggedUser *const)
+        {
+            return new MenuRequestHandler(m_handlerFactory);
+        },
+
+        {&user} // makes a std::vector<LoggedUser*> with the kicked player
+    );
+
+    IRequestHandler::dispatchNotification(
+        PlayerKickedNotification(user.getId()),
+        getAllUsers(), 
+        &getAdmin()
+    );
+}
+
 const std::vector<LoggedUser *> &Room::getAllUsers() const
 {
     return this->m_users;

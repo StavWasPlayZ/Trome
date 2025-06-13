@@ -245,6 +245,11 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetGameResultRespo
     return serialize(response.id, data);
 }
 
+OBuffer JsonResponsePacketSerializer::serializeResponse(const KickPlayerResponse &response)
+{
+    return serialize(response.id, nlohmann::json::object());
+}
+
 OBuffer JsonResponsePacketSerializer::serializeResponse(const QuestionResponse &response)
 {
     nlohmann::json data;

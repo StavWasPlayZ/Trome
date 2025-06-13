@@ -56,3 +56,7 @@ SubmitAnswerRequest::SubmitAnswerRequest(const int answer) : answer(answer)
 AddQuestionRequest::AddQuestionRequest(const Question &question) : question(question)
 {
 }
+
+KickPlayerRequest::KickPlayerRequest(unsigned int userId) : userId(userId)
+{
+}

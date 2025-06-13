@@ -167,6 +167,13 @@ public:
      */
     static OBuffer serializeResponse(const AddQuestionResponse &response);
 
+    /**
+     * Returns: The serialized object.
+     *
+     * NOTE: The returned resource must be freed.
+     */
+    static OBuffer serializeResponse(const KickPlayerResponse &response);
+
 private:
     /**
      * Returns: The serialized object.

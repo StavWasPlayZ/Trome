@@ -29,7 +29,8 @@ enum class RequestCode : unsigned char
 	GET_QUESTION,
 	SUBMIT_ANSWER,
 	GET_GAME_RESULT,
-	ADD_QUESTION
+	ADD_QUESTION,
+	KICK_PLAYER
 };
 
 struct ProtocolRequest
@@ -170,4 +171,11 @@ struct AddQuestionRequest : ProtocolRequest
     explicit AddQuestionRequest(const Question& question);
 
     const Question question;
+};
+
+struct KickPlayerRequest : ProtocolRequest
+{
+    explicit KickPlayerRequest(unsigned int userId);
+
+	const unsigned int userId;
 };

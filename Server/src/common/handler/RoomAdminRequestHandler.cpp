@@ -19,6 +19,7 @@ std::optional<ErrorStatus> RoomAdminRequestHandler::isRequestRelevant(const Requ
     case RequestCode::CLOSE_ROOM:
     case RequestCode::UPDATE_ROOM_DATA:
     case RequestCode::GET_ROOM_STATE:
+    case RequestCode::KICK_PLAYER:
         return std::nullopt;
 
     default:
@@ -36,6 +37,8 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo &info, co
         return closeRoom(info, static_cast<const CloseRoomRequest &>(request));
     case RequestCode::UPDATE_ROOM_DATA:
         return updateRoomData(info, static_cast<const UpdateRoomDataRequest &>(request));
+    case RequestCode::KICK_PLAYER:
+        return kick(info, static_cast<const KickPlayerRequest &>(request));
 
     default:
         return RoomRequestHandler::handleRequest(info, request);
@@ -48,7 +51,7 @@ RequestResult RoomAdminRequestHandler::startGame(const RequestInfo &info, const 
     game.startGame();
 
     setRequestHandlers(
-        [this, &game](const LoggedUser *) {
+        [this, &game](const LoggedUser *const) {
             return new GameRequestHandler(this->m_handlerFactory, game);
         },
 
@@ -105,3 +108,13 @@ RequestResult RoomAdminRequestHandler::updateRoomData(const RequestInfo &info, c
         new UpdateRoomDataResponse()
     );
 }
+
+RequestResult RoomAdminRequestHandler::kick(const RequestInfo &, const KickPlayerRequest &request) const
+{
+    LoggedUser &user = m_handlerFactory.getLoginManager().getUserById(request.userId);
+    m_room.kickUser(user);
+
+    return RequestResult(
+        new KickPlayerResponse()
+    );
+};
