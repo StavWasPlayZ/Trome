@@ -46,7 +46,7 @@
                 </StackPanel.Styles>
                 
                 
-                <controls:TriviaTextBox Width="600"
+                <controls:TriviaTextBox Width="700"
                                         Background="rgba(0, 0, 0, .5)">
                     <TextBox Text="{Binding Prompt}"
                              Margin="10"
@@ -79,7 +79,7 @@
                         <Grid.Styles>
                             <Style Selector="controls|TriviaTextBox">
                                 <Setter Property="Background" Value="rgba(0, 0, 0, .3)"/>
-                                <Setter Property="Width" Value="250"/>
+                                <Setter Property="Width" Value="300"/>
                             </Style>
                         </Grid.Styles>
                         
