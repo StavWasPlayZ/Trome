@@ -119,8 +119,6 @@ void Room::kickUser(LoggedUser &user)
     user.removeFromRoom();
 
 
-    const PlayerKickedNotification notification = PlayerKickedNotification(user.getId());
-
     IRequestHandler::setRequestHandlers(
         [this](const LoggedUser *const)
         {
@@ -131,7 +129,7 @@ void Room::kickUser(LoggedUser &user)
     );
 
     IRequestHandler::dispatchNotification(
-        notification,
+        PlayerKickedNotification(user.getId()),
         getAllUsers(), 
         &getAdmin()
     );
