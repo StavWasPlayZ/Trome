@@ -46,13 +46,13 @@ public:
 
 
     void setAndStartThread(const std::function<void()>& threadFunc);
-    void waitForExit();
+    void waitForExit() const;
 
 
     void handleDisconnecting() const;
 
 private:
-    std::future<void> thread;
+	const std::future<void>* thread;
 
     std::mutex requestHandlerMutex;
 	const IRequestHandler* requestHandler;
