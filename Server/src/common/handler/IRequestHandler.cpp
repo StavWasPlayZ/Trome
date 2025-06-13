@@ -18,7 +18,7 @@ LoggedUser &IRequestHandler::getUserByInfo(const RequestInfo &info) const
 void IRequestHandler::dispatchNotification(
     const std::optional<std::function<const IRequestHandler *(const LoggedUser *)>> &factory,
     const std::vector<LoggedUser *> &users,
-    const ProtocolNotification &notification,
+    const std::optional<ProtocolNotification> &notification,
     const std::optional<const LoggedUser *> &excluded
 )
 {
@@ -34,7 +34,10 @@ void IRequestHandler::dispatchNotification(
             client.setRequestHandlerSafe(factory.value()(user));
         }
 
-        client.sendNotification(notification);
+        if (notification.has_value())
+        {
+            client.sendNotification(notification.value());
+        }
     }
 }
 
@@ -47,7 +50,7 @@ void IRequestHandler::dispatchNotification(const ProtocolNotification &notificat
 
 void IRequestHandler::setRequestHandlers(const std::function<const IRequestHandler *(const LoggedUser *)> &factory,
                                          const std::vector<LoggedUser *> &users,
-                                         const ProtocolNotification &notification,
+                                         const std::optional<ProtocolNotification> &notification,
                                          const std::optional<const LoggedUser *> &excluded)
 {
     dispatchNotification(factory, users, notification, excluded);

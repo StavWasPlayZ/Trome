@@ -114,16 +114,6 @@ RequestResult RoomAdminRequestHandler::kick(const RequestInfo &, const KickPlaye
     LoggedUser &user = m_handlerFactory.getLoginManager().getUserById(request.userId);
     m_room.kickUser(user);
 
-    setRequestHandlers(
-        [this](const LoggedUser *const)
-        {
-            return new MenuRequestHandler(m_handlerFactory);
-        },
-
-        {&user}, // makes a std::vector<LoggedUser*> with the kicked player
-        PlayerKickedNotification(user.getId())
-    );
-
     return RequestResult(
         new KickPlayerResponse()
     );
