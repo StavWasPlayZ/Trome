@@ -20,7 +20,8 @@
                         Stretch="UniformToFill" />            
         </Panel.Background>
         
-        <controls:TriviaMenuPanel Title="ABOUT">
+        <controls:TriviaMenuPanel Title="ABOUT"
+                                  BackButtonCommand="{Binding NavigateBackCommand}">
             
             <Grid RowDefinitions="Auto, *"
                   RowSpacing="15"
