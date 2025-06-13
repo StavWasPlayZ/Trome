@@ -12,5 +12,5 @@ public enum NotificationCode : byte
     
     PlayerFinished,
     
-    Kicked
+    PlayerKicked
 }
