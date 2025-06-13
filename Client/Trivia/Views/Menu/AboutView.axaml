@@ -23,6 +23,7 @@
         <controls:TriviaMenuPanel Title="ABOUT">
             
             <Grid RowDefinitions="Auto, *"
+                  RowSpacing="15"
                   Margin="50">
                   
                 <TextBlock Grid.Row="0"
@@ -58,7 +59,6 @@
 
                     <Grid Grid.Column="1"
                           RowDefinitions="Auto, *, Auto"
-                          VerticalAlignment="Center"
                           HorizontalAlignment="Center">
                         
                         <StackPanel Grid.Row="0">
