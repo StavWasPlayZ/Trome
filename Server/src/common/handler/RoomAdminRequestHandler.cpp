@@ -121,7 +121,7 @@ RequestResult RoomAdminRequestHandler::kick(const RequestInfo &info, const KickP
         },
 
         {&user}, // makes a std::vector<LoggedUser*> with the kicked player
-        KickedNotification()
+        PlayerKickedNotification()
     );
 
     return RequestResult(

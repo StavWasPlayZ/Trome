@@ -42,6 +42,6 @@ PlayerFinishedNotification::PlayerFinishedNotification() :
     ProtocolNotification(NotificationCode::PLAYER_FINISHED)
 {}
 
-KickedNotification::KickedNotification() : 
-    ProtocolNotification(NotificationCode::KICKED)
+PlayerKickedNotification::PlayerKickedNotification() : 
+    ProtocolNotification(NotificationCode::PLAYER_KICKED)
 {}

@@ -87,7 +87,7 @@ public:
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serialize(const KickedNotification &notification);
+    static OBuffer serialize(const PlayerKickedNotification &notification);
 
 
 private:
