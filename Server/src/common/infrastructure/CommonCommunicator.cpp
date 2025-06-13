@@ -57,10 +57,12 @@ void CommonCommunicator::close()
     std::vector<const std::future<void>*> clientThreads;
     clientThreads.reserve(this->m_clients.size());
 
+    this->m_clientsMutex.lock();
     for (const auto& pair : this->m_clients)
     {
         clientThreads.push_back(pair.second->getThread());
     }
+    this->m_clientsMutex.unlock();
 
 
     // Notify all threads that the server is closing
