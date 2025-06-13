@@ -46,7 +46,7 @@ public:
 
     void setAndStartThread(const std::function<void()>& threadFunc);
     /**
-     *NOTE: RESOURCE MUST BE FREED!
+     *NOTE: THIS RESOURCE MUST BE FREED!
      */
     const std::future<void> *getThread() const;
 

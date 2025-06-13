@@ -51,6 +51,7 @@ void CommonCommunicator::close()
     if (!this->_running)
         return;
 
+
     // Save the threads before doing any action.
     // This is because they may become unavailable later during the process of cleaning the clients.
     std::vector<const std::future<void>*> clientThreads;
@@ -72,9 +73,11 @@ void CommonCommunicator::close()
     for (const std::future<void> *const thread : clientThreads)
     {
         thread->wait();
+        delete thread;
     }
 
     platformClose();
+
 
     this->_serverSockAddr = {};
     this->_serverThread = std::future<void>();
