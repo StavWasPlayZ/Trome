@@ -11,6 +11,7 @@ public class MainMenuViewModel : PageViewModel
     public ReactiveCommand<Unit, IRoutableViewModel> PlayCommand { get; }
     
     public ReactiveCommand<Unit, IRoutableViewModel> StatisticsCommand { get; }
+    public ReactiveCommand<Unit, IRoutableViewModel> AboutCommand { get; }
     
     public ReactiveCommand<Unit, IRoutableViewModel> SettingsCommand { get; }
     
@@ -26,6 +27,10 @@ public class MainMenuViewModel : PageViewModel
         
         StatisticsCommand = NavigateReactiveCommand(
             () => new StatisticsViewModel(hostScreen)
+        );
+
+        AboutCommand = NavigateReactiveCommand(
+            () => new AboutViewModel(hostScreen)
         );
         
         LogOutCommand = ReactiveCommand.CreateFromTask(async () =>

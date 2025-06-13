@@ -54,7 +54,7 @@
                                                BorderBrushSelected="#6154A3"
                                                BorderBrushPressed="#3D366D"
                                                IconSvgPath="avares://Trivia/Assets/Icons/leaderboard.svg"/>
-                        <controls:TriviaButton x:Name="AboutButton"
+                        <controls:TriviaButton Command="{Binding AboutCommand}"
                                                Text="ABOUT"
                                                IconSvgPath="avares://Trivia/Assets/Icons/info.svg"/>
     
