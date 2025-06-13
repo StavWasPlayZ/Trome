@@ -28,10 +28,10 @@
                   
                 <TextBlock Grid.Row="0"
                            Margin="0 10"
-                           FontSize="35"
+                           FontSize="40"
                            TextAlignment="Center"
                            TextWrapping="Wrap">
-                    This game was created and submitted as part of the Magshimim National Cyber Program
+                    TROME was created and submitted as part of the Magshimim National Cyber Program
                     2nd year final project.
                 </TextBlock>
                 
