@@ -170,6 +170,7 @@ public class Communicator : IDisposable
             catch (IOException e)
             {
                 Console.Error.WriteLine($"IO Exception occured ({e.Message}); Assuming forced disconnection");
+                Dispatcher.UIThread.Post(MainWindow.Instance!.Close);
                 return;
             }
 
