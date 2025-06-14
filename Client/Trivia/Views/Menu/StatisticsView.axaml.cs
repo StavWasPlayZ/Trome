@@ -1,4 +1,3 @@
-using Avalonia.Controls;
 using Avalonia.Input;
 using Trivia.Models.User;
 using Trivia.ViewModels.Menu;
@@ -11,20 +10,18 @@ public partial class StatisticsView : PageViewControl<StatisticsViewModel>
     {
         InitializeComponent();
     }
+    
 
     private void SelectingItemsControl_OnPointerReleased(object? sender, PointerReleasedEventArgs pointerReleasedEventArgs)
     {
-        var listbox = (sender as ListBox)!;
-        
-        if (listbox.SelectedItem == null)
+        Utils.PerformListTriggerAction<UserScoreModel>(sender, OnUserSelected);
+    }
+
+    private static void OnUserSelected(UserScoreModel userScoreModel)
+    {
+        if (userScoreModel.Scores is null)
             return;
 
-        var scores = (listbox.SelectedItem as UserScoreModel)!.Scores;
-        if (scores is null)
-            return;
-        
-        StatisticsViewModel.ShowUserStatsPopup(scores.User);
-        
-        listbox.SelectedItem = null;
+        StatisticsViewModel.ShowUserStatsPopup(userScoreModel.Scores.User);
     }
 }
