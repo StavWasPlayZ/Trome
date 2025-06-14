@@ -54,6 +54,8 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const ProtocolResponse &
         return serializeResponse(static_cast<const GetGameResultResponse&>(response));
     case ResponseCode::ADD_QUESTION:
         return serializeResponse(static_cast<const AddQuestionResponse&>(response));
+    case ResponseCode::KICK_PLAYER:
+        return serializeResponse(static_cast<const KickPlayerResponse&>(response));
 
     default: throw std::invalid_argument("Invalid response ID");
     }

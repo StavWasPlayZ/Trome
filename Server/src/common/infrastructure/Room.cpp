@@ -127,17 +127,20 @@ void Room::kickUser(LoggedUser &user)
     user.removeFromRoom();
 
 
+    const PlayerKickedNotification notification = PlayerKickedNotification(user.getId());
+
     IRequestHandler::setRequestHandlers(
         [this](const LoggedUser *const)
         {
             return new MenuRequestHandler(m_handlerFactory);
         },
 
-        {&user} // makes a std::vector<LoggedUser*> with the kicked player
+        {&user}, // makes a std::vector<LoggedUser*> with the kicked player
+        &notification
     );
 
     IRequestHandler::dispatchNotification(
-        PlayerKickedNotification(user.getId()),
+        notification,
         getAllUsers(), 
         &getAdmin()
     );
