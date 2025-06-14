@@ -22,7 +22,7 @@ public:
     static ProtocolRequest *deserialize(const RequestInfo &info);
 
 
-	static nlohmann::json readJson(const unsigned char* data, int jsonLen, ICryptoAlgorithm& cryptoAlgorithm);
+	static nlohmann::json readJson(const unsigned char* data, int jsonLen, const ICryptoAlgorithm& cryptoAlgorithm);
 
 	/**
 	* Returns: The deserialized object.

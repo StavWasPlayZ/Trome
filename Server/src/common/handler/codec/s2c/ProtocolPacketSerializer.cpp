@@ -14,7 +14,7 @@
 #include <cstring>
 
 OBuffer ProtocolPacketSerializer::serialize(const S2CPacketType packetType, const unsigned char msgCode,
-                                            const nlohmann::json &data, ICryptoAlgorithm& cryptoAlgorithm)
+                                            const nlohmann::json &data, const ICryptoAlgorithm& cryptoAlgorithm)
 {
     const std::string dataStr = cryptoAlgorithm.encrypt(data.dump());
 

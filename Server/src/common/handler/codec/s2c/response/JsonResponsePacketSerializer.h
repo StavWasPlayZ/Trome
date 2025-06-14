@@ -27,7 +27,7 @@ public:
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serializeResponse(const ProtocolResponse &response, ICryptoAlgorithm& cryptoAlgorythm);
+    static OBuffer serializeResponse(const ProtocolResponse &response, const ICryptoAlgorithm& cryptoAlgorythm);
 
 
 	/**
@@ -35,147 +35,147 @@ public:
 	 * 
 	 * NOTE: The returned resource must be freed.
 	 */
-    static OBuffer serializeResponse(const LoginResponse &response, ICryptoAlgorithm& cryptoAlgorythm);
+    static OBuffer serializeResponse(const LoginResponse &response, const ICryptoAlgorithm& cryptoAlgorythm);
 
 	/**
 	 * Returns: The serialized object.
 	 * 
 	 * NOTE: The returned resource must be freed.
 	 */
-    static OBuffer serializeResponse(const SignupResponse &response, ICryptoAlgorithm& cryptoAlgorythm);
+    static OBuffer serializeResponse(const SignupResponse &response, const ICryptoAlgorithm& cryptoAlgorythm);
 
 	/**
 	 * Returns: The serialized object.
 	 * 
 	 * NOTE: The returned resource must be freed.
 	 */
-    static OBuffer serializeResponse(const ErrorResponse &response, ICryptoAlgorithm& cryptoAlgorythm);
+    static OBuffer serializeResponse(const ErrorResponse &response, const ICryptoAlgorithm& cryptoAlgorythm);
 
     /**
      * Returns: The serialized object.
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serializeResponse(const LogoutResponse &response, ICryptoAlgorithm& cryptoAlgorythm);
+    static OBuffer serializeResponse(const LogoutResponse &response, const ICryptoAlgorithm& cryptoAlgorythm);
 
     /**
      * Returns: The serialized object.
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serializeResponse(const JoinRoomResponse &response, ICryptoAlgorithm& cryptoAlgorythm);
+    static OBuffer serializeResponse(const JoinRoomResponse &response, const ICryptoAlgorithm& cryptoAlgorythm);
 
     /**
      * Returns: The serialized object.
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serializeResponse(const CreateRoomResponse &response, ICryptoAlgorithm& cryptoAlgorythm);
+    static OBuffer serializeResponse(const CreateRoomResponse &response, const ICryptoAlgorithm& cryptoAlgorythm);
 
     /**
      * Returns: The serialized object.
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serializeResponse(const GetRoomsResponse &response, ICryptoAlgorithm& cryptoAlgorythm);
+    static OBuffer serializeResponse(const GetRoomsResponse &response, const ICryptoAlgorithm& cryptoAlgorythm);
 
     /**
      * Returns: The serialized object.
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serializeResponse(const GetPlayersInRoomResponse &response, ICryptoAlgorithm& cryptoAlgorythm);
+    static OBuffer serializeResponse(const GetPlayersInRoomResponse &response, const ICryptoAlgorithm& cryptoAlgorythm);
 
     /**
      * Returns: The serialized object.
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serializeResponse(const GetHighScoresResponse &response, ICryptoAlgorithm& cryptoAlgorythm);
+    static OBuffer serializeResponse(const GetHighScoresResponse &response, const ICryptoAlgorithm& cryptoAlgorythm);
 
     /**
      * Returns: The serialized object.
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serializeResponse(const GetUserStatisticsResponse &response, ICryptoAlgorithm& cryptoAlgorythm);
+    static OBuffer serializeResponse(const GetUserStatisticsResponse &response, const ICryptoAlgorithm& cryptoAlgorythm);
 
     /**
      * Returns: The serialized object.
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serializeResponse(const CloseRoomResponse &response, ICryptoAlgorithm& cryptoAlgorythm);
+    static OBuffer serializeResponse(const CloseRoomResponse &response, const ICryptoAlgorithm& cryptoAlgorythm);
 
     /**
      * Returns: The serialized object.
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serializeResponse(const StartGameResponse &response, ICryptoAlgorithm& cryptoAlgorythm);
+    static OBuffer serializeResponse(const StartGameResponse &response, const ICryptoAlgorithm& cryptoAlgorythm);
 
     /**
      * Returns: The serialized object.
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serializeResponse(const LeaveRoomResponse &response, ICryptoAlgorithm& cryptoAlgorythm);
+    static OBuffer serializeResponse(const LeaveRoomResponse &response, const ICryptoAlgorithm& cryptoAlgorythm);
 
     /**
      * Returns: The serialized object.
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serializeResponse(const GetRoomStateResponse &response, ICryptoAlgorithm& cryptoAlgorythm);
+    static OBuffer serializeResponse(const GetRoomStateResponse &response, const ICryptoAlgorithm& cryptoAlgorythm);
 
     /**
      * Returns: The serialized object.
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serializeResponse(const UpdateRoomDataResponse &response, ICryptoAlgorithm& cryptoAlgorythm);
+    static OBuffer serializeResponse(const UpdateRoomDataResponse &response, const ICryptoAlgorithm& cryptoAlgorythm);
 
     /**
      * Returns: The serialized object.
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serializeResponse(const LeaveGameResponse &response, ICryptoAlgorithm& cryptoAlgorythm);
+    static OBuffer serializeResponse(const LeaveGameResponse &response, const ICryptoAlgorithm& cryptoAlgorythm);
 
     /**
      * Returns: The serialized object.
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serializeResponse(const GetQuestionResponse &response, ICryptoAlgorithm& cryptoAlgorythm);
+    static OBuffer serializeResponse(const GetQuestionResponse &response, const ICryptoAlgorithm& cryptoAlgorythm);
 
     /**
      * Returns: The serialized object.
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serializeResponse(const SubmitAnswerResponse &response, ICryptoAlgorithm& cryptoAlgorythm);
+    static OBuffer serializeResponse(const SubmitAnswerResponse &response, const ICryptoAlgorithm& cryptoAlgorythm);
 
     /**
      * Returns: The serialized object.
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serializeResponse(const GetGameResultResponse &response, ICryptoAlgorithm& cryptoAlgorythm);
+    static OBuffer serializeResponse(const GetGameResultResponse &response, const ICryptoAlgorithm& cryptoAlgorythm);
 
     /**
      * Returns: The serialized object.
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serializeResponse(const AddQuestionResponse &response, ICryptoAlgorithm& cryptoAlgorythm);
+    static OBuffer serializeResponse(const AddQuestionResponse &response, const ICryptoAlgorithm& cryptoAlgorythm);
 
     /**
      * Returns: The serialized object.
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serializeResponse(const KickPlayerResponse &response, ICryptoAlgorithm &cryptoAlgorythm);
+    static OBuffer serializeResponse(const KickPlayerResponse &response, const ICryptoAlgorithm& cryptoAlgorythm);
 
 private:
     /**
@@ -183,9 +183,9 @@ private:
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serializeResponse(const QuestionResponse &response, ICryptoAlgorithm& cryptoAlgorythm);
+    static OBuffer serializeResponse(const QuestionResponse &response, const ICryptoAlgorithm& cryptoAlgorythm);
 
-    static OBuffer serialize(ResponseCode msgCode, const nlohmann::json &data, ICryptoAlgorithm& cryptoAlgorythm);
+    static OBuffer serialize(ResponseCode msgCode, const nlohmann::json &data, const ICryptoAlgorithm& cryptoAlgorythm);
 
 	/**
 	 * Serializes the response into the provided json.

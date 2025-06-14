@@ -24,7 +24,7 @@ public:
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serialize(const ProtocolNotification& notification, ICryptoAlgorithm& cryptoAlgorithm);
+    static OBuffer serialize(const ProtocolNotification& notification, const ICryptoAlgorithm& cryptoAlgorithm);
 
 
     /**
@@ -33,7 +33,7 @@ public:
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serialize(const PlayerJoinedRoomNotification& notification, ICryptoAlgorithm& cryptoAlgorithm);
+    static OBuffer serialize(const PlayerJoinedRoomNotification& notification, const ICryptoAlgorithm& cryptoAlgorithm);
 
     /**
      * Converts the provided notification into a writable resource,
@@ -41,7 +41,7 @@ public:
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serialize(const PlayerLeftRoomNotification& notification, ICryptoAlgorithm& cryptoAlgorithm);
+    static OBuffer serialize(const PlayerLeftRoomNotification& notification, const ICryptoAlgorithm& cryptoAlgorithm);
 
     /**
      * Converts the provided notification into a writable resource,
@@ -49,7 +49,7 @@ public:
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serialize(const RoomClosedNotification& notification, ICryptoAlgorithm& cryptoAlgorithm);
+    static OBuffer serialize(const RoomClosedNotification& notification, const ICryptoAlgorithm& cryptoAlgorithm);
 
     /**
      * Converts the provided notification into a writable resource,
@@ -57,7 +57,7 @@ public:
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serialize(const RoomDataUpdatedNotification& notification, ICryptoAlgorithm& cryptoAlgorithm);
+    static OBuffer serialize(const RoomDataUpdatedNotification& notification, const ICryptoAlgorithm& cryptoAlgorithm);
 
     /**
      * Converts the provided notification into a writable resource,
@@ -65,7 +65,7 @@ public:
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serialize(const GameStartedNotification& notification, ICryptoAlgorithm& cryptoAlgorithm);
+    static OBuffer serialize(const GameStartedNotification& notification, const ICryptoAlgorithm& cryptoAlgorithm);
 
     /**
      * Converts the provided notification into a writable resource,
@@ -73,7 +73,7 @@ public:
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serialize(const GameEndedNotification &notification, ICryptoAlgorithm& cryptoAlgorithm);
+    static OBuffer serialize(const GameEndedNotification &notification, const ICryptoAlgorithm& cryptoAlgorithm);
 
     /**
      * Converts the provided notification into a writable resource,
@@ -81,7 +81,7 @@ public:
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serialize(const PlayerFinishedNotification &notification, ICryptoAlgorithm& cryptoAlgorithm);
+    static OBuffer serialize(const PlayerFinishedNotification &notification, const ICryptoAlgorithm& cryptoAlgorithm);
 
     /**
      * Converts the provided notification into a writable resource,
@@ -89,9 +89,9 @@ public:
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serialize(const PlayerKickedNotification &notification, ICryptoAlgorithm& cryptoAlgorithm);
+    static OBuffer serialize(const PlayerKickedNotification &notification, const ICryptoAlgorithm& cryptoAlgorithm);
 
 
 private:
-    static OBuffer serialize(NotificationCode msgCode, const nlohmann::json &data, ICryptoAlgorithm& cryptoAlgorithm);
+    static OBuffer serialize(NotificationCode msgCode, const nlohmann::json &data, const ICryptoAlgorithm& cryptoAlgorithm);
 };
