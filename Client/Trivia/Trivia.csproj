@@ -92,7 +92,7 @@
         <DependentUpon>AboutView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\Popups\StatsPopup.axaml.cs">
+      <Compile Update="Views\Popups\StatsPopupView.axaml.cs">
         <DependentUpon>StatsPopup.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>

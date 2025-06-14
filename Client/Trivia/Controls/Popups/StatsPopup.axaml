@@ -69,7 +69,8 @@
                                            Foreground="#BE64B7"
                                            Text="{
                                                Binding Stats.Points,
-                                               RelativeSource={RelativeSource TemplatedParent}
+                                               RelativeSource={RelativeSource TemplatedParent},
+                                               FallbackValue='----'
                                            }"/>
                                 
                                 <TextBlock Grid.Row="2"
@@ -83,6 +84,7 @@
                                            Text="{
                                                Binding Stats.TimeOnQuestionsAvg,
                                                RelativeSource={RelativeSource TemplatedParent},
+                                               FallbackValue='----',
                                                Converter={StaticResource InvalidStaterConverter}
                                            }"/>
                                 
@@ -96,7 +98,8 @@
                                            Foreground="#BE64B7"
                                            Text="{
                                                Binding Stats.QuestionsAnswered,
-                                               RelativeSource={RelativeSource TemplatedParent}
+                                               RelativeSource={RelativeSource TemplatedParent},
+                                               FallbackValue='----'
                                            }"/>
                                 
                                 <TextBlock Grid.Row="6"
@@ -109,7 +112,8 @@
                                            Foreground="#BE64B7"
                                            Text="{
                                                Binding Stats.QuestionsAnsweredCorrectly,
-                                               RelativeSource={RelativeSource TemplatedParent}
+                                               RelativeSource={RelativeSource TemplatedParent},
+                                               FallbackValue='----'
                                            }"/>
                                 
                             </Grid>

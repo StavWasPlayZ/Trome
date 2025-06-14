@@ -1,0 +1,20 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:popupsvm="clr-namespace:Trivia.ViewModels.Popups"
+             xmlns:popups="clr-namespace:Trivia.Controls.Popups"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
+             x:CompileBindings="True"
+             x:Class="Trivia.Views.Popups.StatsPopupView"
+             x:DataType="popupsvm:StatsPopupViewModel">
+
+    <Design.DataContext>
+        <popupsvm:StatsPopupViewModel/>
+    </Design.DataContext>
+    
+    <popups:StatsPopup Username="{Binding User.Username}"
+                       Stats="{Binding Stats}"
+                       CloseCommand="{Binding CloseCommand}"/>
+
+</UserControl>

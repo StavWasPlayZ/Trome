@@ -16,10 +16,10 @@ public class StatsPopup : TemplatedControl
         set => SetValue(CloseCommandProperty, value);
     }
 
-    public static readonly StyledProperty<UserStatistics> StatsProperty = AvaloniaProperty.Register<StatsPopup, UserStatistics>(
+    public static readonly StyledProperty<UserStatistics?> StatsProperty = AvaloniaProperty.Register<StatsPopup, UserStatistics?>(
         nameof(Stats));
 
-    public UserStatistics Stats
+    public UserStatistics? Stats
     {
         get => GetValue(StatsProperty);
         set => SetValue(StatsProperty, value);
