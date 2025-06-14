@@ -250,23 +250,23 @@ public abstract class RoomViewModel : PageViewModel
                 break;
             
             case PlayerKickedNotification playerKickedNotif:
-                HandlePlayerKicked(playerKickedNotif);
+                HandlePlayerKicked(playerKickedNotif.PlayerId);
                 break;
         }
         
         base.CommOnPacketReceived(packet);
     }
-
-    private void HandlePlayerKicked(PlayerKickedNotification playerKickedNotif)
+    
+    public void HandlePlayerKicked(int userId)
     {
-        if (playerKickedNotif.PlayerId == AppService.SessionUser!.Id)
+        if (userId == AppService.SessionUser!.Id)
         {
             // This user was kicked
             ReturnToRooms();
             return;
         }
         
-        HandlePlayerLeft(playerKickedNotif.PlayerId);
+        HandlePlayerLeft(userId);
     }
 
     private void HandlePlayerJoined(PlayerJoinedRoomNotification playerJoinedRoomNotif)
