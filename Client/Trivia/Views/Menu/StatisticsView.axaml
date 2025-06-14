@@ -38,8 +38,8 @@
                             
                             <controls:TriviaUsersList Grid.Column="0"
                                                       Background="#ffddbe">
-                                <ListBox ItemsSource="{Binding ScoreLists[0]}"
-                                         SelectedItem="{Binding SelectedUser}">
+                                <ListBox PointerReleased="SelectingItemsControl_OnPointerReleased"
+                                         ItemsSource="{Binding ScoreLists[0]}">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
                                             <listEntries:ScoredUserListEntry Scores="{Binding}"/>
@@ -171,8 +171,8 @@
                             
                             <controls:TriviaUsersList Grid.Column="1"
                                                       Background="#9d665f">
-                                <ListBox ItemsSource="{Binding ScoreLists[1]}"
-                                         SelectedItem="{Binding SelectedUser}">
+                                <ListBox PointerReleased="SelectingItemsControl_OnPointerReleased"
+                                         ItemsSource="{Binding ScoreLists[1]}">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
                                             <listEntries:ScoredUserListEntry Scores="{Binding}"/>
@@ -309,8 +309,8 @@
                                               Margin="160 0"
                                               CornerRadius="30 30 0 0"
                                               IsVisible="{Binding Show2ndList}">
-                        <ListBox ItemsSource="{Binding ScoreLists[2]}"
-                                 SelectedItem="{Binding SelectedUser}">
+                        <ListBox PointerReleased="SelectingItemsControl_OnPointerReleased"
+                                 ItemsSource="{Binding ScoreLists[2]}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <listEntries:ScoredUserListEntry Scores="{Binding}"/>
