@@ -20,6 +20,7 @@
     <Style Selector="controls|StatsPopup">
         <!-- Set Defaults -->
         <Setter Property="Username">USERNAME</Setter>
+        <Setter Property="Height" Value="400"/>
 
         <Setter Property="Template">
             <ControlTemplate>
@@ -27,7 +28,7 @@
                 <Border CornerRadius="30"
                         Background="#FFCACA"
                         Width="325"
-                        Height="400"
+                        Height="{TemplateBinding Height}"
                         VerticalAlignment="Center">
                     
                     <Panel>

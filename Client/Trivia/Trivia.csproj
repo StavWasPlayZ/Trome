@@ -96,5 +96,9 @@
         <DependentUpon>StatsPopup.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Views\Popups\GuestStatsPopupView.axaml.cs">
+        <DependentUpon>GuestStatsPopupView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
 </Project>
