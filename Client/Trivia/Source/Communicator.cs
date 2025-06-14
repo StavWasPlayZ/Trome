@@ -103,6 +103,7 @@ public class Communicator : IDisposable
                 {
                     //TODO: Check if it actually corresponds to the original code
                     onError?.Invoke(errorResponse);
+                    PacketReceived -= OnPacketReceived;
                 }
 
                 return;
