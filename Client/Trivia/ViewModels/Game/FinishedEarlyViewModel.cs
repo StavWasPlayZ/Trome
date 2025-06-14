@@ -48,10 +48,8 @@ public class FinishedEarlyViewModel : GameViewModelBase
             case GameEndedNotification gameEndedNotif:
                 NavigateAndPop(new AfterGameViewModel(HostScreen, RoomModel, gameEndedNotif.Results))!.Subscribe();
                 break;
-            
-            default:
-                base.CommOnPacketReceived(packet);
-                break;
         }
+        
+        base.CommOnPacketReceived(packet);
     }
 }

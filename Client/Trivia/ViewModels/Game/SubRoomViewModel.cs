@@ -1,5 +1,4 @@
-using System.Reactive.Threading.Tasks;
-using System.Threading.Tasks;
+using System;
 using ReactiveUI;
 using Trivia.Codec.S2C;
 using Trivia.Codec.S2C.Notification.Packets;
@@ -22,11 +21,11 @@ public abstract class SubRoomViewModel : PageViewModel
     }
     
     
-    protected async Task NavBackFromRoom()
+    protected void NavBackFromRoom()
     {
         // Assuming Join -> Room -> Game
-        await NavigateBackCommand!.Execute().ToTask();
-        await NavigateBackCommand!.Execute().ToTask();
+        NavigateBackCommand!.Execute().Subscribe();
+        NavigateBackCommand!.Execute().Subscribe();
     }
     
     
@@ -35,12 +34,22 @@ public abstract class SubRoomViewModel : PageViewModel
         switch (packet)
         {
             case RoomClosedNotification:
-                NavBackFromRoom().Wait();
+                NavBackFromRoom();
                 break;
             
-            default:
-                base.CommOnPacketReceived(packet);
+            case PlayerKickedNotification playerKickedNotif:
+                HandlePlayerKicked(playerKickedNotif);
                 break;
+        }
+        
+        base.CommOnPacketReceived(packet);
+    }
+
+    private void HandlePlayerKicked(PlayerKickedNotification playerKickedNotif)
+    {
+        if (playerKickedNotif.UserId == AppService.SessionUser!.Id)
+        {
+            NavBackFromRoom();
         }
     }
 }

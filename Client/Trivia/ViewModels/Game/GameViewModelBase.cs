@@ -18,7 +18,7 @@ public abstract class GameViewModelBase : SubRoomViewModel
         LeaveGameCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             await Comm.SendRequestAsync<LeaveGameResponse>(new LeaveGameRequest());
-            await NavBackFromRoom();
+            NavBackFromRoom();
         });
     }
 
@@ -48,9 +48,19 @@ public abstract class GameViewModelBase : SubRoomViewModel
                 PlayersFinished++;
                 break;
             
-            default:
-                base.CommOnPacketReceived(packet);
+            case PlayerKickedNotification playerKickedNotif:
+                HandlePlayerKicked(playerKickedNotif);
                 break;
         }
+        
+        base.CommOnPacketReceived(packet);
+    }
+    
+    private void HandlePlayerKicked(PlayerKickedNotification playerKickedNotif)
+    {
+        if (playerKickedNotif.UserId == AppService.SessionUser!.Id)
+            return;
+        
+        PlayersFinished++;
     }
 }
