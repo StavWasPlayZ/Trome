@@ -19,6 +19,7 @@ std::optional<ErrorStatus> RoomAdminRequestHandler::isRequestRelevant(const Requ
     case RequestCode::CLOSE_ROOM:
     case RequestCode::UPDATE_ROOM_DATA:
     case RequestCode::GET_ROOM_STATE:
+    case RequestCode::KICK_PLAYER:
         return std::nullopt;
 
     default:
@@ -36,6 +37,8 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo &info, co
         return closeRoom(info, static_cast<const CloseRoomRequest &>(request));
     case RequestCode::UPDATE_ROOM_DATA:
         return updateRoomData(info, static_cast<const UpdateRoomDataRequest &>(request));
+    case RequestCode::KICK_PLAYER:
+        return kick(info, static_cast<const KickPlayerRequest &>(request));
 
     default:
         return RoomRequestHandler::handleRequest(info, request);
@@ -47,13 +50,14 @@ RequestResult RoomAdminRequestHandler::startGame(const RequestInfo &info, const 
     Game& game = this->m_room.createNewGame(this->m_handlerFactory.getGameManager());
     game.startGame();
 
+    const GameStartedNotification notification = GameStartedNotification(request.data);
+
     setRequestHandlers(
-        [this, &game](const LoggedUser *) {
+        [this, &game](const LoggedUser *const) {
             return new GameRequestHandler(this->m_handlerFactory, game);
         },
-
         this->m_room.getAllUsers(),
-        GameStartedNotification(request.data),
+        &notification,
         &getUserByInfo(info)
     );
 
@@ -105,3 +109,16 @@ RequestResult RoomAdminRequestHandler::updateRoomData(const RequestInfo &info, c
         new UpdateRoomDataResponse()
     );
 }
+
+RequestResult RoomAdminRequestHandler::kick(const RequestInfo &info, const KickPlayerRequest &request) const
+{
+    if (getUserByInfo(info).getId() == request.userId)
+    {
+        return RequestResult(new ErrorResponse(ErrorStatus::UNKICKABLE_ENTITY, info.id));
+    }
+
+    LoggedUser &toBeKicked = m_handlerFactory.getLoginManager().getUserById(request.userId);
+    m_room.kickUser(toBeKicked);
+
+    return RequestResult(new KickPlayerResponse());
+};

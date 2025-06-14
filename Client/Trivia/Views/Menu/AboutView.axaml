@@ -1,0 +1,84 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:Trivia.Controls"
+             xmlns:vmmenu="clr-namespace:Trivia.ViewModels.Menu"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
+             x:CompileBindings="True"
+             x:Class="Trivia.Views.Menu.AboutView"
+             x:DataType="vmmenu:AboutViewModel">
+    
+    <Design.DataContext>
+        <vmmenu:AboutViewModel/>
+    </Design.DataContext>
+    
+    
+    <Panel>
+        <Panel.Background>
+            <ImageBrush Source="avares://Trivia/Assets/blobs-l-b49caff1a7941d98b60902da64956ad85dfbe4f9.png"
+                        Stretch="UniformToFill" />            
+        </Panel.Background>
+        
+        <controls:TriviaMenuPanel Title="ABOUT"
+                                  BackButtonCommand="{Binding NavigateBackCommand}">
+            
+            <Grid RowDefinitions="Auto, *"
+                  Margin="50">
+                  
+                <TextBlock Grid.Row="0"
+                           Margin="0 10"
+                           FontSize="35"
+                           TextAlignment="Center"
+                           TextWrapping="Wrap">
+                    TROME was created and submitted as part of the Magshimim National Cyber Program
+                    2nd year final project.
+                </TextBlock>
+                
+                <Grid Row="1"
+                      ColumnDefinitions="*, *">
+                    
+                    <Grid.Styles>
+                        <Style Selector="TextBlock">
+                            <Setter Property="FontSize" Value="30"/>
+                        </Style>
+                        <Style Selector="TextBlock:nth-child(1)">
+                            <Setter Property="FontSize" Value="55"/>
+                            <Setter Property="Margin" Value="0 0 0 5"/>
+                        </Style>
+                    </Grid.Styles>
+
+                    <StackPanel Grid.Column="0"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center">
+                        <TextBlock>DEVELOPERS</TextBlock>
+                        <TextBlock>Itay Herskovits</TextBlock>
+                        <TextBlock>Stav Solomon</TextBlock>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"
+                          Spacing="20">
+                        
+                        <StackPanel>
+                            <TextBlock>BGM</TextBlock>
+                            <TextBlock>Elisha Schafman</TextBlock>
+                            <TextBlock>Stav Solomon</TextBlock>
+                        </StackPanel>
+                        
+                        <StackPanel>
+                            <TextBlock>UI DESIGN</TextBlock>
+                            <TextBlock>Stav Solomon</TextBlock>
+                        </StackPanel>
+                        
+                    </StackPanel>
+                    
+                </Grid>
+                
+            </Grid>
+            
+        </controls:TriviaMenuPanel>
+        
+    </Panel>
+</UserControl>

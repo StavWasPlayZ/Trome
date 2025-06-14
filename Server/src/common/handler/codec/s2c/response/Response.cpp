@@ -105,6 +105,10 @@ GetGameResultResponse::GetGameResultResponse(const std::vector<PlayerResult>& re
     results(results)
 {}
 
-AddQuestionResponse::AddQuestionResponse() : 
+AddQuestionResponse::AddQuestionResponse() :
     ProtocolResponse(ResponseCode::ADD_QUESTION)
+{}
+
+KickPlayerResponse::KickPlayerResponse() :
+    ProtocolResponse(ResponseCode::KICK_PLAYER)
 {}

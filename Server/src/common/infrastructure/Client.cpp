@@ -44,9 +44,9 @@ std::unique_lock<std::mutex> Client::acquireRequestHandlerLock()
     return std::unique_lock(this->requestHandlerMutex);
 }
 
-const std::future<void> &Client::getThread() const
+const std::future<void> *Client::getThread() const
 {
-    return *this->thread;
+    return this->thread;
 }
 
 void Client::setAndStartThread(const std::function<void()> &threadFunc)

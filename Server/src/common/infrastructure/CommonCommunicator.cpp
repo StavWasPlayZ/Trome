@@ -15,6 +15,8 @@
 #include "../handler/codec/s2c/response/JsonResponsePacketSerializer.h"
 #include "handler/codec/s2c/notification/NotificationPacketSerializer.h"
 
+#include <utility>
+
 #ifdef _WIN32
 #else
 #include <arpa/inet.h>
@@ -49,6 +51,20 @@ void CommonCommunicator::close()
     if (!this->_running)
         return;
 
+
+    // Save the threads before doing any action.
+    // This is because they may become unavailable later during the process of cleaning the clients.
+    std::vector<const std::future<void>*> clientThreads;
+    clientThreads.reserve(this->m_clients.size());
+
+    this->m_clientsMutex.lock();
+    for (const auto& pair : this->m_clients)
+    {
+        clientThreads.push_back(pair.second->getThread());
+    }
+    this->m_clientsMutex.unlock();
+
+
     // Notify all threads that the server is closing
     this->_running = false;
 
@@ -56,14 +72,14 @@ void CommonCommunicator::close()
     this->_disconnectedClientConditionalVariable.notify_all();
 
     // Wait for 'em to close
-    this->m_clientsMutex.lock();
-    for (const auto& client : this->m_clients)
+    for (const std::future<void> *const thread : clientThreads)
     {
-        client.second->getThread().wait();
+        thread->wait();
+        delete thread;
     }
-    this->m_clientsMutex.unlock();
 
     platformClose();
+
 
     this->_serverSockAddr = {};
     this->_serverThread = std::future<void>();

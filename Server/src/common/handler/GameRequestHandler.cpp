@@ -94,10 +94,11 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo &info, const Su
         );
 
     case QuestionRollType::FINISHED_LAST:
-        return RequestResult(
-            new SubmitAnswerResponse(rollResult.newQuestion, userData.points, rollResult.results),
-            this->m_handlerFactory.createRoomRequestHandler(user, room)
-        );
+        return finalizeLastPlayerFinished(info, new SubmitAnswerResponse(
+            rollResult.newQuestion,
+            userData.points,
+            rollResult.results
+        ));
 
     // ReSharper disable once CppDFAUnreachableCode
     default:
@@ -121,6 +122,7 @@ RequestResult GameRequestHandler::leaveGame(const RequestInfo &info, const Leave
         if (this->m_game.isGameComplete())
         {
             handleLastPlayerFinished(info);
+            this->m_handlerFactory.getGameManager().deleteGame(m_game);
         }
     }
 
@@ -138,7 +140,7 @@ QuestionRollResult GameRequestHandler::rollNewUserQuestion(const RequestInfo &in
     {
         const std::vector<PlayerResult> results = handleLastPlayerFinished(info);
 
-        return QuestionRollResult(QuestionRollType::FINISHED_LAST, newQuestion, results);
+        return QuestionRollResult(QuestionRollType::FINISHED_LAST, std::nullopt, results);
     }
 
     // If there is no new question available, we've finished early.
@@ -211,10 +213,11 @@ RequestResult GameRequestHandler::getQuestion(const RequestInfo &info, const Get
         );
 
     case QuestionRollType::FINISHED_LAST:
-        return RequestResult(
-            new GetQuestionResponse(rollResult.newQuestion, userData.points, rollResult.results),
-            this->m_handlerFactory.createRoomRequestHandler(user, this->m_game.getRoom())
-        );
+        return finalizeLastPlayerFinished(info, new GetQuestionResponse(
+            rollResult.newQuestion,
+            userData.points,
+            rollResult.results
+        ));
 
     // ReSharper disable once CppDFAUnreachableCode
     default:
@@ -227,9 +230,26 @@ RequestResult GameRequestHandler::getGameResults(const RequestInfo &, const GetG
     return RequestResult(new GetGameResultResponse(m_game.getResults()));
 }
 
+RequestResult GameRequestHandler::finalizeLastPlayerFinished(const RequestInfo &info,
+                                                             const QuestionResponse *const response) const
+{
+    Room &room = this->m_game.getRoom();
+    this->m_handlerFactory.getGameManager().deleteGame(m_game);
+
+    return RequestResult(
+        response,
+        this->m_handlerFactory.createRoomRequestHandler(
+            getUserByInfo(info),
+            room
+        )
+    );
+}
+
 std::vector<PlayerResult> GameRequestHandler::handleLastPlayerFinished(const RequestInfo &info) const
 {
     const std::vector<PlayerResult> results = m_game.getResults();
+
+    const GameEndedNotification notification = GameEndedNotification(results);
 
     setRequestHandlers(
         [this](const LoggedUser *player) {
@@ -237,11 +257,10 @@ std::vector<PlayerResult> GameRequestHandler::handleLastPlayerFinished(const Req
         },
 
         m_game.getRoom().getAllUsers(),
-        GameEndedNotification(results),
+        &notification,
         &getUserByInfo(info)
     );
 
-    this->m_handlerFactory.getGameManager().deleteGame(m_game);
     return results;
 }
 

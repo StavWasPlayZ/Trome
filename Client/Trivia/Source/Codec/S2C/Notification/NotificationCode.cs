@@ -10,5 +10,7 @@ public enum NotificationCode : byte
     GameStarted,
     GameEnded,
     
-    PlayerFinished
+    PlayerFinished,
+    
+    PlayerKicked
 }

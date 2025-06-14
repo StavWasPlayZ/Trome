@@ -3,6 +3,7 @@
 #include "IRequestHandler.h"
 #include "RoomRequestHandler.h"
 
+struct KickPlayerRequest;
 struct GetRoomStateRequest;
 struct UpdateRoomDataRequest;
 struct CloseRoomRequest;
@@ -20,8 +21,10 @@ public:
     RequestResult handleRequest(const RequestInfo& info, const ProtocolRequest& request) const override;
 
 private:
-    RequestResult startGame(const RequestInfo & info, const StartGameRequest & request) const;
-    RequestResult closeRoom(const RequestInfo & info, const CloseRoomRequest & request) const;
+    RequestResult startGame(const RequestInfo &info, const StartGameRequest &request) const;
+    RequestResult closeRoom(const RequestInfo &info, const CloseRoomRequest &request) const;
 
-    RequestResult updateRoomData(const RequestInfo & info, const UpdateRoomDataRequest & request) const;
+    RequestResult updateRoomData(const RequestInfo &info, const UpdateRoomDataRequest &request) const;
+
+    RequestResult kick(const RequestInfo &info, const KickPlayerRequest &request) const;
 };

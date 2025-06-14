@@ -31,6 +31,10 @@ private:
 
     RequestResult getGameResults(const RequestInfo &info, const GetGameResultRequest &request) const;
 
+    /**
+     * Deletes the game and returns the RequestResult as necessary
+     */
+    RequestResult finalizeLastPlayerFinished(const RequestInfo &info, const QuestionResponse *response) const;
 
     std::vector<PlayerResult> handleLastPlayerFinished(const RequestInfo &info) const;
 

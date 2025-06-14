@@ -24,7 +24,8 @@ public class GameViewModel : GameViewModelBase
     private readonly DispatcherTimer? _countdownTimer;
     
     
-    public GameViewModel(IScreen hostScreen, RoomModel roomModel) : base(hostScreen, roomModel)
+    public GameViewModel(IScreen hostScreen, RoomModel roomModel, int playersFinished) :
+        base(hostScreen, roomModel, playersFinished)
     {
         SubmitAnswerCommand = ReactiveCommand.CreateFromTask<int>(async (btnIndex, _) =>
             await SubmitAnswer(btnIndex)
@@ -66,7 +67,7 @@ public class GameViewModel : GameViewModelBase
 
     private async Task GetNewQuestion()
     {
-         var response = await Comm.SendRequestAwaitResponse<GetQuestionResponse>(new GetQuestionRequest());
+         var response = await Comm.SendRequestAsync<GetQuestionResponse>(new GetQuestionRequest());
          Question = response.Question;
          Points = response.Points;
          
@@ -78,7 +79,7 @@ public class GameViewModel : GameViewModelBase
     {
         StopCountdown();
         
-        var response = await Comm.SendRequestAwaitResponse<SubmitAnswerResponse>(new SubmitAnswerRequest(btnIndex));
+        var response = await Comm.SendRequestAsync<SubmitAnswerResponse>(new SubmitAnswerRequest(btnIndex));
         Question = response.Question;
         Points = response.Points;
 

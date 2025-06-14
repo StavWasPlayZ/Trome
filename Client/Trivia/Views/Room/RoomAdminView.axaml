@@ -7,11 +7,11 @@
              xmlns:room="clr-namespace:Trivia.ViewModels.Room"
              mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
              x:CompileBindings="True"
-             x:Class="Trivia.Views.Room.CreateRoomView"
-             x:DataType="room:CreateRoomViewModel">
+             x:Class="Trivia.Views.Room.RoomAdminView"
+             x:DataType="room:RoomAdminViewModel">
     
     <Design.DataContext>
-        <room:CreateRoomViewModel/>
+        <room:RoomAdminViewModel/>
     </Design.DataContext>
     
     <Panel>
@@ -25,7 +25,8 @@
               Margin="35,35">
             
             <controls:TriviaUsersList Grid.Column="0">
-                <ListBox ItemsSource="{Binding Players}">
+                <ListBox ItemsSource="{Binding Players}"
+                         PointerReleased="UserList_OnPointerReleased">
                     
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -186,7 +187,7 @@
                           Height="65">
                             
                         <Button Grid.Column="0"
-                                Command="{Binding CloseRoomCommand}"
+                                Command="{Binding LeaveRoomCommand}"
                                 
                                 VerticalAlignment="Stretch"
                                 Width="90"

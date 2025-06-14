@@ -46,13 +46,14 @@ public:
     void setRequestHandlerSafe(const IRequestHandler* requestHandler);
 
     std::unique_lock<std::mutex> acquireRequestHandlerLock();
-
-
-    const std::future<void>& getThread() const;
-    void setAndStartThread(const std::function<void()>& threadFunc);
-
-
     void sendNotification(const ProtocolNotification& notification);
+
+
+    void setAndStartThread(const std::function<void()>& threadFunc);
+    /**
+     *NOTE: THIS RESOURCE MUST BE FREED!
+     */
+    const std::future<void> *getThread() const;
 
 
     void handleDisconnecting() const;

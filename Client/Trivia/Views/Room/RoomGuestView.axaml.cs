@@ -2,9 +2,9 @@
 
 namespace Trivia.Views.Room;
 
-public partial class CreateRoomView : PageViewControl<CreateRoomViewModel>
+public partial class RoomGuestView : TriviaRushRoomView<RoomGuestViewModel>
 {
-    public CreateRoomView()
+    public RoomGuestView()
     {
         InitializeComponent();
     }

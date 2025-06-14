@@ -15,7 +15,7 @@ std::optional<ErrorStatus> MenuRequestHandler::isRequestRelevant(const RequestIn
     switch (info.id)
     {
 	case RequestCode::JOIN_ROOM:
-    // case RequestCode::GET_PLAYERS_IN_ROOM:
+    case RequestCode::GET_PLAYERS_IN_ROOM:
     case RequestCode::CREATE_ROOM:
     case RequestCode::GET_ROOMS:
     case RequestCode::GET_HIGH_SCORES:
@@ -93,11 +93,15 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo &info, const JoinRo
     );
 }
 
-RequestResult MenuRequestHandler::createRoom(const RequestInfo& info, const CreateRoomRequest &) const
+RequestResult MenuRequestHandler::createRoom(const RequestInfo& info, const CreateRoomRequest &request) const
 {
     RoomManager &rManager = m_handlerFactory.getRoomManager();
 
-    Room& room = rManager.createRoom(getUserByInfo(info), RoomData::ofDefaults());
+    Room& room = rManager.createRoom(
+        getUserByInfo(info),
+        request.roomType,
+        RoomData::ofDefaults(request.roomType)
+    );
 
     return RequestResult(
         new CreateRoomResponse(room.getId(), room.getData()),
@@ -124,23 +128,6 @@ RequestResult MenuRequestHandler::getHighScores(const RequestInfo &, const GetHi
     );
 }
 
-RequestResult MenuRequestHandler::getUserStatistics(const RequestInfo& info, const GetUserStatisticsRequest &request) const
-{
-    const StatisticsManager &sManager = m_handlerFactory.getStatisticsManager();
-    const std::optional<UserStatistics> stats = sManager.getUserStatistics(request.userId);
-
-    if (!stats.has_value())
-    {
-        return RequestResult(new ErrorResponse(ErrorStatus::UNKNOWN_RESOURCE, info.id));
-    }
-
-    return RequestResult(
-        new GetUserStatisticsResponse(
-            sManager.getUserStatistics(request.userId).value()
-        )
-    );
-}
-
 RequestResult MenuRequestHandler::logout(const RequestInfo &info, const LogoutRequest &) const
 {
     LoginManager &uManager = m_handlerFactory.getLoginManager();
@@ -152,8 +139,8 @@ RequestResult MenuRequestHandler::logout(const RequestInfo &info, const LogoutRe
 
 RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo &info, const GetPlayersInRoomRequest &) const
 {
-    //NOTICE: This behavior was entirely replaced by the notifications' system.
-    // This request was re-purposed to the Room handler to sync players after a match.
+    //NOTICE: This request was entirely replaced by the notification system.
+    // It was re-purposed to the Room handler to sync players after a match.
     return RequestResult(new ErrorResponse(ErrorStatus::SERVER_UNIMPLEMENTED, info.id));
 
     // RoomManager &rManager = m_handlerFactory.getRoomManager();

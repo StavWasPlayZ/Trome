@@ -1,6 +1,7 @@
 #include "IRequestHandler.h"
 
 #include "RequestHandlerFactory.h"
+#include "codec/s2c/response/ErrorResponse.h"
 #include "infrastructure/Client.h"
 
 IRequestHandler::IRequestHandler(const RequestHandlerFactory &handlerFactory) :
@@ -8,6 +9,23 @@ IRequestHandler::IRequestHandler(const RequestHandlerFactory &handlerFactory) :
 {}
 
 IRequestHandler::~IRequestHandler() = default;
+
+RequestResult IRequestHandler::getUserStatistics(const RequestInfo& info, const GetUserStatisticsRequest &request) const
+{
+    const StatisticsManager &sManager = m_handlerFactory.getStatisticsManager();
+    const std::optional<UserStatistics> stats = sManager.getUserStatistics(request.userId);
+
+    if (!stats.has_value())
+    {
+        return RequestResult(new ErrorResponse(ErrorStatus::UNKNOWN_RESOURCE, info.id));
+    }
+
+    return RequestResult(
+        new GetUserStatisticsResponse(
+            sManager.getUserStatistics(request.userId).value()
+        )
+    );
+}
 
 LoggedUser &IRequestHandler::getUserByInfo(const RequestInfo &info) const
 {
@@ -18,7 +36,7 @@ LoggedUser &IRequestHandler::getUserByInfo(const RequestInfo &info) const
 void IRequestHandler::dispatchNotification(
     const std::optional<std::function<const IRequestHandler *(const LoggedUser *)>> &factory,
     const std::vector<LoggedUser *> &users,
-    const ProtocolNotification &notification,
+    const std::optional<const ProtocolNotification *> &notification,
     const std::optional<const LoggedUser *> &excluded
 )
 {
@@ -34,7 +52,10 @@ void IRequestHandler::dispatchNotification(
             client.setRequestHandlerSafe(factory.value()(user));
         }
 
-        client.sendNotification(notification);
+        if (notification.has_value())
+        {
+            client.sendNotification(*notification.value());
+        }
     }
 }
 
@@ -42,12 +63,12 @@ void IRequestHandler::dispatchNotification(const ProtocolNotification &notificat
                                            const std::vector<LoggedUser *> &users,
                                            const std::optional<const LoggedUser *> &excluded)
 {
-    dispatchNotification(std::nullopt, users, notification, excluded);
+    dispatchNotification(std::nullopt, users, &notification, excluded);
 }
 
 void IRequestHandler::setRequestHandlers(const std::function<const IRequestHandler *(const LoggedUser *)> &factory,
                                          const std::vector<LoggedUser *> &users,
-                                         const ProtocolNotification &notification,
+                                         const std::optional<const ProtocolNotification *> &notification,
                                          const std::optional<const LoggedUser *> &excluded)
 {
     dispatchNotification(factory, users, notification, excluded);

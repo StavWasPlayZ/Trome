@@ -56,6 +56,8 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const ProtocolResponse &
         return serializeResponse(static_cast<const GetGameResultResponse&>(response), cryptoAlgorythm);
     case ResponseCode::ADD_QUESTION:
         return serializeResponse(static_cast<const AddQuestionResponse&>(response), cryptoAlgorythm);
+    case ResponseCode::KICK_PLAYER:
+        return serializeResponse(static_cast<const KickPlayerResponse&>(response), cryptoAlgorythm);
 
     default: throw std::invalid_argument("Invalid response ID");
     }
@@ -249,6 +251,12 @@ OBuffer JsonResponsePacketSerializer::serializeResponse(const GetGameResultRespo
 }
 
 OBuffer JsonResponsePacketSerializer::serializeResponse(const AddQuestionResponse &response,
+                                                        ICryptoAlgorithm &cryptoAlgorythm)
+{
+    return serialize(response.id, nlohmann::json::object(), cryptoAlgorythm);
+}
+
+OBuffer JsonResponsePacketSerializer::serializeResponse(const KickPlayerResponse &response,
                                                         ICryptoAlgorithm &cryptoAlgorythm)
 {
     return serialize(response.id, nlohmann::json::object(), cryptoAlgorythm);

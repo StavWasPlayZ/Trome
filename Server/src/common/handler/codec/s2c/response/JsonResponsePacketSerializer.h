@@ -170,6 +170,13 @@ public:
      */
     static OBuffer serializeResponse(const AddQuestionResponse &response, ICryptoAlgorithm& cryptoAlgorythm);
 
+    /**
+     * Returns: The serialized object.
+     *
+     * NOTE: The returned resource must be freed.
+     */
+    static OBuffer serializeResponse(const KickPlayerResponse &response, ICryptoAlgorithm &cryptoAlgorythm);
+
 private:
     /**
      * Returns: The serialized object.

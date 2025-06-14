@@ -11,7 +11,7 @@ class RoomManager
 public:
     explicit RoomManager(const IDatabase& database);
 
-    Room& createRoom(LoggedUser &admin, const RoomData &data);
+    Room& createRoom(LoggedUser &admin, RoomType roomType, const RoomData &data);
     void deleteRoom(const Room & room);
 
 

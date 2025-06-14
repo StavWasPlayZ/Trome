@@ -20,6 +20,8 @@ OBuffer NotificationPacketSerializer::serialize(const ProtocolNotification &noti
         return serialize(static_cast<const GameEndedNotification&>(notification), cryptoAlgorithm);
     case NotificationCode::PLAYER_FINISHED:
         return serialize(static_cast<const PlayerFinishedNotification&>(notification), cryptoAlgorithm);
+    case NotificationCode::PLAYER_KICKED:
+        return serialize(static_cast<const PlayerKickedNotification&>(notification), cryptoAlgorithm);
 
     default: throw std::invalid_argument("Invalid notification ID");
     }
@@ -84,6 +86,15 @@ OBuffer NotificationPacketSerializer::serialize(const GameEndedNotification &not
 OBuffer NotificationPacketSerializer::serialize(const PlayerFinishedNotification &notification, ICryptoAlgorithm& cryptoAlgorithm)
 {
     return serialize(notification.id, nlohmann::json::object(), cryptoAlgorithm);
+}
+
+OBuffer NotificationPacketSerializer::serialize(const PlayerKickedNotification &notification, ICryptoAlgorithm& cryptoAlgorithm)
+{
+    nlohmann::json data;
+
+    data["player_id"] = notification.playerId;
+
+    return serialize(notification.id, data, cryptoAlgorithm);
 }
 
 OBuffer NotificationPacketSerializer::serialize(const NotificationCode msgCode, const nlohmann::json &data, ICryptoAlgorithm& cryptoAlgorithm)
