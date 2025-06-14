@@ -12,11 +12,18 @@ public abstract class TriviaRushRoomView<TRvm> : RoomView<TRvm> where TRvm : Roo
         Utils.PerformListTriggerAction<RoomUserModel>(sender, OnUserSelected);
     }
 
-    private static void OnUserSelected(RoomUserModel userScoreModel)
+    private void OnUserSelected(RoomUserModel userScoreModel)
     {
         if (MainWindowViewModel == null)
             return;
 
-        MainWindowViewModel.PopupContents = new StatsPopupViewModel(userScoreModel);
+        if ((ViewModel?.IsAdmin != true) || (App.AppService.SessionUser == userScoreModel))
+        {
+            MainWindowViewModel.PopupContents = new StatsPopupViewModel(userScoreModel);
+        }
+        else
+        {
+            MainWindowViewModel.PopupContents = new GuestStatsPopupViewModel(userScoreModel);
+        }
     }
 }
