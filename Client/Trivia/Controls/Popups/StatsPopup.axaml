@@ -54,69 +54,76 @@
                                     FontSize="40"
                                     Text="{TemplateBinding Username}"/>
                             </StackPanel>
-
-                            <Grid VerticalAlignment="Bottom"
-                                  RowDefinitions="Auto, 5, Auto, 5, Auto, 5, Auto"
-                                  ColumnDefinitions="*, Auto">
+                            
+                            <StackPanel>
+                                <Grid VerticalAlignment="Bottom"
+                                      RowDefinitions="Auto, Auto, Auto, Auto"
+                                      RowSpacing="7"
+                                      ColumnDefinitions="*, Auto">
+                                    
+                                    <TextBlock Grid.Row="0"
+                                               Grid.Column="0"
+                                               FontSize="30"
+                                               Foreground="#813E7A">POINTS</TextBlock>
+                                    <TextBlock Grid.Row="0"
+                                               Grid.Column="1"
+                                               FontSize="30"
+                                               Foreground="#BE64B7"
+                                               Text="{
+                                                   Binding Stats.Points,
+                                                   RelativeSource={RelativeSource TemplatedParent},
+                                                   FallbackValue='----'
+                                               }"/>
+                                    
+                                    <TextBlock Grid.Row="1"
+                                               Grid.Column="0"
+                                               FontSize="30"
+                                               Foreground="#813E7A">AVG. TIME/Q</TextBlock>
+                                    <TextBlock Grid.Row="1"
+                                               Grid.Column="1"
+                                               FontSize="30"
+                                               Foreground="#BE64B7"
+                                               Text="{
+                                                   Binding Stats.TimeOnQuestionsAvg,
+                                                   RelativeSource={RelativeSource TemplatedParent},
+                                                   FallbackValue='----',
+                                                   Converter={StaticResource InvalidStaterConverter}
+                                               }"/>
+                                    
+                                    <TextBlock Grid.Row="2"
+                                               Grid.Column="0"
+                                               FontSize="30"
+                                               Foreground="#813E7A">ANSWERED</TextBlock>
+                                    <TextBlock Grid.Row="2"
+                                               Grid.Column="1"
+                                               FontSize="30"
+                                               Foreground="#BE64B7"
+                                               Text="{
+                                                   Binding Stats.QuestionsAnswered,
+                                                   RelativeSource={RelativeSource TemplatedParent},
+                                                   FallbackValue='----'
+                                               }"/>
+                                    
+                                    <TextBlock Grid.Row="3"
+                                               Grid.Column="0"
+                                               FontSize="30"
+                                               Foreground="#813E7A">CORRECT</TextBlock>
+                                    <TextBlock Grid.Row="3"
+                                               Grid.Column="1"
+                                               FontSize="30"
+                                               Foreground="#BE64B7"
+                                               Text="{
+                                                   Binding Stats.QuestionsAnsweredCorrectly,
+                                                   RelativeSource={RelativeSource TemplatedParent},
+                                                   FallbackValue='----'
+                                               }"/>
+                                    
+                                </Grid>
                                 
-                                <TextBlock Grid.Row="0"
-                                           Grid.Column="0"
-                                           FontSize="30"
-                                           Foreground="#813E7A">POINTS</TextBlock>
-                                <TextBlock Grid.Row="0"
-                                           Grid.Column="1"
-                                           FontSize="30"
-                                           Foreground="#BE64B7"
-                                           Text="{
-                                               Binding Stats.Points,
-                                               RelativeSource={RelativeSource TemplatedParent},
-                                               FallbackValue='----'
-                                           }"/>
-                                
-                                <TextBlock Grid.Row="2"
-                                           Grid.Column="0"
-                                           FontSize="30"
-                                           Foreground="#813E7A">AVG. TIME/Q</TextBlock>
-                                <TextBlock Grid.Row="2"
-                                           Grid.Column="1"
-                                           FontSize="30"
-                                           Foreground="#BE64B7"
-                                           Text="{
-                                               Binding Stats.TimeOnQuestionsAvg,
-                                               RelativeSource={RelativeSource TemplatedParent},
-                                               FallbackValue='----',
-                                               Converter={StaticResource InvalidStaterConverter}
-                                           }"/>
-                                
-                                <TextBlock Grid.Row="4"
-                                           Grid.Column="0"
-                                           FontSize="30"
-                                           Foreground="#813E7A">ANSWERED</TextBlock>
-                                <TextBlock Grid.Row="4"
-                                           Grid.Column="1"
-                                           FontSize="30"
-                                           Foreground="#BE64B7"
-                                           Text="{
-                                               Binding Stats.QuestionsAnswered,
-                                               RelativeSource={RelativeSource TemplatedParent},
-                                               FallbackValue='----'
-                                           }"/>
-                                
-                                <TextBlock Grid.Row="6"
-                                           Grid.Column="0"
-                                           FontSize="30"
-                                           Foreground="#813E7A">CORRECT</TextBlock>
-                                <TextBlock Grid.Row="6"
-                                           Grid.Column="1"
-                                           FontSize="30"
-                                           Foreground="#BE64B7"
-                                           Text="{
-                                               Binding Stats.QuestionsAnsweredCorrectly,
-                                               RelativeSource={RelativeSource TemplatedParent},
-                                               FallbackValue='----'
-                                           }"/>
-                                
-                            </Grid>
+                                <ContentPresenter x:Name="PART_ContentPresenter"
+                                                  Content="{TemplateBinding Content}"
+                                                  ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                            </StackPanel>
 
                         </DockPanel>
                         
