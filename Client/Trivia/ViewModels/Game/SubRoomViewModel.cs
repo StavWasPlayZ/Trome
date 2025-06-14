@@ -47,7 +47,7 @@ public abstract class SubRoomViewModel : PageViewModel
 
     private void HandlePlayerKicked(PlayerKickedNotification playerKickedNotif)
     {
-        if (playerKickedNotif.UserId == AppService.SessionUser!.Id)
+        if (playerKickedNotif.PlayerId == AppService.SessionUser!.Id)
         {
             NavBackFromRoom();
         }

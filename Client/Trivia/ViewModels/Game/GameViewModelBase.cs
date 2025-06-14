@@ -58,7 +58,7 @@ public abstract class GameViewModelBase : SubRoomViewModel
     
     private void HandlePlayerKicked(PlayerKickedNotification playerKickedNotif)
     {
-        if (playerKickedNotif.UserId == AppService.SessionUser!.Id)
+        if (playerKickedNotif.PlayerId == AppService.SessionUser!.Id)
             return;
         
         PlayersFinished++;

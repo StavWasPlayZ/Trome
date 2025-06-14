@@ -261,14 +261,14 @@ public abstract class RoomViewModel : PageViewModel
 
     private void HandlePlayerKicked(PlayerKickedNotification playerKickedNotif)
     {
-        if (playerKickedNotif.UserId == AppService.SessionUser!.Id)
+        if (playerKickedNotif.PlayerId == AppService.SessionUser!.Id)
         {
             // This user was kicked
             ReturnToRooms();
             return;
         }
         
-        HandlePlayerLeft(playerKickedNotif.UserId);
+        HandlePlayerLeft(playerKickedNotif.PlayerId);
     }
 
     private void HandlePlayerJoined(PlayerJoinedRoomNotification playerJoinedRoomNotif)
