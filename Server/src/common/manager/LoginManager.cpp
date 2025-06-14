@@ -117,7 +117,7 @@ LoggedUser &LoginManager::getUserByUsername(const std::string &username)
     return this->m_loggedUsers.at(username);
 }
 
-LoggedUser &LoginManager::getUserById(const unsigned int id)
+LoggedUser &LoginManager::getUserById(const unsigned int id) const
 {
     return *this->m_loggedUsersById.at(id);
 }

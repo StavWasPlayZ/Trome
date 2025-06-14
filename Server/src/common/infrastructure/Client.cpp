@@ -1,6 +1,7 @@
 #include "Client.h"
 
 #include "Server.h"
+#include "cryptoAlgorithm/OTP.h"
 #include "handler/codec/s2c/notification/NotificationPacketSerializer.h"
 
 Client::Client(const SOCKET socket, const IRequestHandler *const requestHandler) :

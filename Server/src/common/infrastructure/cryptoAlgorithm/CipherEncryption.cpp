@@ -1,12 +1,9 @@
 #include "CipherEncryption.h"
 
-CipherEncryption::CipherEncryption() : ICryptoAlgorithm()
-{}
-
 std::string CipherEncryption::encrypt(const std::string &message) const
 {
     std::string encrypted = "";
-    for (char c : message)
+    for (const char c : message)
     {
         encrypted += static_cast<char>(c + key);
     }
@@ -16,11 +13,11 @@ std::string CipherEncryption::encrypt(const std::string &message) const
 
 std::string CipherEncryption::decrypt(const std::string &message) const
 {
-    std::string dencrypted = "";
-    for (char c : message)
+    std::string decrypted = "";
+    for (const char c : message)
     {
-        dencrypted += static_cast<char>(c - key);
+        decrypted += static_cast<char>(c - key);
     }
 
-    return dencrypted;
+    return decrypted;
 }

@@ -9,15 +9,12 @@ const std::vector<unsigned char> OTP::key = {
     0x59, 0xBC, 0xDA, 0x33, 0x15, 0x70, 0x2C, 0xF3, 0x8D, 0xFE, 0x49, 0x96, 0x6E, 0x0B, 0xCD
 };
 
-OTP::OTP() : ICryptoAlgorithm()
-{}
-
 std::string OTP::encrypt(const std::string &message) const
 {
     std::string encrypted = "";
     int pos = 0;
 
-    for (char c : message)
+    for (const char c : message)
     {
         encrypted += static_cast<char>(c ^ key.at(pos));
         pos++;
@@ -32,7 +29,7 @@ std::string OTP::decrypt(const std::string &message) const
     std::string decrypted = "";
     int pos = 0;
 
-    for (char c : message)
+    for (const char c : message)
     {
         decrypted += static_cast<char>(c ^ key.at(pos));
         pos++;
