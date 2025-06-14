@@ -15,6 +15,7 @@ std::optional<ErrorStatus> RoomRequestHandler::isRequestRelevant(const RequestIn
     {
     case RequestCode::GET_PLAYERS_IN_ROOM:
     case RequestCode::GET_ROOM_STATE:
+    case RequestCode::GET_USER_STATISTICS:
         return std::nullopt;
 
     default:
@@ -28,6 +29,8 @@ RequestResult RoomRequestHandler::handleRequest(const RequestInfo &info, const P
     {
     case RequestCode::GET_PLAYERS_IN_ROOM:
         return getPlayersInRoom(info, static_cast<const GetPlayersInRoomRequest &>(request));
+    case RequestCode::GET_USER_STATISTICS:
+        return getUserStatistics(info, static_cast<const GetUserStatisticsRequest &>(request));
 
     case RequestCode::GET_ROOM_STATE:
         return getRoomState(info, static_cast<const GetRoomStateRequest &>(request));

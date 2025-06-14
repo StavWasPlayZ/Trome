@@ -4,6 +4,7 @@
 #include "infrastructure/request/RequestInfo.h"
 #include "infrastructure/request/RequestResult.h"
 
+struct GetUserStatisticsRequest;
 enum class ErrorStatus : unsigned int;
 class LoggedUser;
 struct ProtocolRequest;
@@ -51,6 +52,8 @@ public:
 
 protected:
     const RequestHandlerFactory& m_handlerFactory;
+
+    RequestResult getUserStatistics(const RequestInfo& info, const GetUserStatisticsRequest &request) const;
 
     /**
      * Utility method to get the current session user
