@@ -2,6 +2,7 @@
 
 #include "IRequestHandler.h"
 
+struct GetUserStatisticsRequest;
 struct GetPlayersInRoomRequest;
 struct GetRoomStateRequest;
 class RequestHandlerFactory;

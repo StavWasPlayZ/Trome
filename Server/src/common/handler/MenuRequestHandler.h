@@ -25,7 +25,6 @@ private:
     RequestResult createRoom(const RequestInfo& info, const CreateRoomRequest &request) const;
     RequestResult getRooms(const RequestInfo& info, const GetRoomsRequest &request) const;
     RequestResult getHighScores(const RequestInfo& info, const GetHighScoresRequest &request) const;
-    RequestResult getUserStatistics(const RequestInfo& info, const GetUserStatisticsRequest &request) const;
     RequestResult logout(const RequestInfo& info, const LogoutRequest &request) const;
     RequestResult getPlayersInRoom(const RequestInfo & info, const GetPlayersInRoomRequest &request) const;
     RequestResult addQuestion(const RequestInfo &info, const AddQuestionRequest &request) const;

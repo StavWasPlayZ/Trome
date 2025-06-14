@@ -2,7 +2,7 @@
 
 namespace Trivia.Views.Room;
 
-public partial class RoomGuestView : PageViewControl<RoomGuestViewModel>
+public partial class RoomGuestView : TriviaRushRoomView<RoomGuestViewModel>
 {
     public RoomGuestView()
     {

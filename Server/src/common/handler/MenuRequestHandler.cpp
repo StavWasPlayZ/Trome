@@ -128,23 +128,6 @@ RequestResult MenuRequestHandler::getHighScores(const RequestInfo &, const GetHi
     );
 }
 
-RequestResult MenuRequestHandler::getUserStatistics(const RequestInfo& info, const GetUserStatisticsRequest &request) const
-{
-    const StatisticsManager &sManager = m_handlerFactory.getStatisticsManager();
-    const std::optional<UserStatistics> stats = sManager.getUserStatistics(request.userId);
-
-    if (!stats.has_value())
-    {
-        return RequestResult(new ErrorResponse(ErrorStatus::UNKNOWN_RESOURCE, info.id));
-    }
-
-    return RequestResult(
-        new GetUserStatisticsResponse(
-            sManager.getUserStatistics(request.userId).value()
-        )
-    );
-}
-
 RequestResult MenuRequestHandler::logout(const RequestInfo &info, const LogoutRequest &) const
 {
     LoginManager &uManager = m_handlerFactory.getLoginManager();

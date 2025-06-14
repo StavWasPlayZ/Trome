@@ -35,7 +35,7 @@ public class MainMenuViewModel : PageViewModel
         
         LogOutCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            await Comm.SendRequestAwaitResponse<LogoutResponse>(new LogoutRequest());
+            await Comm.SendRequestAsync<LogoutResponse>(new LogoutRequest());
         
             // Assuming this just worked.
             NavigateAndReset(new LoginViewModel(hostScreen));

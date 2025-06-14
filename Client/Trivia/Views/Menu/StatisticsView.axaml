@@ -339,7 +339,7 @@
                 </Grid>
                 
                 <Button Classes="action-button"
-                        Command="{Binding ShowStatsPopup}"
+                        Command="{Binding ShowUserStatsPopupCommand}"
                         CommandParameter="{Binding AppService.SessionUser}">
                     
                     <StackPanel Orientation="Horizontal"

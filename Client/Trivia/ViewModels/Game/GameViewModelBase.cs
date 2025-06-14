@@ -17,7 +17,7 @@ public abstract class GameViewModelBase : SubRoomViewModel
     {        
         LeaveGameCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            await Comm.SendRequestAwaitResponse<LeaveGameResponse>(new LeaveGameRequest());
+            await Comm.SendRequestAsync<LeaveGameResponse>(new LeaveGameRequest());
             await NavBackFromRoom();
         });
     }

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using ReactiveUI;
 using Trivia.Codec.C2S.Request.Packets;
 using Trivia.Codec.S2C.Response.Packets;
-using Trivia.Controls.Popups;
 using Trivia.Models.Raw;
 using Trivia.Models.User;
+using Trivia.ViewModels.Popups;
 
 namespace Trivia.ViewModels.Menu;
 
@@ -23,7 +23,8 @@ public class StatisticsViewModel : PageViewModel
     {
         this.WhenActivated(disposables =>
         {
-            FetchHighScores().DisposeWith(disposables);
+            FetchHighScores()
+                .DisposeWith(disposables);
         });
     }
 
@@ -44,7 +45,7 @@ public class StatisticsViewModel : PageViewModel
 
     private async Task FetchHighScores()
     {
-        var response = await Comm.SendRequestAwaitResponse<GetHighScoresResponse>(new GetHighScoresRequest());
+        var response = await Comm.SendRequestAsync<GetHighScoresResponse>(new GetHighScoresRequest());
 
         _scores = [..response.HighScores];
         
@@ -106,23 +107,14 @@ public class StatisticsViewModel : PageViewModel
     }
     
 
-    public ReactiveCommand<User, Unit>? ShowStatsPopup { get; } =
-        ReactiveCommand.CreateFromTask<User>(ShowUserStatsPopup);
+    public ReactiveCommand<User, Unit> ShowUserStatsPopupCommand { get; } =
+        ReactiveCommand.Create<User>(ShowUserStatsPopup);
 
-    private static async Task ShowUserStatsPopup(User user)
+    public static void ShowUserStatsPopup(User user)
     {
         if (MainWindowViewModel == null)
             return;
 
-        var response = await Comm.SendRequestAwaitResponse<GetUserStatisticsResponse>(
-            new GetUserStatisticsRequest(user.Id)
-        );
-
-        MainWindowViewModel.PopupContents = new StatsPopup
-        {
-            CloseCommand = MainWindowViewModel.CloseDialogCommand,
-            Stats = response.Stats,
-            Username = user.Username
-        };
+        MainWindowViewModel.PopupContents = new StatsPopupViewModel(user);
     }
 }

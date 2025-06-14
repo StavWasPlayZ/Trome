@@ -63,7 +63,7 @@ public class HeadToHeadRoomViewModel : RoomViewModel
     
     private async Task StartGame()
     {
-        await Comm.SendRequestAwaitResponse<StartGameResponse>(new StartGameRequest(RoomModel.Data));
+        await Comm.SendRequestAsync<StartGameResponse>(new StartGameRequest(RoomModel.Data));
 
         NavigateTo(new GameCountdownViewModel(HostScreen, RoomModel));
     }
