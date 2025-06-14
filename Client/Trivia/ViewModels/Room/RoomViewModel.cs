@@ -120,8 +120,6 @@ public abstract class RoomViewModel : PageViewModel
 
     private void ReturnToRooms()
     {
-        // Assuming Selector -> Room
-        NavigateBackCommand!.Execute().Subscribe();
         NavigateBackCommand!.Execute().Subscribe();
     }
     
