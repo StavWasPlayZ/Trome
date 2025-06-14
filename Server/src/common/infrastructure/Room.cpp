@@ -7,6 +7,8 @@
 #include "handler/IRequestHandler.h"
 #include "handler/MenuRequestHandler.h"
 
+#include <iostream>
+
 unsigned int Room::globalId = 0;
 
 Room::Room(const unsigned int id, const RoomType roomType, LoggedUser &admin, const RoomData &data,
@@ -110,6 +112,12 @@ void Room::removeUser(LoggedUser &user)
 
 void Room::kickUser(LoggedUser &user)
 {
+    if (user == getAdmin())
+    {
+        std::cerr << "Attempted to kick the admin. Ignoring operation. Remove the room instead." std::endl;
+        return;
+    }
+
     const auto it = std::ranges::find(this->m_users, &user);
 
     if (it == m_users.end())
