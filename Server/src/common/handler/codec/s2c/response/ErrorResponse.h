@@ -46,6 +46,7 @@ enum class ErrorStatus : unsigned int
     NOT_LOGGED_IN,
 
     // Room
+    UNKICKABLE_ENTITY,
     ROOM_FULL,
     ROOM_ALREADY_PLAYING,
 

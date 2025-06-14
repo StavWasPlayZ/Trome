@@ -34,10 +34,6 @@ public class RoomGuestViewModel : RoomViewModel
     {
         switch (packet)
         {
-            case RoomClosedNotification:
-                NavigateBackCommand!.Execute();
-                break;
-            
             case RoomDataUpdatedNotification roomDataNotif:
                 OnRoomDataUpdated(roomDataNotif);
                 break;
@@ -45,11 +41,9 @@ public class RoomGuestViewModel : RoomViewModel
             case GameStartedNotification gameStartedNotif:
                 OnGameStarted(gameStartedNotif);
                 break;
-            
-            default:
-                base.CommOnPacketReceived(packet);
-                break;
         }
+        
+        base.CommOnPacketReceived(packet);
     }
 
     private void OnGameStarted(GameStartedNotification gameStartedNotif)

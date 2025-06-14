@@ -110,12 +110,15 @@ RequestResult RoomAdminRequestHandler::updateRoomData(const RequestInfo &info, c
     );
 }
 
-RequestResult RoomAdminRequestHandler::kick(const RequestInfo &, const KickPlayerRequest &request) const
+RequestResult RoomAdminRequestHandler::kick(const RequestInfo &info, const KickPlayerRequest &request) const
 {
-    LoggedUser &user = m_handlerFactory.getLoginManager().getUserById(request.userId);
-    m_room.kickUser(user);
+    if (getUserByInfo(info).getId() == request.userId)
+    {
+        return RequestResult(new ErrorResponse(ErrorStatus::UNKICKABLE_ENTITY, info.id));
+    }
 
-    return RequestResult(
-        new KickPlayerResponse()
-    );
+    LoggedUser &toBeKicked = m_handlerFactory.getLoginManager().getUserById(request.userId);
+    m_room.kickUser(toBeKicked);
+
+    return RequestResult(new KickPlayerResponse());
 };

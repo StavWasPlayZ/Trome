@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
-using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 using ReactiveUI;
 using Trivia.Codec.C2S.Request.Packets;
@@ -115,11 +114,15 @@ public abstract class RoomViewModel : PageViewModel
         {
             await Comm.SendRequestAsync<LeaveRoomResponse>(new LeaveRoomRequest());
         }
-
-        // Assuming Selector -> Room
-        await NavigateBackCommand!.Execute().ToTask();
-        await NavigateBackCommand!.Execute().ToTask();
+        
+        ReturnToRooms();
     }
+
+    private void ReturnToRooms()
+    {
+        NavigateBackCommand!.Execute().Subscribe();
+    }
+    
     
     protected void UpdateAndSendRoomData(RoomData newData)
     {
@@ -234,18 +237,36 @@ public abstract class RoomViewModel : PageViewModel
     {
         switch (packet)
         {
+            case RoomClosedNotification:
+                NavigateBackCommand!.Execute();
+                break;
+            
             case PlayerJoinedRoomNotification playerJoinedRoomNotif:
                 HandlePlayerJoined(playerJoinedRoomNotif);
                 break;
             
             case PlayerLeftRoomNotification playerLeftRoomNotif:
-                HandlePlayerLeft(playerLeftRoomNotif);
+                HandlePlayerLeft(playerLeftRoomNotif.PlayerId);
                 break;
             
-            default:
-                base.CommOnPacketReceived(packet);
+            case PlayerKickedNotification playerKickedNotif:
+                HandlePlayerKicked(playerKickedNotif.PlayerId);
                 break;
         }
+        
+        base.CommOnPacketReceived(packet);
+    }
+    
+    public void HandlePlayerKicked(int userId)
+    {
+        if (userId == AppService.SessionUser!.Id)
+        {
+            // This user was kicked
+            ReturnToRooms();
+            return;
+        }
+        
+        HandlePlayerLeft(userId);
     }
 
     private void HandlePlayerJoined(PlayerJoinedRoomNotification playerJoinedRoomNotif)
@@ -257,12 +278,12 @@ public abstract class RoomViewModel : PageViewModel
             PlayersCount = _roomModel.PlayersCount + 1
         };
     }
-
-    private void HandlePlayerLeft(PlayerLeftRoomNotification playerLeftRoomNotif)
+    
+    private void HandlePlayerLeft(int userId)
     {
         for (var i = 0; i < Players.Count; i++)
         {
-            if (Players[i]!.Id != playerLeftRoomNotif.PlayerId)
+            if (Players[i]!.Id != userId)
                 continue;
             
             Players.RemoveAt(i);

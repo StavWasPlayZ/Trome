@@ -1,0 +1,61 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:popupsvm="clr-namespace:Trivia.ViewModels.Popups"
+             xmlns:popups="clr-namespace:Trivia.Controls.Popups"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
+             x:CompileBindings="True"
+             x:Class="Trivia.Views.Popups.GuestStatsPopupView"
+             x:DataType="popupsvm:GuestStatsPopupViewModel">
+
+    <Design.DataContext>
+        <popupsvm:GuestStatsPopupViewModel/>
+    </Design.DataContext>
+    
+    <popups:StatsPopup Username="{Binding User.Username}"
+                       Stats="{Binding Stats}"
+                       CloseCommand="{Binding CloseCommand}"
+                       Height="460">
+        
+        <Button Command="{Binding KickCommand}"
+                HorizontalAlignment="Stretch"
+                Margin="0 35"
+                VerticalAlignment="Stretch"
+                CornerRadius="5"
+                Background="#4D264A"
+                ClipToBounds="False">
+
+            <Button.Styles>
+                <Style Selector="Button /template/ ContentPresenter">
+                    <Setter Property="BoxShadow" Value="0 3 4 #3f000000" />
+                </Style>
+
+                <Style Selector="Button:pointerover /template/ ContentPresenter">
+                    <Setter Property="Background" Value="#5A2757" />
+                </Style>
+
+                <Style Selector="Button:pressed /template/ ContentPresenter">
+                    <Setter Property="Background" Value="#50214E" />
+                </Style>
+            </Button.Styles>
+            
+            <Grid VerticalAlignment="Center">
+                
+                <Svg Path="avares://Trivia/Assets/Icons/kick.svg"
+                     Css="* { fill: #FFFFFF; }"
+                     Height="35"
+                     HorizontalAlignment="Left"
+                     Margin="5 0 0 0"/>
+                
+                <TextBlock TextAlignment="Center"
+                           FontSize="40">
+                    KICK
+                </TextBlock>
+            </Grid>
+                
+        </Button>
+        
+    </popups:StatsPopup>
+
+</UserControl>

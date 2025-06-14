@@ -54,6 +54,7 @@
         <StyleInclude Source="avares://Trivia/Controls/TriviaUsersList.axaml"/>
         <StyleInclude Source="avares://Trivia/Controls/ListEntries/ScoredUserListEntry.axaml"/>
         <StyleInclude Source="avares://Trivia/Controls/ListEntries/RoomUserListEntry.axaml"/>
+        <StyleInclude Source="avares://Trivia/Controls/Popups/StatsPopup.axaml"/>
         <StyleInclude Source="avares://Trivia/Controls/LeadUserDock.axaml"/>
         <StyleInclude Source="avares://Trivia/Controls/ListEntries/AfterGameUserListEntry.axaml"/>
         

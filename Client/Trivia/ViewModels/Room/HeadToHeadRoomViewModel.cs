@@ -126,14 +126,12 @@ public class HeadToHeadRoomViewModel : RoomViewModel
                 RoomName = RoomModel.Data.Name;
                 break;
             
-            default:
-                base.CommOnPacketReceived(packet);
+            case PlayerJoinedRoomNotification:
+            case PlayerLeftRoomNotification:
+                UpdatePlayerFields();
                 break;
         }
-
-        if (packet is PlayerJoinedRoomNotification or PlayerLeftRoomNotification)
-        {
-            UpdatePlayerFields();
-        }
+        
+        base.CommOnPacketReceived(packet);
     }
 }
