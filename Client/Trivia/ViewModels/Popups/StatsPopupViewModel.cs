@@ -1,4 +1,8 @@
-﻿using ReactiveUI;
+﻿using System.Reactive.Disposables;
+using System.Threading.Tasks;
+using ReactiveUI;
+using Trivia.Codec.C2S.Request.Packets;
+using Trivia.Codec.S2C.Response.Packets;
 using Trivia.Models.Raw;
 
 namespace Trivia.ViewModels.Popups;
@@ -10,6 +14,12 @@ public class StatsPopupViewModel : PopupViewModel
     public StatsPopupViewModel(User user) : base(false)
     {
         User = user;
+        
+        this.WhenActivated(disposables =>
+        {
+            FetchUserStatistics()
+                .DisposeWith(disposables);
+        });
     }
     
     public StatsPopupViewModel() : base(true)
@@ -25,6 +35,16 @@ public class StatsPopupViewModel : PopupViewModel
             TimeOnQuestionOverall = 12,
             TimeOnQuestionsAvg = -1
         };
+    }
+
+
+    private async Task FetchUserStatistics()
+    {
+        var response = await Comm.SendRequestAwaitResponse<GetUserStatisticsResponse>(
+            new GetUserStatisticsRequest(User.Id)
+        );
+        
+        Stats = response.Stats;
     }
 
 

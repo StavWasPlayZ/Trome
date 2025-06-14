@@ -139,10 +139,6 @@ public class StatisticsViewModel : PageViewModel
         if (MainWindowViewModel == null)
             return;
 
-        // var response = await Comm.SendRequestAwaitResponse<GetUserStatisticsResponse>(
-        //     new GetUserStatisticsRequest(user.Id)
-        // );
-
         MainWindowViewModel.PopupContents = new StatsPopupViewModel(user);
     }
 }
