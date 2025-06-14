@@ -122,7 +122,7 @@ public class Communicator : IDisposable
     /// <param name="request">The request to send to the server</param>
     /// 
     /// <typeparam name="T">The expected <see cref="IS2CPacket"/> type</typeparam>
-    public async Task<T> SendRequestAwaitResponse<T>(IProtocolRequest request) where T : IProtocolResponse
+    public async Task<T> SendRequestAsync<T>(IProtocolRequest request) where T : IProtocolResponse
     {
         var task = new TaskCompletionSource<T>();
         

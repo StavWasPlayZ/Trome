@@ -29,7 +29,7 @@ public class RoomTypeSelectorViewModel : PageViewModel
 
     private async Task CreateRoom(RoomType roomType)
     {
-        var response = await Comm.SendRequestAwaitResponse<CreateRoomResponse>(new CreateRoomRequest(roomType));
+        var response = await Comm.SendRequestAsync<CreateRoomResponse>(new CreateRoomRequest(roomType));
 
         var roomModel = new RoomModel
         {

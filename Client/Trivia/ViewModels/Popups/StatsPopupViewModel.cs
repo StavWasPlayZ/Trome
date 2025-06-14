@@ -40,7 +40,7 @@ public class StatsPopupViewModel : PopupViewModel
 
     private async Task FetchUserStatistics()
     {
-        var response = await Comm.SendRequestAwaitResponse<GetUserStatisticsResponse>(
+        var response = await Comm.SendRequestAsync<GetUserStatisticsResponse>(
             new GetUserStatisticsRequest(User.Id)
         );
         

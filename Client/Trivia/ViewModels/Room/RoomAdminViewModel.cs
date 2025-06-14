@@ -24,7 +24,7 @@ public class RoomAdminViewModel : RoomViewModel
 
         StartGameCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            await Comm.SendRequestAwaitResponse<StartGameResponse>(new StartGameRequest(RoomModel.Data));
+            await Comm.SendRequestAsync<StartGameResponse>(new StartGameRequest(RoomModel.Data));
 
             NavigateTo(new GameCountdownViewModel(HostScreen, RoomModel));
         });

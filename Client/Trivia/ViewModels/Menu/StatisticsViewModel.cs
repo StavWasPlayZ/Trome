@@ -45,7 +45,7 @@ public class StatisticsViewModel : PageViewModel
 
     private async Task FetchHighScores()
     {
-        var response = await Comm.SendRequestAwaitResponse<GetHighScoresResponse>(new GetHighScoresRequest());
+        var response = await Comm.SendRequestAsync<GetHighScoresResponse>(new GetHighScoresRequest());
 
         _scores = [..response.HighScores];
         

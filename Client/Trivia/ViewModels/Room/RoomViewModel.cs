@@ -109,11 +109,11 @@ public abstract class RoomViewModel : PageViewModel
     {
         if (IsAdmin)
         {
-            await Comm.SendRequestAwaitResponse<CloseRoomResponse>(new CloseRoomRequest());
+            await Comm.SendRequestAsync<CloseRoomResponse>(new CloseRoomRequest());
         }
         else
         {
-            await Comm.SendRequestAwaitResponse<LeaveRoomResponse>(new LeaveRoomRequest());
+            await Comm.SendRequestAsync<LeaveRoomResponse>(new LeaveRoomRequest());
         }
 
         // Assuming Selector -> Room
@@ -156,7 +156,7 @@ public abstract class RoomViewModel : PageViewModel
 
     private async Task FetchPlayersInRoom()
     {
-        var response = await Comm.SendRequestAwaitResponse<GetPlayersInRoomResponse>(new GetPlayersInRoomRequest());
+        var response = await Comm.SendRequestAsync<GetPlayersInRoomResponse>(new GetPlayersInRoomRequest());
         ReAddAllPlayers([..response.Players]);
 
         RoomModel = RoomModel with

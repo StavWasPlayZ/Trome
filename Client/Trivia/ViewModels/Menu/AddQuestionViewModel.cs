@@ -50,7 +50,7 @@ public class AddQuestionViewModel : PageViewModel
 
     private async Task SendAddQuestionRequest(CancellationToken _)
     {
-        await Comm.SendRequestAwaitResponse<AddQuestionResponse>(
+        await Comm.SendRequestAsync<AddQuestionResponse>(
             new AddQuestionRequest(_prompt!, Answers)
         );
 

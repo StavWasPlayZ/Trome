@@ -89,7 +89,7 @@ public class JoinRoomMenuViewModel : PageViewModel
     private async Task JoinRoom(int roomId)
     {
         //TODO: Handle room deleted before refresh
-        var response = await Comm.SendRequestAwaitResponse<JoinRoomResponse>(new JoinRoomRequest(roomId));
+        var response = await Comm.SendRequestAsync<JoinRoomResponse>(new JoinRoomRequest(roomId));
         
         var room = Rooms.Find(x => x.Id == roomId)!;
         
@@ -129,7 +129,7 @@ public class JoinRoomMenuViewModel : PageViewModel
 
     private async Task RefreshRooms()
     {
-        var response = await Communicator.Instance.SendRequestAwaitResponse<GetRoomsResponse>(new GetRoomsRequest());
+        var response = await Communicator.Instance.SendRequestAsync<GetRoomsResponse>(new GetRoomsRequest());
         Rooms = [..response.Rooms];
     }
 }

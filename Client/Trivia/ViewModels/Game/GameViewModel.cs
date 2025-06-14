@@ -66,7 +66,7 @@ public class GameViewModel : GameViewModelBase
 
     private async Task GetNewQuestion()
     {
-         var response = await Comm.SendRequestAwaitResponse<GetQuestionResponse>(new GetQuestionRequest());
+         var response = await Comm.SendRequestAsync<GetQuestionResponse>(new GetQuestionRequest());
          Question = response.Question;
          Points = response.Points;
          
@@ -78,7 +78,7 @@ public class GameViewModel : GameViewModelBase
     {
         StopCountdown();
         
-        var response = await Comm.SendRequestAwaitResponse<SubmitAnswerResponse>(new SubmitAnswerRequest(btnIndex));
+        var response = await Comm.SendRequestAsync<SubmitAnswerResponse>(new SubmitAnswerRequest(btnIndex));
         Question = response.Question;
         Points = response.Points;
 
