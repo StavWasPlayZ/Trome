@@ -46,7 +46,7 @@ public:
     static void setRequestHandlers(
         const std::function<const IRequestHandler*(const LoggedUser*)>& factory,
         const std::vector<LoggedUser *> &users,
-        const std::optional<ProtocolNotification> &notification = std::nullopt,
+        const std::optional<const ProtocolNotification *> &notification = std::nullopt,
         const std::optional<const LoggedUser*>& excluded = std::nullopt
     );
 
@@ -71,7 +71,7 @@ private:
     static void dispatchNotification(
         const std::optional<std::function<const IRequestHandler*(const LoggedUser*)>>& factory,
         const std::vector<LoggedUser *> &users,
-        const std::optional<ProtocolNotification> &notification,
+        const std::optional<const ProtocolNotification *> &notification,
         const std::optional<const LoggedUser*>& excluded = std::nullopt
     );
 };

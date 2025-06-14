@@ -249,13 +249,15 @@ std::vector<PlayerResult> GameRequestHandler::handleLastPlayerFinished(const Req
 {
     const std::vector<PlayerResult> results = m_game.getResults();
 
+    const GameEndedNotification notification = GameEndedNotification(results);
+
     setRequestHandlers(
         [this](const LoggedUser *player) {
             return this->m_handlerFactory.createRoomRequestHandler(*player, this->m_game.getRoom());
         },
 
         m_game.getRoom().getAllUsers(),
-        GameEndedNotification(results),
+        &notification,
         &getUserByInfo(info)
     );
 
