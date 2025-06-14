@@ -65,6 +65,9 @@ ProtocolRequest *JsonRequestPacketDeserializer::deserialize(const RequestInfo &i
     case RequestCode::ADD_QUESTION: return new AddQuestionRequest(
         deserializeAddQuestionRequest(info.data)
     );
+    case RequestCode::KICK_PLAYER: return new KickPlayerRequest(
+        deserializeKickPlayerRequest(info.data)
+    );
 
     default: throw std::invalid_argument("Invalid request ID");
     }
