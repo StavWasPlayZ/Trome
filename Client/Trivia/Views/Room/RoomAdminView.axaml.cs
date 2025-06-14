@@ -2,7 +2,7 @@
 
 namespace Trivia.Views.Room;
 
-public partial class RoomAdminView : PageViewControl<RoomAdminViewModel>
+public partial class RoomAdminView : TriviaRushRoomView<RoomAdminViewModel>
 {
     public RoomAdminView()
     {

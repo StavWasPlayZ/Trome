@@ -3,7 +3,7 @@ using Trivia.ViewModels;
 
 namespace Trivia.Views;
 
-public class PageViewControl<TPvm> : ReactiveUserControl<TPvm> where TPvm : PageViewModel
+public abstract class PageViewControl<TPvm> : ReactiveUserControl<TPvm> where TPvm : PageViewModel
 {
-    
+    protected static MainWindowViewModel? MainWindowViewModel => Utils.MainWindowViewModelInstance;
 }

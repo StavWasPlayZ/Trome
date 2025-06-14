@@ -1,12 +1,16 @@
 using System;
 using Avalonia.Controls;
+using Trivia.ViewModels;
 
 namespace Trivia;
 
 public static class Utils
 {
+    public static MainWindowViewModel? MainWindowViewModelInstance =>
+        MainWindow.Instance?.DataContext as MainWindowViewModel;
+    
     /// <summary>
-    /// Triggers the given command if the selected item of the pressed list box was changed.
+    /// Triggers the given command if the selected item of a ListBox was changed.
     /// Resets its value back to null when done.
     /// </summary>
     /// <typeparam name="T">The list type</typeparam>

@@ -15,8 +15,7 @@ public abstract class ViewModelBase(bool isMock) : ReactiveObject, IActivatableV
     protected static readonly Communicator Comm = Communicator.Instance;
 
 
-    protected static MainWindowViewModel? MainWindowViewModel =>
-        MainWindow.Instance?.DataContext as MainWindowViewModel;
+    protected static MainWindowViewModel? MainWindowViewModel => Utils.MainWindowViewModelInstance;
     
     
     protected static ReactiveCommand<Unit, Unit> NoOpCommand { get; } =
