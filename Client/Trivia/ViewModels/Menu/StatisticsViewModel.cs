@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using ReactiveUI;
 using Trivia.Codec.C2S.Request.Packets;
@@ -23,7 +25,24 @@ public class StatisticsViewModel : PageViewModel
     {
         this.WhenActivated(disposables =>
         {
-            FetchHighScores().DisposeWith(disposables);
+            FetchHighScores()
+                .DisposeWith(disposables);
+
+            this
+                .WhenAnyValue(x => x.SelectedUser)
+                .WhereNotNull()
+                
+                .Select(user => user.Scores)
+                .WhereNotNull()
+                .Select(scores => scores.User)
+                
+                .SelectMany(user =>
+                    ShowUserStatsPopupCommand!.Execute(user)
+                        .Do(_ => SelectedUser = null)
+                )
+                
+                .Subscribe()
+                .DisposeWith(disposables);
         });
     }
 
@@ -104,9 +123,18 @@ public class StatisticsViewModel : PageViewModel
         get => _show2ndList;
         set => this.RaiseAndSetIfChanged(ref _show2ndList, value);
     }
+
+
+    private UserScoreModel? _selectedScore;
+    
+    public UserScoreModel? SelectedUser
+    {
+        get => _selectedScore;
+        set => this.RaiseAndSetIfChanged(ref _selectedScore, value);
+    }
     
 
-    public ReactiveCommand<User, Unit>? ShowStatsPopup { get; } =
+    public ReactiveCommand<User, Unit>? ShowUserStatsPopupCommand { get; } =
         ReactiveCommand.CreateFromTask<User>(ShowUserStatsPopup);
 
     private static async Task ShowUserStatsPopup(User user)
