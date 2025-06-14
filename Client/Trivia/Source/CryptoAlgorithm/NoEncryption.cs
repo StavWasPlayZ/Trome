@@ -2,8 +2,6 @@
 
 public class NoEncryption : ICryptoAlgorithm
 {
-    public NoEncryption() { }
-
     public string Encrypt(string message)
     {
         return message;

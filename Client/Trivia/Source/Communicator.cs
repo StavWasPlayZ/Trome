@@ -55,7 +55,7 @@ public class Communicator : IDisposable
 
     private TcpClient? _clientSocket;
     
-    static ICryptoAlgorithm _cryptoAlgorithm = new OTP();
+    private readonly ICryptoAlgorithm _cryptoAlgorithm = new OTP();
 
     private Communicator() { }
 
@@ -244,7 +244,11 @@ public class Communicator : IDisposable
         
         var json = Encoding.GetEncoding("ISO-8859-1").GetString(jsonRaw, 0, jsonRaw.Length);
         
-        return PacketDeserializer.Deserialize((S2CPacketType) packetType, (byte) code, _cryptoAlgorithm.Decrypt(json));
+        return PacketDeserializer.Deserialize(
+            (S2CPacketType) packetType,
+            (byte) code,
+            _cryptoAlgorithm.Decrypt(json)
+        );
     }
 
     private byte? ReadSingleByte()
@@ -319,7 +323,7 @@ public class Communicator : IDisposable
 
     private static void Log(string message, LogLevel level = LogLevel.Info)
     {
-        string color = level switch
+        var color = level switch
         {
             LogLevel.Info => AnsiColor.Reset,
             LogLevel.Warning => AnsiColor.DarkYellow,
