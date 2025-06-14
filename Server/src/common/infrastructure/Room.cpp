@@ -114,7 +114,7 @@ void Room::kickUser(LoggedUser &user)
 {
     if (user == getAdmin())
     {
-        std::cerr << "Attempted to kick the admin. Ignoring operation. Remove the room instead." std::endl;
+        std::cerr << "Attempted to kick the admin. Ignoring operation. Remove the room instead." << std::endl;
         return;
     }
 
