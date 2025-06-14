@@ -25,10 +25,8 @@ public class FinishedEarlyViewModel : GameViewModelBase
     public string EndingLine { get; } = EndingLines[App.Random.Next(EndingLines.Length)];
     
     public FinishedEarlyViewModel(IScreen hostScreen, RoomModel roomModel, int playersFinished) :
-        base(hostScreen, roomModel)
+        base(hostScreen, roomModel, playersFinished)
     {
-        PlayersFinished = playersFinished;
-        
         this.WhenActivated(disposables =>
         {
             Disposable

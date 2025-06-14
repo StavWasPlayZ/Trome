@@ -24,7 +24,8 @@ public class GameViewModel : GameViewModelBase
     private readonly DispatcherTimer? _countdownTimer;
     
     
-    public GameViewModel(IScreen hostScreen, RoomModel roomModel) : base(hostScreen, roomModel)
+    public GameViewModel(IScreen hostScreen, RoomModel roomModel, int playersFinished) :
+        base(hostScreen, roomModel, playersFinished)
     {
         SubmitAnswerCommand = ReactiveCommand.CreateFromTask<int>(async (btnIndex, _) =>
             await SubmitAnswer(btnIndex)

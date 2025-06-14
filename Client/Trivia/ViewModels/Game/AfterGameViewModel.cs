@@ -22,7 +22,7 @@ public class AfterGameViewModel : SubRoomViewModel
     
 
     public AfterGameViewModel(IScreen hostScreen, RoomModel roomModel, IList<PlayerResult> results) :
-        base(hostScreen, roomModel)
+        base(hostScreen, roomModel, roomModel.PlayersCount)
     {
         // Sort by points
         List<PlayerResult> sortedResults = [..results];
