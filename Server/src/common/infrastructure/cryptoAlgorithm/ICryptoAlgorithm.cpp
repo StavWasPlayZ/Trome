@@ -2,3 +2,5 @@
 
 ICryptoAlgorithm::ICryptoAlgorithm()
 {}
+
+ICryptoAlgorithm::~ICryptoAlgorithm() = default;
