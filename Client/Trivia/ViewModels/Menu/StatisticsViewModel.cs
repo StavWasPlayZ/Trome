@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 using ReactiveUI;
 using Trivia.Codec.C2S.Request.Packets;
 using Trivia.Codec.S2C.Response.Packets;
-using Trivia.Controls.Popups;
 using Trivia.Models.Raw;
 using Trivia.Models.User;
+using Trivia.ViewModels.Popups;
 
 namespace Trivia.ViewModels.Menu;
 
@@ -30,18 +30,15 @@ public class StatisticsViewModel : PageViewModel
 
             this
                 .WhenAnyValue(x => x.SelectedUser)
-                .WhereNotNull()
                 
+                .WhereNotNull()
                 .Select(user => user.Scores)
                 .WhereNotNull()
                 .Select(scores => scores.User)
                 
-                .SelectMany(user =>
-                    ShowUserStatsPopupCommand!.Execute(user)
-                        .Do(_ => SelectedUser = null)
-                )
+                .Do(ShowUserStatsPopup)
+                .Subscribe(_ => SelectedUser = null)
                 
-                .Subscribe()
                 .DisposeWith(disposables);
         });
     }
@@ -134,23 +131,18 @@ public class StatisticsViewModel : PageViewModel
     }
     
 
-    public ReactiveCommand<User, Unit>? ShowUserStatsPopupCommand { get; } =
-        ReactiveCommand.CreateFromTask<User>(ShowUserStatsPopup);
+    public ReactiveCommand<User, Unit> ShowUserStatsPopupCommand { get; } =
+        ReactiveCommand.Create<User>(ShowUserStatsPopup);
 
-    private static async Task ShowUserStatsPopup(User user)
+    private static void ShowUserStatsPopup(User user)
     {
         if (MainWindowViewModel == null)
             return;
 
-        var response = await Comm.SendRequestAwaitResponse<GetUserStatisticsResponse>(
-            new GetUserStatisticsRequest(user.Id)
-        );
+        // var response = await Comm.SendRequestAwaitResponse<GetUserStatisticsResponse>(
+        //     new GetUserStatisticsRequest(user.Id)
+        // );
 
-        MainWindowViewModel.PopupContents = new StatsPopup
-        {
-            CloseCommand = MainWindowViewModel.CloseDialogCommand,
-            Stats = response.Stats,
-            Username = user.Username
-        };
+        MainWindowViewModel.PopupContents = new StatsPopupViewModel(user);
     }
 }
