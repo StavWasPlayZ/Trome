@@ -4,6 +4,10 @@
 
 #include "Request.h"
 
+#include "infrastructure/cryptoAlgorithm/ICryptoAlgorithm.h"
+
+class ICryptoAlgorithm;
+
 class JsonRequestPacketDeserializer
 {
 public:
@@ -18,7 +22,7 @@ public:
     static ProtocolRequest *deserialize(const RequestInfo &info);
 
 
-	static nlohmann::json readJson(const unsigned char* data, int jsonLen);
+	static nlohmann::json readJson(const unsigned char* data, int jsonLen, const ICryptoAlgorithm& cryptoAlgorithm);
 
 	/**
 	* Returns: The deserialized object.

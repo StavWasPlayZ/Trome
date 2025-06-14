@@ -57,6 +57,6 @@ AddQuestionRequest::AddQuestionRequest(const Question &question) : question(ques
 {
 }
 
-KickPlayerRequest::KickPlayerRequest(unsigned int userId) : userId(userId)
+KickPlayerRequest::KickPlayerRequest(const unsigned int userId) : userId(userId)
 {
 }

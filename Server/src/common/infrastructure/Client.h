@@ -1,6 +1,7 @@
 #pragma once
 
 #include "handler/IRequestHandler.h"
+#include "cryptoAlgorithm/ICryptoAlgorithm.h"
 #include <future>
 #include <functional>
 #include <mutex>
@@ -15,6 +16,7 @@
 
 struct ProtocolNotification;
 class IRequestHandler;
+class ICryptoAlgorithm;
 
 /**
  * A client in the Trivia server.
@@ -53,6 +55,8 @@ public:
 
     void handleDisconnecting() const;
 
+    ICryptoAlgorithm &getCryptoAlgorithm() const;
+
 private:
 	const std::future<void>* thread;
 
@@ -60,4 +64,6 @@ private:
 	const IRequestHandler* requestHandler;
 
     std::mutex socketWriterMutex;
+
+    ICryptoAlgorithm* cryptoAlgorithm;
 };

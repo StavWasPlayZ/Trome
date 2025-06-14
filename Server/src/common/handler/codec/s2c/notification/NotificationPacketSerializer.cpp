@@ -2,102 +2,117 @@
 
 #include "handler/codec/s2c/ProtocolPacketSerializer.h"
 
-OBuffer NotificationPacketSerializer::serialize(const ProtocolNotification &notification)
+OBuffer NotificationPacketSerializer::serialize(const ProtocolNotification &notification,
+                                                const ICryptoAlgorithm &cryptoAlgorithm)
 {
     switch (notification.id)
     {
     case NotificationCode::PLAYER_JOINED_ROOM:
-        return serialize(static_cast<const PlayerJoinedRoomNotification&>(notification));
+        return serialize(static_cast<const PlayerJoinedRoomNotification &>(notification), cryptoAlgorithm);
     case NotificationCode::PLAYER_LEFT_ROOM:
-        return serialize(static_cast<const PlayerLeftRoomNotification&>(notification));
+        return serialize(static_cast<const PlayerLeftRoomNotification &>(notification), cryptoAlgorithm);
     case NotificationCode::ROOM_CLOSED:
-        return serialize(static_cast<const RoomClosedNotification&>(notification));
+        return serialize(static_cast<const RoomClosedNotification &>(notification), cryptoAlgorithm);
     case NotificationCode::ROOM_DATA_UPDATED:
-        return serialize(static_cast<const RoomDataUpdatedNotification&>(notification));
+        return serialize(static_cast<const RoomDataUpdatedNotification &>(notification), cryptoAlgorithm);
     case NotificationCode::GAME_STARTED:
-        return serialize(static_cast<const GameStartedNotification&>(notification));
+        return serialize(static_cast<const GameStartedNotification &>(notification), cryptoAlgorithm);
     case NotificationCode::GAME_ENDED:
-        return serialize(static_cast<const GameEndedNotification&>(notification));
+        return serialize(static_cast<const GameEndedNotification &>(notification), cryptoAlgorithm);
     case NotificationCode::PLAYER_FINISHED:
-        return serialize(static_cast<const PlayerFinishedNotification&>(notification));
+        return serialize(static_cast<const PlayerFinishedNotification &>(notification), cryptoAlgorithm);
     case NotificationCode::PLAYER_KICKED:
-        return serialize(static_cast<const PlayerKickedNotification&>(notification));
+        return serialize(static_cast<const PlayerKickedNotification &>(notification), cryptoAlgorithm);
 
-    default: throw std::invalid_argument("Invalid notification ID");
+    default:
+        throw std::invalid_argument("Invalid notification ID");
     }
 }
 
-
-OBuffer NotificationPacketSerializer::serialize(const PlayerJoinedRoomNotification &notification)
+OBuffer NotificationPacketSerializer::serialize(const PlayerJoinedRoomNotification &notification,
+                                                const ICryptoAlgorithm &cryptoAlgorithm)
 {
     nlohmann::json data;
 
     data["player"] = ProtocolPacketSerializer::serializeAsJson(notification.player);
 
-    return serialize(notification.id, data);
+    return serialize(notification.id, data, cryptoAlgorithm);
 }
 
-OBuffer NotificationPacketSerializer::serialize(const PlayerLeftRoomNotification &notification)
+OBuffer NotificationPacketSerializer::serialize(const PlayerLeftRoomNotification &notification,
+                                                const ICryptoAlgorithm &cryptoAlgorithm)
 {
     nlohmann::json data;
 
     data["player_id"] = notification.playerId;
 
-    return serialize(notification.id, data);
+    return serialize(notification.id, data, cryptoAlgorithm);
 }
 
-OBuffer NotificationPacketSerializer::serialize(const RoomClosedNotification &notification)
+OBuffer NotificationPacketSerializer::serialize(const RoomClosedNotification &notification,
+                                                const ICryptoAlgorithm &cryptoAlgorithm)
 {
-    return serialize(notification.id, nlohmann::json::object());
+    return serialize(notification.id, nlohmann::json::object(), cryptoAlgorithm);
 }
 
-OBuffer NotificationPacketSerializer::serialize(const RoomDataUpdatedNotification &notification)
-{
-    nlohmann::json data;
-
-    data["data"] = ProtocolPacketSerializer::serializeAsJson(notification.data);
-
-    return serialize(notification.id, data);
-}
-
-OBuffer NotificationPacketSerializer::serialize(const GameStartedNotification &notification)
+OBuffer NotificationPacketSerializer::serialize(const RoomDataUpdatedNotification &notification,
+                                                const ICryptoAlgorithm &cryptoAlgorithm)
 {
     nlohmann::json data;
 
     data["data"] = ProtocolPacketSerializer::serializeAsJson(notification.data);
 
-    return serialize(notification.id, data);
+    return serialize(notification.id, data, cryptoAlgorithm);
 }
 
-OBuffer NotificationPacketSerializer::serialize(const GameEndedNotification &notification)
+OBuffer NotificationPacketSerializer::serialize(const GameStartedNotification &notification,
+                                                const ICryptoAlgorithm &cryptoAlgorithm)
+{
+    nlohmann::json data;
+
+    data["data"] = ProtocolPacketSerializer::serializeAsJson(notification.data);
+
+    return serialize(notification.id, data, cryptoAlgorithm);
+}
+
+OBuffer NotificationPacketSerializer::serialize(const GameEndedNotification &notification,
+                                                const ICryptoAlgorithm &cryptoAlgorithm)
 {
     nlohmann::json data;
 
     nlohmann::json &results = data["results"] = nlohmann::json::array();
 
-    for (const PlayerResult& result : notification.results)
+    for (const PlayerResult &result : notification.results)
     {
         results.push_back(ProtocolPacketSerializer::serializeAsJson(result));
     }
 
-    return serialize(notification.id, data);
+    return serialize(notification.id, data, cryptoAlgorithm);
 }
 
-OBuffer NotificationPacketSerializer::serialize(const PlayerFinishedNotification &notification)
+OBuffer NotificationPacketSerializer::serialize(const PlayerFinishedNotification &notification,
+                                                const ICryptoAlgorithm &cryptoAlgorithm)
 {
-    return serialize(notification.id, nlohmann::json::object());
+    return serialize(notification.id, nlohmann::json::object(), cryptoAlgorithm);
 }
 
-OBuffer NotificationPacketSerializer::serialize(const PlayerKickedNotification &notification)
+OBuffer NotificationPacketSerializer::serialize(const PlayerKickedNotification &notification,
+                                                const ICryptoAlgorithm &cryptoAlgorithm)
 {
     nlohmann::json data;
 
     data["player_id"] = notification.playerId;
 
-    return serialize(notification.id, data);
+    return serialize(notification.id, data, cryptoAlgorithm);
 }
 
-OBuffer NotificationPacketSerializer::serialize(const NotificationCode msgCode, const nlohmann::json &data)
+OBuffer NotificationPacketSerializer::serialize(const NotificationCode msgCode, const nlohmann::json &data,
+                                                const ICryptoAlgorithm &cryptoAlgorithm)
 {
-    return ProtocolPacketSerializer::serialize(S2CPacketType::NOTIFICATION, static_cast<unsigned char>(msgCode), data);
+    return ProtocolPacketSerializer::serialize(
+        S2CPacketType::NOTIFICATION,
+        static_cast<unsigned char>(msgCode),
+        data,
+        cryptoAlgorithm
+    );
 }

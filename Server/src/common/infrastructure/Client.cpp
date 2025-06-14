@@ -1,18 +1,21 @@
 #include "Client.h"
 
 #include "Server.h"
+#include "cryptoAlgorithm/OTP.h"
 #include "handler/codec/s2c/notification/NotificationPacketSerializer.h"
 
 Client::Client(const SOCKET socket, const IRequestHandler *const requestHandler) :
     socket(socket),
     thread(nullptr),
-    requestHandler(requestHandler)
+    requestHandler(requestHandler),
+    cryptoAlgorithm(new OTP())
 {}
 
 Client::~Client()
 {
     delete this->requestHandler;
     delete this->thread;
+    delete this->cryptoAlgorithm;
 }
 
 std::unique_lock<std::mutex> Client::acquireSocketWriterLock()
@@ -61,11 +64,16 @@ void Client::setAndStartThread(const std::function<void()> &threadFunc)
 void Client::sendNotification(const ProtocolNotification& notification)
 {
     Communicator::getInstance().sendMsg(*this,
-        NotificationPacketSerializer::serialize(notification)
+        NotificationPacketSerializer::serialize(notification, getCryptoAlgorithm())
     );
 }
 
 void Client::handleDisconnecting() const
 {
     Server::getInstance().getLoginManager().getUserByClient(*this).handleDisconnecting();
+}
+
+ICryptoAlgorithm &Client::getCryptoAlgorithm() const
+{
+    return *this->cryptoAlgorithm;
 }

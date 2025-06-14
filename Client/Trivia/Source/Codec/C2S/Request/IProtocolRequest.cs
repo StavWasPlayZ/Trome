@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using Newtonsoft.Json;
+using Trivia.CryptoAlgorithm;
 
 namespace Trivia.Codec.C2S.Request;
 
@@ -8,19 +9,18 @@ public interface IProtocolRequest
 {
     RequestCode Code { get; init; }
     
-    public byte[] Serialize()
+    public byte[] Serialize(ICryptoAlgorithm cryptoAlgorithm, out string decrypted)
     {
-        return SerializeToProtocol(
-            JsonConvert.SerializeObject(this, CodecConstants.JsonSerializerSettings)
-        );
+        decrypted = JsonConvert.SerializeObject(this, CodecConstants.JsonSerializerSettings);
+        
+        return SerializeToProtocol(decrypted, cryptoAlgorithm);
     }
     
-    private byte[] SerializeToProtocol(string data)
+    private byte[] SerializeToProtocol(string data, ICryptoAlgorithm cryptoAlgorithm)
     {
-        // TODO: Encrypt here
-        var strBytes = Encoding.UTF8.GetBytes(data);
+        var strBytes = Encoding.GetEncoding("ISO-8859-1").GetBytes(cryptoAlgorithm.Encrypt(data));
         var lenBytes = BitConverter.GetBytes(strBytes.Length);
-
+        
         // Convert to little-endian format, if needed
         if (BitConverter.IsLittleEndian)
         {

@@ -1,6 +1,5 @@
 #pragma once
 
-#include <string>
 #include "infrastructure/GameData.h"
 
 struct PlayerResult
