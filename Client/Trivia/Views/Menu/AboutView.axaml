@@ -53,7 +53,7 @@
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Center">
                         <TextBlock>DEVELOPERS</TextBlock>
-                        <TextBlock>Itay Hershkovitz</TextBlock>
+                        <TextBlock>Itay Herskovits</TextBlock>
                         <TextBlock>Stav Solomon</TextBlock>
                     </StackPanel>
 
