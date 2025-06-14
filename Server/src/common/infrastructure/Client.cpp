@@ -5,7 +5,8 @@
 
 Client::Client(const SOCKET socket, const IRequestHandler *const requestHandler) :
     socket(socket),
-    thread(nullptr), requestHandler(requestHandler), 
+    thread(nullptr),
+    requestHandler(requestHandler),
     cryptoAlgorithm(new OTP())
 {}
 
@@ -62,7 +63,7 @@ void Client::setAndStartThread(const std::function<void()> &threadFunc)
 void Client::sendNotification(const ProtocolNotification& notification)
 {
     Communicator::getInstance().sendMsg(*this,
-        NotificationPacketSerializer::serialize(notification, *this->cryptoAlgorithm)
+        NotificationPacketSerializer::serialize(notification, getCryptoAlgorithm())
     );
 }
 
@@ -71,7 +72,7 @@ void Client::handleDisconnecting() const
     Server::getInstance().getLoginManager().getUserByClient(*this).handleDisconnecting();
 }
 
-ICryptoAlgorithm* Client::getCryptoAlgorithm() const
+ICryptoAlgorithm &Client::getCryptoAlgorithm() const
 {
-    return this->cryptoAlgorithm;
+    return *this->cryptoAlgorithm;
 }

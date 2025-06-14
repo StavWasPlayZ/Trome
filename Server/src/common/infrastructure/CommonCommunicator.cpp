@@ -309,7 +309,7 @@ void CommonCommunicator::_handleClient(Client& client)
 
 void CommonCommunicator::_dispatchResponse(Client &client, const ProtocolResponse &response) const
 {
-    sendMsg(client, JsonResponsePacketSerializer::serializeResponse(response, *client.getCryptoAlgorithm()));
+    sendMsg(client, JsonResponsePacketSerializer::serializeResponse(response, client.getCryptoAlgorithm()));
 }
 
 RequestInfo CommonCommunicator::_waitForClientRequest(const Client &client)
@@ -342,7 +342,7 @@ RequestInfo CommonCommunicator::_waitForClientRequest(const Client &client)
             *this->m_clients.at(client.socket),
 
             static_cast<RequestCode>(reqCode),
-            JsonRequestPacketDeserializer::readJson(data, jsonLen, *client.getCryptoAlgorithm())
+            JsonRequestPacketDeserializer::readJson(data, jsonLen, client.getCryptoAlgorithm())
         );
     }
     catch (const std::exception &)
