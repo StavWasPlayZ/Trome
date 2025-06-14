@@ -18,7 +18,8 @@
                        CloseCommand="{Binding CloseCommand}"
                        Height="460">
         
-        <Button HorizontalAlignment="Stretch"
+        <Button Command="{Binding KickCommand}"
+                HorizontalAlignment="Stretch"
                 Margin="0 35"
                 VerticalAlignment="Stretch"
                 CornerRadius="5"
