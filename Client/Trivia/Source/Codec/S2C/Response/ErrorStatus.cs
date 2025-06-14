@@ -26,6 +26,7 @@ public enum ErrorStatus
     NotLoggedIn,
     
     // Room
+    UnkickableEntity,
     RoomFull,
     RoomAlreadyPlaying,
     
