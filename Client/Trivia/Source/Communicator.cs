@@ -281,11 +281,11 @@ public class Communicator : IDisposable
                 
                 request = _outgoingRequests.Dequeue();
             }
-            
-            var rawRequest = request.Serialize(_cryptoAlgorithm);
+
+            var rawRequest = request.Serialize(_cryptoAlgorithm, out var rawForm);
 
             VerboseLog($"Sending packet: {request}", LogLevel.Sending);
-            VerboseLog($"In raw form: {Encoding.GetEncoding("ISO-8859-1").GetString(rawRequest, 5, rawRequest.Length - 5)}", LogLevel.Sending);
+            VerboseLog($"In raw form: {rawForm}", LogLevel.Sending);
             
             _clientSocket!.GetStream().Write(rawRequest, 0, rawRequest.Length);
         }
