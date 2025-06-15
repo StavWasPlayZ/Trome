@@ -488,42 +488,71 @@ void SqliteDatabase::execSql(const std::string& query) const
 
 void SqliteDatabase::consumeSql(
     const std::string &query,
-    std::function<void(const std::map<std::string, std::optional<std::string>> &)> rowConsumer
-) const {
-    char *errMsg;
-
-    const int result = sqlite3_exec(
-        this->_dbInstance, query.c_str(),
-
-        [](void *data, const int argc, char **argv, char **azColName) -> int {
-            const std::function<void(const std::map<std::string, std::optional<std::string>> &)> rowConsumer =
-                *static_cast<std::function<void(const std::map<std::string, std::optional<std::string>> &)>*>(data);
-
-            // Convert the args to a string vector to be passed to the provided mapper function
-            std::map<std::string, std::optional<std::string>> columns;
-
-            for (size_t i = 0; i < argc; i++)
-            {
-                const std::optional<std::string> valStr = argv[i] != nullptr
-                    ? std::optional<std::string>(argv[i])
-                    : std::nullopt;
-
-                columns[std::string(azColName[i])] = valStr;
-            }
-
-            rowConsumer(columns);
-            return 0;
-        },
-
-        &rowConsumer,
-        &errMsg
+    const std::function<void(const std::map<std::string, std::optional<std::string>> &)> &columnConsumer,
+    const std::vector<std::string> &bindings
+) const
+{
+    sqlite3_stmt* preppedStatement;
+    int result = sqlite3_prepare_v2(
+        this->_dbInstance,
+        query.c_str(),
+        query.length(),
+        &preppedStatement,
+        nullptr
     );
 
     if (result != SQLITE_OK)
     {
-        const std::string msg = std::string(errMsg);
-        sqlite3_free(errMsg);
-
-        throw std::runtime_error("Error in SQL: " + msg);
+        const std::string msg = std::string(sqlite3_errmsg(this->_dbInstance));
+        throw std::runtime_error("Error in SQL - Failed to prepare: " + msg);
     }
+
+
+    for (size_t i = 0; i < bindings.size(); i++)
+    {
+        // Just bind for texts, no matter the binding type.
+        const std::string& binding = bindings.at(i);
+        sqlite3_bind_text(preppedStatement, i + 1, binding.c_str(), binding.length(), SQLITE_STATIC);
+
+        // Notice that we've made the bindings list of strings and not "objects".
+        // If it were to be typed or something then we'd check instanceof/is/etc.
+        // Matter of development comfort only.
+    }
+
+
+    //TODO: Move to separate method.
+    // The method WILL NOT free the statement.
+    const int columnsCount = sqlite3_column_count(preppedStatement);
+
+    while ((result = sqlite3_step(preppedStatement)) == SQLITE_ROW)
+    {
+        // Convert the results to a map of column name to column value.
+        // This will be passed to the consumer function.
+        std::map<std::string, std::optional<std::string>> columns;
+
+        for (int i = 0; i < columnsCount; i++)
+        {
+            const char *columnName = sqlite3_column_name(preppedStatement, i);
+            const unsigned char *columnValue = sqlite3_column_text(preppedStatement, i);
+
+            columns.emplace(
+                columnName,
+                columnValue != nullptr
+                    ? std::optional(reinterpret_cast<const char *>(columnValue))
+                    : std::nullopt
+            );
+        }
+
+        columnConsumer(columns);
+    }
+
+    if (result != SQLITE_DONE)
+    {
+        const std::string msg = std::string(sqlite3_errmsg(this->_dbInstance));
+        sqlite3_finalize(preppedStatement);
+
+        throw std::runtime_error("Error in SQL - Unexpected ending of rows stream: " + msg);
+    }
+
+    sqlite3_finalize(preppedStatement);
 }

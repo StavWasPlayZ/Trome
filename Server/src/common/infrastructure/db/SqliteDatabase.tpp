@@ -5,7 +5,8 @@
 template <typename T>
 std::list<T> SqliteDatabase::querySql(
     const std::string &query,
-    std::function<T(const std::map<std::string, std::optional<std::string>> &)> rowMapper
+    const std::function<T(const std::map<std::string, std::optional<std::string>> &)> &columnMapper,
+    const std::vector<std::string> &bindings
 ) const
 {
     std::list<T> results;
@@ -13,10 +14,12 @@ std::list<T> SqliteDatabase::querySql(
     consumeSql(
         query,
 
-        [&results, &rowMapper](const std::map<std::string, std::optional<std::string>> &columns)
+        [&results, &columnMapper](const std::map<std::string, std::optional<std::string>> &columns)
         {
-            results.push_back(rowMapper(columns));
-        }
+            results.push_back(columnMapper(columns));
+        },
+
+        bindings
     );
 
     return results;
