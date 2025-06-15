@@ -4,7 +4,7 @@
 
 template <typename T>
 std::list<T> SqliteDatabase::querySql(
-    const std::string &query,
+    sqlite3_stmt *preppedStatement,
     const std::function<T(const std::map<std::string, std::optional<std::string>> &)> &columnMapper,
     const std::vector<std::string> &bindings
 ) const
@@ -12,7 +12,7 @@ std::list<T> SqliteDatabase::querySql(
     std::list<T> results;
 
     consumeSql(
-        query,
+        preppedStatement,
 
         [&results, &columnMapper](const std::map<std::string, std::optional<std::string>> &columns)
         {
