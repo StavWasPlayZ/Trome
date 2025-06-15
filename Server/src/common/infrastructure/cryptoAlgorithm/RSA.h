@@ -28,6 +28,6 @@ private:
     static std::string loadPEMFile(const std::string &filename);
 
     // Private member functions
-    size_t getMaxPlaintextSize() const;
+    static size_t getMaxPlaintextSize();
     static size_t getEncryptedTextSize();
 };

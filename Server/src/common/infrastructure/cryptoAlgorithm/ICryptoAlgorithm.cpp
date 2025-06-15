@@ -15,7 +15,7 @@ std::vector<unsigned char> ICryptoAlgorithm::ReadFileBytes(const std::string &pa
     }
 
     file.seekg(0, std::ios::end);
-    std::streamsize size = file.tellg();
+    const std::streamsize size = file.tellg();
     file.seekg(0, std::ios::beg);
 
     std::vector<unsigned char> buffer(size);

@@ -93,7 +93,7 @@ void RSACrypto::loadPublicKeyFromPEM(const std::string &filename)
     clientPublicKey.Load(ss2);
 }
 
-size_t RSACrypto::getMaxPlaintextSize() const
+size_t RSACrypto::getMaxPlaintextSize()
 {
     // Key size in bytes
     const size_t keySize = clientPublicKey.GetModulus().ByteCount();
@@ -125,7 +125,7 @@ std::string RSACrypto::encrypt(const std::string &message) const
 
         std::string chunk = message.substr(pos, chunkSize);
 
-        std::string encryptedChunck = "";
+        std::string encryptedChunk = "";
 
         CryptoPP::RSAES_OAEP_SHA_Encryptor encryptor(clientPublicKey);
 
@@ -134,11 +134,11 @@ std::string RSACrypto::encrypt(const std::string &message) const
             new CryptoPP::PK_EncryptorFilter(
                 rng,
                 encryptor,
-                new CryptoPP::StringSink(encryptedChunck)
+                new CryptoPP::StringSink(encryptedChunk)
             )
         );
 
-        encryptedText.append(encryptedChunck);
+        encryptedText.append(encryptedChunk);
     }
 
     std::string base64Encoded = "";
