@@ -7,28 +7,28 @@ namespace Trivia.CryptoAlgorithm;
 
 public class AES : ICryptoAlgorithm
 {
-    private static readonly string KeyPath = "../../../Source/CryptoAlgorithm/Keys/AESkey.key";
-    private static readonly string IVPath = "../../../Source/CryptoAlgorithm/Keys/AESiv.key";
+    private const string KeyPath = "../../../Source/CryptoAlgorithm/Keys/AESkey.key";
+    private const string IVPath = "../../../Source/CryptoAlgorithm/Keys/AESiv.key";
     
-    private static byte[] Key = [];
-    private static byte[] IV = [];
+    private static byte[] _key = [];
+    private static byte[] _iv = [];
 
     public AES()
     {
-        if (Key.Length == 0)
+        if (_key.Length == 0)
         {
-            Key = ICryptoAlgorithm.ReadFileBytes(KeyPath);
+            _key = ICryptoAlgorithm.ReadFileBytes(KeyPath);
         }
-        if (IV.Length == 0)
+        if (_iv.Length == 0)
         {
-            IV = ICryptoAlgorithm.ReadFileBytes(IVPath);
+            _iv = ICryptoAlgorithm.ReadFileBytes(IVPath);
         }
     }
     public string Encrypt(string message)
     {
         using var aes = Aes.Create();
-        aes.Key = Key;
-        aes.IV = IV;
+        aes.Key = _key;
+        aes.IV = _iv;
         aes.Mode = CipherMode.CBC;
         aes.Padding = PaddingMode.PKCS7;
 
@@ -46,8 +46,8 @@ public class AES : ICryptoAlgorithm
     public string Decrypt(string message)
     {
         using var aes = Aes.Create();
-        aes.Key = Key;
-        aes.IV = IV;
+        aes.Key = _key;
+        aes.IV = _iv;
         aes.Mode = CipherMode.CBC;
         aes.Padding = PaddingMode.PKCS7;
 
@@ -58,5 +58,4 @@ public class AES : ICryptoAlgorithm
 
         return sr.ReadToEnd();
     }
-
 }

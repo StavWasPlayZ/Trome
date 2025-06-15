@@ -55,15 +55,15 @@ public class Communicator : IDisposable
 
     private TcpClient? _clientSocket;
     
-    private readonly ICryptoAlgorithm _cryptoAlgorithm;
+    private readonly ICryptoAlgorithm _cryptoAlgorithm = null!;
 
     private Communicator()
     {
-        var failed;
+        var failed = false;
 
         try
         {
-            _cryptoAlgorithm = new RSACrypto();
+            _cryptoAlgorithm = new RsaCrypto();
         }
         catch (FileNotFoundException e)
         {
@@ -72,15 +72,14 @@ public class Communicator : IDisposable
         }
         catch (Exception e)
         {
-            VerboseLog($"The encryption failed");
-            VerboseLog(Console.Error.WriteLine(e.StackTrace));
+            VerboseLog("The encryption failed");
+            Console.Error.WriteLine(e.StackTrace);
             failed = true;
         }
 
         if (failed)
         {
             Dispatcher.UIThread.Post(MainWindow.Instance!.Close);
-            _cryptoAlgorithm = null!;
         }
     }
 
