@@ -7,8 +7,8 @@ namespace Trivia.CryptoAlgorithm;
 
 public class RsaCrypto : ICryptoAlgorithm
 {
-    private const string ServerPublicKeyPath = "../../../Source/CryptoAlgorithm/Keys/publicServer.pem";
-    private const string ClientPrivateKeyPath = "../../../Source/CryptoAlgorithm/Keys/privateClient.pem";
+    private const string ServerPublicKeyPath = ICryptoAlgorithm.KeysPath + "publicServer.pem";
+    private const string ClientPrivateKeyPath = ICryptoAlgorithm.KeysPath + "privateClient.pem";
 
     private static RSA _serverPublic = null!;
     private static RSA _clientPrivate = null!;

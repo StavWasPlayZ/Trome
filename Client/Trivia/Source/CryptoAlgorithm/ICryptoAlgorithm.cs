@@ -4,6 +4,8 @@ namespace Trivia.CryptoAlgorithm;
 
 public interface ICryptoAlgorithm
 {
+    protected const string KeysPath = "../../../Source/CryptoAlgorithm/Keys/";
+        
     string Encrypt(string message);
     string Decrypt(string message);
     

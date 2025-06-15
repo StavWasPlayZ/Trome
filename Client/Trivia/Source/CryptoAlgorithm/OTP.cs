@@ -3,7 +3,7 @@
 //REVIEW: Consider renaming to Otp
 public class OTP : ICryptoAlgorithm
 {
-    private const string KeyPath = "../../../Source/CryptoAlgorithm/Keys/OTPkey.key";
+    private const string KeyPath = ICryptoAlgorithm.KeysPath + "OTPkey.key";
     
     private static byte[] _key = [];
 

@@ -7,8 +7,8 @@ namespace Trivia.CryptoAlgorithm;
 
 public class AES : ICryptoAlgorithm
 {
-    private const string KeyPath = "../../../Source/CryptoAlgorithm/Keys/AESkey.key";
-    private const string IVPath = "../../../Source/CryptoAlgorithm/Keys/AESiv.key";
+    private const string KeyPath = ICryptoAlgorithm.KeysPath + "AESkey.key";
+    private const string IVPath = ICryptoAlgorithm.KeysPath + "AESiv.key";
     
     private static byte[] _key = [];
     private static byte[] _iv = [];
