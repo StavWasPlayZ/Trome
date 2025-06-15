@@ -467,7 +467,6 @@ void SqliteDatabase::execSql(sqlite3_stmt *preppedStatement, const std::vector<s
 void SqliteDatabase::execSql(const std::string& query, const std::vector<std::string> &bindings) const
 {
     sqlite3_stmt *const preppedStatement = genPreparedStatement(query);
-    bindPreparedStatement(preppedStatement, bindings);
 
     try
     {
@@ -489,7 +488,6 @@ void SqliteDatabase::consumeSql(
 ) const
 {
     sqlite3_stmt *const preppedStatement = genPreparedStatement(query);
-    bindPreparedStatement(preppedStatement, bindings);
 
     try
     {
