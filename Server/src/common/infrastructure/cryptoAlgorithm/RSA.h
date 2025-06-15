@@ -2,12 +2,7 @@
 
 #include "ICryptoAlgorithm.h"
 
-#include <cryptopp/cryptlib.h>
 #include <cryptopp/rsa.h>
-#include <cryptopp/osrng.h>
-#include <cryptopp/base64.h>
-#include <cryptopp/filters.h>
-#include <cryptopp/queue.h>
 
 class RSACrypto : public ICryptoAlgorithm
 {
@@ -17,7 +12,7 @@ public:
     std::string encrypt(const std::string &message) const;
     std::string decrypt(const std::string &base64Ciphertext) const;
 
-  private:
+private:
     static const std::string serverPrivateKeyPath;
     static const std::string clientPublicKeyPath;
 
@@ -34,5 +29,5 @@ public:
 
     // Declare these as private member functions
     size_t getMaxPlaintextSize() const;
-    size_t getEncryptedtextSize() const;
+    size_t getEncryptedTextSize() const;
 };

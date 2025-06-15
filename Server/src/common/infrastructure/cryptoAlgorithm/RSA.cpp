@@ -14,6 +14,7 @@ const std::string RSACrypto::clientPublicKeyPath = "../../../src/common/infrastr
 
 CryptoPP::RSA::PrivateKey RSACrypto::serverPrivateKey;
 CryptoPP::RSA::PublicKey RSACrypto::clientPublicKey;
+bool RSACrypto::keysLoaded = false;
 
 RSACrypto::RSACrypto()
 {
@@ -94,16 +95,16 @@ void RSACrypto::loadPublicKeyFromPEM(const std::string &filename)
 size_t RSACrypto::getMaxPlaintextSize() const
 {
     // Key size in bytes
-    size_t keySize = RSACrypto::clientPublicKey.GetModulus().ByteCount();
+    size_t keySize = clientPublicKey.GetModulus().ByteCount();
 
     // Max plaintext size for RSAES_OAEP with SHA1
     return keySize - 2 * hashLen - 2;
 }
 
-size_t RSACrypto::getEncryptedtextSize() const
+size_t RSACrypto::getEncryptedTextSize() const
 {
     // Encryptedext size = RSA modulus size in bytes
-    return RSACrypto::clientPublicKey.GetModulus().ByteCount();
+    return clientPublicKey.GetModulus().ByteCount();
 }
 
 std::string RSACrypto::encrypt(const std::string &message) const
@@ -125,7 +126,7 @@ std::string RSACrypto::encrypt(const std::string &message) const
 
         std::string encryptedChunck = "";
 
-        CryptoPP::RSAES_OAEP_SHA_Encryptor encryptor(RSACrypto::clientPublicKey);
+        CryptoPP::RSAES_OAEP_SHA_Encryptor encryptor(clientPublicKey);
 
         CryptoPP::StringSource ss(
             chunk, true,
@@ -163,7 +164,7 @@ std::string RSACrypto::decrypt(const std::string &message) const
         )
     );
 
-    size_t encryptedLen = getEncryptedtextSize();
+    size_t encryptedLen = getEncryptedTextSize();
 
     if (ciphertextRaw.size() % encryptedLen != 0)
     {
@@ -172,7 +173,7 @@ std::string RSACrypto::decrypt(const std::string &message) const
 
     std::string decryptedText = "";
 
-    CryptoPP::RSAES_OAEP_SHA_Decryptor decryptor(RSACrypto::serverPrivateKey);
+    CryptoPP::RSAES_OAEP_SHA_Decryptor decryptor(serverPrivateKey);
 
     for (size_t pos = 0; pos < ciphertextRaw.size(); pos += encryptedLen)
     {
