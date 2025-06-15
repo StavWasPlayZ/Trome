@@ -40,23 +40,27 @@
                     </StackPanel.Resources>
                     
                     <controls:TriviaTextBox Classes="input-field">
-                        <TextBox Text="127.0.0.1"
+                        <TextBox Text="{Binding ServerIp}"
                                  Watermark="127.0.0.1"/>
                     </controls:TriviaTextBox>
                     
                     <controls:TriviaTextBox Classes="input-field"
                                             Width="100">
-                        <TextBox Text="6942"
+                        <TextBox Text="{Binding ServerPort}"
                                  Watermark="6942"/>
                     </controls:TriviaTextBox>
                     
                 </StackPanel>
                 
                 <TextBlock Classes="warning-display"
-                           IsVisible="False"
-                           Text="asdf"/>
+                           IsVisible="{
+                               Binding ErrorMessage,
+                               Converter={x:Static ObjectConverters.IsNotNull}
+                           }"
+                           Text="{Binding ErrorMessage}"/>
 
-                <controls:TriviaButton HorizontalAlignment="Center"
+                <controls:TriviaButton Command="{Binding ConnectCommand}"
+                                       HorizontalAlignment="Center"
                                        Text="CONNECT"
                                        Background="#362034"
                                        BorderBrush="#b92e2b"
