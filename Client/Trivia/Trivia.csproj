@@ -100,5 +100,9 @@
         <DependentUpon>GuestStatsPopupView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Views\ServerIpView.axaml.cs">
+        <DependentUpon>TestView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
 </Project>

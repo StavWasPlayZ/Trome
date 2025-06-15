@@ -1,0 +1,74 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Trivia.ViewModels"
+             xmlns:controls="clr-namespace:Trivia.Controls"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
+             x:CompileBindings="True"
+             x:Class="Trivia.Views.ServerIpView"
+             x:DataType="vm:ServerIpViewModel">
+
+    <Design.DataContext>
+        <vm:ServerIpViewModel/>
+    </Design.DataContext>
+    
+    <Panel>
+        <Panel.Background>
+            <ImageBrush Source="avares://Trivia/Assets/blobs-l-b49caff1a7941d98b60902da64956ad85dfbe4f9.png"
+                   Stretch="UniformToFill" />            
+        </Panel.Background>
+        
+        <controls:TriviaMenuPanel Title="CONNECT"
+                                  DisplayBackButton="False"
+                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="Center"
+                                  Width="600">
+            
+            <StackPanel Margin="50,40,50,30"
+                        Spacing="20">
+                
+                <StackPanel Orientation="Horizontal"
+                            Margin="10"
+                            HorizontalAlignment="Center"
+                            Spacing="5"
+                            Classes="t-input-fields-container">
+                    
+                    <StackPanel.Resources>
+                        <!-- ReSharper disable once Xaml.RedundantResource -->
+                        <SolidColorBrush x:Key="TriviaTextBoxForeground">White</SolidColorBrush>
+                    </StackPanel.Resources>
+                    
+                    <controls:TriviaTextBox Classes="input-field">
+                        <TextBox Text="127.0.0.1"
+                                 Watermark="127.0.0.1"/>
+                    </controls:TriviaTextBox>
+                    
+                    <controls:TriviaTextBox Classes="input-field"
+                                            Width="100">
+                        <TextBox Text="6942"
+                                 Watermark="6942"/>
+                    </controls:TriviaTextBox>
+                    
+                </StackPanel>
+                
+                <TextBlock Classes="warning-display"
+                           IsVisible="False"
+                           Text="asdf"/>
+
+                <controls:TriviaButton HorizontalAlignment="Center"
+                                       Text="CONNECT"
+                                       Background="#362034"
+                                       BorderBrush="#b92e2b"
+                                       IconColor="#ffbbbb"
+                                       BorderBrushSelected="#D93040"
+                                       BorderBrushPressed="#AA2C2F"
+                                       BorderThickness="3"
+                                       Padding="60,0"/>
+
+            </StackPanel>
+            
+        </controls:TriviaMenuPanel>
+    </Panel>
+
+</UserControl>
