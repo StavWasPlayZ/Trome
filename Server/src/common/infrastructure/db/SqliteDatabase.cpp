@@ -515,7 +515,7 @@ void SqliteDatabase::consumeSql(
         sqlite3_bind_text(preppedStatement, i + 1, binding.c_str(), binding.length(), SQLITE_STATIC);
 
         // Notice that we've made the bindings list of strings and not "objects".
-        // If it were to be typed or something then we'd check instanceof/is/etc.
+        // If it were to be a typed OOP language or something then we could check instanceof/is/etc.
         // Matter of development comfort only.
     }
 
