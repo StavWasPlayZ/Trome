@@ -467,38 +467,41 @@ void SqliteDatabase::consumeSql(
     const std::vector<std::string> &bindings
 ) const
 {
-    sqlite3_stmt* preppedStatement;
-    int result = sqlite3_prepare_v2(
-        this->_dbInstance,
-        query.c_str(),
-        query.length(),
-        &preppedStatement,
-        nullptr
-    );
-
-    if (result != SQLITE_OK)
-    {
-        const std::string msg = std::string(sqlite3_errmsg(this->_dbInstance));
-        throw std::runtime_error("Error in SQL - Failed to prepare: " + msg);
-    }
-
+    sqlite3_stmt* preppedStatement = genPreparedStatement(query);
 
     for (size_t i = 0; i < bindings.size(); i++)
     {
         // Just bind for texts, no matter the binding type.
-        const std::string& binding = bindings.at(i);
-        sqlite3_bind_text(preppedStatement, i + 1, binding.c_str(), binding.length(), SQLITE_STATIC);
-
+        //
         // Notice that we've made the bindings list of strings and not "objects".
         // If it were to be a typed OOP language or something then we could check instanceof/is/etc.
         // Matter of development comfort only.
+
+        const std::string& binding = bindings.at(i);
+        sqlite3_bind_text(preppedStatement, i + 1, binding.c_str(), binding.length(), SQLITE_STATIC);
     }
 
+    try
+    {
+        consumeSql(preppedStatement, columnConsumer);
+    }
+    catch (const std::exception &)
+    {
+        sqlite3_finalize(preppedStatement);
+        throw;
+    }
 
-    //TODO: Move to separate method.
-    // The method WILL NOT free the statement.
+    sqlite3_finalize(preppedStatement);
+}
+
+void SqliteDatabase::consumeSql(
+    sqlite3_stmt *const preppedStatement,
+    const std::function<void(const std::map<std::string, std::optional<std::string>> &)> &columnConsumer
+) const
+{
     const int columnsCount = sqlite3_column_count(preppedStatement);
 
+    int result;
     while ((result = sqlite3_step(preppedStatement)) == SQLITE_ROW)
     {
         // Convert the results to a map of column name to column value.
@@ -524,10 +527,30 @@ void SqliteDatabase::consumeSql(
     if (result != SQLITE_DONE)
     {
         const std::string msg = std::string(sqlite3_errmsg(this->_dbInstance));
-        sqlite3_finalize(preppedStatement);
+        sqlite3_reset(preppedStatement);
 
         throw std::runtime_error("Error in SQL - Unexpected ending of rows stream: " + msg);
     }
 
-    sqlite3_finalize(preppedStatement);
+    sqlite3_reset(preppedStatement);
+}
+
+sqlite3_stmt *SqliteDatabase::genPreparedStatement(const std::string &query) const
+{
+    sqlite3_stmt *preppedStatement;
+    const int result = sqlite3_prepare_v2(
+        this->_dbInstance,
+        query.c_str(),
+        query.length(),
+        &preppedStatement,
+        nullptr
+    );
+
+    if (result != SQLITE_OK)
+    {
+        const std::string msg = std::string(sqlite3_errmsg(this->_dbInstance));
+        throw std::runtime_error("Error in SQL - Failed to prepare: " + msg);
+    }
+
+    return preppedStatement;
 }

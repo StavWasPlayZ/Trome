@@ -102,10 +102,9 @@ private:
 
 
 	/**
-	 * Executes the provided query.
+	 * Generates a temporary prepared statement for the given SQL query, and executes it.
 	 *
-	 * rowConsumer is passed, for each row found, a mapping of
-	 * the column name to the value (in string) that it possesses.
+	 * columnConsumer is passed, for each row found, a mapping of the column name to the column value (in string).
 	 */
 	void consumeSql(
 		const std::string& query,
@@ -113,13 +112,24 @@ private:
 		const std::vector<std::string> &bindings = {}
 	) const;
 
+    /**
+     * Executes the provided query.
+     *
+     * columnConsumer is passed, for each row found, a mapping of the column name to the column value (in string).
+     */
+    void consumeSql(
+        sqlite3_stmt *preppedStatement,
+        const std::function<void(const std::map<std::string, std::optional<std::string>>&)> &columnConsumer
+    ) const;
+
+    sqlite3_stmt* genPreparedStatement(const std::string &query) const;
+
 	/**
 	 * Executes the provided query.
 	 *
-	 * rowMapper is passed, for each row found, a mapping of
-	 * the column name to the value (in string) that it possesses.
+	 * columnMapper is passed, for each row found, a mapping of the column name to the column value (in string).
 	 *
-	 * The result returned from it will be accumulated as an item in the returned list.
+	 * The result returned from said method will be accumulated as an item in the overall returned list.
 	 */
 	template <typename T>
 	std::list<T> querySql(
