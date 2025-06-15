@@ -239,3 +239,10 @@ endif ()
 # Support includes starting from relative paths
 target_include_directories(Server PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_include_directories(Server PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/common)
+
+
+# Resources directory
+set(RESOURCES_DIR ${CMAKE_SOURCE_DIR}/resources)
+
+# Copy the directory to where the output executable lies (so as to use relative paths)
+file(COPY ${RESOURCES_DIR} DESTINATION ${CMAKE_BINARY_DIR})
