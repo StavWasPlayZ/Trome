@@ -47,27 +47,12 @@ public:
     void addToStats(const std::string &username, int time, int answers, int correctAnswers, int points,
                     int games = 1) const override;
 
-    // void addTime(const std::string &username, int time) const override;
-    // void addTotalAns(const std::string &username, int ans = 1) const override;
-    // void addCorrectAns(const std::string &username, int ans = 1) const override;
-    // void addGamesPlayed(const std::string &username, int games = 1) const override;
-    // void addPoints(const std::string &username, int points) const override;
-
-    int queryTime(const std::string &username) const override;
-    int queryTotalAns(const std::string &username) const override;
-    int queryCorrectAns(const std::string &username) const override;
-    int queryGamesPlayed(const std::string &username) const override;
-    int queryPoints(const std::string &username) const override;
-
-    float queryPlayerAverageAnsTime(const std::string &username) const override;
-
     std::map<UserModel, int> queryHighScores(int limit = 20) const override;
 
     std::optional<UserStatistics> getUserStatisticsById(unsigned int id) const override;
 
 protected:
 	unsigned int queryIdOfUser(const std::string &username) const override;
-    void addToColumn(const std::string &username, const std::string &column, int n, const std::string &table) const override;
 
 private:
 	SqliteDatabase();
@@ -76,60 +61,88 @@ private:
 	static const std::string TABLE_STATISTICS;
 	static const std::string TABLE_QUESTIONS;
 
+
 	static const std::string CREATE_USERS_TBL_QUERY;
 	static const std::string CREATE_STATISTICS_TBL_QUERY;
 	static const std::string CREATE_QUESTIONS_TBL_QUERY;
 
+    static const std::string USER_ID_QUERY;
+
+
+    std::unordered_map<std::string, sqlite3_stmt*> _preppedStatements;
+
+    void genPreppedStatements();
+
+
 	/**
 	 * Simply executes the provided query.
 	 */
-	void execSql(const std::string& query) const;
+	void execSql(sqlite3_stmt *preppedStatement, const std::vector<std::string> &bindings = {}) const;
+
+    /**
+     * Simply executes the provided query.
+     */
+    void execSql(const std::string& query, const std::vector<std::string> &bindings = {}) const;
 
 	/*
 	* Returns whether the exists query returns positive.
 	* The associated column must be named "exists".
 	*/
-	bool queryExists(const std::string& query) const;
+	bool queryExists(sqlite3_stmt *preppedStatement, const std::vector<std::string> &bindings = {}) const;
 	/*
 	* The associated column must be named "id".
 	*/
-	std::list<unsigned int> queryIds(const std::string& query) const;
+	std::list<unsigned int> queryIds(sqlite3_stmt *preppedStatement, const std::vector<std::string> &bindings = {}) const;
 
     /**
      * Executes the provided query, returning as a list of integers,
      * as provided by the column named `colName`.
      */
-	std::list<int> queryInts(const std::string& query, const std::string& colName) const;
-
-	int queryStat(const std::string &username, const std::string &colName) const;
-
-
-	static std::string genQueryUserIdStr(const std::string& username);
-
-
-	/**
-	 * Executes the provided query.
-	 *
-	 * rowConsumer is passed, for each row found, a mapping of
-	 * the column name to the value (in string) that it possesses.
-	 */
-	void consumeSql(
-		const std::string& query,
-		std::function<void(const std::map<std::string, std::optional<std::string>>&)> rowConsumer
+	std::list<int> queryInts(
+	    sqlite3_stmt *preppedStatement,
+	    const std::string& colName,
+	    const std::vector<std::string> &bindings = {}
 	) const;
 
+
+    /**
+     * Executes the provided query, creating a temporary SQL statement.
+     *
+     * columnConsumer is passed, for each row found, a mapping of the column name to the column value (in string).
+     */
+    void consumeSql(
+        const std::string &query,
+        const std::function<void(const std::map<std::string, std::optional<std::string>> &)> &columnConsumer,
+        const std::vector<std::string> &bindings = {}
+    ) const;
+
+    /**
+     * Executes the provided query.
+     *
+     * columnConsumer is passed, for each row found, a mapping of the column name to the column value (in string).
+     */
+    void consumeSql(
+        sqlite3_stmt *preppedStatement,
+        const std::function<void(const std::map<std::string, std::optional<std::string>> &)> &columnConsumer,
+        const std::vector<std::string> &bindings = {}
+    ) const;
+
+    static void bindPreparedStatement(sqlite3_stmt *preppedStatement, const std::vector<std::string> &bindings);
+
+    sqlite3_stmt* genPreparedStatement(const std::string &query) const;
+
 	/**
 	 * Executes the provided query.
 	 *
-	 * rowMapper is passed, for each row found, a mapping of
-	 * the column name to the value (in string) that it possesses.
+	 * columnMapper is passed, for each row found, a mapping of the column name to the column value (in string).
 	 *
-	 * The result returned from it will be accumulated as an item in the returned list.
+	 * The result returned from said method will be accumulated as an item in the overall returned list.
 	 */
 	template <typename T>
 	std::list<T> querySql(
-		const std::string& query,
-		std::function<T(const std::map<std::string, std::optional<std::string>>&)> rowMapper
+		sqlite3_stmt *preppedStatement,
+		const std::function<T(const std::map<std::string, std::optional<std::string>>&)> &columnMapper,
+		const std::vector<std::string> &bindings = {}
 	) const;
 
 	const std::string _dbName;

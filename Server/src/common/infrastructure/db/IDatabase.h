@@ -63,28 +63,13 @@ public:
     virtual void addQuestions(std::vector<Question> questions, const std::optional<std::string>& authorName) const = 0;
 
 
-    // Adding to statistics:
+    // Statistics:
     virtual void addToStats(const std::string &username, int time, int answers, int correctAnswers, int points,
                             int games = 1) const = 0;
 
-	// virtual void addTime(const std::string &username, int time) const = 0;
-	// virtual void addTotalAns(const std::string &username, int ans = 1) const = 0;
-	// virtual void addCorrectAns(const std::string &username, int ans = 1) const = 0;
-	// virtual void addGamesPlayed(const std::string &username, int games = 1) const = 0;
-	// virtual void addPoints(const std::string &username, int points) const = 0;
-
-    // Retrieving statistics:
-
-	virtual int queryTime(const std::string &username) const = 0;
-	virtual int queryTotalAns(const std::string &username) const = 0;
-	virtual int queryCorrectAns(const std::string &username) const = 0;
-	virtual int queryGamesPlayed(const std::string &username) const = 0;
-	virtual int queryPoints(const std::string &username) const = 0;
-    virtual float queryPlayerAverageAnsTime(const std::string &username) const = 0;
+    virtual std::optional<UserStatistics> getUserStatisticsById(unsigned int id) const = 0;
 
 	virtual std::map<UserModel, int> queryHighScores(int limit = 20) const = 0;
-
-    virtual std::optional<UserStatistics> getUserStatisticsById(unsigned int id) const = 0;
 
 protected:
     IDatabase() = default;
@@ -97,13 +82,6 @@ protected:
      */
     virtual unsigned int queryIdOfUser(const std::string &username) const = 0;
 
-	/**
-	* Adds `n` to the specified column for the given user.
-	*
-	* Said column must be a numerable.
-	*/
-    virtual void addToColumn(const std::string &username, const std::string &column, int n,
-                             const std::string &table) const = 0;
 
     // Regexes.
 
