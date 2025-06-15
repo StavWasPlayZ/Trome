@@ -6,8 +6,8 @@
 #include <cryptopp/base64.h>
 #include <cryptopp/cryptlib.h>
 
-const std::string AES::keyPath = "../../../src/common/infrastructure/cryptoAlgorithm/keys/AESkey.key";
-const std::string AES::ivPath = "../../../src/common/infrastructure/cryptoAlgorithm/keys/AESiv.key";
+const std::string AES::keyPath = KEYS_PATH + "AESkey.key";
+const std::string AES::ivPath = KEYS_PATH + "AESiv.key";
 
 std::vector<unsigned char> AES::key;
 std::vector<unsigned char> AES::iv;
@@ -16,12 +16,12 @@ AES::AES() : ICryptoAlgorithm()
 {
     if (key.size() == 0)
     {
-        key = ReadFileBytes(keyPath);
+        key = readFileBytes(keyPath);
     }
 
     if (iv.size() == 0)
     {
-        iv = ReadFileBytes(ivPath);
+        iv = readFileBytes(ivPath);
     }
 }
 

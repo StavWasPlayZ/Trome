@@ -1,13 +1,13 @@
 #include "OTP.h"
 
-const std::string OTP::keyPath = "../../../src/common/infrastructure/cryptoAlgorithm/keys/OTPkey.key";
+const std::string OTP::keyPath = KEYS_PATH + "OTPkey.key";
 std::vector<unsigned char> OTP::key;
 
 OTP::OTP()
 {
     if (key.size() == 0)
     {
-        key = ReadFileBytes(keyPath);
+        key = readFileBytes(keyPath);
     }
 }
 

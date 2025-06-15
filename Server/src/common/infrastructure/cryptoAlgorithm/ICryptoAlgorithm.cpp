@@ -4,9 +4,11 @@
 
 #include <fstream>
 
+const std::string ICryptoAlgorithm::KEYS_PATH = "../../../src/common/infrastructure/cryptoAlgorithm/keys/";
+
 ICryptoAlgorithm::~ICryptoAlgorithm() = default;
 
-std::vector<unsigned char> ICryptoAlgorithm::ReadFileBytes(const std::string &path)
+std::vector<unsigned char> ICryptoAlgorithm::readFileBytes(const std::string &path)
 {
     std::ifstream file(path, std::ios::binary);
     if (!file)
@@ -27,8 +29,8 @@ std::vector<unsigned char> ICryptoAlgorithm::ReadFileBytes(const std::string &pa
     return buffer;
 }
 
-std::string ICryptoAlgorithm::ReadFileString(const std::string& path)
+std::string ICryptoAlgorithm::readFileString(const std::string& path)
 {
-    const std::vector<unsigned char> bytes = ReadFileBytes(path);
+    const std::vector<unsigned char> bytes = readFileBytes(path);
     return std::string(reinterpret_cast<const char *>(bytes.data()), bytes.size());
 }

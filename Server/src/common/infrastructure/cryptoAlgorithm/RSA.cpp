@@ -10,8 +10,8 @@
 #include <cryptopp/filters.h>
 #include <cryptopp/osrng.h>
 
-const std::string RSACrypto::serverPrivateKeyPath =  "../../../src/common/infrastructure/cryptoAlgorithm/keys/privateServer.pem";
-const std::string RSACrypto::clientPublicKeyPath = "../../../src/common/infrastructure/cryptoAlgorithm/keys/publicClient.pem";
+const std::string RSACrypto::serverPrivateKeyPath =  KEYS_PATH + "privateServer.pem";
+const std::string RSACrypto::clientPublicKeyPath = KEYS_PATH + "publicClient.pem";
 
 CryptoPP::RSA::PrivateKey RSACrypto::serverPrivateKey;
 CryptoPP::RSA::PublicKey RSACrypto::clientPublicKey;
