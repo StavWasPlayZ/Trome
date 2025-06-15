@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using System.Reactive.Disposables;
 using System.Reactive.Threading.Tasks;
 using Avalonia.Threading;
@@ -9,13 +10,13 @@ namespace Trivia.ViewModels;
 
 public class ConnectingViewModel : PageViewModel
 {
-    public ConnectingViewModel(IScreen hostScreen) : base(hostScreen)
+    public ConnectingViewModel(IScreen hostScreen, IPEndPoint endpoint) : base(hostScreen)
     {
         this.WhenActivated(disposables =>
         {
             InitMusicService();
             
-            Communicator.Instance.Connect()
+            Communicator.Instance.Connect(endpoint)
                 .ToObservable()
                 .Subscribe(
                     _ => OnConnectionEstablished(),

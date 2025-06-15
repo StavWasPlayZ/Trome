@@ -22,8 +22,8 @@ public class MainWindowViewModel : ViewModelBase, IScreen
         {
             Router.Navigate.Execute(
                 !isMock
-                    ? new ConnectingViewModel(this)
-                    : new ConnectingViewModel()
+                    ? new ServerIpViewModel(this)
+                    : new ServerIpViewModel()
             );
         });
         

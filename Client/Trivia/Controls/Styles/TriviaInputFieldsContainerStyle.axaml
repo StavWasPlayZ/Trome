@@ -8,13 +8,13 @@
     </Design.PreviewWith>
 
     
-    <Style Selector="Grid.t-input-fields-container">
+    <Style Selector=":is(Panel).t-input-fields-container">
         
         <Style Selector="^ StackPanel[(Grid.Column)=0]">
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
         
-        <Style Selector="^ controls|TriviaTextBox[(Grid.Column)=1]">
+        <Style Selector="^ controls|TriviaTextBox[(Grid.Column)=1], ^ controls|TriviaTextBox.input-field">
             <Setter Property="Width" Value="250"/>
             <Setter Property="Height" Value="45"/>
             <Setter Property="Background" Value="#33EF657C"/>
