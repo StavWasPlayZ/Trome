@@ -21,7 +21,7 @@ private:
     static bool keysLoaded;
 
     // SHA1 hash length = 20 bytes
-    constexpr size_t hashLen = 20;
+    static constexpr size_t hashLen = 20;
 
     static void loadPrivateKeyFromPEM(const std::string &filename);
     static void loadPublicKeyFromPEM(const std::string &filename);
