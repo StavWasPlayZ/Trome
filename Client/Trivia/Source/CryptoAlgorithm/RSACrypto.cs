@@ -2,100 +2,105 @@
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using Trivia.CryptoAlgorithm;
 
-public class RSACrypto : ICryptoAlgorithm
+namespace Trivia.CryptoAlgorithm;
+
+public class RsaCrypto : ICryptoAlgorithm
 {
     private const string ServerPublicKeyPath = "../../../Source/CryptoAlgorithm/Keys/publicServer.pem";
     private const string ClientPrivateKeyPath = "../../../Source/CryptoAlgorithm/Keys/privateClient.pem";
 
-    private static RSA serverPublic;
-    private static RSA clientPrivate;
+    private static RSA _serverPublic = null!;
+    private static RSA _clientPrivate = null!;
 
-    private static bool KeysLoaded = false;
-    private static int keySizeInBytes;
-    private static int maxDataLength;
+    private static bool _keysLoaded;
+    private static int _keySizeInBytes;
+    private static int _maxDataLength;
 
-    public RSACrypto()
+    public RsaCrypto()
     {
-        if (!KeysLoaded)
+        if (!_keysLoaded)
         {
-            serverPublic = RSA.Create();
-            clientPrivate = RSA.Create();
-
-            if (!File.Exists(ServerPublicKeyPath))
-                throw new FileNotFoundException("Server public key file not found.", ServerPublicKeyPath);
-
-            if (!File.Exists(ClientPrivateKeyPath))
-                throw new FileNotFoundException("Client private key file not found.", ClientPrivateKeyPath);
-
-            serverPublic.ImportFromPem(File.ReadAllText(ServerPublicKeyPath));
-            clientPrivate.ImportFromPem(File.ReadAllText(ClientPrivateKeyPath));
-
-            keySizeInBytes = serverPublic.KeySize / 8; // e.g. 1024 bytes for 8192 bits
-            maxDataLength = keySizeInBytes - 42; // for OAEP-SHA1 padding
-
-            KeysLoaded = true;
+            LoadKeys();
         }
     }
 
+    private static void LoadKeys()
+    {
+        _serverPublic = RSA.Create();
+        _clientPrivate = RSA.Create();
+
+        if (!File.Exists(ServerPublicKeyPath))
+            throw new FileNotFoundException("Server public key file not found.", ServerPublicKeyPath);
+
+        if (!File.Exists(ClientPrivateKeyPath))
+            throw new FileNotFoundException("Client private key file not found.", ClientPrivateKeyPath);
+
+        _serverPublic.ImportFromPem(File.ReadAllText(ServerPublicKeyPath));
+        _clientPrivate.ImportFromPem(File.ReadAllText(ClientPrivateKeyPath));
+
+        _keySizeInBytes = _serverPublic.KeySize / 8; // e.g. 1024 bytes for 8192 bits
+        _maxDataLength = _keySizeInBytes - 42; // for OAEP-SHA1 padding
+
+        _keysLoaded = true;
+    }
+    
+
     public string Encrypt(string message)
     {
-        byte[] data = Encoding.UTF8.GetBytes(message);
-        byte[] encryptedData = EncryptInChunks(data, serverPublic);
+        var data = Encoding.UTF8.GetBytes(message);
+        var encryptedData = EncryptInChunks(data, _serverPublic);
         return Convert.ToBase64String(encryptedData);
     }
 
     public string Decrypt(string base64Cipher)
     {
-        byte[] cipherData = Convert.FromBase64String(base64Cipher);
-        byte[] decryptedData = DecryptInChunks(cipherData, clientPrivate);
+        var cipherData = Convert.FromBase64String(base64Cipher);
+        var decryptedData = DecryptInChunks(cipherData, _clientPrivate);
         return Encoding.UTF8.GetString(decryptedData);
     }
 
-    private byte[] EncryptInChunks(byte[] data, RSA rsa)
+    private static byte[] EncryptInChunks(byte[] data, RSA rsa)
     {
-        using (MemoryStream plainStream = new MemoryStream(data))
-        using (MemoryStream encryptedStream = new MemoryStream())
+        using var plainStream = new MemoryStream(data);
+        using var encryptedStream = new MemoryStream();
+        
+        var buffer = new byte[_maxDataLength];
+        int bytesRead;
+
+        while ((bytesRead = plainStream.Read(buffer, 0, _maxDataLength)) > 0)
         {
-            byte[] buffer = new byte[maxDataLength];
-            int bytesRead;
-
-            while ((bytesRead = plainStream.Read(buffer, 0, maxDataLength)) > 0)
+            var toEncrypt = buffer;
+            if (bytesRead != _maxDataLength)
             {
-                byte[] toEncrypt = buffer;
-                if (bytesRead != maxDataLength)
-                {
-                    toEncrypt = new byte[bytesRead];
-                    Array.Copy(buffer, toEncrypt, bytesRead);
-                }
-
-                byte[] encryptedChunk = rsa.Encrypt(toEncrypt, RSAEncryptionPadding.OaepSHA1);
-                encryptedStream.Write(encryptedChunk, 0, encryptedChunk.Length);
+                toEncrypt = new byte[bytesRead];
+                Array.Copy(buffer, toEncrypt, bytesRead);
             }
 
-            return encryptedStream.ToArray();
+            var encryptedChunk = rsa.Encrypt(toEncrypt, RSAEncryptionPadding.OaepSHA1);
+            encryptedStream.Write(encryptedChunk, 0, encryptedChunk.Length);
         }
+
+        return encryptedStream.ToArray();
     }
 
     private byte[] DecryptInChunks(byte[] encryptedData, RSA rsa)
     {
-        using (MemoryStream encryptedStream = new MemoryStream(encryptedData))
-        using (MemoryStream decryptedStream = new MemoryStream())
+        using var encryptedStream = new MemoryStream(encryptedData);
+        using var decryptedStream = new MemoryStream();
+        
+        var buffer = new byte[_keySizeInBytes];
+        int bytesRead;
+
+        while ((bytesRead = encryptedStream.Read(buffer, 0, _keySizeInBytes)) > 0)
         {
-            byte[] buffer = new byte[keySizeInBytes];
-            int bytesRead;
+            if (bytesRead != _keySizeInBytes)
+                throw new Exception("Invalid encrypted chunk size during decryption.");
 
-            while ((bytesRead = encryptedStream.Read(buffer, 0, keySizeInBytes)) > 0)
-            {
-                if (bytesRead != keySizeInBytes)
-                    throw new Exception("Invalid encrypted chunk size during decryption.");
-
-                byte[] decryptedChunk = rsa.Decrypt(buffer, RSAEncryptionPadding.OaepSHA1);
-                decryptedStream.Write(decryptedChunk, 0, decryptedChunk.Length);
-            }
-
-            return decryptedStream.ToArray();
+            var decryptedChunk = rsa.Decrypt(buffer, RSAEncryptionPadding.OaepSHA1);
+            decryptedStream.Write(decryptedChunk, 0, decryptedChunk.Length);
         }
+
+        return decryptedStream.ToArray();
     }
 }

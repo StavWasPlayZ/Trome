@@ -3,14 +3,15 @@
 //REVIEW: Consider renaming to Otp
 public class OTP : ICryptoAlgorithm
 {
-    private readonly string KeyPath = "../../../Source/CryptoAlgorithm/Keys/OTPkey.key";
-    private static byte[] Key = [];
+    private const string KeyPath = "../../../Source/CryptoAlgorithm/Keys/OTPkey.key";
+    
+    private static byte[] _key = [];
 
     public OTP()
     {
-        if (Key.Length == 0)
+        if (_key.Length == 0)
         {
-            Key = ICryptoAlgorithm.ReadFileBytes(KeyPath);
+            _key = ICryptoAlgorithm.ReadFileBytes(KeyPath);
         }
     }
 
@@ -21,9 +22,9 @@ public class OTP : ICryptoAlgorithm
         
         foreach (var c in message)
         {
-            encrypted += (char)(c ^ Key[pos]);
+            encrypted += (char)(c ^ _key[pos]);
             pos++;
-            pos %= Key.Length;
+            pos %= _key.Length;
         }
         
         return encrypted;
@@ -36,9 +37,9 @@ public class OTP : ICryptoAlgorithm
         
         foreach (var c in message)
         {
-            decrypted += (char)(c ^ Key[pos]);
+            decrypted += (char)(c ^ _key[pos]);
             pos++;
-            pos %= Key.Length;
+            pos %= _key.Length;
         }
 
         return decrypted;
