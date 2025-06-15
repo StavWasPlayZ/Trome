@@ -2,13 +2,14 @@
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using Avalonia.Platform;
 
 namespace Trivia.CryptoAlgorithm;
 
 public class RsaCrypto : ICryptoAlgorithm
 {
-    private const string ServerPublicKeyPath = ICryptoAlgorithm.KeysPath + "publicServer.pem";
-    private const string ClientPrivateKeyPath = ICryptoAlgorithm.KeysPath + "privateClient.pem";
+    private static readonly Uri ServerPublicKeyPath = ICryptoAlgorithm.UriFor("publicServer.pem");
+    private static readonly Uri ClientPrivateKeyPath = ICryptoAlgorithm.UriFor("privateClient.pem");
 
     private static RSA _serverPublic = null!;
     private static RSA _clientPrivate = null!;
@@ -30,14 +31,14 @@ public class RsaCrypto : ICryptoAlgorithm
         _serverPublic = RSA.Create();
         _clientPrivate = RSA.Create();
 
-        if (!File.Exists(ServerPublicKeyPath))
-            throw new FileNotFoundException("Server public key file not found.", ServerPublicKeyPath);
+        if (!AssetLoader.Exists(ServerPublicKeyPath))
+            throw new FileNotFoundException("Server public key file not found.", ServerPublicKeyPath.AbsolutePath);
 
-        if (!File.Exists(ClientPrivateKeyPath))
-            throw new FileNotFoundException("Client private key file not found.", ClientPrivateKeyPath);
+        if (!AssetLoader.Exists(ClientPrivateKeyPath))
+            throw new FileNotFoundException("Client private key file not found.", ClientPrivateKeyPath.AbsolutePath);
 
-        _serverPublic.ImportFromPem(File.ReadAllText(ServerPublicKeyPath));
-        _clientPrivate.ImportFromPem(File.ReadAllText(ClientPrivateKeyPath));
+        _serverPublic.ImportFromPem(Utils.ReadAvares(ServerPublicKeyPath));
+        _clientPrivate.ImportFromPem(Utils.ReadAvares(ClientPrivateKeyPath));
 
         _keySizeInBytes = _serverPublic.KeySize / 8; // e.g. 1024 bytes for 8192 bits
         _maxDataLength = _keySizeInBytes - 42; // for OAEP-SHA1 padding

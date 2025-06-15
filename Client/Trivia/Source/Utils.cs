@@ -1,5 +1,7 @@
 using System;
+using System.IO;
 using Avalonia.Controls;
+using Avalonia.Platform;
 using Trivia.ViewModels;
 
 namespace Trivia;
@@ -25,5 +27,27 @@ public static class Utils
         triggeredAction(selectedItem);
         
         listbox.SelectedItem = null;
+    }
+
+
+    public static string ReadAvares(Uri uri)
+    {
+        using var stream = AssetLoader.Open(uri);
+        using var reader = new StreamReader(stream);
+        return reader.ReadToEnd();
+    }
+    
+    public static byte[] ReadAvaresBytes(Uri uri)
+    {
+        if (!AssetLoader.Exists(uri))
+        {
+            throw new FileNotFoundException($"\"{uri.AbsolutePath}\" not found");
+        }
+        
+        using var stream = AssetLoader.Open(uri);
+        using var memStream = new MemoryStream();
+        
+        stream.CopyTo(memStream);
+        return memStream.ToArray();
     }
 }

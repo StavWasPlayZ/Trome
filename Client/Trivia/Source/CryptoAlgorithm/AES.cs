@@ -7,8 +7,8 @@ namespace Trivia.CryptoAlgorithm;
 
 public class AES : ICryptoAlgorithm
 {
-    private const string KeyPath = ICryptoAlgorithm.KeysPath + "AESkey.key";
-    private const string IVPath = ICryptoAlgorithm.KeysPath + "AESiv.key";
+    private static readonly Uri KeyPath = ICryptoAlgorithm.UriFor("AESkey.key");
+    private static readonly Uri IVPath = ICryptoAlgorithm.UriFor("AESiv.key");
     
     private static byte[] _key = [];
     private static byte[] _iv = [];
@@ -17,11 +17,11 @@ public class AES : ICryptoAlgorithm
     {
         if (_key.Length == 0)
         {
-            _key = ICryptoAlgorithm.ReadFileBytes(KeyPath);
+            _key = Utils.ReadAvaresBytes(KeyPath);
         }
         if (_iv.Length == 0)
         {
-            _iv = ICryptoAlgorithm.ReadFileBytes(IVPath);
+            _iv = Utils.ReadAvaresBytes(IVPath);
         }
     }
     public string Encrypt(string message)

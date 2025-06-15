@@ -1,9 +1,11 @@
-﻿namespace Trivia.CryptoAlgorithm;
+﻿using System;
+
+namespace Trivia.CryptoAlgorithm;
 
 //REVIEW: Consider renaming to Otp
 public class OTP : ICryptoAlgorithm
 {
-    private const string KeyPath = ICryptoAlgorithm.KeysPath + "OTPkey.key";
+    private static readonly Uri KeyPath = ICryptoAlgorithm.UriFor("OTPkey.key");
     
     private static byte[] _key = [];
 
@@ -11,7 +13,7 @@ public class OTP : ICryptoAlgorithm
     {
         if (_key.Length == 0)
         {
-            _key = ICryptoAlgorithm.ReadFileBytes(KeyPath);
+            _key = Utils.ReadAvaresBytes(KeyPath);
         }
     }
 

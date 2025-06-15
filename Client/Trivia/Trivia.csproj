@@ -10,11 +10,6 @@
 
     <ItemGroup>
         <AvaloniaResource Include="Assets\**" />
-        <AvaloniaResource Include="Source\CryptoAlgorithm\Keys\AESiv.key" />
-        <AvaloniaResource Include="Source\CryptoAlgorithm\Keys\AESkey.key" />
-        <AvaloniaResource Include="Source\CryptoAlgorithm\Keys\OTPkey.key" />
-        <AvaloniaResource Include="Source\CryptoAlgorithm\Keys\privateClient.pem" />
-        <AvaloniaResource Include="Source\CryptoAlgorithm\Keys\publicServer.pem" />
     </ItemGroup>
 
     <ItemGroup>
