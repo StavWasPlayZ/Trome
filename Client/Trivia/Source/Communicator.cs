@@ -55,9 +55,33 @@ public class Communicator : IDisposable
 
     private TcpClient? _clientSocket;
     
-    private readonly ICryptoAlgorithm _cryptoAlgorithm = new OTP();
+    private readonly ICryptoAlgorithm _cryptoAlgorithm = null!;
 
-    private Communicator() { }
+    private Communicator()
+    {
+        var failed = false;
+
+        try
+        {
+            _cryptoAlgorithm = new RsaCrypto();
+        }
+        catch (FileNotFoundException e)
+        {
+            VerboseLog($"The encryption failed: Key file not found ({e.Message})");
+            failed = true;
+        }
+        catch (Exception e)
+        {
+            VerboseLog("The encryption failed");
+            Console.Error.WriteLine(e.StackTrace);
+            failed = true;
+        }
+
+        if (failed)
+        {
+            Dispatcher.UIThread.Post(MainWindow.Instance!.Close);
+        }
+    }
 
 
     /// <summary>

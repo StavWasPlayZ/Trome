@@ -1,14 +1,14 @@
 #include "Client.h"
 
 #include "Server.h"
-#include "cryptoAlgorithm/OTP.h"
+#include "cryptoAlgorithm/RSA.h"
 #include "handler/codec/s2c/notification/NotificationPacketSerializer.h"
 
 Client::Client(const SOCKET socket, const IRequestHandler *const requestHandler) :
     socket(socket),
     thread(nullptr),
     requestHandler(requestHandler),
-    cryptoAlgorithm(new OTP())
+    cryptoAlgorithm(new RSACrypto())
 {}
 
 Client::~Client()

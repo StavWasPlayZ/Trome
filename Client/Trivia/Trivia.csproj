@@ -105,4 +105,8 @@
         <SubType>Code</SubType>
       </Compile>
     </ItemGroup>
+
+    <ItemGroup>
+        <AvaloniaResource Include="Resources\**" />
+    </ItemGroup>
 </Project>
