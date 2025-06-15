@@ -36,9 +36,15 @@
                 </TextBlock>
                 
                 <Grid Row="1"
-                      ColumnDefinitions="*, *">
+                      ColumnDefinitions="*, *"
+                      Margin="0 20 0 0">
                     
                     <Grid.Styles>
+                        <Style Selector="Grid > StackPanel">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="Spacing" Value="20"/>
+                        </Style>
                         <Style Selector="TextBlock">
                             <Setter Property="FontSize" Value="30"/>
                         </Style>
@@ -47,31 +53,32 @@
                             <Setter Property="Margin" Value="0 0 0 5"/>
                         </Style>
                     </Grid.Styles>
-
-                    <StackPanel Grid.Column="0"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Center">
-                        <TextBlock>DEVELOPERS</TextBlock>
-                        <TextBlock>Itay Herskovits</TextBlock>
-                        <TextBlock>Stav Solomon</TextBlock>
-                    </StackPanel>
-
-                    <StackPanel Grid.Column="1"
-                          HorizontalAlignment="Center"
-                          VerticalAlignment="Center"
-                          Spacing="20">
+                    
+                    
+                    <StackPanel Grid.Column="0">
+                        <StackPanel>
+                            <TextBlock>DEVELOPERS</TextBlock>
+                            <TextBlock>Itay Herskovits</TextBlock>
+                            <TextBlock>Stav Solomon</TextBlock>
+                        </StackPanel>
                         
+                        <StackPanel>
+                            <TextBlock>CRYPTOGRAPHY</TextBlock>
+                            <TextBlock>Itay Herskovits</TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                    
+                    <StackPanel Grid.Column="1">
                         <StackPanel>
                             <TextBlock>BGM</TextBlock>
                             <TextBlock>Elisha Schafman</TextBlock>
                             <TextBlock>Stav Solomon</TextBlock>
                         </StackPanel>
-                        
+                            
                         <StackPanel>
                             <TextBlock>UI DESIGN</TextBlock>
                             <TextBlock>Stav Solomon</TextBlock>
                         </StackPanel>
-                        
                     </StackPanel>
                     
                 </Grid>
