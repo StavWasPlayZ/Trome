@@ -75,6 +75,9 @@ add_executable (Server
   "src/common/infrastructure/db/SqliteDatabase.cpp"
   "src/common/infrastructure/db/SqliteDatabase.tpp"
 
+  "src/common/infrastructure/db/MongoDatabase.h"
+  "src/common/infrastructure/db/MongoDatabase.cpp"
+
   "src/common/manager/LoginManager.h"
   "src/common/manager/LoginManager.cpp"
   "src/common/manager/LoggedUser.cpp"
@@ -144,7 +147,7 @@ add_executable (Server
   "src/common/infrastructure/cryptoAlgorithm/CipherEncryption.cpp"
   "src/common/infrastructure/cryptoAlgorithm/OTP.h"
   "src/common/infrastructure/cryptoAlgorithm/OTP.cpp"
-)
+  )
 
 # Platform-specific sources
 if (WIN32)
