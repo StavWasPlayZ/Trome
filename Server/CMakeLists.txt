@@ -212,6 +212,7 @@ target_include_directories(sqlite3 PUBLIC lib/sqlite3)
 
 target_link_libraries(Server PRIVATE sqlite3)
 
+
 # ctre (Compile Time Regular Expressions v3)
 FetchContent_Declare(
   ctre
@@ -220,6 +221,15 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(ctre)
 target_link_libraries(Server PRIVATE ctre)
+
+# MongoDB
+# In Windows: vcpkg install mongo-cxx-driver
+# In Linux: https://www.mongodb.com/docs/languages/cpp/cpp-driver/current/get-started/
+find_package(mongocxx REQUIRED)
+find_package(bsoncxx REQUIRED)
+
+target_link_libraries(Server PRIVATE mongo::bsoncxx_shared mongo::mongocxx_shared)
+
 
 
 # Support includes starting from relative paths
