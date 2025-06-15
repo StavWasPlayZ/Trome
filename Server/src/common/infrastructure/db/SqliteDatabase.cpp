@@ -280,31 +280,6 @@ void SqliteDatabase::addToStats(const std::string &username, const int time, con
     execSql(builder.str());
 }
 
-// void SqliteDatabase::addTime(const std::string &username, const int time) const
-// {
-// 	addToColumn(username, "total_time", time, TABLE_STATISTICS);
-// }
-//
-// void SqliteDatabase::addTotalAns(const std::string &username, const int ans) const
-// {
-//     addToColumn(username, "total_ans", ans, TABLE_STATISTICS);
-// }
-//
-// void SqliteDatabase::addCorrectAns(const std::string &username, const int ans) const
-// {
-//     addToColumn(username, "correct_ans", ans, TABLE_STATISTICS);
-// }
-//
-// void SqliteDatabase::addGamesPlayed(const std::string &username, const int games) const
-// {
-//     addToColumn(username, "games_played", games, TABLE_STATISTICS);
-// }
-//
-// void SqliteDatabase::addPoints(const std::string &username, const int points) const
-// {
-//     addToColumn(username, "points", points, TABLE_STATISTICS);
-// }
-
 int SqliteDatabase::queryTime(const std::string &username) const
 {
     return queryStat(username, "total_time");

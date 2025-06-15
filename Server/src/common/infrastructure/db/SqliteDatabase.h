@@ -47,12 +47,6 @@ public:
     void addToStats(const std::string &username, int time, int answers, int correctAnswers, int points,
                     int games = 1) const override;
 
-    // void addTime(const std::string &username, int time) const override;
-    // void addTotalAns(const std::string &username, int ans = 1) const override;
-    // void addCorrectAns(const std::string &username, int ans = 1) const override;
-    // void addGamesPlayed(const std::string &username, int games = 1) const override;
-    // void addPoints(const std::string &username, int points) const override;
-
     int queryTime(const std::string &username) const override;
     int queryTotalAns(const std::string &username) const override;
     int queryCorrectAns(const std::string &username) const override;
