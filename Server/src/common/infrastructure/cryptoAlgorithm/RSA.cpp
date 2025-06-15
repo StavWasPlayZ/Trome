@@ -1,11 +1,12 @@
 #include "RSA.h"
 
+#include "exception/FileNotFoundException.h"
+
 #include <fstream>
 #include <sstream>
 #include <stdexcept>
 
 #include <cryptopp/base64.h>
-#include <cryptopp/files.h>
 #include <cryptopp/filters.h>
 #include <cryptopp/osrng.h>
 
@@ -62,7 +63,7 @@ std::string RSACrypto::loadPEMFile(const std::string &filename)
 
 void RSACrypto::loadPrivateKeyFromPEM(const std::string &filename)
 {
-    std::string base64 = loadPEMFile(filename);
+    const std::string base64 = loadPEMFile(filename);
 
     std::string der;
     CryptoPP::StringSource ss1(
@@ -78,7 +79,7 @@ void RSACrypto::loadPrivateKeyFromPEM(const std::string &filename)
 
 void RSACrypto::loadPublicKeyFromPEM(const std::string &filename)
 {
-    std::string base64 = loadPEMFile(filename);
+    const std::string base64 = loadPEMFile(filename);
 
     std::string der;
     CryptoPP::StringSource ss1(
@@ -95,15 +96,15 @@ void RSACrypto::loadPublicKeyFromPEM(const std::string &filename)
 size_t RSACrypto::getMaxPlaintextSize() const
 {
     // Key size in bytes
-    size_t keySize = clientPublicKey.GetModulus().ByteCount();
+    const size_t keySize = clientPublicKey.GetModulus().ByteCount();
 
     // Max plaintext size for RSAES_OAEP with SHA1
     return keySize - 2 * hashLen - 2;
 }
 
-size_t RSACrypto::getEncryptedTextSize() const
+size_t RSACrypto::getEncryptedTextSize()
 {
-    // Encryptedext size = RSA modulus size in bytes
+    // Encrypted text size = RSA modulus size in bytes
     return clientPublicKey.GetModulus().ByteCount();
 }
 
@@ -111,13 +112,13 @@ std::string RSACrypto::encrypt(const std::string &message) const
 {
     CryptoPP::AutoSeededRandomPool rng;
 
-    size_t maxPlaintextLen = getMaxPlaintextSize();
+    const size_t maxPlaintextLen = getMaxPlaintextSize();
 
     std::string encryptedText = "";
 
     for (size_t pos = 0; pos < message.size(); pos += maxPlaintextLen)
     {
-        size_t chunkSize = std::min(
+        const size_t chunkSize = std::min(
             maxPlaintextLen,
             message.size() - pos
         );
@@ -179,17 +180,17 @@ std::string RSACrypto::decrypt(const std::string &message) const
     {
         std::string chunk = ciphertextRaw.substr(pos, encryptedLen);
 
-        std::string decryptedChunck = "";
+        std::string decryptedChunk = "";
 
         CryptoPP::StringSource ss(
             chunk, true,
             new CryptoPP::PK_DecryptorFilter(
                 rng, decryptor,
-                new CryptoPP::StringSink(decryptedChunck)
+                new CryptoPP::StringSink(decryptedChunk)
             )
         );
 
-        decryptedText.append(decryptedChunck);
+        decryptedText.append(decryptedChunk);
     }
 
     return decryptedText;

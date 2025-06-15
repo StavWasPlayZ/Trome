@@ -1,5 +1,9 @@
 #include "ICryptoAlgorithm.h"
 
+#include "exception/FileNotFoundException.h"
+
+#include <fstream>
+
 ICryptoAlgorithm::~ICryptoAlgorithm() = default;
 
 std::vector<unsigned char> ICryptoAlgorithm::ReadFileBytes(const std::string &path)
@@ -25,6 +29,6 @@ std::vector<unsigned char> ICryptoAlgorithm::ReadFileBytes(const std::string &pa
 
 std::string ICryptoAlgorithm::ReadFileString(const std::string& path)
 {
-    std::vector<unsigned char> bytes = ICryptoAlgorithm::ReadFileBytes(path);
+    const std::vector<unsigned char> bytes = ReadFileBytes(path);
     return std::string(reinterpret_cast<const char *>(bytes.data()), bytes.size());
 }

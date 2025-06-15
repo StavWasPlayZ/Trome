@@ -9,8 +9,8 @@ class RSACrypto : public ICryptoAlgorithm
 public:
     RSACrypto();
 
-    std::string encrypt(const std::string &message) const;
-    std::string decrypt(const std::string &base64Ciphertext) const;
+    std::string encrypt(const std::string &message) const override;
+    std::string decrypt(const std::string &message) const override;
 
 private:
     static const std::string serverPrivateKeyPath;
@@ -21,13 +21,13 @@ private:
     static bool keysLoaded;
 
     // SHA1 hash length = 20 bytes
-    const size_t hashLen = 20;
+    constexpr size_t hashLen = 20;
 
-    void loadPrivateKeyFromPEM(const std::string &filename);
-    void loadPublicKeyFromPEM(const std::string &filename);
-    std::string loadPEMFile(const std::string &filename);
+    static void loadPrivateKeyFromPEM(const std::string &filename);
+    static void loadPublicKeyFromPEM(const std::string &filename);
+    static std::string loadPEMFile(const std::string &filename);
 
-    // Declare these as private member functions
+    // Private member functions
     size_t getMaxPlaintextSize() const;
-    size_t getEncryptedTextSize() const;
+    static size_t getEncryptedTextSize();
 };
