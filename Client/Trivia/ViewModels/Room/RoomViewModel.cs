@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using ReactiveUI;
@@ -17,7 +18,13 @@ namespace Trivia.ViewModels.Room;
 
 public abstract class RoomViewModel : PageViewModel
 {
+    protected static readonly TimeSpan RoomDataUpdateDelay = TimeSpan.FromMilliseconds(300);
+    
     private bool _wasInitiated;
+    
+    public bool IsAdmin { get; }
+    
+    public ReactiveCommand<Unit, Unit> LeaveRoomCommand { get; }
 
     /// <summary>
     /// </summary>
@@ -30,6 +37,11 @@ public abstract class RoomViewModel : PageViewModel
     protected RoomViewModel(IScreen hostScreen, RoomModel roomModel, List<User> players) :
         base(hostScreen)
     {
+        IsAdmin = AppService.SessionUser! == roomModel.Admin;
+        
+        LeaveRoomCommand = ReactiveCommand.CreateFromTask(LeaveRoom);
+        
+        
         _roomModel = roomModel;
         _players = [];
         
@@ -41,7 +53,7 @@ public abstract class RoomViewModel : PageViewModel
             AppService.SessionUser!
         ];
 
-        ReAddAllPlayers(players);
+        ReAddAllPlayers(players);        
         
         
         this.WhenActivated(disposables =>
@@ -68,6 +80,8 @@ public abstract class RoomViewModel : PageViewModel
     protected RoomViewModel()
     {
         _roomModel = RoomModel.CreateMockRoom(AppService.SessionUser!);
+
+        LeaveRoomCommand = NoOpCommand;
         
         _players = new ObservableCollection<RoomUserModel?>(
             Enumerable.Range(1, 10)
@@ -85,7 +99,43 @@ public abstract class RoomViewModel : PageViewModel
                     };
                 })
         );
+
+        IsAdmin = true;
     }
+    
+    
+    private async Task LeaveRoom()
+    {
+        if (IsAdmin)
+        {
+            await Comm.SendRequestAsync<CloseRoomResponse>(new CloseRoomRequest());
+        }
+        else
+        {
+            await Comm.SendRequestAsync<LeaveRoomResponse>(new LeaveRoomRequest());
+        }
+        
+        ReturnToRooms();
+    }
+
+    private void ReturnToRooms()
+    {
+        NavigateBackCommand!.Execute().Subscribe();
+    }
+    
+    
+    protected void UpdateAndSendRoomData(RoomData newData)
+    {
+        if (!IsAdmin)
+            return;
+        
+        RoomModel = RoomModel with
+        {
+            Data = newData
+        }; 
+        
+        Comm.SendRequest(new UpdateRoomDataRequest(RoomModel.Data));
+    } 
 
 
     private void ReAddAllPlayers(List<User> players)
@@ -109,7 +159,7 @@ public abstract class RoomViewModel : PageViewModel
 
     private async Task FetchPlayersInRoom()
     {
-        var response = await Comm.SendRequestAwaitResponse<GetPlayersInRoomResponse>(new GetPlayersInRoomRequest());
+        var response = await Comm.SendRequestAsync<GetPlayersInRoomResponse>(new GetPlayersInRoomRequest());
         ReAddAllPlayers([..response.Players]);
 
         RoomModel = RoomModel with
@@ -187,18 +237,36 @@ public abstract class RoomViewModel : PageViewModel
     {
         switch (packet)
         {
+            case RoomClosedNotification:
+                NavigateBackCommand!.Execute();
+                break;
+            
             case PlayerJoinedRoomNotification playerJoinedRoomNotif:
                 HandlePlayerJoined(playerJoinedRoomNotif);
                 break;
             
             case PlayerLeftRoomNotification playerLeftRoomNotif:
-                HandlePlayerLeft(playerLeftRoomNotif);
+                HandlePlayerLeft(playerLeftRoomNotif.PlayerId);
                 break;
             
-            default:
-                base.CommOnPacketReceived(packet);
+            case PlayerKickedNotification playerKickedNotif:
+                HandlePlayerKicked(playerKickedNotif.PlayerId);
                 break;
         }
+        
+        base.CommOnPacketReceived(packet);
+    }
+    
+    public void HandlePlayerKicked(int userId)
+    {
+        if (userId == AppService.SessionUser!.Id)
+        {
+            // This user was kicked
+            ReturnToRooms();
+            return;
+        }
+        
+        HandlePlayerLeft(userId);
     }
 
     private void HandlePlayerJoined(PlayerJoinedRoomNotification playerJoinedRoomNotif)
@@ -210,12 +278,12 @@ public abstract class RoomViewModel : PageViewModel
             PlayersCount = _roomModel.PlayersCount + 1
         };
     }
-
-    private void HandlePlayerLeft(PlayerLeftRoomNotification playerLeftRoomNotif)
+    
+    private void HandlePlayerLeft(int userId)
     {
         for (var i = 0; i < Players.Count; i++)
         {
-            if (Players[i]!.Id != playerLeftRoomNotif.PlayerId)
+            if (Players[i]!.Id != userId)
                 continue;
             
             Players.RemoveAt(i);

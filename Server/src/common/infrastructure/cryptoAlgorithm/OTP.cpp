@@ -3,11 +3,11 @@
 const std::string OTP::keyPath = "../../../src/common/infrastructure/cryptoAlgorithm/keys/OTPkey.key";
 std::vector<unsigned char> OTP::key;
 
-OTP::OTP() : ICryptoAlgorithm()
+OTP::OTP()
 {
-    if (OTP::key.size() == 0)
+    if (key.size() == 0)
     {
-        key = ICryptoAlgorithm::ReadFileBytes(OTP::keyPath);
+        key = ReadFileBytes(keyPath);
     }
 }
 
@@ -16,7 +16,7 @@ std::string OTP::encrypt(const std::string &message) const
     std::string encrypted = "";
     int pos = 0;
 
-    for (char c : message)
+    for (const char c : message)
     {
         encrypted += static_cast<char>(c ^ key.at(pos));
         pos++;
@@ -31,7 +31,7 @@ std::string OTP::decrypt(const std::string &message) const
     std::string decrypted = "";
     int pos = 0;
 
-    for (char c : message)
+    for (const char c : message)
     {
         decrypted += static_cast<char>(c ^ key.at(pos));
         pos++;

@@ -10,7 +10,7 @@ public class GameCountdownViewModel : SubRoomViewModel
 {
     private readonly DispatcherTimer? _countdownTimer;
 
-    public GameCountdownViewModel(IScreen hostScreen, RoomModel roomModel) : base(hostScreen, roomModel)
+    public GameCountdownViewModel(IScreen hostScreen, RoomModel roomModel) : base(hostScreen, roomModel, 0)
     {
         _countdownTimer = new DispatcherTimer
         {
@@ -45,11 +45,11 @@ public class GameCountdownViewModel : SubRoomViewModel
             case 4:
                 App.MusicService?.SilenceAll();
                 break;
-            case 3:
+            case 2:
                 App.MusicService?.PlayTriviaTrack();
                 break;
             case 0:
-                NavigateAndPop(new GameViewModel(HostScreen, RoomModel))!.Subscribe();
+                NavigateAndPop(new GameViewModel(HostScreen, RoomModel, PlayersFinished))!.Subscribe();
                 break;
         }
     }

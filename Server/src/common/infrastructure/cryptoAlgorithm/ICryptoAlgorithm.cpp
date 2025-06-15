@@ -1,8 +1,6 @@
 #include "ICryptoAlgorithm.h"
 
-ICryptoAlgorithm::ICryptoAlgorithm()
-{
-}
+ICryptoAlgorithm::~ICryptoAlgorithm() = default;
 
 std::vector<unsigned char> ICryptoAlgorithm::ReadFileBytes(const std::string &path)
 {

@@ -1,11 +1,11 @@
 using System.Windows.Input;
 using Avalonia;
-using Avalonia.Controls.Primitives;
+using Avalonia.Controls;
 using Trivia.Models.Raw;
 
 namespace Trivia.Controls.Popups;
 
-public class StatsPopup : TemplatedControl
+public class StatsPopup : ContentControl
 {
     public static readonly StyledProperty<ICommand?> CloseCommandProperty = AvaloniaProperty.Register<StatsPopup, ICommand?>(
         nameof(CloseCommand));
@@ -16,10 +16,10 @@ public class StatsPopup : TemplatedControl
         set => SetValue(CloseCommandProperty, value);
     }
 
-    public static readonly StyledProperty<UserStatistics> StatsProperty = AvaloniaProperty.Register<StatsPopup, UserStatistics>(
+    public static readonly StyledProperty<UserStatistics?> StatsProperty = AvaloniaProperty.Register<StatsPopup, UserStatistics?>(
         nameof(Stats));
 
-    public UserStatistics Stats
+    public UserStatistics? Stats
     {
         get => GetValue(StatsProperty);
         set => SetValue(StatsProperty, value);

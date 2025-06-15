@@ -22,7 +22,7 @@ public:
     static ProtocolRequest *deserialize(const RequestInfo &info);
 
 
-	static nlohmann::json readJson(const unsigned char* data, int jsonLen, ICryptoAlgorithm& cryptoAlgorithm);
+	static nlohmann::json readJson(const unsigned char* data, int jsonLen, const ICryptoAlgorithm& cryptoAlgorithm);
 
 	/**
 	* Returns: The deserialized object.
@@ -118,4 +118,9 @@ public:
      * Returns: The deserialized object.
      */
     static AddQuestionRequest deserializeAddQuestionRequest(const nlohmann::json &data);
+
+    /**
+     * Returns: The deserialized object.
+     */
+    static KickPlayerRequest deserializeKickPlayerRequest(const nlohmann::json &data);
 };

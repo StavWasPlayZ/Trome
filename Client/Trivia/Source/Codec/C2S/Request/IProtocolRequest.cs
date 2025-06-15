@@ -9,12 +9,11 @@ public interface IProtocolRequest
 {
     RequestCode Code { get; init; }
     
-    public byte[] Serialize(ICryptoAlgorithm cryptoAlgorithm)
+    public byte[] Serialize(ICryptoAlgorithm cryptoAlgorithm, out string decrypted)
     {
-        return SerializeToProtocol(
-            JsonConvert.SerializeObject(this, CodecConstants.JsonSerializerSettings),
-            cryptoAlgorithm
-        );
+        decrypted = JsonConvert.SerializeObject(this, CodecConstants.JsonSerializerSettings);
+        
+        return SerializeToProtocol(decrypted, cryptoAlgorithm);
     }
     
     private byte[] SerializeToProtocol(string data, ICryptoAlgorithm cryptoAlgorithm)

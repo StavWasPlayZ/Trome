@@ -38,6 +38,7 @@ public:
 	bool isLoggedIn(const Client &client) const;
     LoggedUser& getUserByClient(const Client& client) const;
     LoggedUser& getUserByUsername(const std::string& username);
+    LoggedUser &getUserById(const unsigned int id) const;
 
     bool isLoggedIn(unsigned int id) const;
 

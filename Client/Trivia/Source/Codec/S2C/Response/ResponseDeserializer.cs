@@ -29,6 +29,7 @@ public static class ResponseDeserializer
             ResponseCode.GetQuestion => PacketDeserializer.Deserialize<GetQuestionResponse>(json),
             ResponseCode.SubmitAnswer => PacketDeserializer.Deserialize<SubmitAnswerResponse>(json),
             ResponseCode.AddQuestion => PacketDeserializer.Deserialize<AddQuestionResponse>(json),
+            ResponseCode.KickPlayer => PacketDeserializer.Deserialize<KickPlayerResponse>(json),
             _ => null
         };
     }

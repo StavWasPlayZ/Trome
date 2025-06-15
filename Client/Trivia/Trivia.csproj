@@ -37,11 +37,11 @@
         <SubType>Code</SubType>
       </Compile>
       <Compile Update="Controls\TriviaMenuPanel.axaml.cs">
-        <DependentUpon>MenuPanelExpanded.axaml</DependentUpon>
+        <DependentUpon>TriviaMenuPanel.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
       <Compile Update="Views\Menu\TestView.axaml.cs">
-        <DependentUpon>TestViewModel.axaml</DependentUpon>
+        <DependentUpon>TestView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
       <Compile Update="Views\Auth\LoginView.axaml.cs">
@@ -53,7 +53,7 @@
         <SubType>Code</SubType>
       </Compile>
       <Compile Update="Views\Menu\JoinRoomMenuView.axaml.cs">
-        <DependentUpon>JoinMenuView.axaml</DependentUpon>
+        <DependentUpon>JoinRoomMenuView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
       <Compile Update="Views\Menu\StatisticsView.axaml.cs">
@@ -64,12 +64,12 @@
         <DependentUpon>AfterGameView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\Room\CreateRoomView.axaml.cs">
-        <DependentUpon>CreateRoomView.axaml</DependentUpon>
+      <Compile Update="Views\Room\RoomAdminView.axaml.cs">
+        <DependentUpon>RoomAdminView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\Room\JoinedRoomView.axaml.cs">
-        <DependentUpon>JoinedRoomView.axaml</DependentUpon>
+      <Compile Update="Views\Room\RoomGuestView.axaml.cs">
+        <DependentUpon>RoomGuestView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
       <Compile Update="Controls\ListEntries\AfterGameUserListEntry.axaml.cs">
@@ -88,9 +88,21 @@
         <DependentUpon>GameCountdownView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
-      <AdditionalFiles Include="Controls\Popups\StatsPopup.axaml" />
+      <Compile Update="Views\Menu\AboutView.axaml.cs">
+        <DependentUpon>AboutView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Popups\StatsPopupView.axaml.cs">
+        <DependentUpon>StatsPopup.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Popups\GuestStatsPopupView.axaml.cs">
+        <DependentUpon>GuestStatsPopupView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\ServerIpView.axaml.cs">
+        <DependentUpon>ServerIpView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
 </Project>

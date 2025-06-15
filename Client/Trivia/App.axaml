@@ -21,6 +21,8 @@
             <converters:TimeSpanToStringConverter x:Key="TimeSpanToStringConverter"/>
             <converters:TimeSpanToSectorAngleMultiConverter x:Key="TimeSpanToSectorAngleMultiConverter"/>
             <converters:InvalidStaterConverter x:Key="InvalidStaterConverter"/>
+            <converters:RoomTypeToIconPathConverter x:Key="RoomTypeToIconPathConverter"/>
+            <converters:RoomTypeToBackgroundConverter x:Key="RoomTypeToBackgroundConverter"/>
             
             
             <SolidColorBrush x:Key="TriviaTextBoxForeground">#4D264A</SolidColorBrush>

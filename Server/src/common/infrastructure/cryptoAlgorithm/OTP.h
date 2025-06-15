@@ -6,7 +6,6 @@
 class OTP : public ICryptoAlgorithm
 {
 public:
-	OTP();
 	std::string encrypt(const std::string &message) const override;
 	std::string decrypt(const std::string &message) const override;
 

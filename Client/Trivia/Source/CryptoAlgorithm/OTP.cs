@@ -1,5 +1,6 @@
 ﻿namespace Trivia.CryptoAlgorithm;
 
+//REVIEW: Consider renaming to Otp
 public class OTP : ICryptoAlgorithm
 {
     private readonly string KeyPath = "../../../Source/CryptoAlgorithm/Keys/OTPkey.key";
@@ -15,10 +16,10 @@ public class OTP : ICryptoAlgorithm
 
     public string Encrypt(string message)
     {
-        string encrypted = "";
-        int pos = 0;
+        var encrypted = "";
+        var pos = 0;
         
-        foreach (char c in message)
+        foreach (var c in message)
         {
             encrypted += (char)(c ^ Key[pos]);
             pos++;
@@ -30,10 +31,10 @@ public class OTP : ICryptoAlgorithm
 
     public string Decrypt(string message)
     {
-        string decrypted = "";
-        int pos = 0;
+        var decrypted = "";
+        var pos = 0;
         
-        foreach (char c in message)
+        foreach (var c in message)
         {
             decrypted += (char)(c ^ Key[pos]);
             pos++;

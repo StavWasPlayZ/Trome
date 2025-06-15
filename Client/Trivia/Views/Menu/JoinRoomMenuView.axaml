@@ -40,15 +40,21 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid ColumnDefinitions="Auto, Auto, *">
-                                    
-                                    <Border Grid.Column="0" Background="#ffb0a1"
+                                    <Border Grid.Column="0"
+                                            Background="{
+                                                Binding RoomType,
+                                                Converter={StaticResource RoomTypeToBackgroundConverter}
+                                            }"
                                             Height="55"
                                             Width="55"
                                             Padding="12"
                                             CornerRadius="15"
                                             Margin="15 0">
                                         
-                                        <Svg Path="avares://Trivia/Assets/Icons/sports_kabaddi.svg"
+                                        <Svg Path="{
+                                                 Binding RoomType,
+                                                 Converter={StaticResource RoomTypeToIconPathConverter}
+                                             }"
                                              Css="* { fill: #2f223b; }"/>
                                     </Border>
                                     
@@ -179,14 +185,20 @@
                                       HorizontalAlignment="Center"
                                       Margin="10 30 10 0">
                                     <Border Grid.Column="0"
-                                            Background="#ffb0a1"
+                                            Background="{
+                                                Binding SelectedRoom.RoomType,
+                                                Converter={StaticResource RoomTypeToBackgroundConverter}
+                                            }"
                                             Width="90"
                                             Height="90"
                                             Padding="20"
                                             CornerRadius="15"
                                             Margin="15 0">
                                             
-                                        <Svg Path="avares://Trivia/Assets/Icons/sports_kabaddi.svg"
+                                        <Svg Path="{
+                                                 Binding SelectedRoom.RoomType,
+                                                 Converter={StaticResource RoomTypeToIconPathConverter}
+                                             }"
                                              Css="* { fill: #2f223b; }"/>
                                     </Border>
                                         

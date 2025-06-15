@@ -65,8 +65,12 @@ ProtocolRequest *JsonRequestPacketDeserializer::deserialize(const RequestInfo &i
     case RequestCode::ADD_QUESTION: return new AddQuestionRequest(
         deserializeAddQuestionRequest(info.data)
     );
+    case RequestCode::KICK_PLAYER: return new KickPlayerRequest(
+        deserializeKickPlayerRequest(info.data)
+    );
 
-    default: throw std::invalid_argument("Invalid request ID");
+    default:
+        throw std::invalid_argument("Invalid request ID");
     }
 }
 
@@ -131,9 +135,9 @@ GetUserStatisticsRequest JsonRequestPacketDeserializer::deserializeGetUserStatis
     return GetUserStatisticsRequest(data.at("user_id"));
 }
 
-CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(const nlohmann::json &)
+CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(const nlohmann::json &data)
 {
-    return CreateRoomRequest();
+    return CreateRoomRequest(data.at("room_type"));
 }
 
 CloseRoomRequest JsonRequestPacketDeserializer::deserializeCloseRoomRequest(const nlohmann::json &)
@@ -195,16 +199,24 @@ AddQuestionRequest JsonRequestPacketDeserializer::deserializeAddQuestionRequest(
     );
 }
 
-nlohmann::json JsonRequestPacketDeserializer::readJson(const unsigned char *data, const int jsonLen, ICryptoAlgorithm& cryptoAlgorithm)
+KickPlayerRequest JsonRequestPacketDeserializer::deserializeKickPlayerRequest(const nlohmann::json &data)
 {
-	// Avoid naughty buffer overflows
-	if (jsonLen <= 0)
-	{
+    return KickPlayerRequest(
+        data.at("user_id")
+    );
+}
+
+nlohmann::json JsonRequestPacketDeserializer::readJson(const unsigned char *data, const int jsonLen,
+                                                       const ICryptoAlgorithm &cryptoAlgorithm)
+{
+    // Avoid naughty buffer overflows
+    if (jsonLen <= 0)
+    {
         throw std::runtime_error("Invalid JSON length: Parsing phase");
     }
 
-	char* const jsonRaw = new char[jsonLen];
-	std::memcpy(jsonRaw, data, jsonLen * sizeof(char));
+    char *const jsonRaw = new char[jsonLen];
+    std::memcpy(jsonRaw, data, jsonLen * sizeof(char));
 
     const nlohmann::json result = nlohmann::json::parse(
         cryptoAlgorithm.decrypt(

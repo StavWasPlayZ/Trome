@@ -3,16 +3,16 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vmmenu="clr-namespace:Trivia.ViewModels.Menu"
-             xmlns:popups="clr-namespace:Trivia.Controls.Popups"
+             xmlns:popups="clr-namespace:Trivia.Views.Popups"
              mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
              x:CompileBindings="True"
              x:Class="Trivia.Views.Menu.TestView"
              x:DataType="vmmenu:TestViewModel">
 
-    <popups:StatsPopup/>
-    
     <Design.DataContext>
         <vmmenu:TestViewModel/>
     </Design.DataContext>
+    
+    <popups:StatsPopupView/>
 
 </UserControl>

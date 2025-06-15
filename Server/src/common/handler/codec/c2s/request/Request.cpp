@@ -33,6 +33,10 @@ JoinRoomRequest::JoinRoomRequest(const unsigned int roomId) : roomID(roomId)
 {
 }
 
+CreateRoomRequest::CreateRoomRequest(const RoomType roomType) : roomType(roomType)
+{
+}
+
 GetUserStatisticsRequest::GetUserStatisticsRequest(const unsigned int userId) : userId(userId)
 {
 }
@@ -50,5 +54,9 @@ SubmitAnswerRequest::SubmitAnswerRequest(const int answer) : answer(answer)
 }
 
 AddQuestionRequest::AddQuestionRequest(const Question &question) : question(question)
+{
+}
+
+KickPlayerRequest::KickPlayerRequest(const unsigned int userId) : userId(userId)
 {
 }

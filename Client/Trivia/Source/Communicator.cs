@@ -32,6 +32,16 @@ public class Communicator : IDisposable
     private bool _disposed;
     
     
+    public enum LogLevel { Info, Warning, Sending, Receiving }
+    public static class AnsiColor
+    {
+        public const string Reset = "\u001b[0m";
+        public const string White = "\u001b[37m";
+        public const string DarkYellow = "\u001b[33m";
+        public const string Blue = "\u001b[34m";
+        public const string DarkCyan = "\u001b[36m";
+    }
+
     private readonly Queue<IProtocolRequest> _outgoingRequests = [];
     private readonly object _outgoingRequestsCv = new();
     
@@ -44,24 +54,31 @@ public class Communicator : IDisposable
     public bool IsConnected => _clientSocket?.Connected ?? false;
 
     private TcpClient? _clientSocket;
-
-    private ICryptoAlgorithm _cryptoAlgorithm;
+    
+    private readonly ICryptoAlgorithm _cryptoAlgorithm;
 
     private Communicator()
     {
+        var failed;
+
         try
         {
             _cryptoAlgorithm = new RSACrypto();
         }
         catch (FileNotFoundException e)
         {
-            VerboseLog($"The encryption failed: {e.Message}");
-            Dispatcher.UIThread.Post(MainWindow.Instance!.Close);
-            _cryptoAlgorithm = null!;
+            VerboseLog($"The encryption failed: Key file not found ({e.Message})");
+            failed = true;
         }
-        catch(Exception e)
+        catch (Exception e)
         {
-            VerboseLog($"The encryption failed: {e.Message}");
+            VerboseLog($"The encryption failed");
+            VerboseLog(Console.Error.WriteLine(e.StackTrace));
+            failed = true;
+        }
+
+        if (failed)
+        {
             Dispatcher.UIThread.Post(MainWindow.Instance!.Close);
             _cryptoAlgorithm = null!;
         }
@@ -114,6 +131,7 @@ public class Communicator : IDisposable
                 {
                     //TODO: Check if it actually corresponds to the original code
                     onError?.Invoke(errorResponse);
+                    PacketReceived -= OnPacketReceived;
                 }
 
                 return;
@@ -132,7 +150,7 @@ public class Communicator : IDisposable
     /// <param name="request">The request to send to the server</param>
     /// 
     /// <typeparam name="T">The expected <see cref="IS2CPacket"/> type</typeparam>
-    public async Task<T> SendRequestAwaitResponse<T>(IProtocolRequest request) where T : IProtocolResponse
+    public async Task<T> SendRequestAsync<T>(IProtocolRequest request) where T : IProtocolResponse
     {
         var task = new TaskCompletionSource<T>();
         
@@ -190,7 +208,20 @@ public class Communicator : IDisposable
             }
             catch (IOException e)
             {
-                Console.Error.WriteLine($"IO Exception occured ({e.Message}); Assuming forced disconnection");
+                if (e.Message.Contains("forcibly closed by the remote host"))
+                {
+                    VerboseLog("Server disconnected; Closing the game", LogLevel.Warning);
+                }
+                else if (e.Message.Contains("connection was aborted by the software in your host machine"))
+                {
+                    VerboseLog("Successfully disconnected");
+                }
+                else
+                {
+                    Console.Error.WriteLine($"IO Exception occured ({e.Message}); Assuming forced disconnection");
+                }
+
+                Dispatcher.UIThread.Post(MainWindow.Instance!.Close);
                 return;
             }
 
@@ -238,7 +269,11 @@ public class Communicator : IDisposable
         
         var json = Encoding.GetEncoding("ISO-8859-1").GetString(jsonRaw, 0, jsonRaw.Length);
         
-        return PacketDeserializer.Deserialize((S2CPacketType) packetType, (byte) code, _cryptoAlgorithm.Decrypt(json));
+        return PacketDeserializer.Deserialize(
+            (S2CPacketType) packetType,
+            (byte) code,
+            _cryptoAlgorithm.Decrypt(json)
+        );
     }
 
     private byte? ReadSingleByte()
@@ -271,11 +306,11 @@ public class Communicator : IDisposable
                 
                 request = _outgoingRequests.Dequeue();
             }
-            
-            var rawRequest = request.Serialize(_cryptoAlgorithm);
 
-            VerboseLog($"Sending packet: {request}");
-            VerboseLog($"In raw form: {Encoding.GetEncoding("ISO-8859-1").GetString(rawRequest, 5, rawRequest.Length - 5)}");
+            var rawRequest = request.Serialize(_cryptoAlgorithm, out var rawForm);
+
+            VerboseLog($"Sending packet: {request}", LogLevel.Sending);
+            VerboseLog($"In raw form: {rawForm}", LogLevel.Sending);
             
             _clientSocket!.GetStream().Write(rawRequest, 0, rawRequest.Length);
         }
@@ -302,17 +337,27 @@ public class Communicator : IDisposable
 
 
     [Conditional("DEBUG")]
-    private static void VerboseLog(string message)
+    private static void VerboseLog(string message, LogLevel level = LogLevel.Info)
     {
         if (!Verbose)
             return;
         
-        Log(message);
+        Log(message, level);
     }
     
-    private static void Log(string message)
+
+    private static void Log(string message, LogLevel level = LogLevel.Info)
     {
-        Console.WriteLine($"[{nameof(Communicator)}] {message}");
+        var color = level switch
+        {
+            LogLevel.Info => AnsiColor.Reset,
+            LogLevel.Warning => AnsiColor.DarkYellow,
+            LogLevel.Sending => AnsiColor.Blue,
+            LogLevel.Receiving => AnsiColor.DarkCyan,
+            _ => AnsiColor.Reset
+        };
+
+        Console.WriteLine($"{color}[{nameof(Communicator)}] {message}{AnsiColor.Reset}");
     }
 }
 

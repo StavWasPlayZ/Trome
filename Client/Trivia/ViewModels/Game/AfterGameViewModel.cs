@@ -22,7 +22,7 @@ public class AfterGameViewModel : SubRoomViewModel
     
 
     public AfterGameViewModel(IScreen hostScreen, RoomModel roomModel, IList<PlayerResult> results) :
-        base(hostScreen, roomModel)
+        base(hostScreen, roomModel, roomModel.PlayersCount)
     {
         // Sort by points
         List<PlayerResult> sortedResults = [..results];
@@ -72,17 +72,11 @@ public class AfterGameViewModel : SubRoomViewModel
     {
         switch (packet)
         {
-            case RoomClosedNotification:
-                NavBackFromRoom().Wait();
-                break;
-            
             case GameStartedNotification:
                 NavigateAndPop(new GameCountdownViewModel(HostScreen, RoomModel))!.Subscribe();
                 break;
-            
-            default:
-                base.CommOnPacketReceived(packet);
-                break;
         }
+        
+        base.CommOnPacketReceived(packet);
     }
 }

@@ -28,7 +28,7 @@ public:
      *
      * NOTE: The returned resource must be freed.
      */
-    static OBuffer serialize(S2CPacketType packetType, unsigned char msgCode, const nlohmann::json &data, ICryptoAlgorithm& cryptoAlgorithm);
+    static OBuffer serialize(S2CPacketType packetType, unsigned char msgCode, const nlohmann::json &data, const ICryptoAlgorithm& cryptoAlgorithm);
 
 
     static nlohmann::json serializeAsJson(const UserModel &player);

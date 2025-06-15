@@ -1,0 +1,65 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:room="clr-namespace:Trivia.ViewModels.Room"
+             xmlns:controls="clr-namespace:Trivia.Controls"
+             xmlns:cts="clr-namespace:Trivia.Codec.C2S"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
+             x:CompileBindings="True"
+             x:Class="Trivia.Views.Room.RoomTypeSelectorView"
+             x:DataType="room:RoomTypeSelectorViewModel">
+    
+    <Design.DataContext>
+        <room:RoomTypeSelectorViewModel/>
+    </Design.DataContext>
+    
+    <Panel>
+        <Panel.Background>
+            <ImageBrush Source="avares://Trivia/Assets/blobs-l-b49caff1a7941d98b60902da64956ad85dfbe4f9.png"
+                        Stretch="UniformToFill" />
+        </Panel.Background>
+        
+        <controls:TriviaBackButton Command="{Binding NavigateBackCommand}"/>
+        
+        <Border Background="rgba(0, 0, 0, .2)"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Padding="100"
+                CornerRadius="20">
+            <StackPanel Width="650"
+                        Spacing="100">
+                
+                <TextBlock FontSize="80"
+                           HorizontalAlignment="Center">GAME TYPE</TextBlock>
+                
+                <Grid ColumnDefinitions="*, *"
+                      ColumnSpacing="20">
+                    <controls:TriviaButton Grid.Column="0"
+                                           Command="{Binding CreateRoomCommand}"
+                                           CommandParameter="{x:Static cts:RoomType.TriviaRush}"
+                                           Text="TRIVIA RUSH"
+                                           Background="#362034"
+                                           BorderBrush="#b92e2b"
+                                           IconColor="#ffbbbb"
+                                           BorderBrushSelected="#D93040"
+                                           BorderBrushPressed="#AA2C2F"
+                                           BorderThickness="3"
+                                           IconSvgPath="avares://Trivia/Assets/Icons/sports_kabaddi.svg"
+                                           IconMargin="-1 10 -10 7"/>
+                    
+                    <controls:TriviaButton Grid.Column="1"
+                                           Command="{Binding CreateRoomCommand}"
+                                           CommandParameter="{x:Static cts:RoomType.HeadToHead}"
+                                           Text="HEAD-TO-HEAD"
+                                           BorderThickness="3"
+                                           BorderBrush="#6154A3"
+                                           BorderBrushPressed="#3D366D"
+                                           IconSvgPath="avares://Trivia/Assets/Icons/group.svg"
+                                           IconMargin="-1 10 -10 7"/>
+                </Grid>
+                
+            </StackPanel>
+        </Border>
+    </Panel>
+</UserControl>

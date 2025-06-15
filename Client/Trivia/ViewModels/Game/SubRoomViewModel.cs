@@ -1,5 +1,4 @@
-using System.Reactive.Threading.Tasks;
-using System.Threading.Tasks;
+using System;
 using ReactiveUI;
 using Trivia.Codec.S2C;
 using Trivia.Codec.S2C.Notification.Packets;
@@ -11,22 +10,33 @@ public abstract class SubRoomViewModel : PageViewModel
 {
     public RoomModel RoomModel { get; }
 
-    protected SubRoomViewModel(IScreen hostScreen, RoomModel roomModel) : base(hostScreen)
+    protected SubRoomViewModel(IScreen hostScreen, RoomModel roomModel, int playersFinished) : base(hostScreen)
     {
         RoomModel = roomModel;
+        PlayersFinished = playersFinished;
     }
 
     protected SubRoomViewModel()
     {
         RoomModel = RoomModel.CreateMockRoom(AppService.SessionUser!);
+        _playersFinished = 2;
     }
     
     
-    protected async Task NavBackFromRoom()
+    protected void NavBackFromRoom()
     {
         // Assuming Join -> Room -> Game
-        await NavigateBackCommand!.Execute().ToTask();
-        await NavigateBackCommand!.Execute().ToTask();
+        NavigateBackCommand!.Execute().Subscribe();
+        NavigateBackCommand!.Execute().Subscribe();
+    }
+    
+    
+    private int _playersFinished;
+
+    public int PlayersFinished
+    {
+        get => _playersFinished;
+        set => this.RaiseAndSetIfChanged(ref _playersFinished, value);
     }
     
     
@@ -35,12 +45,31 @@ public abstract class SubRoomViewModel : PageViewModel
         switch (packet)
         {
             case RoomClosedNotification:
-                NavBackFromRoom().Wait();
+                NavBackFromRoom();
                 break;
             
-            default:
-                base.CommOnPacketReceived(packet);
+            // When a player leaves, it is also to be considered that they have finished.
+            case PlayerLeftRoomNotification:
+            case PlayerFinishedNotification:
+                PlayersFinished++;
+                break;
+            
+            case PlayerKickedNotification playerKickedNotif:
+                HandlePlayerKicked(playerKickedNotif);
                 break;
         }
+        
+        base.CommOnPacketReceived(packet);
+    }
+
+    private void HandlePlayerKicked(PlayerKickedNotification playerKickedNotif)
+    {
+        if (playerKickedNotif.PlayerId == AppService.SessionUser!.Id)
+        {
+            NavBackFromRoom();
+            return;
+        }
+        
+        PlayersFinished++;
     }
 }

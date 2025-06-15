@@ -7,11 +7,11 @@
              xmlns:room="clr-namespace:Trivia.ViewModels.Room"
              mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
              x:CompileBindings="True"
-             x:Class="Trivia.Views.Room.JoinedRoomView"
-             x:DataType="room:JoinedRoomViewModel">
+             x:Class="Trivia.Views.Room.RoomGuestView"
+             x:DataType="room:RoomGuestViewModel">
     
     <Design.DataContext>
-        <room:JoinedRoomViewModel/>
+        <room:RoomGuestViewModel/>
     </Design.DataContext>
     
     <Panel>
@@ -25,7 +25,8 @@
               Margin="35,35">
             
             <controls:TriviaUsersList Grid.Column="0">
-                <ListBox ItemsSource="{Binding Players}">
+                <ListBox ItemsSource="{Binding Players}"
+                         PointerReleased="UserList_OnPointerReleased">
                     
                     <ListBox.ItemTemplate>
                         <DataTemplate>

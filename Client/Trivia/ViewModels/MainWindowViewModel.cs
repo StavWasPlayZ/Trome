@@ -1,32 +1,29 @@
 ﻿using System.Reactive;
 using System.Reactive.Disposables;
-using Avalonia.Controls;
 using ReactiveUI;
+using Trivia.ViewModels.Popups;
 
 namespace Trivia.ViewModels;
 
-public class MainWindowViewModel : ViewModelBase, IScreen, IActivatableViewModel
+public class MainWindowViewModel : ViewModelBase, IScreen
 {
-    public ViewModelActivator Activator { get; } = new();
-
     public RoutingState Router { get; } = new();
 
-    public ReactiveCommand<Unit, Unit>? CloseDialogCommand { get; }
+    public ReactiveCommand<Unit, Unit> CloseDialogCommand { get; }
     
     
     public bool AllowClosing { get; set; }
     public bool IsCloseProcessing { get; set; }
 
 
-    public MainWindowViewModel()
+    public MainWindowViewModel(bool isMock) : base(isMock)
     {
         this.WhenActivated((CompositeDisposable _) =>
         {
             Router.Navigate.Execute(
-                // If we're in design mode, strictly use the mock constructor instead.
-                !Design.IsDesignMode
-                    ? new ConnectingViewModel(this)
-                    : new ConnectingViewModel()
+                !isMock
+                    ? new ServerIpViewModel(this)
+                    : new ServerIpViewModel()
             );
         });
         
@@ -34,6 +31,10 @@ public class MainWindowViewModel : ViewModelBase, IScreen, IActivatableViewModel
         {
             PopupContents = null;
         });
+    }
+
+    public MainWindowViewModel() : this(true)
+    {
     }
 
 
@@ -44,9 +45,9 @@ public class MainWindowViewModel : ViewModelBase, IScreen, IActivatableViewModel
     }
 
 
-    private Control? _popupContents;
+    private PopupViewModel? _popupContents;
     
-    public Control? PopupContents
+    public PopupViewModel? PopupContents
     {
         get => _popupContents;
         set => this.RaiseAndSetIfChanged(ref _popupContents, value);

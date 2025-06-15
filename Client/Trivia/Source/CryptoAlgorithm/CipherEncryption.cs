@@ -1,29 +1,24 @@
-﻿namespace Trivia.CryptoAlgorithm;
+﻿using System.Linq;
+
+namespace Trivia.CryptoAlgorithm;
 
 public class CipherEncryption : ICryptoAlgorithm
 {
-    private static readonly int Key = 3;
-    public CipherEncryption() { }
+    private const int Key = 3;
 
     public string Encrypt(string message)
     {
-        string encrypted = "";
-        foreach (char c in message)
-        {
-            encrypted += (char)(c + Key);
-        }
-        
-        return encrypted;
+        return message
+            .Aggregate("", (current, c) =>
+                current + (char)(c + Key)
+            );
     }
 
     public string Decrypt(string message)
     {
-        string decrypted = "";
-        foreach (char c in message)
-        {
-            decrypted += (char)(c - Key);
-        }
-        
-        return decrypted;
+        return message
+            .Aggregate("", (current, c) =>
+                current + (char)(c - Key)
+            );
     }
 }
