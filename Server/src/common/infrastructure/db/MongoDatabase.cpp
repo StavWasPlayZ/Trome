@@ -13,7 +13,7 @@ namespace bson_builder = bsoncxx::builder::basic;
 
 const std::hash<std::string> MongoDatabase::ID_HASHER {};
 
-const std::string MongoDatabase::CONNECTION_STRING_PATH = "./resources/connection_string.txt";
+const std::string MongoDatabase::CONNECTION_STRING_PATH = "./resources/mongodb_connection_string.txt";
 std::string MongoDatabase::connectionString = "";
 
 MongoDatabase &MongoDatabase::getInstance()
