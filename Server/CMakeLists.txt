@@ -42,6 +42,8 @@ add_executable (Server
   "src/common/exception/SocketTimeoutException.cpp"
   "src/common/exception/RegexViolationException.cpp"
   "src/common/exception/RegexViolationException.h"
+  "src/common/exception/FileNotFoundException.h"
+  "src/common/exception/FileNotFoundException.cpp"
   "src/common/Constants.h"
 
   "src/common/handler/IRequestHandler.h"
@@ -147,7 +149,11 @@ add_executable (Server
   "src/common/infrastructure/cryptoAlgorithm/CipherEncryption.cpp"
   "src/common/infrastructure/cryptoAlgorithm/OTP.h"
   "src/common/infrastructure/cryptoAlgorithm/OTP.cpp"
-  )
+  "src/common/infrastructure/cryptoAlgorithm/AES.h"
+  "src/common/infrastructure/cryptoAlgorithm/AES.cpp"
+  "src/common/infrastructure/cryptoAlgorithm/RSA.h"
+  "src/common/infrastructure/cryptoAlgorithm/RSA.cpp"
+)
 
 # Platform-specific sources
 if (WIN32)
@@ -232,6 +238,24 @@ target_link_libraries(Server PRIVATE mongo::bsoncxx_shared mongo::mongocxx_share
 
 
 
+# Crypto++
+# In Windows: vcpkg install cryptopp
+# In Linux (Fedora): sudo dnf install cryptopp cryptopp-devel
+if (WIN32)
+  find_package(cryptopp CONFIG REQUIRED)
+  target_link_libraries(Server PRIVATE cryptopp::cryptopp)
+else ()
+  target_link_libraries(Server PRIVATE cryptopp)
+endif ()
+
+
 # Support includes starting from relative paths
 target_include_directories(Server PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_include_directories(Server PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/common)
+
+
+# Resources directory
+set(RESOURCES_DIR ${CMAKE_SOURCE_DIR}/resources)
+
+# Copy the directory to where the output executable lies (so as to use relative paths)
+file(COPY ${RESOURCES_DIR} DESTINATION ${CMAKE_BINARY_DIR})
