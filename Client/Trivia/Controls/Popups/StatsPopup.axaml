@@ -20,7 +20,6 @@
     <Style Selector="controls|StatsPopup">
         <!-- Set Defaults -->
         <Setter Property="Username">USERNAME</Setter>
-        <Setter Property="Height" Value="400"/>
 
         <Setter Property="Template">
             <ControlTemplate>
@@ -28,14 +27,13 @@
                 <Border CornerRadius="30"
                         Background="#FFCACA"
                         Width="325"
-                        Height="{TemplateBinding Height}"
                         VerticalAlignment="Center">
                     
                     <Panel>
                         <DockPanel Margin="50">
 
                             <StackPanel DockPanel.Dock="Top"
-                                        Margin="0 0 0 20"
+                                        Margin="0 0 0 40"
                                         Spacing="10">
                                 <Border
                                     Background="#F3BBBB"
@@ -58,7 +56,7 @@
                             
                             <StackPanel>
                                 <Grid VerticalAlignment="Bottom"
-                                      RowDefinitions="Auto, Auto, Auto, Auto"
+                                      RowDefinitions="Auto, Auto, Auto, Auto, Auto"
                                       RowSpacing="7"
                                       ColumnDefinitions="*, Auto">
                                     
@@ -79,8 +77,22 @@
                                     <TextBlock Grid.Row="1"
                                                Grid.Column="0"
                                                FontSize="30"
-                                               Foreground="#813E7A">AVG. TIME/Q</TextBlock>
+                                               Foreground="#813E7A">TIME SPENT</TextBlock>
                                     <TextBlock Grid.Row="1"
+                                               Grid.Column="1"
+                                               FontSize="30"
+                                               Foreground="#BE64B7"
+                                               Text="{
+                                                   Binding Stats.TimeOnQuestionOverall,
+                                                   RelativeSource={RelativeSource TemplatedParent},
+                                                   FallbackValue='----'
+                                               }"/>
+                                    
+                                    <TextBlock Grid.Row="2"
+                                               Grid.Column="0"
+                                               FontSize="30"
+                                               Foreground="#813E7A">AVG. TIME/Q</TextBlock>
+                                    <TextBlock Grid.Row="2"
                                                Grid.Column="1"
                                                FontSize="30"
                                                Foreground="#BE64B7"
@@ -91,11 +103,11 @@
                                                    Converter={StaticResource InvalidStaterConverter}
                                                }"/>
                                     
-                                    <TextBlock Grid.Row="2"
+                                    <TextBlock Grid.Row="3"
                                                Grid.Column="0"
                                                FontSize="30"
                                                Foreground="#813E7A">ANSWERED</TextBlock>
-                                    <TextBlock Grid.Row="2"
+                                    <TextBlock Grid.Row="3"
                                                Grid.Column="1"
                                                FontSize="30"
                                                Foreground="#BE64B7"
@@ -105,11 +117,11 @@
                                                    FallbackValue='----'
                                                }"/>
                                     
-                                    <TextBlock Grid.Row="3"
+                                    <TextBlock Grid.Row="4"
                                                Grid.Column="0"
                                                FontSize="30"
                                                Foreground="#813E7A">CORRECT</TextBlock>
-                                    <TextBlock Grid.Row="3"
+                                    <TextBlock Grid.Row="4"
                                                Grid.Column="1"
                                                FontSize="30"
                                                Foreground="#BE64B7"

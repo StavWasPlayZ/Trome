@@ -15,12 +15,11 @@
     
     <popups:StatsPopup Username="{Binding User.Username}"
                        Stats="{Binding Stats}"
-                       CloseCommand="{Binding CloseCommand}"
-                       Height="460">
+                       CloseCommand="{Binding CloseCommand}">
         
         <Button Command="{Binding KickCommand}"
                 HorizontalAlignment="Stretch"
-                Margin="0 35"
+                Margin="0 30 0 0"
                 VerticalAlignment="Stretch"
                 CornerRadius="5"
                 Background="#4D264A"
