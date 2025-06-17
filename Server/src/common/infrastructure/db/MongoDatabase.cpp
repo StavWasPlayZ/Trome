@@ -14,7 +14,7 @@ namespace bson_builder = bsoncxx::builder::basic;
 const std::hash<std::string> MongoDatabase::ID_HASHER {};
 
 const std::string MongoDatabase::CONNECTION_STRING_PATH = "./resources/connection_string.txt";
-std::string MongoDatabase::CONNECTION_STRING = "";
+std::string MongoDatabase::connectionString = "";
 
 bool MongoDatabase::connectionStringLoaded = false;
 
@@ -49,7 +49,7 @@ void MongoDatabase::setConnectionString()
     if (connectionStringLoaded)
         return;
 
-    CONNECTION_STRING = utils::readFileString(CONNECTION_STRING_PATH);
+    connectionString = utils::readFileString(CONNECTION_STRING_PATH);
     connectionStringLoaded = true;
 }
 
@@ -57,7 +57,7 @@ void MongoDatabase::setupMongoConnection()
 {
     // Mostly copied from the official docs:
 
-    const auto uri = mongocxx::uri {CONNECTION_STRING};
+    const auto uri = mongocxx::uri {connectionString};
 
     // Set the version of the Stable API on the client
     mongocxx::options::client client_options;
