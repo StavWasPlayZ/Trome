@@ -18,8 +18,6 @@ public:
 
     static MongoDatabase &getInstance();
 
-    ~MongoDatabase() override;
-
     bool open() override;
     bool close() override;
     bool doesUserExist(const std::string &username) const override;

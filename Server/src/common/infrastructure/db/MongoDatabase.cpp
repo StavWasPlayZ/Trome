@@ -21,10 +21,6 @@ MongoDatabase &MongoDatabase::getInstance()
 
 MongoDatabase::MongoDatabase() = default;
 
-MongoDatabase::~MongoDatabase()
-{
-}
-
 bool MongoDatabase::open()
 {
     try
