@@ -2,14 +2,13 @@
 
 #include "IDatabase.h"
 
-#include <string>
-#include <map>
-#include <list>
 #include <functional>
+#include <list>
+#include <map>
+#include <string>
 
-// for std::runtime_error (Windows):
-// ReSharper disable once CppUnusedIncludeDirective
-#include <stdexcept>
+#include <mongocxx/client.hpp>
+#include <mongocxx/instance.hpp>
 
 class MongoDatabase : public IDatabase
 {
@@ -47,4 +46,9 @@ protected:
 
 private:
     MongoDatabase();
+
+    static const std::string CONNECTION_STRING;
+
+    const mongocxx::instance inst;
+    mongocxx::client m_mongoClient;
 };
