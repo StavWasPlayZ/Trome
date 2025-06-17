@@ -259,7 +259,7 @@ std::map<UserModel, int> MongoDatabase::queryHighScores(int limit) const
     mongocxx::options::find findOptions;
 
     findOptions.sort(bson_builder::make_document(
-        bson_builder::kvp("stats.points", -1)  // descending order
+        bson_builder::kvp("stats.points", -1)  // Descending order
     ));
     findOptions.limit(50);
 
@@ -276,6 +276,8 @@ std::map<UserModel, int> MongoDatabase::queryHighScores(int limit) const
 
     for (const auto &user : usersCursor)
     {
+        const auto &stats = user["stats"];
+
         results.emplace(
             std::piecewise_construct,
 
@@ -285,7 +287,9 @@ std::map<UserModel, int> MongoDatabase::queryHighScores(int limit) const
             ),
 
             std::forward_as_tuple(
-                user["stats"].get_document().view()["points"].get_int32().value
+                stats
+                    ? stats.get_document().view()["points"].get_int32().value
+                    : 0
             )
         );
     }
@@ -293,7 +297,7 @@ std::map<UserModel, int> MongoDatabase::queryHighScores(int limit) const
     return results;
 }
 
-std::optional<UserStatistics> MongoDatabase::getUserStatisticsById(unsigned int id) const
+std::optional<UserStatistics> MongoDatabase::getUserStatisticsById(const unsigned int id) const
 {
     const auto filter = bson_builder::make_document(
         bson_builder::kvp("numId", static_cast<int>(id))
@@ -311,16 +315,20 @@ std::optional<UserStatistics> MongoDatabase::getUserStatisticsById(unsigned int 
         return std::nullopt;
 
 
-    const auto statsObj = userObj.value().view()["stats"].get_document().view();
+    const auto &statsObj = userObj.value().view()["stats"];
+    if (!statsObj || statsObj.type() != bsoncxx::type::k_document)
+        return std::nullopt;
 
-    const int totalTime = statsObj["timeOnQuestionsOverall"].get_int32();
-    const int totalAns = statsObj["questionsAnswered"].get_int32();
+    const auto stats = statsObj.get_document().view();
+
+    const int totalTime = stats["timeOnQuestionsOverall"].get_int32();
+    const int totalAns = stats["questionsAnswered"].get_int32();
 
     return UserStatistics(
-        statsObj["points"].get_int32(),
-        statsObj["gamesPlayed"].get_int32(),
+        stats["points"].get_int32(),
+        stats["gamesPlayed"].get_int32(),
         totalAns,
-        statsObj["questionsAnsweredCorrect"].get_int32(),
+        stats["questionsAnsweredCorrect"].get_int32(),
         totalTime,
         calcAverageAnswerTime(totalTime, totalAns)
     );
