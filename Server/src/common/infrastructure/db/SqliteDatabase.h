@@ -51,9 +51,6 @@ public:
 
     std::optional<UserStatistics> getUserStatisticsById(unsigned int id) const override;
 
-protected:
-	unsigned int queryIdOfUser(const std::string &username) const override;
-
 private:
 	SqliteDatabase();
 
@@ -72,6 +69,9 @@ private:
     std::unordered_map<std::string, sqlite3_stmt*> _preppedStatements;
 
     void genPreppedStatements();
+
+
+	unsigned int queryIdOfUser(const std::string &username) const;
 
 
 	/**

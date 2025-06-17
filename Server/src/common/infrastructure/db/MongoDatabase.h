@@ -41,20 +41,22 @@ public:
 
     std::optional<UserStatistics> getUserStatisticsById(unsigned int id) const override;
 
-protected:
-    unsigned int queryIdOfUser(const std::string &username) const override;
-
 private:
     static const std::string CONNECTION_STRING;
+
+    static const std::hash<std::string> ID_HASHER;
+
+    const mongocxx::instance inst;
 
     MongoDatabase();
 
     void setupMongoConnection();
     void setupDbConnections();
 
+    static int objIdToNumericId(const bsoncxx::oid& id);
+
     mongocxx::collection usersCollection() const;
 
-    const mongocxx::instance inst;
     mongocxx::client m_mongoClient;
 
     mongocxx::database m_db;
