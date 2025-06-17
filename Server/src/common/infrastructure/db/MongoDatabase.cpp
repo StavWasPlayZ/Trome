@@ -154,7 +154,7 @@ int MongoDatabase::queryQuestionsCount() const
 
 std::list<Question> MongoDatabase::queryQuestions(const int amount) const
 {
-    const auto questionsCursor = questionsCollection().aggregate(mongocxx::pipeline().sample(amount));
+    auto questionsCursor = questionsCollection().aggregate(mongocxx::pipeline().sample(amount));
 
     std::list<Question> results;
     for (const auto& questionObj : questionsCursor)
