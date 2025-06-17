@@ -19,6 +19,8 @@ MongoDatabase &MongoDatabase::getInstance()
     return instance;
 }
 
+MongoDatabase::MongoDatabase() = default;
+
 MongoDatabase::~MongoDatabase()
 {
 }
@@ -144,12 +146,32 @@ unsigned int MongoDatabase::addNewUser(const std::string &username, const std::s
 
     const auto result = usersCollection().insert_one(userBuilder.extract());
 
+
+    //TODO: Remove inserting a numId when general ID is converted to oid
+
+    // Add the numeric ID
+    const auto filter = bson_builder::make_document(
+        bson_builder::kvp("_id", result->inserted_id())
+    );
+
+    const auto updateReq = bson_builder::make_document(
+        bson_builder::kvp(
+            "$set",
+            bson_builder::make_document(
+                bson_builder::kvp("numId", objIdToNumeric(result->inserted_id().get_oid().value))
+            )
+        )
+    );
+
+    usersCollection().update_one(filter.view(), updateReq.view());
+
+
     return objIdToNumeric(result.value().inserted_id().get_oid().value);
 }
 
 int MongoDatabase::queryQuestionsCount() const
 {
-    return questionsCollection().count_documents(bson_builder::document().view());
+    return questionsCollection().count_documents({});
 }
 
 std::list<Question> MongoDatabase::queryQuestions(const int amount) const
@@ -212,16 +234,94 @@ void MongoDatabase::addQuestions(const std::vector<Question> questions,
 void MongoDatabase::addToStats(const std::string &username, int time, int answers, int correctAnswers,
                                int points, int games) const
 {
+    const auto statsDoc = bson_builder::make_document(
+        bson_builder::kvp("stats.points", points),
+        bson_builder::kvp("stats.gamesPlayed", games),
+        bson_builder::kvp("stats.timeOnQuestionsOverall", time),
+        bson_builder::kvp("stats.questionsAnswered", answers),
+        bson_builder::kvp("stats.questionsAnsweredCorrect", correctAnswers)
+    );
+
+
+    const auto filter = bson_builder::make_document(
+        bson_builder::kvp("username", username)
+    );
+
+    const auto updateReq = bson_builder::make_document(
+        bson_builder::kvp("$inc", statsDoc)
+    );
+
+    usersCollection().update_one(filter.view(), updateReq.view());
 }
 
 std::map<UserModel, int> MongoDatabase::queryHighScores(int limit) const
 {
+    mongocxx::options::find findOptions;
+
+    findOptions.sort(bson_builder::make_document(
+        bson_builder::kvp("stats.points", -1)  // descending order
+    ));
+    findOptions.limit(50);
+
+    // Only include:
+    findOptions.projection(bson_builder::make_document(
+        bson_builder::kvp("username", 1),
+        bson_builder::kvp("stats.points", 1)
+    ));
+
+    auto usersCursor = usersCollection().find({}, findOptions);
+
+
+    std::map<UserModel, int> results;
+
+    for (const auto &user : usersCursor)
+    {
+        results.emplace(
+            std::piecewise_construct,
+
+            std::forward_as_tuple(
+                objIdToNumeric(user["_id"].get_oid().value),
+                std::string(user["username"].get_string().value)
+            ),
+
+            std::forward_as_tuple(
+                user["stats"].get_document().view()["points"].get_int32().value
+            )
+        );
+    }
+
+    return results;
 }
 
 std::optional<UserStatistics> MongoDatabase::getUserStatisticsById(unsigned int id) const
 {
-}
+    const auto filter = bson_builder::make_document(
+        bson_builder::kvp("numId", static_cast<int>(id))
+    );
 
-MongoDatabase::MongoDatabase()
-{
+    mongocxx::options::find findOptions;
+
+    findOptions.projection(bson_builder::make_document(
+        bson_builder::kvp("stats", 1)
+    ));
+
+    const auto userObj = usersCollection().find_one(filter.view(), findOptions);
+
+    if (!userObj.has_value())
+        return std::nullopt;
+
+
+    const auto statsObj = userObj.value().view()["stats"].get_document().view();
+
+    const int totalTime = statsObj["timeOnQuestionsOverall"].get_int32();
+    const int totalAns = statsObj["questionsAnswered"].get_int32();
+
+    return UserStatistics(
+        statsObj["points"].get_int32(),
+        statsObj["gamesPlayed"].get_int32(),
+        totalAns,
+        statsObj["questionsAnsweredCorrect"].get_int32(),
+        totalTime,
+        calcAverageAnswerTime(totalTime, totalAns)
+    );
 }
