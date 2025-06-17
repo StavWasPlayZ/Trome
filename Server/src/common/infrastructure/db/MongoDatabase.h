@@ -45,12 +45,16 @@ protected:
     unsigned int queryIdOfUser(const std::string &username) const override;
 
 private:
+    static const std::string CONNECTION_STRING;
+
     MongoDatabase();
 
-    static const std::string CONNECTION_STRING;
+    void setupMongoConnection();
+    void setupDbConnections();
 
     const mongocxx::instance inst;
     mongocxx::client m_mongoClient;
 
     mongocxx::database m_db;
+    mongocxx::collection m_usersCollection;
 };
