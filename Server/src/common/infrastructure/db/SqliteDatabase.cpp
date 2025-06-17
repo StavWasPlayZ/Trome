@@ -184,7 +184,7 @@ bool SqliteDatabase::close()
 		return true;
 	}
 
-    // Remove all prepared statements
+    // Free all prepared statements
     for (const auto &pair : this->_preppedStatements)
     {
         sqlite3_finalize(pair.second);

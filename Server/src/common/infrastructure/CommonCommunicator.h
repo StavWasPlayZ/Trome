@@ -59,6 +59,7 @@ protected:
 	static constexpr unsigned int RECV_REFRESH_TIMEOUT_MS = 3000;
 
 	std::atomic<bool> _running;
+    std::atomic<bool> _cleanerThreadRunning;
 	std::future<void> _serverThread;
 
 	sockaddr_in _serverSockAddr;

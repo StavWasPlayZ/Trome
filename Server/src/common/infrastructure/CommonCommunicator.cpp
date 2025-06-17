@@ -78,6 +78,8 @@ void CommonCommunicator::close()
         delete thread;
     }
 
+    _cleanerThreadRunning = false;
+
     platformClose();
 
 
@@ -116,6 +118,7 @@ void CommonCommunicator::commonSetup()
     }
 
     this->_running = true;
+    this->_cleanerThreadRunning = true;
 
     // Start listening for connections
     if (!isValidListen(listen(this->m_serverSocket, 3)))
@@ -362,8 +365,8 @@ RequestInfo CommonCommunicator::_waitForClientRequest(const Client &client)
 void CommonCommunicator::_clientCleanerThreadFunc()
 {
 	std::unique_lock lock(this->_disconnectedClientCV_mutex);
-	
-	while (this->_running)
+
+	while (this->_cleanerThreadRunning)
 	{
 	    if (this->_disconnectingClients.empty())
 	    {
