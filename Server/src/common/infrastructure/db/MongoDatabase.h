@@ -40,7 +40,9 @@ public:
     std::optional<UserStatistics> getUserStatisticsById(unsigned int id) const override;
 
 private:
-    static const std::string CONNECTION_STRING;
+    static const std::string CONNECTION_STRING_PATH;
+    static std::string CONNECTION_STRING;
+    static bool connectionStringLoaded;
 
     static const std::hash<std::string> ID_HASHER;
 
@@ -50,6 +52,7 @@ private:
 
     void setupMongoConnection();
     void setupDbConnections();
+    void setConnectionString();
 
     static int objIdToNumeric(const bsoncxx::oid& id);
 
