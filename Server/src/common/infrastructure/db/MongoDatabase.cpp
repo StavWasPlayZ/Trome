@@ -47,23 +47,15 @@ void MongoDatabase::setConnectionString()
     if (connectionStringLoaded)
         return;
 
-    std::ifstream file(CONNECTION_STRING_PATH, std::ios::binary);
+    std::ifstream file(CONNECTION_STRING_PATH);
     if (!file)
     {
         throw FileNotFoundException(CONNECTION_STRING_PATH);
     }
 
-    file.seekg(0, std::ios::end);
-    const std::streamsize size = file.tellg();
-    file.seekg(0, std::ios::beg);
-
-    std::vector<unsigned char> buffer(size);
-    if (!file.read(reinterpret_cast<char *>(buffer.data()), size))
-    {
-        throw FileNotFoundException(CONNECTION_STRING_PATH);
-    }
-
-    CONNECTION_STRING = std::string(reinterpret_cast<const char *>(buffer.data()), buffer.size());
+    std::ostringstream ss;
+    ss << file.rdbuf();
+    CONNECTION_STRING = ss.str();
     connectionStringLoaded = true;
 }
 
