@@ -85,7 +85,7 @@ public class RsaCrypto : ICryptoAlgorithm
         return encryptedStream.ToArray();
     }
 
-    private byte[] DecryptInChunks(byte[] encryptedData, RSA rsa)
+    private static byte[] DecryptInChunks(byte[] encryptedData, RSA rsa)
     {
         using var encryptedStream = new MemoryStream(encryptedData);
         using var decryptedStream = new MemoryStream();
