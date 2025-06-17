@@ -41,7 +41,7 @@ public class AfterGameViewModel : SubRoomViewModel
             .Select(User.CreateMock)
             .Select(user => new PlayerResultModel
             {
-                Place = user.Id,
+                Place = (int) user.Id,
                 
                 User = user,
                 PlaytimeSecs = 123,

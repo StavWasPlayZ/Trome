@@ -257,7 +257,7 @@ public abstract class RoomViewModel : PageViewModel
         }        
     }
     
-    public void HandlePlayerKicked(int userId)
+    public void HandlePlayerKicked(long userId)
     {
         if (userId == AppService.SessionUser!.Id)
         {
@@ -279,7 +279,7 @@ public abstract class RoomViewModel : PageViewModel
         };
     }
     
-    private void HandlePlayerLeft(int userId)
+    private void HandlePlayerLeft(long userId)
     {
         for (var i = 0; i < Players.Count; i++)
         {

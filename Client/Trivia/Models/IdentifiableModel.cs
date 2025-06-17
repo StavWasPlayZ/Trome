@@ -2,7 +2,7 @@ namespace Trivia.Models;
 
 public record IdentifiableModel
 {
-    public required int Id { get; init; }
+    public required long Id { get; init; }
     
     public virtual bool Equals(IdentifiableModel? other)
     {
