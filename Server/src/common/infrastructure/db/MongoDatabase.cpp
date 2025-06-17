@@ -71,7 +71,7 @@ void MongoDatabase::setupDbConnections()
 //TODO: Convert usage of numbers as IDs to the unique IDs format used in Mongo,
 // in SQLite too.
 // Then remove this method.
-int MongoDatabase::objIdToNumericId(const bsoncxx::oid& id)
+int MongoDatabase::objIdToNumeric(const bsoncxx::oid& id)
 {
     return ID_HASHER(id.to_string());
 }
@@ -79,6 +79,11 @@ int MongoDatabase::objIdToNumericId(const bsoncxx::oid& id)
 mongocxx::collection MongoDatabase::usersCollection() const
 {
     return this->m_db.collection("users");
+}
+
+mongocxx::collection MongoDatabase::questionsCollection() const
+{
+    return this->m_db.collection("questions");
 }
 
 bool MongoDatabase::close()
@@ -108,7 +113,7 @@ unsigned int MongoDatabase::queryIdOfUser(const std::string &username, const std
     if (!result.has_value())
         return -1;
 
-    return objIdToNumericId(result.value().view()["_id"].get_oid().value);
+    return objIdToNumeric(result.value().view()["_id"].get_oid().value);
 }
 
 unsigned int MongoDatabase::addNewUser(const std::string &username, const std::string &password,
@@ -120,9 +125,9 @@ unsigned int MongoDatabase::addNewUser(const std::string &username, const std::s
     if (doesUserExist(username))
         throw std::runtime_error("User already exists (UNIQUE)");
 
-    bson_builder::document addUserBuilder {};
+    bson_builder::document userBuilder {};
 
-    addUserBuilder.append(
+    userBuilder.append(
         bson_builder::kvp("username", username),
         bson_builder::kvp("password", password),
         bson_builder::kvp("email", email),
@@ -132,25 +137,76 @@ unsigned int MongoDatabase::addNewUser(const std::string &username, const std::s
 
     if (address.has_value())
     {
-        addUserBuilder.append(bson_builder::kvp("address", address.value()));
+        userBuilder.append(
+            bson_builder::kvp("address", address.value())
+        );
     }
 
-    const auto result = usersCollection().insert_one(addUserBuilder.extract());
+    const auto result = usersCollection().insert_one(userBuilder.extract());
 
-    return objIdToNumericId(result.value().inserted_id().get_oid().value);
+    return objIdToNumeric(result.value().inserted_id().get_oid().value);
 }
 
 int MongoDatabase::queryQuestionsCount() const
 {
+    return questionsCollection().count_documents(bson_builder::document().view());
 }
 
-std::list<Question> MongoDatabase::queryQuestions(int amount) const
+std::list<Question> MongoDatabase::queryQuestions(const int amount) const
 {
+    const auto questionsCursor = questionsCollection().aggregate(mongocxx::pipeline().sample(amount));
+
+    std::list<Question> results;
+    for (const auto& questionObj : questionsCursor)
+    {
+        const std::string prompt = std::string(questionObj["prompt"].get_string().value);
+        std::vector<std::string> answers;
+
+        auto answersArr = questionObj["answers"].get_array().value;
+
+        for (const auto &answer : answersArr)
+        {
+            answers.push_back(std::string(answer.get_string().value));
+        }
+
+        results.emplace_back(prompt, answers);
+    }
+
+    return results;
 }
 
-void MongoDatabase::addQuestions(std::vector<Question> questions,
+void MongoDatabase::addQuestions(const std::vector<Question> questions,
                                  const std::optional<std::string> &authorName) const
 {
+    std::vector<bsoncxx::document::value> questionObjs;
+    questionObjs.reserve(questions.size());
+
+    for (const auto& question : questions)
+    {
+        bson_builder::document questionBuilder {};
+
+        bsoncxx::builder::basic::array answersArray;
+        for (const auto& answer : question.answers)
+        {
+            answersArray.append(answer);
+        }
+
+        questionBuilder.append(
+            bsoncxx::builder::basic::kvp("prompt", question.prompt),
+            bsoncxx::builder::basic::kvp("answers", answersArray)
+        );
+
+        if (authorName.has_value())
+        {
+            questionBuilder.append(
+                bson_builder::kvp("authorName", authorName.value())
+            );
+        }
+
+        questionObjs.emplace_back(questionBuilder.extract());
+    }
+
+    usersCollection().insert_many(questionObjs);
 }
 
 void MongoDatabase::addToStats(const std::string &username, int time, int answers, int correctAnswers,

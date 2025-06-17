@@ -53,9 +53,10 @@ private:
     void setupMongoConnection();
     void setupDbConnections();
 
-    static int objIdToNumericId(const bsoncxx::oid& id);
+    static int objIdToNumeric(const bsoncxx::oid& id);
 
     mongocxx::collection usersCollection() const;
+    mongocxx::collection questionsCollection() const;
 
     mongocxx::client m_mongoClient;
 
