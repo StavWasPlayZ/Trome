@@ -20,9 +20,9 @@
             <converters:SolidColorBrushToHexStrConverter x:Key="SolidColorBrushToHexStrConverter"/>
             <converters:TimeSpanToStringConverter x:Key="TimeSpanToStringConverter"/>
             <converters:TimeSpanToSectorAngleMultiConverter x:Key="TimeSpanToSectorAngleMultiConverter"/>
-            <converters:InvalidStaterConverter x:Key="InvalidStaterConverter"/>
             <converters:RoomTypeToIconPathConverter x:Key="RoomTypeToIconPathConverter"/>
             <converters:RoomTypeToBackgroundConverter x:Key="RoomTypeToBackgroundConverter"/>
+            <converters:SecondsToTimeStringConverter x:Key="SecondsToTimeStringConverter"/>
             
             
             <SolidColorBrush x:Key="TriviaTextBoxForeground">#4D264A</SolidColorBrush>

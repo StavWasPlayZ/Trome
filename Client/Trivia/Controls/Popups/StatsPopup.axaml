@@ -77,7 +77,7 @@
                                     <TextBlock Grid.Row="1"
                                                Grid.Column="0"
                                                FontSize="30"
-                                               Foreground="#813E7A">TIME SPENT</TextBlock>
+                                               Foreground="#813E7A">TOTAL Q. TIME</TextBlock>
                                     <TextBlock Grid.Row="1"
                                                Grid.Column="1"
                                                FontSize="30"
@@ -85,6 +85,7 @@
                                                Text="{
                                                    Binding Stats.TimeOnQuestionOverall,
                                                    RelativeSource={RelativeSource TemplatedParent},
+                                                   Converter={StaticResource SecondsToTimeStringConverter},
                                                    FallbackValue='----'
                                                }"/>
                                     
@@ -100,7 +101,7 @@
                                                    Binding Stats.TimeOnQuestionsAvg,
                                                    RelativeSource={RelativeSource TemplatedParent},
                                                    FallbackValue='----',
-                                                   Converter={StaticResource InvalidStaterConverter}
+                                                   Converter={StaticResource SecondsToTimeStringConverter}
                                                }"/>
                                     
                                     <TextBlock Grid.Row="3"
