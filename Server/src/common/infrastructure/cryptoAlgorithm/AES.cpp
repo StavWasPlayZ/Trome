@@ -16,12 +16,12 @@ AES::AES() : ICryptoAlgorithm()
 {
     if (key.size() == 0)
     {
-        key = readFileBytes(keyPath);
+        key = utils::readFileBytes(keyPath);
     }
 
     if (iv.size() == 0)
     {
-        iv = readFileBytes(ivPath);
+        iv = utils::readFileBytes(ivPath);
     }
 }
 

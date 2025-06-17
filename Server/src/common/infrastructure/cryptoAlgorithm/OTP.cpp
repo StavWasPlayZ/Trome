@@ -7,7 +7,7 @@ OTP::OTP()
 {
     if (key.size() == 0)
     {
-        key = readFileBytes(keyPath);
+        key = utils::readFileBytes(keyPath);
     }
 }
 

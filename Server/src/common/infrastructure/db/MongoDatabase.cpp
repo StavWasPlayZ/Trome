@@ -4,6 +4,7 @@
 #include <fstream>
 
 #include "exception/FileNotFoundException.h"
+#include "Utils.h"
 
 #include <bsoncxx/json.hpp>
 #include <mongocxx/client.hpp>
@@ -47,15 +48,7 @@ void MongoDatabase::setConnectionString()
     if (connectionStringLoaded)
         return;
 
-    std::ifstream file(CONNECTION_STRING_PATH);
-    if (!file)
-    {
-        throw FileNotFoundException(CONNECTION_STRING_PATH);
-    }
-
-    std::ostringstream ss;
-    ss << file.rdbuf();
-    CONNECTION_STRING = ss.str();
+    CONNECTION_STRING = utils::readFileString(CONNECTION_STRING_PATH);
     connectionStringLoaded = true;
 }
 
