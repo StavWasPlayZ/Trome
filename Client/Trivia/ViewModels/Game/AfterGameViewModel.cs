@@ -70,13 +70,13 @@ public class AfterGameViewModel : SubRoomViewModel
     
     protected override void CommOnPacketReceived(IS2CPacket packet)
     {
+        base.CommOnPacketReceived(packet);
+        
         switch (packet)
         {
             case GameStartedNotification:
                 NavigateAndPop(new GameCountdownViewModel(HostScreen, RoomModel))!.Subscribe();
                 break;
         }
-        
-        base.CommOnPacketReceived(packet);
     }
 }

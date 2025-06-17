@@ -41,13 +41,13 @@ public class FinishedEarlyViewModel : GameViewModelBase
 
     protected override void CommOnPacketReceived(IS2CPacket packet)
     {
+        base.CommOnPacketReceived(packet);
+        
         switch (packet)
         {
             case GameEndedNotification gameEndedNotif:
                 NavigateAndPop(new AfterGameViewModel(HostScreen, RoomModel, gameEndedNotif.Results))!.Subscribe();
                 break;
-        }
-        
-        base.CommOnPacketReceived(packet);
+        }        
     }
 }
