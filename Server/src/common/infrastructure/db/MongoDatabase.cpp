@@ -1,6 +1,10 @@
 #include "MongoDatabase.h"
 
 #include <iostream>
+#include <fstream>
+
+#include "exception/FileNotFoundException.h"
+#include "Utils.h"
 
 #include <bsoncxx/json.hpp>
 #include <mongocxx/client.hpp>
@@ -9,9 +13,10 @@ namespace bson_builder = bsoncxx::builder::basic;
 
 const std::hash<std::string> MongoDatabase::ID_HASHER {};
 
-//TODO: Save in app resources, then change credentials.
-// https://cloud.mongodb.com/v2/68517c6ca848c6706d2cdf60#/security/database
-const std::string MongoDatabase::CONNECTION_STRING = "mongodb+srv://cstav:XTXUNBCmGNbzkTLK@cluster0.xbibizy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const std::string MongoDatabase::CONNECTION_STRING_PATH = "./resources/connection_string.txt";
+std::string MongoDatabase::CONNECTION_STRING = "";
+
+bool MongoDatabase::connectionStringLoaded = false;
 
 MongoDatabase &MongoDatabase::getInstance()
 {
@@ -25,6 +30,7 @@ bool MongoDatabase::open()
 {
     try
     {
+        setConnectionString();
         setupMongoConnection();
         setupDbConnections();
     }
@@ -36,6 +42,15 @@ bool MongoDatabase::open()
 
     std::cout << "Successfully connected to MongoDB" << std::endl;
     return true;
+}
+
+void MongoDatabase::setConnectionString()
+{
+    if (connectionStringLoaded)
+        return;
+
+    CONNECTION_STRING = utils::readFileString(CONNECTION_STRING_PATH);
+    connectionStringLoaded = true;
 }
 
 void MongoDatabase::setupMongoConnection()
