@@ -51,4 +51,6 @@ private:
 
     const mongocxx::instance inst;
     mongocxx::client m_mongoClient;
+
+    mongocxx::database m_db;
 };

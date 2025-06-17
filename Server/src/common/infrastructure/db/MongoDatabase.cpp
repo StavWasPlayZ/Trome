@@ -38,6 +38,8 @@ bool MongoDatabase::open()
         // Ping the database.
         const auto ping_cmd = bsoncxx::builder::basic::make_document(bsoncxx::builder::basic::kvp("ping", 1));
         adminDb.run_command(ping_cmd.view());
+
+        m_db = m_mongoClient.database("trome_db");
     }
     catch (const std::exception& e)
     {
