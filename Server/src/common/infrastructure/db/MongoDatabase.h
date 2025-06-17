@@ -52,7 +52,7 @@ private:
 
     void setupMongoConnection();
     void setupDbConnections();
-    void setConnectionString();
+    static void setConnectionString();
 
     static int objIdToNumeric(const bsoncxx::oid& id);
 
