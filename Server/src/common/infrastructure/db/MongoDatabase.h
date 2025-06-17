@@ -42,7 +42,6 @@ public:
 private:
     static const std::string CONNECTION_STRING_PATH;
     static std::string connectionString;
-    static bool connectionStringLoaded;
 
     static const std::hash<std::string> ID_HASHER;
 

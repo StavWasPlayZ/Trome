@@ -16,8 +16,6 @@ const std::hash<std::string> MongoDatabase::ID_HASHER {};
 const std::string MongoDatabase::CONNECTION_STRING_PATH = "./resources/connection_string.txt";
 std::string MongoDatabase::connectionString = "";
 
-bool MongoDatabase::connectionStringLoaded = false;
-
 MongoDatabase &MongoDatabase::getInstance()
 {
     static MongoDatabase instance;
@@ -46,11 +44,10 @@ bool MongoDatabase::open()
 
 void MongoDatabase::setConnectionString()
 {
-    if (connectionStringLoaded)
+    if (!connectionString.empty())
         return;
 
     connectionString = utils::readFileString(CONNECTION_STRING_PATH);
-    connectionStringLoaded = true;
 }
 
 void MongoDatabase::setupMongoConnection()
