@@ -52,9 +52,10 @@ private:
     void setupMongoConnection();
     void setupDbConnections();
 
+    mongocxx::collection usersCollection() const;
+
     const mongocxx::instance inst;
     mongocxx::client m_mongoClient;
 
     mongocxx::database m_db;
-    mongocxx::collection m_usersCollection;
 };

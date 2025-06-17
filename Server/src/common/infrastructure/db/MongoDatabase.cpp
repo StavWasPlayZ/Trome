@@ -40,7 +40,7 @@ bool MongoDatabase::open()
 
 void MongoDatabase::setupMongoConnection()
 {
-    // Copied from the official docs:
+    // Mostly copied from the official docs:
 
     const auto uri = mongocxx::uri {CONNECTION_STRING};
 
@@ -54,14 +54,21 @@ void MongoDatabase::setupMongoConnection()
     mongocxx::database adminDb = this->m_mongoClient["admin"];
 
     // Ping the database.
-    const auto ping_cmd = bsoncxx::builder::basic::make_document(bsoncxx::builder::basic::kvp("ping", 1));
+    const auto ping_cmd = bson_builder::make_document(
+        bson_builder::kvp("ping", 1)
+    );
+
     adminDb.run_command(ping_cmd.view());
 }
 
 void MongoDatabase::setupDbConnections()
 {
     m_db = m_mongoClient.database("trome_db");
-    m_usersCollection = m_db.collection("users");
+}
+
+mongocxx::collection MongoDatabase::usersCollection() const
+{
+    return this->m_db.collection("users");
 }
 
 bool MongoDatabase::close()
@@ -72,6 +79,11 @@ bool MongoDatabase::close()
 
 bool MongoDatabase::doesUserExist(const std::string &username) const
 {
+    const auto userFilter = bson_builder::make_document(
+        bson_builder::kvp("username", username)
+    );
+
+    return usersCollection().count_documents(userFilter.view()) != 0;
 }
 
 unsigned int MongoDatabase::queryIdOfUser(const std::string &username, const std::string &password) const
