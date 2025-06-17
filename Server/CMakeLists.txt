@@ -259,3 +259,14 @@ set(RESOURCES_DIR ${CMAKE_SOURCE_DIR}/resources)
 
 # Copy the directory to where the output executable lies (so as to use relative paths)
 file(COPY ${RESOURCES_DIR} DESTINATION ${CMAKE_BINARY_DIR})
+
+
+# i
+# hate
+# windows
+# so
+# fucking
+# much
+if (WIN32)
+  target_compile_definitions(Server PRIVATE NOMINMAX)
+endif()
