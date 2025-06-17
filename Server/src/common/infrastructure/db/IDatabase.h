@@ -76,12 +76,6 @@ protected:
 
     static float calcAverageAnswerTime(int totalTime, int totalAns);
 
-	
-	/**
-     * Returns: The ID of the user connected user; -1 otherwise.
-     */
-    virtual unsigned int queryIdOfUser(const std::string &username) const = 0;
-
 
     // Regexes.
 
