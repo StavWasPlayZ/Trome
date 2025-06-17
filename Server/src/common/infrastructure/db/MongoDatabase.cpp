@@ -206,7 +206,7 @@ void MongoDatabase::addQuestions(const std::vector<Question> questions,
         questionObjs.emplace_back(questionBuilder.extract());
     }
 
-    usersCollection().insert_many(questionObjs);
+    questionsCollection().insert_many(questionObjs);
 }
 
 void MongoDatabase::addToStats(const std::string &username, int time, int answers, int correctAnswers,
