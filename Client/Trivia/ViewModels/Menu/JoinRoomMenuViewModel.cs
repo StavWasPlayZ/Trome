@@ -22,7 +22,7 @@ public class JoinRoomMenuViewModel : PageViewModel
     
     public ReactiveCommand<Unit, IRoutableViewModel> NewRoomButtonCommand { get; }
     
-    public ReactiveCommand<int, Unit> JoinRoomButtonCommand { get; }
+    public ReactiveCommand<long, Unit> JoinRoomButtonCommand { get; }
 
     
     private readonly DispatcherTimer? _roomFetcher;
@@ -49,7 +49,7 @@ public class JoinRoomMenuViewModel : PageViewModel
     {
         NewRoomButtonCommand = NavigateReactiveCommand(() => new RoomTypeSelectorViewModel(HostScreen));
 
-        JoinRoomButtonCommand = ReactiveCommand.CreateFromTask<int>(JoinRoom);
+        JoinRoomButtonCommand = ReactiveCommand.CreateFromTask<long>(JoinRoom);
 
         _roomFetcher = new DispatcherTimer
         {
@@ -80,13 +80,13 @@ public class JoinRoomMenuViewModel : PageViewModel
 
     public JoinRoomMenuViewModel() : base(null!)
     {
-        JoinRoomButtonCommand = ReactiveCommand.Create<int>(_ => { });
+        JoinRoomButtonCommand = ReactiveCommand.Create<long>(_ => { });
         NewRoomButtonCommand = NoOpNavCommand;
         Rooms = RoomModel.GenerateMockRooms(30);
         SelectedRoom = Rooms[0];
     }
 
-    private async Task JoinRoom(int roomId)
+    private async Task JoinRoom(long roomId)
     {
         //TODO: Handle room deleted before refresh
         var response = await Comm.SendRequestAsync<JoinRoomResponse>(new JoinRoomRequest(roomId));
