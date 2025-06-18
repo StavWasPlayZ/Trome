@@ -134,7 +134,7 @@ This project uses modern cryptographic techniques to ensure secure communication
 - **Library**: `Crypto++` and  `System.Security.Cryptography`
 - **Usage**: Used to encrypt session secrets and sensitive data.
 - **Key Management**:
-  - **Server** and **Client** each have their own RSA key pair.
+  - **Server** and **Client** each have their own RSA private key and the other public key.
   - Public/private keys are stored in `.pem` files.
   - Keys are loaded **at startup** from the files.
 
