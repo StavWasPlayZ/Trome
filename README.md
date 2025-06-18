@@ -86,11 +86,11 @@ First, clone this repository:
 git clone https://gitlab.com/Tomgluz/Trivia_Itay_Stav_2025.git
 ```
 
-## Server Setup
+## 🖥️ Server Setup
 
-### Dependencies
+### 📦 Dependencies
 
-#### Windows
+#### 🪟 Windows
 
 Install `VCPKG` directly under your C drive:
 
@@ -111,7 +111,7 @@ When done, install the following dependencies:
 ```
 
 
-#### Unix
+#### 🐧 Unix
 
 Install the following development packages:
 
@@ -122,7 +122,7 @@ Install the following development packages:
 > [!NOTE]
 > Package names may vary depending on your package manager and distribution.
 
-### Building
+### 🏗️ Building
 
 In the project directory, under Server:
 
@@ -134,23 +134,23 @@ cmake ../
 cmake --build ./
 ```
 
-## Client
+## 💻 Client
 
 Within the Client directory, run the following for your operating system of choice (self-contained):
 
-### Windows
+### 🪟 Windows
 
 ```bash
 dotnet publish -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true
 ```
 
-### MacOS
+### 🍎 MacOS
 
 ```bash
 dotnet publish -c Release -r osx-x64 --self-contained true /p:PublishSingleFile=true
 ```
 
-### Linux
+### 🐧 Linux
 
 ```bash
 dotnet publish -c Release -r linux-x64 --self-contained true /p:PublishSingleFile=true
