@@ -124,12 +124,24 @@ All body content is:
 - Formatted in **JSON**
 - 🔐 **Encrypted** using the predetermined cryptographic scheme
 
+### Notifications System
+
+#### Overview
+
+Notifications are simply defined as a *"response with no request"*.
+
+They are a replacement for client-initiated polling request, prompting instead for *server-initiated, pushing* packets. 
+
+Examples of such packets are admins notifying clients when the game has begun, guests notifying other room guests upon
+their departure, etc.
 
 ---
 
 ## 🔐 Cryptography Overview
 
-This project uses modern cryptographic techniques to ensure secure communication between the **Server** and **Client**. Most of the encryption and decryption operations are powered by the [Crypto++](https://www.cryptopp.com/) library and .NET [System.Security.Cryptography](https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography?view=net-9.0).
+This project uses modern cryptographic techniques to ensure secure communication between the **Server** and **Client**.
+Most the encryption/decryption operations are powered by the [Crypto++](https://www.cryptopp.com/) library and .NET
+[System.Security.Cryptography](https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography?view=net-9.0).
 
 > [!CAUTION]
 > The keys are static, and are therefore not fully secure.  
