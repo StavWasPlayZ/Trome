@@ -121,7 +121,11 @@ The body is determined by the message type. It may contain strings, IDs, answers
 
 This project uses modern cryptographic techniques to ensure secure communication between the **Server** and **Client**. Most of the encryption and decryption operations are powered by the [Crypto++](https://www.cryptopp.com/) library and .NET [System.Security.Cryptography](https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography?view=net-9.0).
 
-NOTE: The keys are static, therefore it isn't fully secure. Don't use this as an example for an actual Cryptography example without making files at runtime. We did it that way because `Crypto++` and `System.Security.Cryptography` RSA keys don't fit for each other, we made the keys via openssl.
+> [!CAUTION]
+> The keys are static, therefore are not fully secure.  
+> DON'T use this as an example for actual Cryptography matters without making these files at runtime.
+> We did it that way because `Crypto++` and `System.Security.Cryptography` RSA keys are not fit for each other, hence they were both made via OpenSSL.
+ 
 ---
 
 ### 🔑 Current Encryption Method: RSA (Asymmetric)
