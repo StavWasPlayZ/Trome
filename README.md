@@ -61,31 +61,31 @@ Features explicitly deemed as a bonus by Magshimim, as well as additional, custo
 
 ### 📍 States
 
-| State Name              | Purpose                           | Description |
-|-------------------------|-----------------------------------|-------------|
-| `Login`                 | Initial state / Authenticating    | The client started up and isn't logged as user |
-| `Menu`                  | Menu                              | A point between the login and the game. Also a point for looking up some statistics and adding new questions |
-| `Room Member`           | Waiting room                      | A place that a user can wait for the game to start while seeing the room data and the statistics of the users that are in the room. Leaving the room will notify everyone else |
-| `Room Admin`            | Waiting room                      | Same as the `Room Member` State but can kick players, change the room data and statrt the game. Leaving the room will close it |
-| `Game`                  | Playing the game                  | The actual game. Can request questions and submit answers. Leaving will do as same as `Room Member` or `Room Admin` (if the client is the admin of the room) |
-| `Finished Game Early`   | Waiting place                     | The client has finished, but there are some players that didn't. Leaving will do the same as `Game` |
+| State Name              | Purpose                        | Description                                                                                                                                                                                                                                     |
+|-------------------------|--------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `Login`                 | Initial state / Authentication | The client has just connected and is not yet aligned with a user                                                                                                                                                                                |
+| `Menu`                  | Menu                           | The main hub for all primary actions, such as joining a room, viewing statistics, etc.                                                                                                                                                          |
+| `Room Member`           | Waiting room                   | The waiting state for all room guests for when until the room admin wishes to start the game. The user may request to see the room data and the statistics of the users that are in the room. Leaving the room will notify everyone else in it. |
+| `Room Admin`            | Waiting room                   | Same as the `Room Member` State, but may also perform admin actions; kick players, change the room data and start the game. As an admin, leaving the room will close it & notify others.                                                        |
+| `Game`                  | Playing the game               | The actual game state. Can request questions and submit answers. Leaving it prompts the same behavior as `Room Member` and `Room Admin` (if the client is the admin of the room).                                                               |
+| `Finished Game Early`   | Waiting place                  | The player has finished answering all questions, though some players did not. Leaving behaves the same as in the `Game` state.                                                                                                                  |
 
 ---
 
 ### 🔁 Transitions
 
-| From                  | To                    | Trigger/Event                   | Description |
-|-----------------------|-----------------------|---------------------------------|-------------|
-|                       | `Login`               | Starting the client             | Client start up. |
-| `Login`               | `Menu`                | Login / Signup                  | The client has been authenticated. |
-| `Menu`                | `Login`               | Logout                          | User logged out. |
-| `Menu`                | `Room Member`         | Join room                       | User joined an existing room. |
-| `Menu`                | `Room Admin`          | Create room                     | User created a room. |
-| `Room Member`         | `Menu`                | Leaving / Kicked / Admin left   | User going back to the menu. |
-| `Room Admin`          | `Menu`                | Closing room                    | User going back to the menu and closing the room. |
-| `Room Member/Admin`   | `Game`                | Admin started a game            | Starts a game. |
-| `Game`                | `Finished Game Early` | User finished the current game  | User finnished the game. |
-| `Finished Game Early` | `Room Member/Admin`   | Game finished                   | End of game. |
+| From                  | To                    | Trigger/Event                  | Description                                       |
+|-----------------------|-----------------------|--------------------------------|---------------------------------------------------|
+|                       | `Login`               | Starting the client            | The client was connected.                         |
+| `Login`               | `Menu`                | Login / Signup                 | The client has been authenticated.                |
+| `Menu`                | `Login`               | Logout                         | User logged out.                                  |
+| `Menu`                | `Room Member`         | Join room                      | User joined a room.                               |
+| `Menu`                | `Room Admin`          | Create room                    | User created a room.                              |
+| `Room Member`         | `Menu`                | Leaving / Kicked / Admin left  | User going back to the menu.                      |
+| `Room Admin`          | `Menu`                | Closing room                   | User going back to the menu and closing the room. |
+| `Room Member/Admin`   | `Game`                | Admin started the game         | Game was started.                                 |
+| `Game`                | `Finished Game Early` | User finished the current game | User finished the game.                           |
+| `Finished Game Early` | `Room Member/Admin`   | Game finished                  | End of game.                                      |
 
 ---
 
