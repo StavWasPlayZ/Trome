@@ -56,7 +56,7 @@ public class RoomAdminViewModel : RoomViewModel
             
             this
                 .WhenAnyValue(x => x.MaxPlayers)
-                .Subscribe(_ => MaxPlayersValid = MaxPlayers > 0)
+                .Subscribe(_ => MaxPlayersValid = MaxPlayers is > 0 and < 100)
                 .DisposeWith(disposables);
         });
     }
