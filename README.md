@@ -92,7 +92,7 @@ git clone https://gitlab.com/Tomgluz/Trivia_Itay_Stav_2025.git
 
 #### Windows
 
-Install VCPKG directly under your C drive:
+Install `VCPKG` directly under your C drive:
 
 ```powershell
 cd C:\
