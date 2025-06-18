@@ -210,6 +210,10 @@ public abstract class RoomViewModel : PageViewModel
         if (MaxPlayers == players.Count)
             return;
 
+        // Don't crash the client 🙏
+        if (MaxPlayers > 100)
+            return;
+
         while (MaxPlayers > players.Count)
         {
             players.Add(null);
