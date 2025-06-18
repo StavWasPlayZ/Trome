@@ -225,7 +225,7 @@ All body content is:
 - Formatted in **JSON**
 - 🔐 **Encrypted** using the predetermined cryptographic scheme
 
-### Notifications System
+### 🔔 Notifications System
 
 Simply defined as a *"response with no request"*.
 
