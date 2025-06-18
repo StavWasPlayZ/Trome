@@ -89,4 +89,65 @@ Features explicitly deemed as a bonus by Magshimim, as well as additional, custo
 
 ---
 
+## Codec model
+
+### 📬 Message structure (Protocol)
+
+#### 🧾 Request
+
+| Field          | Size     | Description                  |
+|----------------|----------|------------------------------|
+| `Message Code` | 1 byte   | Message code identifier      |
+| `Length`       | 4 bytes  | Length of the body in bytes (For the example: N bytes) |
+| `Body`         | N bytes  | The data |
+
+
+#### 🧾 Response
+
+| Field          | Size     | Description                  |
+|----------------|----------|------------------------------|
+| `Message Type` | 1 byte   | Message type identifier (Response / Notification)     |
+| `Message Code` | 1 byte   | Message code identifier      |
+| `Length`       | 4 bytes  | Length of the body in bytes (For the example: N bytes) |
+| `Body`         | N bytes  | The data |
+
+#### 📦 Body
+
+The body is determined by the message type. It may contain strings, IDs, answers, scores, or questions in JSON format. The Body is encrypted via the encryption (predetermined)
+
+---
+
+## 🔐 Cryptography Overview
+
+This project uses modern cryptographic techniques to ensure secure communication between the **Server** and **Client**. Most of the encryption and decryption operations are powered by the [Crypto++](https://www.cryptopp.com/) library and .NET [System.Security.Cryptography](https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography?view=net-9.0).
+
+NOTE: The keys are static, therefore it isn't fully secure. Don't use this as an example for an actual Cryptography example without making files at runtime. We did it that way because `Crypto++` and `System.Security.Cryptography` RSA keys don't fit for each other, we made the keys via openssl.
+---
+
+### 🔑 Current Encryption Method: RSA (Asymmetric)
+
+- **Algorithm**: RSA (2048-bit keys)
+- **Library**: `Crypto++` and  `System.Security.Cryptography`
+- **Usage**: Used to encrypt session secrets and sensitive data.
+- **Key Management**:
+  - **Server** and **Client** each have their own RSA key pair.
+  - Public/private keys are stored in `.pem` files.
+  - Keys are loaded **at startup** from the files.
+
+### 🛠 Other Encryption Method
+
+#### 🟡 AES (Advanced Encryption Standard)
+
+- **Algorithm**: AES-256 in CBC mode
+- **Library**: `Crypto++` and  `System.Security.Cryptography`
+- **Use Case**: Once a session is established using RSA, AES can encrypt bulk data with lower computational cost.
+
+#### 🟡 OTP (One-Time Pad)
+
+- **Use Case**: For lightweight or critical communications requiring unbreakable encryption (if keys are truly random and never reused).
+- **Library**: None
+- **Limitations**: Requires secure key exchange and perfect synchronization.
+
+---
+
 # etc.
