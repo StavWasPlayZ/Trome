@@ -6,11 +6,59 @@ Trome was created and submitted as part of the Magshimim National Cyber Program 
 
 Made by Itay Herskovits and Stav Solomon.
 
+# Features
+
+- Cross-platform server & client
+- 2 Gamemodes
+    - Trivia Rush
+    - Head-to-Head
+- User-defined questions
+- Player kicking
+- BGM !!
+
+## Bonuses
+Features explicitly deemed as a bonus by Magshimim, as well as additional, custom ones we simply wanted to add:
+
+### Official
+- Regexes
+    - Signup validation with regexes using the [Compile Time Regular Expressions](https://github.com/hanickadot/compile-time-regular-expressions) library
+- Singletons
+    - The transformation of the following classes to use the Singleton pattern:
+        - `Server`
+        - `Database`
+        - `CommonCommunicator`
+        - `WindowsCommunicator`
+        - `UnixCommunicator`
+    - The transformation of the following classes to use the Static Class pattern:
+        - `JsonRequestPacketDeserializer`
+        - `JsonResponsePacketSerializer`
+- MongoDB
+- Pulling questions from [OpenTDB](https://opentdb.com/) into the database
+- User-defined questions
+- Head-to-Head gamemode
+    - Pre-game countdown
+- Cryptography
+    - OTP
+    - Crypto++
+        - RSA
+        - AES
+
+### Custom
+- CMake-aligned project
+- Cross-platform support for Windows/Unix
+- Notifications system
+- Avalonia
+- Harmonically syncing BGM w/ [NAudio](https://github.com/naudio/NAudio)
+- Viewing player statistics in-game
+- Player kicking
+- SQLite Prepared Statements & Bindings
+
 # Installation & Setup
 
 # Server Infrastructure
 
-## State management
+## State Management
+
 ### 📍 States
 
 | State Name              | Purpose                           | Description |
