@@ -95,21 +95,21 @@ Features explicitly deemed as a bonus by Magshimim, as well as additional, custo
 
 #### 🧾 Request
 
-| Field          | Size     | Description                  |
-|----------------|----------|------------------------------|
-| `Message Code` | 1 byte   | Message code identifier      |
+| Field          | Size     | Description                                            |
+|----------------|----------|--------------------------------------------------------|
+| `Message Code` | 1 byte   | Message code identifier                                |
 | `Length`       | 4 bytes  | Length of the body in bytes (For the example: N bytes) |
-| `Body`         | N bytes  | The data |
+| `Body`         | N bytes  | The data                                               |
 
 
 #### 🧾 Response
 
-| Field          | Size     | Description                  |
-|----------------|----------|------------------------------|
-| `Message Type` | 1 byte   | Message type identifier (Response / Notification)     |
-| `Message Code` | 1 byte   | Message code identifier      |
+| Field          | Size     | Description                                            |
+|----------------|----------|--------------------------------------------------------|
+| `Message Type` | 1 byte   | Message type identifier (Response / Notification)      |
+| `Message Code` | 1 byte   | Message code identifier                                |
 | `Length`       | 4 bytes  | Length of the body in bytes (For the example: N bytes) |
-| `Body`         | N bytes  | The data |
+| `Body`         | N bytes  | The data                                               |
 
 #### 📦 Body
 
