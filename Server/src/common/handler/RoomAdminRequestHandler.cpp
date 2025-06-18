@@ -77,11 +77,9 @@ RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo &, const Clos
     );
 }
 
-RequestResult RoomAdminRequestHandler::updateRoomData(const RequestInfo &info, const UpdateRoomDataRequest &request) const
+std::optional<RequestResult> RoomAdminRequestHandler::checkRoomData(const RequestInfo &info, const RoomData &data) const
 {
-    const RoomData& data = request.data;
-
-    //NOTE: nzp = non-zero positive
+    // NOTE: nzp = non-zero positive
     if (data.timePerQuestionSecs <= 0)
     {
         return RequestResult(
@@ -103,7 +101,47 @@ RequestResult RoomAdminRequestHandler::updateRoomData(const RequestInfo &info, c
         );
     }
 
-    m_room.setData(data);
+    if (data.timePerQuestionSecs > 99)
+    {
+        return RequestResult(
+            new ErrorResponse(ErrorStatus::INVALID_ARGUMENT, info.id, "time_per_question_secs-max")
+        );
+    }
+
+    if (data.maxPlayers > 99)
+    {
+        return RequestResult(
+            new ErrorResponse(ErrorStatus::INVALID_ARGUMENT, info.id, "max_players-max")
+        );
+    }
+
+    if (data.questionsCount > 99)
+    {
+        return RequestResult(
+            new ErrorResponse(ErrorStatus::INVALID_ARGUMENT, info.id, "question_count-max")
+        );
+    }
+
+    if (data.questionsCount > this->m_handlerFactory.getRoomManager().getQuestionCount())
+    {
+        return RequestResult(
+            new ErrorResponse(ErrorStatus::INVALID_ARGUMENT, info.id, "question_count-over_question_count")
+        );
+    }
+
+    return std::nullopt;
+};
+
+RequestResult RoomAdminRequestHandler::updateRoomData(const RequestInfo &info, const UpdateRoomDataRequest &request) const
+{
+    std::optional<RequestResult> result = checkRoomData(info, request.data);
+
+    if (result.has_value())
+    {
+        return result.value();
+    }
+
+    m_room.setData(request.data);
 
     return RequestResult(
         new UpdateRoomDataResponse()
@@ -121,4 +159,4 @@ RequestResult RoomAdminRequestHandler::kick(const RequestInfo &info, const KickP
     m_room.kickUser(toBeKicked);
 
     return RequestResult(new KickPlayerResponse());
-};
+}

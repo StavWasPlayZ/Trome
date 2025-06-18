@@ -117,3 +117,8 @@ std::optional<const Room*> RoomManager::getRoom(const int roomID) const
     return std::nullopt;
 }
 
+int RoomManager::getQuestionCount() const
+{
+    return this->m_database.queryQuestionsCount();
+}
+

@@ -27,4 +27,5 @@ private:
     RequestResult updateRoomData(const RequestInfo &info, const UpdateRoomDataRequest &request) const;
 
     RequestResult kick(const RequestInfo &info, const KickPlayerRequest &request) const;
+    std::optional<RequestResult> checkRoomData(const RequestInfo &info, const RoomData &data) const;
 };
