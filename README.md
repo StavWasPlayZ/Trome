@@ -6,7 +6,7 @@ Trome was created and submitted as part of the Magshimim National Cyber Program 
 
 Made by Itay Herskovits and Stav Solomon.
 
-# Features
+# 📌 Features
 
 - Cross-platform server & client
 - 2 Gamemodes
@@ -16,10 +16,10 @@ Made by Itay Herskovits and Stav Solomon.
 - Player kicking
 - BGM !!
 
-## Bonuses
+## 🎁 Bonuses
 Features explicitly deemed as a bonus by Magshimim, as well as additional, custom ones we simply wanted to add:
 
-### Official
+### ✅ Official
 - Regexes
     - Signup validation with regexes using the [Compile Time Regular Expressions](https://github.com/hanickadot/compile-time-regular-expressions) library
 - Singletons
@@ -43,7 +43,7 @@ Features explicitly deemed as a bonus by Magshimim, as well as additional, custo
         - RSA
         - AES
 
-### Custom
+### 🛠️ Custom
 - CMake-aligned project
 - Cross-platform support for Windows/Unix
 - Notifications system
@@ -53,11 +53,11 @@ Features explicitly deemed as a bonus by Magshimim, as well as additional, custo
 - Player kicking
 - SQLite Prepared Statements & Bindings
 
-# Installation & Setup
+# 🧰 Installation & Setup
 
-# Server Infrastructure
+# 🏗️ Server Infrastructure
 
-## State Management
+## 🧠 State Management
 
 ### 📍 States
 
@@ -89,7 +89,7 @@ Features explicitly deemed as a bonus by Magshimim, as well as additional, custo
 
 ---
 
-## Codec model
+## 🧩 Codec model
 
 ### 📬 Message structure (Protocol)
 
@@ -111,9 +111,20 @@ Features explicitly deemed as a bonus by Magshimim, as well as additional, custo
 | `Length`       | 4 bytes  | Length of the body in bytes (For the example: N bytes) |
 | `Body`         | N bytes  | The data |
 
-#### 📦 Body
+#### 📦 Body Content
 
-The body is determined by the message type. It may contain strings, IDs, answers, scores, or questions in JSON format. The Body is encrypted via the encryption (predetermined)
+The content of the `Body` field depends on the message type. It may include:
+
+- 🧾 **Strings** – Textual data (e.g., usernames, messages)
+- 🆔 **Identifiers** – User IDs, session tokens, etc.
+- ❓ **Questions** – Quiz or trivia questions
+- ✅ **Answers** – User-selected or correct answers
+- 🏆 **Scores** – Numeric performance indicators
+
+All body content is:
+- Formatted in **JSON**
+- 🔐 **Encrypted** using the predetermined cryptographic scheme
+
 
 ---
 
