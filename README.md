@@ -6,6 +6,31 @@ Trome was created and submitted as part of the Magshimim National Cyber Program 
 
 Made by Itay Herskovits and Stav Solomon.
 
+## 📚 Table of Contents
+
+- [📌 Features](#-features)
+- [🎁 Bonuses](#-bonuses)
+  - [✅ Official](#-official)
+  - [🛠️ Custom](#-custom)
+- [🧰 Installation & Setup](#-installation--setup)
+- [🏗️ Server Infrastructure](#-server-infrastructure)
+  - [🧠 State Management](#-state-management)
+    - [📍 States](#-states)
+    - [🔁 Transitions](#-transitions)
+  - [🧩 Codec Model](#-codec-model)
+    - [📬 Message Structure (Protocol)](#-message-structure-protocol)
+    - [🧾 Request](#-request)
+    - [🧾 Response](#-response)
+    - [📦 Body Content](#-body-content)
+    - [📡 Notifications System](#notifications-system)
+- [🔐 Cryptography Overview](#-cryptography-overview)
+  - [🔑 Current Encryption Method: RSA (Asymmetric)](#-current-encryption-method-rsa-asymmetric)
+  - [🛠 Other Encryption Method](#-other-encryption-method)
+    - [🟡 AES (Advanced Encryption Standard)](#-aes-advanced-encryption-standard)
+    - [🟡 OTP (One-Time Pad)](#-otp-one-time-pad)
+
+---
+
 # 📌 Features
 
 - Cross-platform server & client
