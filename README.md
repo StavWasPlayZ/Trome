@@ -132,7 +132,7 @@ All body content is:
 This project uses modern cryptographic techniques to ensure secure communication between the **Server** and **Client**. Most of the encryption and decryption operations are powered by the [Crypto++](https://www.cryptopp.com/) library and .NET [System.Security.Cryptography](https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography?view=net-9.0).
 
 > [!CAUTION]
-> The keys are static, therefore are not fully secure.  
+> The keys are static, and are therefore not fully secure.  
 > DON'T use this as an example for actual Cryptography matters without making these files at runtime.
 > We did it that way because `Crypto++` and `System.Security.Cryptography` RSA keys are not fit for each other, hence they were both made via OpenSSL.
  
