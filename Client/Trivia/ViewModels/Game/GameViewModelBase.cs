@@ -16,6 +16,8 @@ public abstract class GameViewModelBase : SubRoomViewModel
     {        
         LeaveGameCommand = ReactiveCommand.CreateFromTask(async () =>
         {
+            App.MusicService?.PlayBackgroundTrack();
+            
             await Comm.SendRequestAsync<LeaveGameResponse>(new LeaveGameRequest());
             NavBackFromRoom();
         });
