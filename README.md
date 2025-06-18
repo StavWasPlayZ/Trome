@@ -127,7 +127,7 @@ NOTE: The keys are static, therefore it isn't fully secure. Don't use this as an
 ### 🔑 Current Encryption Method: RSA (Asymmetric)
 
 - **Algorithm**: RSA (2048-bit keys)
-- **Library**: Crypto++
+- **Library**: `Crypto++` and  `System.Security.Cryptography`
 - **Usage**: Used to encrypt session secrets and sensitive data.
 - **Key Management**:
   - **Server** and **Client** each have their own RSA key pair.
@@ -139,11 +139,13 @@ NOTE: The keys are static, therefore it isn't fully secure. Don't use this as an
 #### 🟡 AES (Advanced Encryption Standard)
 
 - **Algorithm**: AES-256 in CBC mode
+- **Library**: `Crypto++` and  `System.Security.Cryptography`
 - **Use Case**: Once a session is established using RSA, AES can encrypt bulk data with lower computational cost.
 
 #### 🟡 OTP (One-Time Pad)
 
 - **Use Case**: For lightweight or critical communications requiring unbreakable encryption (if keys are truly random and never reused).
+- **Library**: None
 - **Limitations**: Requires secure key exchange and perfect synchronization.
 
 ---
