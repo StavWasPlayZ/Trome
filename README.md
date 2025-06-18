@@ -173,5 +173,3 @@ Most the encryption/decryption operations are powered by the [Crypto++](https://
 - **Limitations**: Requires secure key exchange and perfect synchronization.
 
 ---
-
-# etc.
