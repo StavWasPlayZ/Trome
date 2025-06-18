@@ -115,10 +115,9 @@ Features explicitly deemed as a bonus by Magshimim, as well as additional, custo
 
 The content of the `Body` field depends on the message type. It may include:
 
-- 🧾 **Strings** – Textual data (e.g., usernames, messages)
-- 🆔 **Identifiers** – User IDs, session tokens, etc.
-- ❓ **Questions** – Quiz or trivia questions
-- ✅ **Answers** – User-selected or correct answers
+- 🧾 **Strings** – Textual data (e.g., usernames, passwords)
+- 🆔 **Identifiers** – User IDs, etc.
+- ❓ **Questions** – Trivia questions
 - 🏆 **Scores** – Numeric performance indicators
 
 All body content is:
