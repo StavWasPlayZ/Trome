@@ -45,7 +45,7 @@ Features explicitly deemed as a bonus by Magshimim, as well as additional, custo
 
 ### Custom
 - CMake-aligned project
-- Cros-platform support for Windows/Unix
+- Cross-platform support for Windows/Unix
 - Notifications system
 - Avalonia
 - Harmonically syncing BGM w/ [NAudio](https://github.com/naudio/NAudio)
