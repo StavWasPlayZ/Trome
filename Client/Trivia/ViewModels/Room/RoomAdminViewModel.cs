@@ -51,7 +51,7 @@ public class RoomAdminViewModel : RoomViewModel
             
             this
                 .WhenAnyValue(x => x.SecsPerQuestion)
-                .Subscribe(_ => SecsPerQuestionValid = SecsPerQuestion > 0)
+                .Subscribe(_ => SecsPerQuestionValid = SecsPerQuestion is > 0 and <= 120)
                 .DisposeWith(disposables);
             
             this
