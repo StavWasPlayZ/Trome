@@ -65,7 +65,7 @@ Made by Itay Herskovits and Stav Solomon.
 
 #### 📦 Body
 
-The body is determined by the message type. It may contain strings, IDs, answers, scores, or questions in JSON or custom format. The Body is encrypted via the encryption (predetermined)
+The body is determined by the message type. It may contain strings, IDs, answers, scores, or questions in JSON format. The Body is encrypted via the encryption (predetermined)
 
 ---
 
