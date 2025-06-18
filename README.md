@@ -80,6 +80,82 @@ Features explicitly deemed as a bonus by Magshimim, as well as additional, custo
 
 # 🧰 Installation & Setup
 
+First, clone this repository:
+
+```bash
+git clone https://gitlab.com/Tomgluz/Trivia_Itay_Stav_2025.git
+```
+
+## Server Setup
+
+### Dependencies
+
+#### Windows
+
+Install `VCPKG` directly under your C drive:
+
+```powershell
+cd C:\
+
+# Clone the repository
+git clone https://github.com/microsoft/vcpkg.git
+
+# Run the bootstrap script
+cd vcpkg; .\bootstrap-vcpkg.bat
+```
+
+When done, install the following dependencies:
+
+```powershell
+.\vcpkg install openssl mongo-cxx-driver cryptopp
+```
+
+
+#### Unix
+
+Install the following development packages:
+
+- OpenSSL
+- MongoDB C++ Driver
+- Crypto++
+
+> [!NOTE]
+> Package names may vary depending on your package manager and distribution.
+
+### Building
+
+In the project directory, under Server:
+
+- If a build directory is not present, create one.
+- CD into it.
+
+```bash
+cmake ../
+cmake --build ./
+```
+
+## Client
+
+Within the Client directory, run the following for your operating system of choice (self-contained):
+
+### Windows
+
+```bash
+dotnet publish -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true
+```
+
+### MacOS
+
+```bash
+dotnet publish -c Release -r osx-x64 --self-contained true /p:PublishSingleFile=true
+```
+
+### Linux
+
+```bash
+dotnet publish -c Release -r linux-x64 --self-contained true /p:PublishSingleFile=true
+```
+
 # 🏗️ Server Infrastructure
 
 ## 🧠 State Management
