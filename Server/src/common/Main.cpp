@@ -18,6 +18,8 @@ int main()
 
 void cmdHandler()
 {
+    std::cout << "Server started. Type EXIT to close." << std::endl;
+
 	while (server.isRunning())
 	{
 		std::string cmd;
