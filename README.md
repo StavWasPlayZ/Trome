@@ -140,7 +140,7 @@ This project uses modern cryptographic techniques to ensure secure communication
 
 ### 🔑 Current Encryption Method: RSA (Asymmetric)
 
-- **Algorithm**: RSA (2048-bit keys)
+- **Algorithm**: RSA (1024-bit keys)
 - **Library**: `Crypto++` and  `System.Security.Cryptography`
 - **Usage**: Used to encrypt session secrets and sensitive data.
 - **Key Management**:
