@@ -126,9 +126,7 @@ All body content is:
 
 ### Notifications System
 
-#### Overview
-
-Notifications are simply defined as a *"response with no request"*.
+Simply defined as a *"response with no request"*.
 
 They are a replacement for client-initiated polling request, prompting instead for *server-initiated, pushing* packets. 
 
