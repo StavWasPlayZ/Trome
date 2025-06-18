@@ -19,6 +19,8 @@
             <Setter Property="Height" Value="45"/>
             <Setter Property="Background" Value="#33EF657C"/>
             <Setter Property="HorizontalAlignment" Value="Right"/>
+            
+            <Setter Property="UnderlineBrush" Value="#C0FFFFFF"/>
                             
             <Style Selector="^ TextBox">
                 <Setter Property="TextAlignment" Value="Start"/>
