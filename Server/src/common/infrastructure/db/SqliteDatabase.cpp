@@ -236,8 +236,6 @@ unsigned int SqliteDatabase::addNewUser(const std::string &username, const std::
                                         const std::string &email, const std::string &phone,
                                         const std::string &birthdate, const std::optional<std::string> &address) const
 {
-    validateSignupInfo(password, email, phone, birthdate, address);
-
     const int id = *queryIds(
         this->_preppedStatements.at("addNewUser"),
         {
