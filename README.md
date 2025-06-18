@@ -26,15 +26,18 @@ Made by Itay Herskovits and Stav Solomon.
 
 ### 🔁 Transitions
 
-| From         | To            | Trigger/Event            | Description |
-|--------------|---------------|---------------------------|-------------|
-| `IDLE`       | `LOADING`     | Start Game                | Host starts the game. |
-| `LOADING`    | `ASKING`      | Questions Loaded          | Questions are ready. |
-| `ASKING`     | `ANSWERING`   | Question Displayed        | Timer starts for answers. |
-| `ANSWERING`  | `EVALUATING`  | Timer Ends / All Answered | Time’s up or all answers in. |
-| `EVALUATING` | `SCOREBOARD`  | Evaluation Complete       | Scores are updated. |
-| `SCOREBOARD` | `ASKING`      | Next Question             | Move to next question. |
-| `SCOREBOARD` | `FINISHED`    | No More Questions         | End of game. |
+| From                  | To                    | Trigger/Event                   | Description |
+|-----------------------|-----------------------|---------------------------------|-------------|
+|                       | `Login`               | Starting the client             | Client start up. |
+| `Login`               | `Menu`                | Login / Signup                  | The client has been authenticated. |
+| `Menu`                | `Login`               | Logout                          | User logged out. |
+| `Menu`                | `Room Member`         | Join room                       | User joined an existing room. |
+| `Menu`                | `Room Admin`          | Create room                     | User created a room. |
+| `Room Member`         | `Menu`                | Leaving / Kicked / Admin left   | User going back to the menu. |
+| `Room Admin`          | `Menu`                | Closing room                    | User going back to the menu and closing the room. |
+| `Room Member/Admin`   | `Game`                | Admin started a game            | Starts a game. |
+| `Game`                | `Finished Game Early` | User finished the current game  | User finnished the game. |
+| `Finished Game Early` | `Room Member/Admin`   | Game finished                   | End of game. |
 
 ---
 
