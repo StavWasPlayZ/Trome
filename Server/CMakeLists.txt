@@ -44,6 +44,8 @@ add_executable (Server
   "src/common/exception/RegexViolationException.h"
   "src/common/exception/FileNotFoundException.h"
   "src/common/exception/FileNotFoundException.cpp"
+  "src/common/exception/RoomDataException.h"
+  "src/common/exception/RoomDataException.cpp"
   "src/common/Constants.h"
 
   "src/common/handler/IRequestHandler.h"

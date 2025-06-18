@@ -68,7 +68,16 @@ public class ConnectingViewModel : PageViewModel
 
     private void OnConnectionFailed(Exception e)
     {
-        Console.Error.WriteLine(e);
+        if(e.Message.Contains("target machine actively refused it"))
+        {
+            Console.WriteLine($"{Communicator.AnsiColor.DarkYellow}Connection failed:{Communicator.AnsiColor.Reset}");
+            Console.WriteLine($"{Communicator.AnsiColor.DarkYellow}Server is not open :({Communicator.AnsiColor.Reset}");
+            Console.WriteLine($"{Communicator.AnsiColor.DarkYellow}Try again later{Communicator.AnsiColor.Reset}");
+        }
+        else
+        {
+            Console.Error.WriteLine(e);
+        }
         Dispatcher.UIThread.Post(() => ConnectionFailed = true);
     }
 }
