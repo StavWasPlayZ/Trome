@@ -32,6 +32,8 @@ public class RoomGuestViewModel : RoomViewModel
 
     protected override void CommOnPacketReceived(IS2CPacket packet)
     {
+        base.CommOnPacketReceived(packet);
+
         switch (packet)
         {
             case RoomDataUpdatedNotification roomDataNotif:
@@ -41,9 +43,7 @@ public class RoomGuestViewModel : RoomViewModel
             case GameStartedNotification gameStartedNotif:
                 OnGameStarted(gameStartedNotif);
                 break;
-        }
-        
-        base.CommOnPacketReceived(packet);
+        }        
     }
 
     private void OnGameStarted(GameStartedNotification gameStartedNotif)

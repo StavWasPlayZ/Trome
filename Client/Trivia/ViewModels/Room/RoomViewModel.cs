@@ -235,6 +235,8 @@ public abstract class RoomViewModel : PageViewModel
 
     protected override void CommOnPacketReceived(IS2CPacket packet)
     {
+        base.CommOnPacketReceived(packet);
+
         switch (packet)
         {
             case RoomClosedNotification:
@@ -252,12 +254,10 @@ public abstract class RoomViewModel : PageViewModel
             case PlayerKickedNotification playerKickedNotif:
                 HandlePlayerKicked(playerKickedNotif.PlayerId);
                 break;
-        }
-        
-        base.CommOnPacketReceived(packet);
+        }        
     }
     
-    public void HandlePlayerKicked(int userId)
+    public void HandlePlayerKicked(long userId)
     {
         if (userId == AppService.SessionUser!.Id)
         {
@@ -279,7 +279,7 @@ public abstract class RoomViewModel : PageViewModel
         };
     }
     
-    private void HandlePlayerLeft(int userId)
+    private void HandlePlayerLeft(long userId)
     {
         for (var i = 0; i < Players.Count; i++)
         {

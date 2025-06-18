@@ -109,6 +109,8 @@ public class HeadToHeadRoomViewModel : RoomViewModel
 
     protected override void CommOnPacketReceived(IS2CPacket packet)
     {
+        base.CommOnPacketReceived(packet);
+
         switch (packet)
         {
             case GameStartedNotification gameStartedNotif:
@@ -130,8 +132,6 @@ public class HeadToHeadRoomViewModel : RoomViewModel
             case PlayerLeftRoomNotification:
                 UpdatePlayerFields();
                 break;
-        }
-        
-        base.CommOnPacketReceived(packet);
+        }        
     }
 }

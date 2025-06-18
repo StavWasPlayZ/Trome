@@ -42,6 +42,8 @@ public abstract class SubRoomViewModel : PageViewModel
     
     protected override void CommOnPacketReceived(IS2CPacket packet)
     {
+        base.CommOnPacketReceived(packet);
+
         switch (packet)
         {
             case RoomClosedNotification:
@@ -57,9 +59,7 @@ public abstract class SubRoomViewModel : PageViewModel
             case PlayerKickedNotification playerKickedNotif:
                 HandlePlayerKicked(playerKickedNotif);
                 break;
-        }
-        
-        base.CommOnPacketReceived(packet);
+        }        
     }
 
     private void HandlePlayerKicked(PlayerKickedNotification playerKickedNotif)
