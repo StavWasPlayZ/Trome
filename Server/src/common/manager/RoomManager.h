@@ -34,10 +34,10 @@ private:
     /**
      * Room ID to room mappings.
      */
-    std::unordered_map<unsigned int, Room> m_rooms;
+    std::unordered_map<long, Room> m_rooms;
 
     /**
      * All rooms that are currently in a waiting state
      */
-    std::unordered_map<unsigned int, Room *> m_waitingRooms;
+    std::unordered_map<long, Room *> m_waitingRooms;
 };

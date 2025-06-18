@@ -37,9 +37,9 @@ struct PlayerJoinedRoomNotification : ProtocolNotification
 
 struct PlayerLeftRoomNotification : ProtocolNotification
 {
-    explicit PlayerLeftRoomNotification(unsigned int player);
+    explicit PlayerLeftRoomNotification(long playerId);
 
-    const unsigned int playerId;
+    const long playerId;
 };
 
 struct RoomClosedNotification : ProtocolNotification
@@ -75,7 +75,7 @@ struct PlayerFinishedNotification : ProtocolNotification
 
 struct PlayerKickedNotification : ProtocolNotification
 {
-    explicit PlayerKickedNotification(unsigned int playerId);
+    explicit PlayerKickedNotification(long playerId);
 
-    const unsigned int playerId;
+    const long playerId;
 };

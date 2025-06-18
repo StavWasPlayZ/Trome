@@ -21,9 +21,9 @@ public:
     bool open() override;
     bool close() override;
     bool doesUserExist(const std::string &username) const override;
-    unsigned int queryIdOfUser(const std::string &username, const std::string &password) const override;
+    long queryIdOfUser(const std::string &username, const std::string &password) const override;
 
-    unsigned int addNewUser(const std::string &username, const std::string &password, const std::string &email,
+    long addNewUser(const std::string &username, const std::string &password, const std::string &email,
                             const std::string &phone, const std::string &birthdate,
                             const std::optional<std::string> &address) const override;
 
@@ -37,7 +37,7 @@ public:
 
     std::map<UserModel, int> queryHighScores(int limit = 20) const override;
 
-    std::optional<UserStatistics> getUserStatisticsById(unsigned int id) const override;
+    std::optional<UserStatistics> getUserStatisticsById(long id) const override;
 
 private:
     static const std::string CONNECTION_STRING_PATH;
@@ -53,7 +53,7 @@ private:
     void setupDbConnections();
     static void setConnectionString();
 
-    static int objIdToNumeric(const bsoncxx::oid& id);
+    static long objIdToNumeric(const bsoncxx::oid& id);
 
     mongocxx::collection usersCollection() const;
     mongocxx::collection questionsCollection() const;

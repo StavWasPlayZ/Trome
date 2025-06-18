@@ -36,13 +36,13 @@ public:
 	/**
 	 * Returns: The ID of the user matching the provided credentials; -1 otherwise.
 	 */
-	virtual unsigned int queryIdOfUser(const std::string& username, const std::string& password) const = 0;
+	virtual long queryIdOfUser(const std::string& username, const std::string& password) const = 0;
 	/**
 	 * Adds a new user.
 	 * 
 	 * Returns: Its new ID
 	 */
-	virtual unsigned int addNewUser(
+	virtual long addNewUser(
 		const std::string& username,
 		const std::string& password,
 		const std::string& email,
@@ -67,7 +67,7 @@ public:
     virtual void addToStats(const std::string &username, int time, int answers, int correctAnswers, int points,
                             int games = 1) const = 0;
 
-    virtual std::optional<UserStatistics> getUserStatisticsById(unsigned int id) const = 0;
+    virtual std::optional<UserStatistics> getUserStatisticsById(long id) const = 0;
 
 	virtual std::map<UserModel, int> queryHighScores(int limit = 20) const = 0;
 

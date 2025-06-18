@@ -21,14 +21,14 @@ public:
      *
      * Users should be added manually via Room::addUser.
      */
-    Room(unsigned int id, RoomType roomType, LoggedUser& admin, const RoomData& data, const IDatabase& database,
+    Room(long id, RoomType roomType, LoggedUser& admin, const RoomData& data, const IDatabase& database,
         RoomStatus status);
     ~Room();
 
     //TODO: Make part of an identifiable (LoggedUser is too)
     bool operator==(const Room &other) const;
 
-    static unsigned int generateId();
+    static long generateId();
 
 
     std::optional<Game*> getCurrentGame() const;
@@ -41,7 +41,7 @@ public:
     const std::vector<LoggedUser*>& getAllUsers() const;
 
 
-    unsigned int getId() const;
+    long getId() const;
 
     const RoomData& getData() const;
     RoomType getType() const;
@@ -54,7 +54,7 @@ public:
     void setStatus(RoomStatus status);
 
 private:
-    const unsigned int m_id;
+    const long m_id;
     RoomStatus m_status;
     RoomType m_roomType;
 
@@ -76,7 +76,7 @@ private:
      * Used for counting how many instances of Room exists,
      * generating a unique ID for each.
      */
-    static unsigned int globalId;
+    static long globalId;
 };
 
 

@@ -32,5 +32,5 @@ private:
 	const IDatabase& m_database;
     RoomManager& m_roomManager;
 
-	std::unordered_map<unsigned int, Game> m_games;
+	std::unordered_map<long, Game> m_games;
 };

@@ -29,7 +29,7 @@ ProtocolRequest *ProtocolRequest::fromRequest(const RequestInfo &info)
     return JsonRequestPacketDeserializer::deserialize(info);
 }
 
-JoinRoomRequest::JoinRoomRequest(const unsigned int roomId) : roomID(roomId)
+JoinRoomRequest::JoinRoomRequest(const long roomId) : roomID(roomId)
 {
 }
 
@@ -37,7 +37,7 @@ CreateRoomRequest::CreateRoomRequest(const RoomType roomType) : roomType(roomTyp
 {
 }
 
-GetUserStatisticsRequest::GetUserStatisticsRequest(const unsigned int userId) : userId(userId)
+GetUserStatisticsRequest::GetUserStatisticsRequest(const long userId) : userId(userId)
 {
 }
 
@@ -57,6 +57,6 @@ AddQuestionRequest::AddQuestionRequest(const Question &question) : question(ques
 {
 }
 
-KickPlayerRequest::KickPlayerRequest(const unsigned int userId) : userId(userId)
+KickPlayerRequest::KickPlayerRequest(const long userId) : userId(userId)
 {
 }

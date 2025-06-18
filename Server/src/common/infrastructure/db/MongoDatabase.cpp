@@ -81,7 +81,7 @@ void MongoDatabase::setupDbConnections()
 //TODO: Convert usage of numbers as IDs to the unique IDs format used in Mongo,
 // in SQLite too.
 // Then remove this method.
-int MongoDatabase::objIdToNumeric(const bsoncxx::oid& id)
+long MongoDatabase::objIdToNumeric(const bsoncxx::oid& id)
 {
     return ID_HASHER(id.to_string());
 }
@@ -111,7 +111,7 @@ bool MongoDatabase::doesUserExist(const std::string &username) const
     return usersCollection().count_documents(userFilter.view()) != 0;
 }
 
-unsigned int MongoDatabase::queryIdOfUser(const std::string &username, const std::string &password) const
+long MongoDatabase::queryIdOfUser(const std::string &username, const std::string &password) const
 {
     const auto userFilter = bson_builder::make_document(
         bson_builder::kvp("username", username),
@@ -126,7 +126,7 @@ unsigned int MongoDatabase::queryIdOfUser(const std::string &username, const std
     return objIdToNumeric(result.value().view()["_id"].get_oid().value);
 }
 
-unsigned int MongoDatabase::addNewUser(const std::string &username, const std::string &password,
+long MongoDatabase::addNewUser(const std::string &username, const std::string &password,
                                        const std::string &email, const std::string &phone,
                                        const std::string &birthdate,
                                        const std::optional<std::string> &address) const
@@ -159,14 +159,14 @@ unsigned int MongoDatabase::addNewUser(const std::string &username, const std::s
 
     // Add the numeric ID
     const auto filter = bson_builder::make_document(
-        bson_builder::kvp("_id", result->inserted_id())
+        bson_builder::kvp("_id", result->inserted_id().get_oid().value)
     );
 
     const auto updateReq = bson_builder::make_document(
         bson_builder::kvp(
             "$set",
             bson_builder::make_document(
-                bson_builder::kvp("numId", objIdToNumeric(result->inserted_id().get_oid().value))
+                bson_builder::kvp("numId", static_cast<int64_t>(objIdToNumeric(result->inserted_id().get_oid().value)))
             )
         )
     );
@@ -305,7 +305,7 @@ std::map<UserModel, int> MongoDatabase::queryHighScores(int limit) const
     return results;
 }
 
-std::optional<UserStatistics> MongoDatabase::getUserStatisticsById(const unsigned int id) const
+std::optional<UserStatistics> MongoDatabase::getUserStatisticsById(const long id) const
 {
     const auto filter = bson_builder::make_document(
         bson_builder::kvp("numId", static_cast<int>(id))

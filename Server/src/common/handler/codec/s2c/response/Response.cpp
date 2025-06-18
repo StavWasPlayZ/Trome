@@ -8,16 +8,16 @@ ProtocolResponse::ProtocolResponse(const ResponseCode id) :
 
 ProtocolResponse::~ProtocolResponse() = default;
 
-RegistrationResponse::RegistrationResponse(const ResponseCode id, const unsigned int userId) :
+RegistrationResponse::RegistrationResponse(const ResponseCode id, const long userId) :
     ProtocolResponse(id),
     userId(userId)
 {}
 
-LoginResponse::LoginResponse(const unsigned int userId) :
+LoginResponse::LoginResponse(const long userId) :
     RegistrationResponse(ResponseCode::LOGIN, userId)
 {}
 
-SignupResponse::SignupResponse(const unsigned int userId) :
+SignupResponse::SignupResponse(const long userId) :
     RegistrationResponse(ResponseCode::SIGNUP, userId)
 {}
 
@@ -31,7 +31,7 @@ JoinRoomResponse::JoinRoomResponse(const Room &room, const std::vector<LoggedUse
     players(players)
 {}
 
-CreateRoomResponse::CreateRoomResponse(const unsigned int roomId, const RoomData& data) :
+CreateRoomResponse::CreateRoomResponse(const long roomId, const RoomData& data) :
     ProtocolResponse(ResponseCode::CREATE_ROOM),
     roomId(roomId),
     data(data)

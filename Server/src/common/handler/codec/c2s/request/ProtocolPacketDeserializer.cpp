@@ -13,13 +13,3 @@ RoomData ProtocolPacketDeserializer::deserialize(const nlohmann::json &data)
         data.at("questions_count")
     );
 }
-
-unsigned int ProtocolPacketDeserializer::toUL(const int n)
-{
-    if (n < 0)
-    {
-        throw std::runtime_error("Negative ID provided");
-    }
-
-    return static_cast<unsigned int>(n);
-}

@@ -2,7 +2,7 @@
 
 #include "infrastructure/Server.h"
 
-LoggedUser::LoggedUser(const unsigned int id, const std::string &username, Client &client) :
+LoggedUser::LoggedUser(const long id, const std::string &username, Client &client) :
     m_client(client),
     m_id(id),
     m_username(username),
@@ -14,7 +14,7 @@ const std::string &LoggedUser::getUsername() const
     return this->m_username;
 }
 
-unsigned int LoggedUser::getId() const
+long LoggedUser::getId() const
 {
     return this->m_id;
 }

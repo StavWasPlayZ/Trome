@@ -9,9 +9,9 @@
 
 #include <iostream>
 
-unsigned int Room::globalId = 0;
+long Room::globalId = 0;
 
-Room::Room(const unsigned int id, const RoomType roomType, LoggedUser &admin, const RoomData &data,
+Room::Room(const long id, const RoomType roomType, LoggedUser &admin, const RoomData &data,
            const IDatabase &database, const RoomStatus status) :
     m_id(id),
     // REVIEW: Perhaps could be initialized directly.
@@ -43,7 +43,7 @@ bool Room::operator==(const Room &other) const
     return this->m_id == other.m_id;
 }
 
-unsigned int Room::generateId()
+long Room::generateId()
 {
     return globalId++;
 }
@@ -151,7 +151,7 @@ const std::vector<LoggedUser *> &Room::getAllUsers() const
     return this->m_users;
 }
 
-unsigned int Room::getId() const
+long Room::getId() const
 {
     return this->m_id;
 }

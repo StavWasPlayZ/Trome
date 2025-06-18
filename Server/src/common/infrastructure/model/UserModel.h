@@ -5,9 +5,9 @@
 //TODO: Make LoggedUser extend UserModel
 struct UserModel
 {
-    UserModel(unsigned int id, const std::string& username);
+    UserModel(long id, const std::string& username);
 
-    unsigned int id;
+    long id;
     std::string username;
 
     //TODO: Identifiable parent.

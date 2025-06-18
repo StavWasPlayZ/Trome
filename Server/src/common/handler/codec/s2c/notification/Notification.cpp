@@ -14,9 +14,9 @@ PlayerJoinedRoomNotification::PlayerJoinedRoomNotification(const LoggedUser &pla
     player(player)
 {}
 
-PlayerLeftRoomNotification::PlayerLeftRoomNotification(const unsigned int player) :
+PlayerLeftRoomNotification::PlayerLeftRoomNotification(const long playerId) :
     ProtocolNotification(NotificationCode::PLAYER_LEFT_ROOM),
-    playerId(player)
+    playerId(playerId)
 {}
 
 RoomClosedNotification::RoomClosedNotification() :
@@ -41,7 +41,7 @@ GameEndedNotification::GameEndedNotification(const std::vector<PlayerResult> &re
 PlayerFinishedNotification::PlayerFinishedNotification() : ProtocolNotification(NotificationCode::PLAYER_FINISHED)
 {}
 
-PlayerKickedNotification::PlayerKickedNotification(const unsigned int playerId) :
+PlayerKickedNotification::PlayerKickedNotification(const long playerId) :
     ProtocolNotification(NotificationCode::PLAYER_KICKED),
     playerId(playerId)
 {}

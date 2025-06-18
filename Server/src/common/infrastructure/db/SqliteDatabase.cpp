@@ -202,9 +202,9 @@ bool SqliteDatabase::doesUserExist(const std::string& username) const
     );
 }
 
-unsigned int SqliteDatabase::queryIdOfUser(const std::string& username, const std::string& password) const
+long SqliteDatabase::queryIdOfUser(const std::string& username, const std::string& password) const
 {
-    const std::list<unsigned int> results = queryIds(
+    const std::list<long> results = queryIds(
         this->_preppedStatements.at("queryIdOfUser"),
         {username, password}
     );
@@ -217,9 +217,9 @@ unsigned int SqliteDatabase::queryIdOfUser(const std::string& username, const st
     return *results.begin();
 }
 
-unsigned int SqliteDatabase::queryIdOfUser(const std::string &username) const
+long SqliteDatabase::queryIdOfUser(const std::string &username) const
 {
-    const std::list<unsigned int> results = queryIds(
+    const std::list<long> results = queryIds(
         this->_preppedStatements.at("queryIdOfUser"),
         {username}
     );
@@ -232,7 +232,7 @@ unsigned int SqliteDatabase::queryIdOfUser(const std::string &username) const
     return *results.begin();
 }
 
-unsigned int SqliteDatabase::addNewUser(const std::string &username, const std::string &password,
+long SqliteDatabase::addNewUser(const std::string &username, const std::string &password,
                                         const std::string &email, const std::string &phone,
                                         const std::string &birthdate, const std::optional<std::string> &address) const
 {
@@ -366,7 +366,7 @@ std::map<UserModel, int> SqliteDatabase::queryHighScores(const int limit) const
 	return results;
 }
 
-std::optional<UserStatistics> SqliteDatabase::getUserStatisticsById(const unsigned int id) const
+std::optional<UserStatistics> SqliteDatabase::getUserStatisticsById(const long id) const
 {
     std::list<UserStatistics> results = querySql<UserStatistics>(
         this->_preppedStatements.at("getUserStatisticsById"),
@@ -413,15 +413,15 @@ bool SqliteDatabase::queryExists(sqlite3_stmt *preppedStatement, const std::vect
 	).begin();
 }
 
-std::list<unsigned int> SqliteDatabase::queryIds(sqlite3_stmt *preppedStatement,
+std::list<long> SqliteDatabase::queryIds(sqlite3_stmt *preppedStatement,
                                                  const std::vector<std::string> &bindings) const
 {
-    return querySql<unsigned int>(
+    return querySql<long>(
 		preppedStatement,
 
-		[](const std::map<std::string, std::optional<std::string>> &columns) -> unsigned int
+		[](const std::map<std::string, std::optional<std::string>> &columns) -> long
 		{
-			return static_cast<unsigned int>(std::stoul(columns.at("id").value()));
+			return static_cast<long>(std::stol(columns.at("id").value()));
 		},
 
 		bindings

@@ -19,7 +19,7 @@ Game::~Game()
     endGame();
 }
 
-unsigned int Game::getId() const
+long Game::getId() const
 {
     return this->m_room.getId();
 }

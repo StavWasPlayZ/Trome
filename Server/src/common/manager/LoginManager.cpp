@@ -71,7 +71,7 @@ ProtocolResponse *LoginManager::signup(const RequestInfo &info, const SignupRequ
 
 ProtocolResponse *LoginManager::login(const RequestInfo &info, const LoginRequest &request)
 {
-	const unsigned int userId = this->m_database.queryIdOfUser(request.username, request.password);
+	const long userId = this->m_database.queryIdOfUser(request.username, request.password);
 
 	if (userId == -1)
 	{
@@ -102,7 +102,7 @@ bool LoginManager::logout(const Client &client)
     if (it == m_clientToLoggedUser.end())
         return false;
 
-    const unsigned int userId = it->second->getId();
+    const long userId = it->second->getId();
 
     // This one actually contains the user resource
     this->m_loggedUsers.erase(it->second->getUsername());
@@ -128,12 +128,12 @@ LoggedUser &LoginManager::getUserByUsername(const std::string &username)
     return this->m_loggedUsers.at(username);
 }
 
-LoggedUser &LoginManager::getUserById(const unsigned int id) const
+LoggedUser &LoginManager::getUserById(const long id) const
 {
     return *this->m_loggedUsersById.at(id);
 }
 
-bool LoginManager::isLoggedIn(const unsigned int id) const
+bool LoginManager::isLoggedIn(const long id) const
 {
     return this->m_loggedUsersById.contains(id);
 }

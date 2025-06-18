@@ -20,7 +20,7 @@ public:
     Game(Room &room, const IDatabase &database, RoomManager& roomManager);
     ~Game();
 
-    unsigned int getId() const;
+    long getId() const;
 
     /**
      * Starts the game for this room, populating it with questions.

@@ -38,9 +38,9 @@ public:
 	bool isLoggedIn(const Client &client) const;
     LoggedUser& getUserByClient(const Client& client) const;
     LoggedUser& getUserByUsername(const std::string& username);
-    LoggedUser &getUserById(unsigned int id) const;
+    LoggedUser &getUserById(long id) const;
 
-    bool isLoggedIn(unsigned int id) const;
+    bool isLoggedIn(long id) const;
 
 private:
 	const IDatabase& m_database;
@@ -55,7 +55,7 @@ private:
 	 */
 	std::unordered_map<std::string, LoggedUser> m_loggedUsers;
 
-    std::unordered_map<unsigned int, LoggedUser*> m_loggedUsersById;
+    std::unordered_map<long, LoggedUser*> m_loggedUsersById;
     std::unordered_map<const Client*, LoggedUser*> m_clientToLoggedUser;
 
 

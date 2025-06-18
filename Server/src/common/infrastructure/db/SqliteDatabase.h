@@ -26,9 +26,9 @@ public:
 	bool open() override;
 	bool close() override;
 	bool doesUserExist(const std::string& username) const override;
-	unsigned int queryIdOfUser(const std::string& username, const std::string& password) const override;
+	long queryIdOfUser(const std::string& username, const std::string& password) const override;
 
-	unsigned int addNewUser(
+	long addNewUser(
 		const std::string& username,
 		const std::string& password,
 		const std::string& email,
@@ -49,7 +49,7 @@ public:
 
     std::map<UserModel, int> queryHighScores(int limit = 20) const override;
 
-    std::optional<UserStatistics> getUserStatisticsById(unsigned int id) const override;
+    std::optional<UserStatistics> getUserStatisticsById(long id) const override;
 
 private:
 	SqliteDatabase();
@@ -71,7 +71,7 @@ private:
     void genPreppedStatements();
 
 
-	unsigned int queryIdOfUser(const std::string &username) const;
+	long queryIdOfUser(const std::string &username) const;
 
 
 	/**
@@ -92,7 +92,7 @@ private:
 	/*
 	* The associated column must be named "id".
 	*/
-	std::list<unsigned int> queryIds(sqlite3_stmt *preppedStatement, const std::vector<std::string> &bindings = {}) const;
+	std::list<long> queryIds(sqlite3_stmt *preppedStatement, const std::vector<std::string> &bindings = {}) const;
 
     /**
      * Executes the provided query, returning as a list of integers,

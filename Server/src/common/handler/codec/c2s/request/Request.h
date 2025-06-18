@@ -86,9 +86,9 @@ struct GetPlayersInRoomRequest : ProtocolRequest
 
 struct JoinRoomRequest : ProtocolRequest
 {
-    explicit JoinRoomRequest(unsigned int roomId);
+    explicit JoinRoomRequest(long roomId);
 
-    const unsigned int roomID;
+    const long roomID;
 };
 
 struct GetRoomsRequest : ProtocolRequest
@@ -108,9 +108,9 @@ struct GetHighScoresRequest : ProtocolRequest
 
 struct GetUserStatisticsRequest : ProtocolRequest
 {
-    explicit GetUserStatisticsRequest(unsigned int userId);
+    explicit GetUserStatisticsRequest(long userId);
 
-    const unsigned int userId;
+    const long userId;
 };
 
 struct CloseRoomRequest : ProtocolRequest
@@ -175,7 +175,7 @@ struct AddQuestionRequest : ProtocolRequest
 
 struct KickPlayerRequest : ProtocolRequest
 {
-    explicit KickPlayerRequest(unsigned int userId);
+    explicit KickPlayerRequest(long userId);
 
-	const unsigned int userId;
+	const long userId;
 };

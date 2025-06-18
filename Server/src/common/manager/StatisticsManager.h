@@ -13,7 +13,7 @@ public:
     explicit StatisticsManager(const IDatabase& db);
 
     std::vector<std::pair<UserModel, int>> getHighScores() const;
-    std::optional<UserStatistics> getUserStatistics(unsigned int id) const;
+    std::optional<UserStatistics> getUserStatistics(long id) const;
 
 private:
 	const IDatabase& m_database;

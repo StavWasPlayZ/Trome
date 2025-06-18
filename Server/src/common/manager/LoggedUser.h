@@ -9,10 +9,10 @@ class Client;
 class LoggedUser
 {
 public:
-    LoggedUser(unsigned int id, const std::string& username, Client& client);
+    LoggedUser(long id, const std::string& username, Client& client);
 
     const std::string& getUsername() const;
-    unsigned int getId() const;
+    long getId() const;
     bool operator==(const LoggedUser &other) const;
 
     Client& getClient() const;
@@ -29,7 +29,7 @@ public:
 private:
     Client& m_client;
 
-    const unsigned int m_id;
+    const long m_id;
     std::string m_username;
 
     Room* m_currentRoom;

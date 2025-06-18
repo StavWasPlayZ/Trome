@@ -25,7 +25,7 @@ std::vector<std::pair<UserModel, int>> StatisticsManager::getHighScores() const
     return results;
 }
 
-std::optional<UserStatistics> StatisticsManager::getUserStatistics(const unsigned int id) const
+std::optional<UserStatistics> StatisticsManager::getUserStatistics(const long id) const
 {
     return m_database.getUserStatisticsById(id);
 }

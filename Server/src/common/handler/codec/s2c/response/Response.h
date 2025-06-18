@@ -52,20 +52,20 @@ struct ProtocolResponse
 
 struct RegistrationResponse : ProtocolResponse
 {
-	RegistrationResponse(ResponseCode id, unsigned int userId);
+	RegistrationResponse(ResponseCode id, long userId);
 
-	const unsigned int userId;
+	const long userId;
 };
 
 struct LoginResponse : RegistrationResponse
 {
-    explicit LoginResponse(unsigned int userId);
+    explicit LoginResponse(long userId);
 };
 
 
 struct SignupResponse : RegistrationResponse
 {
-    explicit SignupResponse(unsigned int userId);
+    explicit SignupResponse(long userId);
 };
 
 
@@ -85,9 +85,9 @@ struct JoinRoomResponse : ProtocolResponse
 
 struct CreateRoomResponse : ProtocolResponse
 {
-    CreateRoomResponse(unsigned int roomId, const RoomData& data);
+    CreateRoomResponse(long roomId, const RoomData& data);
 
-    const unsigned int roomId;
+    const long roomId;
     RoomData data;
 };
 

@@ -8,7 +8,7 @@ RoomManager::RoomManager(const IDatabase &database) :
 
 Room &RoomManager::createRoom(LoggedUser &admin, const RoomType roomType, const RoomData &data)
 {
-    const unsigned int roomId = Room::generateId();
+    const long roomId = Room::generateId();
 
     const auto [entry, _] = this->m_rooms.emplace(
         std::piecewise_construct,
@@ -22,7 +22,7 @@ Room &RoomManager::createRoom(LoggedUser &admin, const RoomType roomType, const 
 
 void RoomManager::deleteRoom(const Room &room)
 {
-    const unsigned int roomId = room.getId();
+    const long roomId = room.getId();
 
     m_rooms.erase(roomId);
     m_waitingRooms.erase(roomId);

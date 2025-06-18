@@ -122,7 +122,7 @@ GetPlayersInRoomRequest JsonRequestPacketDeserializer::deserializeGetPlayersInRo
 
 JoinRoomRequest JsonRequestPacketDeserializer::deserializeJoinRoomRequest(const nlohmann::json &data)
 {
-    return JoinRoomRequest(ProtocolPacketDeserializer::toUL(data.at("room_id")));
+    return JoinRoomRequest(data.at("room_id"));
 }
 
 GetHighScoresRequest JsonRequestPacketDeserializer::deserializeGetHighScoresRequest(const nlohmann::json &)
