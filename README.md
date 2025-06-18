@@ -41,4 +41,32 @@ Made by Itay Herskovits and Stav Solomon.
 
 ---
 
+## Codec model
+
+### 📬 Message structure (Protocol)
+
+#### 🧾 Request
+
+| Field          | Size     | Description                  |
+|----------------|----------|------------------------------|
+| `Message Code` | 1 byte   | Message code identifier      |
+| `Length`       | 4 bytes  | Length of the body in bytes (For the example: N bytes) |
+| `Body`         | N bytes  | The data |
+
+
+#### 🧾 Response
+
+| Field          | Size     | Description                  |
+|----------------|----------|------------------------------|
+| `Message Type` | 1 byte   | Message type identifier (Response / Notification)     |
+| `Message Code` | 1 byte   | Message code identifier      |
+| `Length`       | 4 bytes  | Length of the body in bytes (For the example: N bytes) |
+| `Body`         | N bytes  | The data |
+
+#### 📦 Body
+
+The body is determined by the message type. It may contain strings, IDs, answers, scores, or questions in JSON or custom format. The Body is encrypted via the encryption (predetermined)
+
+---
+
 # etc.
