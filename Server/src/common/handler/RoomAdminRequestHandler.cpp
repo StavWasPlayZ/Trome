@@ -6,6 +6,7 @@
 #include "codec/s2c/response/ErrorResponse.h"
 #include "infrastructure/Client.h"
 #include "manager/RoomManager.h"
+#include "exception/RoomDataException.h"
 
 RoomAdminRequestHandler::RoomAdminRequestHandler(const RequestHandlerFactory &handlerFactory, Room& room) :
     RoomRequestHandler(handlerFactory, room)
@@ -77,33 +78,61 @@ RequestResult RoomAdminRequestHandler::closeRoom(const RequestInfo &, const Clos
     );
 }
 
-RequestResult RoomAdminRequestHandler::updateRoomData(const RequestInfo &info, const UpdateRoomDataRequest &request) const
+void RoomAdminRequestHandler::checkRoomData(const RoomData &data) const
 {
-    const RoomData& data = request.data;
-
-    //NOTE: nzp = non-zero positive
+    // NOTE: nzp = non-zero positive
     if (data.timePerQuestionSecs <= 0)
     {
-        return RequestResult(
-            new ErrorResponse(ErrorStatus::INVALID_ARGUMENT, info.id, "time_per_question_secs-npz")
-        );
+        throw RoomDataException("time_per_question_secs-npz");
     }
 
     if (data.maxPlayers <= 0)
     {
-        return RequestResult(
-            new ErrorResponse(ErrorStatus::INVALID_ARGUMENT, info.id, "max_players-nzp")
-        );
+        throw RoomDataException("max_players-nzp");
     }
 
     if (data.questionsCount <= 0)
     {
+        throw RoomDataException("questions_count-npz");
+    }
+
+    if (data.timePerQuestionSecs > 99)
+    {
+        throw RoomDataException("time_per_question_secs-max");
+    }
+
+    if (data.maxPlayers > 99)
+    {
+        throw RoomDataException("max_players-max");
+    }
+
+    if (data.questionsCount > 99)
+    {
+        throw RoomDataException("question_count-max");
+    }
+
+    if (data.questionsCount > this->m_handlerFactory.getRoomManager().getQuestionCount())
+    {
+        throw RoomDataException("question_count-over_question_count");
+    }
+};
+
+RequestResult RoomAdminRequestHandler::updateRoomData(const RequestInfo &info,
+                                                      const UpdateRoomDataRequest &request) const
+{
+    try
+    {
+        checkRoomData(request.data);
+    }
+    catch (RoomDataException& e)
+    {
         return RequestResult(
-            new ErrorResponse(ErrorStatus::INVALID_ARGUMENT, info.id, "questions_count-npz")
+            new ErrorResponse(ErrorStatus::INVALID_ARGUMENT, info.id, e.what())
         );
     }
 
-    m_room.setData(data);
+
+    m_room.setData(request.data);
 
     return RequestResult(
         new UpdateRoomDataResponse()
@@ -121,4 +150,4 @@ RequestResult RoomAdminRequestHandler::kick(const RequestInfo &info, const KickP
     m_room.kickUser(toBeKicked);
 
     return RequestResult(new KickPlayerResponse());
-};
+}

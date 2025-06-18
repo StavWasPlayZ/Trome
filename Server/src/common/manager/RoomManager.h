@@ -28,6 +28,8 @@ public:
     std::vector<const Room*> getRooms() const;
     std::optional<const Room*> getRoom(int roomID) const;
 
+    int getQuestionCount() const;
+
 private:
     const IDatabase& m_database;
 
