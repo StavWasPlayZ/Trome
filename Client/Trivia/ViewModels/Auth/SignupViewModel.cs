@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using System.Reactive;
 using ReactiveUI;
 using Trivia.Codec.C2S.Request.Packets;
@@ -87,8 +86,6 @@ public class SignupViewModel : AuthViewModel
     
     private string? _email;
 
-    [Required]
-    [EmailAddress]
     public string? Email
     {
         get => _email;
@@ -97,7 +94,6 @@ public class SignupViewModel : AuthViewModel
     
     private string? _repPassword;
 
-    [Required]
     public string? RepPassword
     {
         get => _repPassword;
@@ -106,8 +102,6 @@ public class SignupViewModel : AuthViewModel
     
     private string? _phone;
 
-    [Required]
-    [Phone]
     public string? Phone
     {
         get => _phone;

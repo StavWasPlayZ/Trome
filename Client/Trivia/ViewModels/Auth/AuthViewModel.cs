@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using ReactiveUI;
 using Trivia.Codec.S2C.Response;
 using Trivia.Codec.S2C.Response.Packets;
@@ -36,7 +35,6 @@ public abstract class AuthViewModel : PageViewModel
     
     private string? _username;
 
-    [Required]
     public string? Username
     {
         get => _username;
@@ -45,7 +43,6 @@ public abstract class AuthViewModel : PageViewModel
     
     private string? _password;
 
-    [Required]
     public string? Password
     {
         get => _password;
