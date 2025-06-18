@@ -117,4 +117,35 @@ The body is determined by the message type. It may contain strings, IDs, answers
 
 ---
 
+## 🔐 Cryptography Overview
+
+This project uses modern cryptographic techniques to ensure secure communication between the **Server** and **Client**. Most of the encryption and decryption operations are powered by the [Crypto++](https://www.cryptopp.com/) library and .NET [System.Security.Cryptography](https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography?view=net-9.0).
+
+NOTE: The keys are static, therefore it isn't fully secure. Don't use this as an example for an actual Cryptography example without making files at runtime. We did it that way because `Crypto++` and `System.Security.Cryptography` RSA keys don't fit for each other, we made the keys via openssl.
+---
+
+### 🔑 Current Encryption Method: RSA (Asymmetric)
+
+- **Algorithm**: RSA (2048-bit keys)
+- **Library**: Crypto++
+- **Usage**: Used to encrypt session secrets and sensitive data.
+- **Key Management**:
+  - **Server** and **Client** each have their own RSA key pair.
+  - Public/private keys are stored in `.pem` files.
+  - Keys are loaded **at startup** from the files.
+
+### 🛠 Other Encryption Method
+
+#### 🟡 AES (Advanced Encryption Standard)
+
+- **Algorithm**: AES-256 in CBC mode
+- **Use Case**: Once a session is established using RSA, AES can encrypt bulk data with lower computational cost.
+
+#### 🟡 OTP (One-Time Pad)
+
+- **Use Case**: For lightweight or critical communications requiring unbreakable encryption (if keys are truly random and never reused).
+- **Limitations**: Requires secure key exchange and perfect synchronization.
+
+---
+
 # etc.
