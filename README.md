@@ -84,7 +84,7 @@ Features explicitly deemed as a bonus by Magshimim, as well as additional, custo
 | `Room Member`         | `Menu`                | Leaving / Kicked / Admin left   | User going back to the menu. |
 | `Room Admin`          | `Menu`                | Closing room                    | User going back to the menu and closing the room. |
 | `Room Member/Admin`   | `Game`                | Admin started a game            | Starts a game. |
-| `Game`                | `Finished Game Early` | User finished the current game  | User finnished the game. |
+| `Game`                | `Finished Game Early` | User finished the current game  | User finished the game. |
 | `Finished Game Early` | `Room Member/Admin`   | Game finished                   | End of game. |
 
 ---
