@@ -133,7 +133,7 @@ This project uses modern cryptographic techniques to ensure secure communication
 
 > [!CAUTION]
 > The keys are static, and are therefore not fully secure.  
-> DON'T use this as an example for actual Cryptography matters without making these files at runtime.
+> DO NOT use this as an example for actual Cryptography matters without making these files at runtime.
 > We did it that way because `Crypto++` and `System.Security.Cryptography` RSA keys are not fit for each other, hence they were both made via OpenSSL.
  
 ---
