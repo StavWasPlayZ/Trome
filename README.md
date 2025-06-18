@@ -34,7 +34,7 @@ Features explicitly deemed as a bonus by Magshimim, as well as additional, custo
         - `JsonResponsePacketSerializer`
 - MongoDB
 - Pulling questions from [OpenTDB](https://opentdb.com/) into the database
-- User-defined qiestions
+- User-defined questions
 - Head-to-Head gamemode
     - Pre-game countdown
 - Cryptography
