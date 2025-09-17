@@ -134,6 +134,23 @@ cmake ../
 cmake --build ./
 ```
 
+### 🌿 Using MongoDB (Optional)
+
+> [!NOTE]
+> Using MongoDB will *replace* the usage of Sqlite.
+
+Look for the following line in `CMakeLists.txt`, and switch the `OFF` statement to an `ON`:
+```cmake
+# If you want to use MongoDB instead of Sqlite, make this ON:
+set (USE_MONGO_DB OFF)
+```
+
+> [!IMPORTANT]
+> The file `./resources/mongodb_connection_string.txt` **must** be present in that case,
+> containing the connection string to **your own** MongoDB database.
+>
+> The server will **automatically** create and populate all the necessary collections for you.
+
 ## 💻 Client
 
 Within the Client directory, run the following for your operating system of choice (self-contained):
