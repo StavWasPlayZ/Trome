@@ -1,0 +1,176 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:Trivia.Controls"
+             xmlns:listEntries="clr-namespace:Trivia.Controls.ListEntries"
+             xmlns:room="clr-namespace:Trivia.ViewModels.Room"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
+             x:CompileBindings="True"
+             x:Class="Trivia.Views.Room.RoomGuestView"
+             x:DataType="room:RoomGuestViewModel">
+    
+    <Design.DataContext>
+        <room:RoomGuestViewModel/>
+    </Design.DataContext>
+    
+    <Panel>
+        <Panel.Background>
+            <ImageBrush Source="avares://Trivia/Assets/drool-d-b1608556d649b5b943136ecc0df0fe1bc7ff644f.png"
+                        Stretch="UniformToFill" />
+        </Panel.Background>
+
+        <Grid ColumnDefinitions="320, *"
+              ColumnSpacing="15"
+              Margin="35,35">
+            
+            <controls:TriviaUsersList Grid.Column="0">
+                <ListBox ItemsSource="{Binding Players}"
+                         PointerReleased="UserList_OnPointerReleased">
+                    
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <listEntries:RoomUserListEntry User="{Binding}"
+                                                           IsCurrentUser="{Binding IsCurrentUser}"
+                                                           IsAdmin="{Binding IsAdmin}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    
+                </ListBox>
+            </controls:TriviaUsersList>
+
+            <Border Grid.Column="1"
+                    Background="#FFCACA"
+                    CornerRadius="25"
+                    Padding="40 40">
+                <Grid RowDefinitions="Auto, *, Auto">
+
+                    <TextBlock Grid.Row="0"
+                               FontSize="65"
+                               HorizontalAlignment="Center"
+                               Foreground="#4d264a"
+                               Text="{Binding RoomModel.Data.Name}"/>
+                    
+                    <Grid Grid.Row="1"
+                          RowDefinitions="50, 50, 50"
+                          ColumnDefinitions="150, *"
+                          Margin="70 30">
+                        
+                        <Grid.Styles>
+                            <Style Selector="TextBlock">
+                                <Setter Property="Foreground" Value="#BE64B7"/>
+                                <Setter Property="FontSize" Value="35"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Style>
+                            
+                            <Style Selector="TextBlock[(Grid.Column)=1]">
+                                <Setter Property="HorizontalAlignment" Value="Right"/>
+                                <Setter Property="Margin" Value="0 5" />
+                            </Style>
+                        </Grid.Styles>
+                        
+                        <TextBlock Grid.Row="0"
+                                   Grid.Column="0"
+                                   FontSize="35"
+                                   Foreground="#813E7A">
+                            QUESTIONS
+                        </TextBlock>
+                        
+                        <TextBlock Grid.Row="0"
+                                    Grid.Column="1"
+                                    Text="{Binding RoomModel.Data.QuestionsCount}"/>
+                        
+                        <TextBlock Grid.Row="1"
+                                   Grid.Column="0"
+                                   FontSize="35"
+                                   Foreground="#813E7A">
+                            SEC/Q
+                        </TextBlock>
+                        <TextBlock Grid.Row="1"
+                                   Grid.Column="1"
+                                   Text="{Binding RoomModel.Data.TimePerQuestionSecs}"/>
+                        
+                        <TextBlock Grid.Row="2"
+                                   Grid.Column="0"
+                                   FontSize="35"
+                                   Foreground="#813E7A">
+                            PLAYERS
+                        </TextBlock>
+                        <TextBlock Grid.Row="2"
+                                   Grid.Column="1"
+                                   Text="{Binding RoomModel.Data.MaxPlayers}"/>
+                    </Grid>
+                    
+
+                    <Grid Grid.Row="2"
+                          ColumnDefinitions="Auto, *"
+                          ColumnSpacing="5"
+                          Margin="50 0">
+                            
+                        <Button Grid.Column="0"
+                                Command="{Binding LeaveRoomCommand}"
+                                
+                                VerticalAlignment="Stretch"
+                                Width="90"
+                                CornerRadius="5"
+                                Background="#b5253d"
+                                ClipToBounds="False"
+                                Padding="10">
+                                
+                            <Button.Styles>
+                                <Style Selector="Button /template/ ContentPresenter">
+                                    <Setter Property="BoxShadow" Value="0 3 4 #3f000000" />
+                                </Style>
+
+                                <Style Selector="Button:pointerover /template/ ContentPresenter">
+                                    <Setter Property="Background" Value="#C52843" />
+                                </Style>
+
+                                <Style Selector="Button:pressed /template/ ContentPresenter">
+                                    <Setter Property="Background" Value="#b5253d" />
+                                </Style>
+                            </Button.Styles>
+
+                            <Svg Path="avares://Trivia/Assets/Icons/logout.svg"
+                                 Css="* { fill: #FFFFFF; }"
+                                 VerticalAlignment="Center"
+                                 Height="40"/>
+
+                        </Button>
+                        
+                        <Border Grid.Column="1"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                CornerRadius="5"
+                                Background="#5d445b"
+                                ClipToBounds="False"
+                                BoxShadow="0 3 4 #3f000000">
+                            
+                            <Grid ColumnDefinitions="Auto, *"
+                                  ColumnSpacing="10"
+                                  VerticalAlignment="Center"
+                                  Margin="20 10">
+                                
+                                <Svg Grid.Column="0"
+                                     Path="avares://Trivia/Assets/Icons/flag.svg"
+                                     Css="* { fill: #FFFFFF; }"
+                                     Height="40"/>
+                                
+                                <TextBlock Grid.Column="1"
+                                           TextAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           FontSize="40"
+                                           LineHeight="30"
+                                           TextWrapping="Wrap">
+                                    WAITING FOR HOST...
+                                </TextBlock>
+                            </Grid>
+                                
+                        </Border>
+                    </Grid>
+
+                </Grid>
+            </Border>
+        </Grid>
+    </Panel>
+</UserControl>

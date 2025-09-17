@@ -1,0 +1,60 @@
+#include "LoginRequestHandler.h"
+
+#include "codec/s2c/response/Response.h"
+#include "codec/s2c/response/JsonResponsePacketSerializer.h"
+#include "handler/RequestHandlerFactory.h"
+
+
+// for using our ERROR Response Code
+#ifdef ERROR
+#undef ERROR
+#endif
+
+LoginRequestHandler::LoginRequestHandler(const RequestHandlerFactory &handlerFactory) : IRequestHandler(handlerFactory)
+{}
+
+std::optional<ErrorStatus> LoginRequestHandler::isRequestRelevant(const RequestInfo &info) const
+{
+    switch (info.id)
+    {
+    case RequestCode::LOGIN:
+    case RequestCode::SIGNUP:
+        return std::nullopt;
+
+    default:
+        return ErrorStatus::ILLEGAL_REQUEST;
+    }
+}
+
+RequestResult LoginRequestHandler::handleRequest(const RequestInfo& info, const ProtocolRequest& request) const
+{
+    switch (info.id)
+    {
+    case RequestCode::LOGIN:
+        return login(info, static_cast<const LoginRequest&>(request));
+    case RequestCode::SIGNUP:
+        return signup(info, static_cast<const SignupRequest&>(request));
+
+    default: throw std::runtime_error("Unexpected request ID");
+    }
+}
+
+RequestResult LoginRequestHandler::login(const RequestInfo &info, const LoginRequest &request) const
+{
+    const ProtocolResponse *const response = this->m_handlerFactory.getLoginManager().login(info, request);
+
+    if (response->id == ResponseCode::ERROR)
+        return RequestResult(response);
+
+    return RequestResult(response, new MenuRequestHandler(this->m_handlerFactory));
+}
+
+RequestResult LoginRequestHandler::signup(const RequestInfo &info, const SignupRequest &request) const
+{
+    const ProtocolResponse *const response = this->m_handlerFactory.getLoginManager().signup(info, request);
+
+    if (response->id == ResponseCode::ERROR)
+        return RequestResult(response);
+
+    return RequestResult(response, new MenuRequestHandler(this->m_handlerFactory));
+}

@@ -1,0 +1,26 @@
+#pragma once
+
+#include <chrono>
+#include <nlohmann/json.hpp>
+
+enum class RequestCode : unsigned char;
+class Client;
+
+struct RequestInfo
+{
+    RequestInfo(Client& client, RequestCode id, const nlohmann::json& data);
+
+    Client& client;
+
+    const RequestCode id;
+    const std::chrono::milliseconds receivalTime;
+
+    //NOTE: We will not use a buffer *vector* because:
+    // a. unconventional
+    // b. already implemented everything asserting buffer is unsigned char
+    //
+    // And, if we already have an entire struct JUST for the request...
+    // Why not just detail the request INSIDE the buffer instead of just providing the buffer?
+
+    const nlohmann::json data;
+};

@@ -1,0 +1,89 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:Trivia.Controls"
+        xmlns:generic="clr-namespace:System.Collections.Generic;assembly=System.Collections"
+        xmlns:listEntries="clr-namespace:Trivia.Controls.ListEntries"
+        xmlns:user="clr-namespace:Trivia.Models.User"
+        x:CompileBindings="True">
+    <Design.PreviewWith>
+        <Border Width="300"
+                Height="500">
+            <controls:TriviaUsersList>
+                <ListBox>
+                
+                    <ListBox.ItemsSource>
+                        <generic:List x:TypeArguments="user:RoomUserModel">
+                            <user:RoomUserModel Username="USERNAME"/>
+                            <user:RoomUserModel Username="USERNAME"/>
+                            <user:RoomUserModel Username="USERNAME"/>
+                            <user:RoomUserModel Username="USERNAME"/>
+                            <user:RoomUserModel Username="USERNAME"/>
+                            <user:RoomUserModel Username="USERNAME"/>
+                            <user:RoomUserModel Username="USERNAME"/>
+                            <user:RoomUserModel Username="USERNAME"/>
+                            <user:RoomUserModel Username="USERNAME"/>
+                            <user:RoomUserModel Username="USERNAME"/>
+                            <user:RoomUserModel Username="USERNAME"/>
+                        </generic:List>
+                    </ListBox.ItemsSource>
+                    
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <listEntries:RoomUserListEntry User="{Binding}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    
+                </ListBox>
+            </controls:TriviaUsersList>
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="controls|TriviaUsersList">
+        <!-- Set Defaults -->
+        <Setter Property="Background" Value="#673362"/>
+        <Setter Property="CornerRadius" Value="30"/>
+        
+        <Setter Property="Template">
+            <ControlTemplate>
+                
+                <Border Background="{TemplateBinding Background}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        ClipToBounds="True">
+
+                    <!-- ReSharper disable once InconsistentNaming -->
+                    <ContentPresenter x:Name="PART_ContentPresenter"
+                                      Content="{TemplateBinding Content}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                    
+                </Border>
+                
+            </ControlTemplate>
+        </Setter>
+        
+        <Style Selector="^ > Border">
+            <Setter Property="Padding" Value="10 0"/>
+        </Style>
+        
+        <Style Selector="^ ListBox">
+            <Setter Property="SelectionMode" Value="Single"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <!-- We disable the bottom padding due to bad rendering behavior in Avalonia's side -->
+            <!-- <Setter Property="Padding" Value="0 10 0 275"/> -->
+            
+            <Setter Property="Padding" Value="0 10 0 10"/>
+
+            
+            <Style Selector="^ > ListBoxItem">
+                <!-- Disable the ListBox items from controlling the colors of the items -->
+                <Style Selector="^:selected /template/ ContentPresenter,
+                                 ^:pointerover /template/ ContentPresenter,
+                                 ^:pressed /template/ ContentPresenter">
+                    <Setter Property="Background" Value="Transparent"/>
+                </Style>
+                
+                <Setter Property="Padding" Value="0 2"/>
+            </Style>
+        </Style>
+        
+    </Style>
+</Styles>

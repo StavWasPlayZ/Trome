@@ -1,0 +1,161 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:Trivia.Controls.Popups"
+        xmlns:raw="clr-namespace:Trivia.Models.Raw">
+    <Design.PreviewWith>
+        <controls:StatsPopup>
+            <controls:StatsPopup.Stats>
+                
+                <raw:UserStatistics Points="12"
+                                    GamesPlayed="12"
+                                    QuestionsAnswered="12"
+                                    QuestionsAnsweredCorrectly="12"
+                                    TimeOnQuestionOverall="12"
+                                    TimeOnQuestionsAvg="-1"/>
+                
+            </controls:StatsPopup.Stats>
+        </controls:StatsPopup>
+    </Design.PreviewWith>
+
+    <Style Selector="controls|StatsPopup">
+        <!-- Set Defaults -->
+        <Setter Property="Username">USERNAME</Setter>
+
+        <Setter Property="Template">
+            <ControlTemplate>
+                
+                <Border CornerRadius="30"
+                        Background="#FFCACA"
+                        Width="325"
+                        VerticalAlignment="Center">
+                    
+                    <Panel>
+                        <DockPanel Margin="50">
+
+                            <StackPanel DockPanel.Dock="Top"
+                                        Margin="0 0 0 40"
+                                        Spacing="10">
+                                <Border
+                                    Background="#F3BBBB"
+                                    CornerRadius="20"
+                                    Width="80"
+                                    Height="80"
+                                    Padding="8">
+                                        
+                                    <Svg Path="avares://Trivia/Assets/Icons/person.svg"
+                                         Css="* { fill: #4D264A }"/>
+                                        
+                                </Border>
+                                    
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    Foreground="#4D264A"
+                                    FontSize="40"
+                                    Text="{TemplateBinding Username}"/>
+                            </StackPanel>
+                            
+                            <StackPanel>
+                                <Grid VerticalAlignment="Bottom"
+                                      RowDefinitions="Auto, Auto, Auto, Auto, Auto"
+                                      RowSpacing="7"
+                                      ColumnDefinitions="*, Auto">
+                                    
+                                    <TextBlock Grid.Row="0"
+                                               Grid.Column="0"
+                                               FontSize="30"
+                                               Foreground="#813E7A">POINTS</TextBlock>
+                                    <TextBlock Grid.Row="0"
+                                               Grid.Column="1"
+                                               FontSize="30"
+                                               Foreground="#BE64B7"
+                                               Text="{
+                                                   Binding Stats.Points,
+                                                   RelativeSource={RelativeSource TemplatedParent},
+                                                   FallbackValue='----'
+                                               }"/>
+                                    
+                                    <TextBlock Grid.Row="1"
+                                               Grid.Column="0"
+                                               FontSize="30"
+                                               Foreground="#813E7A">TOTAL Q. TIME</TextBlock>
+                                    <TextBlock Grid.Row="1"
+                                               Grid.Column="1"
+                                               FontSize="30"
+                                               Foreground="#BE64B7"
+                                               Text="{
+                                                   Binding Stats.TimeOnQuestionOverall,
+                                                   RelativeSource={RelativeSource TemplatedParent},
+                                                   Converter={StaticResource SecondsToTimeStringConverter},
+                                                   FallbackValue='----'
+                                               }"/>
+                                    
+                                    <TextBlock Grid.Row="2"
+                                               Grid.Column="0"
+                                               FontSize="30"
+                                               Foreground="#813E7A">AVG. TIME/Q</TextBlock>
+                                    <TextBlock Grid.Row="2"
+                                               Grid.Column="1"
+                                               FontSize="30"
+                                               Foreground="#BE64B7"
+                                               Text="{
+                                                   Binding Stats.TimeOnQuestionsAvg,
+                                                   RelativeSource={RelativeSource TemplatedParent},
+                                                   FallbackValue='----',
+                                                   Converter={StaticResource SecondsToTimeStringConverter}
+                                               }"/>
+                                    
+                                    <TextBlock Grid.Row="3"
+                                               Grid.Column="0"
+                                               FontSize="30"
+                                               Foreground="#813E7A">ANSWERED</TextBlock>
+                                    <TextBlock Grid.Row="3"
+                                               Grid.Column="1"
+                                               FontSize="30"
+                                               Foreground="#BE64B7"
+                                               Text="{
+                                                   Binding Stats.QuestionsAnswered,
+                                                   RelativeSource={RelativeSource TemplatedParent},
+                                                   FallbackValue='----'
+                                               }"/>
+                                    
+                                    <TextBlock Grid.Row="4"
+                                               Grid.Column="0"
+                                               FontSize="30"
+                                               Foreground="#813E7A">CORRECT</TextBlock>
+                                    <TextBlock Grid.Row="4"
+                                               Grid.Column="1"
+                                               FontSize="30"
+                                               Foreground="#BE64B7"
+                                               Text="{
+                                                   Binding Stats.QuestionsAnsweredCorrectly,
+                                                   RelativeSource={RelativeSource TemplatedParent},
+                                                   FallbackValue='----'
+                                               }"/>
+                                    
+                                </Grid>
+                                
+                                <ContentPresenter x:Name="PART_ContentPresenter"
+                                                  Content="{TemplateBinding Content}"
+                                                  ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                            </StackPanel>
+
+                        </DockPanel>
+                        
+                        <Button Command="{TemplateBinding CloseCommand}"
+                                Theme="{StaticResource EmptyButton}"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
+                                Margin="20">
+                            <TextBlock Foreground="#4d264a"
+                                       FontSize="40">
+                                X
+                            </TextBlock>
+                        </Button>
+                    </Panel>
+                    
+                </Border>
+                
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

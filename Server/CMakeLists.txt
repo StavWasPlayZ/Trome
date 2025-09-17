@@ -1,0 +1,297 @@
+﻿# CMakeList.txt : CMake project for Server, include source and define
+# project specific logic here.
+#
+cmake_minimum_required (VERSION 3.8)
+
+# Enable Hot Reload for MSVC compilers if supported.
+if (POLICY CMP0141)
+  cmake_policy(SET CMP0141 NEW)
+  set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
+endif()
+
+# In Windows:
+# Follow step 1: https://learn.microsoft.com/en-us/vcpkg/get_started/get-started?pivots=shell-powershell#1---set-up-vcpkg
+# INSTALL DIRECTLY TO C:/.
+if (WIN32)
+  set(CMAKE_TOOLCHAIN_FILE "C:/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "Vcpkg toolchain file")
+  set(CMAKE_PREFIX_PATH "C:/vcpkg/installed/x64-windows/share")
+endif()
+
+project ("Server")
+
+
+# If you want to use MongoDB instead of Sqlite, make this ON:
+set (USE_MONGO_DB OFF)
+
+# NOTE: The file ./resources/mongodb_connection_string.txt *must* be present in that case.
+
+if(USE_MONGO_DB)
+  add_compile_definitions(USE_MONGO_DB)
+endif()
+
+
+# Common sources
+add_executable (Server
+  "src/common/Main.cpp"
+  "src/common/infrastructure/Server.h"
+  "src/common/infrastructure/Server.cpp"
+  "src/common/handler/IRequestHandler.h"
+  "src/common/handler/LoginRequestHandler.h"
+  "src/common/handler/LoginRequestHandler.cpp"
+  "src/common/infrastructure/CommonCommunicator.h"
+  "src/common/infrastructure/CommonCommunicator.cpp"
+  "src/common/infrastructure/Client.h"
+  "src/common/infrastructure/Client.cpp"
+  "src/common/infrastructure/OBuffer.h"
+  "src/common/infrastructure/OBuffer.cpp"
+  "src/common/infrastructure/Communicator.h"
+  "src/common/infrastructure/db/IDatabase.h"
+  "src/common/exception/SocketDisconnectionException.h"
+  "src/common/exception/SocketDisconnectionException.cpp"
+  "src/common/exception/SocketTimeoutException.h"
+  "src/common/exception/SocketTimeoutException.cpp"
+  "src/common/exception/RegexViolationException.cpp"
+  "src/common/exception/RegexViolationException.h"
+  "src/common/exception/FileNotFoundException.h"
+  "src/common/exception/FileNotFoundException.cpp"
+  "src/common/exception/RoomDataException.h"
+  "src/common/exception/RoomDataException.cpp"
+  "src/common/Constants.h"
+
+  "src/common/handler/IRequestHandler.h"
+  "src/common/handler/IRequestHandler.cpp"
+  "src/common/handler/RequestHandlerFactory.h"
+  "src/common/handler/RequestHandlerFactory.cpp"
+
+  "src/common/handler/LoginRequestHandler.h"
+  "src/common/handler/LoginRequestHandler.cpp"
+  "src/common/handler/MenuRequestHandler.h"
+  "src/common/handler/MenuRequestHandler.cpp"
+
+  "src/common/handler/codec/s2c/response/Response.h"
+  "src/common/handler/codec/s2c/response/Response.cpp"
+  "src/common/handler/codec/s2c/response/ErrorResponse.h"
+  "src/common/handler/codec/s2c/response/ErrorResponse.cpp"
+  "src/common/handler/codec/s2c/response/JsonResponsePacketSerializer.h"
+  "src/common/handler/codec/s2c/response/JsonResponsePacketSerializer.cpp"
+
+  "src/common/handler/codec/c2s/request/Request.h"
+  "src/common/handler/codec/c2s/request/Request.cpp"
+  "src/common/handler/codec/c2s/request/JsonRequestPacketDeserializer.h"
+  "src/common/handler/codec/c2s/request/JsonRequestPacketDeserializer.cpp"
+
+  "src/common/infrastructure/request/RequestInfo.h"
+  "src/common/infrastructure/request/RequestInfo.cpp"
+  "src/common/infrastructure/request/RequestResult.h"
+  "src/common/infrastructure/request/RequestResult.cpp"
+
+  "src/common/infrastructure/db/IDatabase.cpp"
+
+  "src/common/manager/LoginManager.h"
+  "src/common/manager/LoginManager.cpp"
+  "src/common/manager/LoggedUser.cpp"
+  "src/common/manager/LoggedUser.h"
+
+  "src/common/infrastructure/Room.h"
+  "src/common/infrastructure/Room.cpp"
+  "src/common/manager/RoomManager.h"
+  "src/common/manager/RoomManager.cpp"
+
+  "src/common/manager/StatisticsManager.h"
+  "src/common/manager/StatisticsManager.cpp"
+  "src/common/infrastructure/RoomData.cpp"
+
+  "src/common/infrastructure/UserStatistics.h"
+  "src/common/infrastructure/UserStatistics.cpp"
+
+  "src/common/infrastructure/PlayerResult.h"
+  "src/common/infrastructure/PlayerResult.cpp"
+
+  "src/common/infrastructure/Question.cpp"
+  "src/common/infrastructure/Question.h"
+  "src/common/infrastructure/Game.h"
+  "src/common/infrastructure/Game.cpp"
+  "src/common/handler/RoomMemberRequestHandler.h"
+  "src/common/handler/RoomMemberRequestHandler.cpp"
+
+  "src/common/handler/codec/s2c/ProtocolPacketSerializer.cpp"
+  "src/common/handler/codec/s2c/ProtocolPacketSerializer.h"
+  "src/common/handler/codec/s2c/S2CPacketType.h"
+  "src/common/handler/codec/s2c/notification/NotificationPacketSerializer.cpp"
+  "src/common/handler/codec/s2c/notification/NotificationPacketSerializer.h"
+  "src/common/handler/codec/s2c/notification/Notification.cpp"
+  "src/common/handler/codec/s2c/notification/Notification.h"
+
+  "src/common/handler/RoomAdminRequestHandler.cpp"
+  "src/common/handler/RoomAdminRequestHandler.h"
+
+  "src/common/infrastructure/GameData.cpp"
+  "src/common/infrastructure/GameData.h"
+
+  "src/common/manager/GameManager.h"
+  "src/common/manager/GameManager.cpp"
+  "src/common/handler/GameRequestHandler.cpp"
+  "src/common/handler/GameRequestHandler.h"
+
+  "src/common/Utils.cpp"
+  "src/common/Utils.h"
+
+  "src/common/handler/FinishedGameEarlyRequestHandler.h"
+  "src/common/handler/FinishedGameEarlyRequestHandler.cpp"
+
+  "src/common/handler/codec/c2s/request/ProtocolPacketDeserializer.cpp"
+  "src/common/handler/codec/c2s/request/ProtocolPacketDeserializer.h"
+
+  "src/common/handler/RoomRequestHandler.cpp"
+  "src/common/handler/RoomRequestHandler.h"
+
+  "src/common/infrastructure/model/UserModel.cpp"
+  "src/common/infrastructure/model/UserModel.h"
+
+  "src/common/infrastructure/cryptoAlgorithm/ICryptoAlgorithm.h"
+  "src/common/infrastructure/cryptoAlgorithm/ICryptoAlgorithm.cpp"
+  "src/common/infrastructure/cryptoAlgorithm/NoEncryption.h"
+  "src/common/infrastructure/cryptoAlgorithm/NoEncryption.cpp"
+  "src/common/infrastructure/cryptoAlgorithm/CipherEncryption.h"
+  "src/common/infrastructure/cryptoAlgorithm/CipherEncryption.cpp"
+  "src/common/infrastructure/cryptoAlgorithm/OTP.h"
+  "src/common/infrastructure/cryptoAlgorithm/OTP.cpp"
+  "src/common/infrastructure/cryptoAlgorithm/AES.h"
+  "src/common/infrastructure/cryptoAlgorithm/AES.cpp"
+  "src/common/infrastructure/cryptoAlgorithm/RSA.h"
+  "src/common/infrastructure/cryptoAlgorithm/RSA.cpp"
+)
+
+# MongoDB sources
+if (USE_MONGO_DB)
+  target_sources(Server PRIVATE
+    "src/common/infrastructure/db/MongoDatabase.h"
+    "src/common/infrastructure/db/MongoDatabase.cpp"
+  )
+else ()
+  target_sources(Server PRIVATE
+    "src/common/infrastructure/db/SqliteDatabase.cpp"
+    "src/common/infrastructure/db/SqliteDatabase.tpp"
+  )
+endif ()
+
+
+# Platform-specific sources
+if (WIN32)
+  target_sources(Server PRIVATE
+    "src/windows/infrastructure/WindowsCommunicator.h"
+    "src/windows/infrastructure/WindowsCommunicator.cpp"
+    "src/windows/exception/WSAException.cpp"
+  )
+else()
+  target_sources(Server PRIVATE
+    "src/unix/infrastructure/UnixCommunicator.h"
+    "src/unix/infrastructure/UnixCommunicator.cpp"
+  )
+endif()
+
+
+if (CMAKE_VERSION VERSION_GREATER 3.12)
+  set_property(TARGET Server PROPERTY CXX_STANDARD 20)
+endif()
+
+
+# Libraries
+include(FetchContent)
+
+# nlohmann_json
+FetchContent_Declare(
+  json
+  URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz
+)
+FetchContent_MakeAvailable(json)
+
+target_link_libraries(Server PRIVATE nlohmann_json::nlohmann_json)
+
+# cpp-httplib
+FetchContent_Declare(
+  httplib
+  GIT_REPOSITORY https://github.com/yhirose/cpp-httplib.git
+  GIT_TAG v0.20.0
+)
+FetchContent_MakeAvailable(httplib)
+
+target_link_libraries(Server PRIVATE httplib)
+
+# For HTTPS support
+
+target_compile_definitions(Server PRIVATE CPPHTTPLIB_OPENSSL_SUPPORT)
+
+# In Windows: vcpkg install openssl
+# In Linux (Fedora): sudo dnf install openssl-devel
+if (WIN32)
+  # Install here: https://slproweb.com/download/Win64OpenSSL-3_5_0.msi
+  # Make sure to install directly to *C:\OpenSSL-Win64*.
+  find_package(openssl REQUIRED)
+  target_link_libraries(Server PRIVATE OpenSSL::SSL OpenSSL::Crypto)
+else ()
+  target_link_libraries(Server PRIVATE ssl crypto)
+endif ()
+
+# sqlite3
+if (NOT USE_MONGO_DB)
+  add_library(sqlite3 STATIC lib/sqlite3/sqlite3.c)
+  target_include_directories(sqlite3 PUBLIC lib/sqlite3)
+
+  target_link_libraries(Server PRIVATE sqlite3)
+endif ()
+
+
+# ctre (Compile Time Regular Expressions v3)
+FetchContent_Declare(
+  ctre
+  GIT_REPOSITORY https://github.com/hanickadot/compile-time-regular-expressions.git
+  GIT_TAG v3.9.0
+)
+FetchContent_MakeAvailable(ctre)
+target_link_libraries(Server PRIVATE ctre)
+
+# MongoDB
+# In Windows: vcpkg install mongo-cxx-driver
+# In Linux: https://www.mongodb.com/docs/languages/cpp/cpp-driver/current/get-started/
+if (USE_MONGO_DB)
+  find_package(mongocxx REQUIRED)
+  find_package(bsoncxx REQUIRED)
+
+  target_link_libraries(Server PRIVATE mongo::bsoncxx_shared mongo::mongocxx_shared)
+endif ()
+
+
+
+# Crypto++
+# In Windows: vcpkg install cryptopp
+# In Linux (Fedora): sudo dnf install cryptopp cryptopp-devel
+if (WIN32)
+  find_package(cryptopp CONFIG REQUIRED)
+  target_link_libraries(Server PRIVATE cryptopp::cryptopp)
+else ()
+  target_link_libraries(Server PRIVATE cryptopp)
+endif ()
+
+
+# Support includes starting from relative paths
+target_include_directories(Server PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
+target_include_directories(Server PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/common)
+
+
+# Resources directory
+set(RESOURCES_DIR ${CMAKE_SOURCE_DIR}/resources)
+
+# Copy the directory to where the output executable lies (so as to use relative paths)
+file(COPY ${RESOURCES_DIR} DESTINATION ${CMAKE_BINARY_DIR})
+
+
+# i
+# hate
+# windows
+# so
+# fucking
+# much
+if (WIN32)
+  target_compile_definitions(Server PRIVATE NOMINMAX)
+endif()

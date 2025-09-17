@@ -1,0 +1,69 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Trivia.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
+             x:CompileBindings="True"
+             x:Class="Trivia.Views.ConnectingView"
+             x:DataType="vm:ConnectingViewModel">
+    
+    <Design.DataContext>
+        <vm:ConnectingViewModel/>
+    </Design.DataContext>
+
+    <Border>
+        <Border.Background>
+            <ImageBrush Source="avares://Trivia/Assets/blobs-l-b49caff1a7941d98b60902da64956ad85dfbe4f9.png"
+                        Stretch="UniformToFill" />
+        </Border.Background>
+        
+        <ContentControl VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Classes.server-conn-failed="{Binding ConnectionFailed}"
+                        Margin="50 0">
+            
+            <ContentControl.Styles>
+                <Style Selector="TextBlock">
+                    <Setter Property="FontSize" Value="70"/>
+                    <Setter Property="TextWrapping" Value="Wrap"/>
+                    <Setter Property="TextAlignment" Value="Center"/>
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                </Style>
+                <Style Selector="TextBlock.description">
+                    <Setter Property="FontSize" Value="50"/>
+                    <Setter Property="Margin" Value="0 10 0 0"/>
+                    <Setter Property="Opacity" Value="0.85"/>
+                </Style>
+                
+                <Style Selector="ContentControl">
+                    <Setter Property="ContentTemplate">
+                        <!-- ReSharper disable once Xaml.RedundantResource -->
+                        <DataTemplate>
+                            <TextBlock>ESTABLISHING CONNECTION...</TextBlock>
+                        </DataTemplate>
+                    </Setter>
+                </Style>
+            
+                <Style Selector="ContentControl.server-conn-failed">
+                    <Setter Property="ContentTemplate">
+                        <!-- ReSharper disable once Xaml.RedundantResource -->
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock>
+                                    CONNECTION FAILED.
+                                </TextBlock>
+                                <TextBlock Classes="description">
+                                    RESTART THE GAME TO TRY AGAIN.
+                                </TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </Setter>
+                </Style>
+            </ContentControl.Styles>
+            
+        </ContentControl>
+        
+    </Border>
+
+</UserControl>

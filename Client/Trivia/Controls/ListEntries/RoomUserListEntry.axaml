@@ -1,0 +1,188 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:Trivia.Controls.ListEntries"
+        xmlns:controls1="clr-namespace:Trivia.Controls"
+        xmlns:generic="clr-namespace:System.Collections.Generic;assembly=System.Collections"
+        xmlns:user="clr-namespace:Trivia.Models.User">
+    <Design.PreviewWith>
+        <Border Width="300"
+                Height="500">
+            <controls1:TriviaUsersList>
+                <ListBox>
+                
+                    <ListBox.ItemsSource>
+                        <generic:List x:TypeArguments="user:RoomUserModel">
+                            <user:RoomUserModel Username="USERNAME"
+                                                IsCurrentUser="True"
+                                                IsAdmin="True"/>
+                            <user:RoomUserModel Username="USERNAME"
+                                                IsAdmin="True"/>
+                            <user:RoomUserModel Username="USERNAME"/>
+                            <user:RoomUserModel Username="USERNAME"
+                                                IsCurrentUser="True"/>
+                            <user:RoomUserModel Username="USERNAME"/>
+                            <user:RoomUserModel Username="USERNAME"/>
+                            <x:Null/>
+                            <x:Null/>
+                            <x:Null/>
+                            <x:Null/>
+                            <x:Null/>
+                        </generic:List>
+                    </ListBox.ItemsSource>
+                    
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <controls:RoomUserListEntry User="{Binding}"
+                                                        IsAdmin="{Binding IsAdmin}"
+                                                        IsCurrentUser="{Binding IsCurrentUser}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    
+                </ListBox>
+            </controls1:TriviaUsersList>
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="controls|RoomUserListEntry">
+        <!-- Set Defaults -->
+        <Setter Property="IsEmptySlot" Value="{
+                                           Binding $self.User,
+                                           Converter={x:Static ObjectConverters.IsNull}
+                                       }"/>
+        
+        <Setter Property="Background" Value="#9d4d95"/>
+        <Setter Property="Padding" Value="10 10"/>
+
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border x:Name="PART_Outer"
+                        Background="{TemplateBinding Background}"
+                        Padding="{TemplateBinding Padding}"
+                        CornerRadius="{TemplateBinding CornerRadius}">
+                    
+                    <StackPanel Orientation="Horizontal">
+            
+                        <Border x:Name="PART_PfpWrapper"
+                                Background="#ffbcf8"
+                                Height="50"
+                                Width="50"
+                                Padding="6"
+                                CornerRadius="10"
+                                Margin="10 0 15 0">
+                            
+                            <Svg/>
+                        </Border>
+            
+                        <TextBlock VerticalAlignment="Center"
+                                   FontSize="30"
+                                   Text="{Binding User.Username,
+                                       RelativeSource={RelativeSource TemplatedParent},
+                                       FallbackValue=EMPTY
+                                   }"/>
+            
+                    </StackPanel>
+                    
+                </Border>
+            </ControlTemplate>
+        </Setter>        
+    </Style>
+    
+    <Style Selector="controls1|TriviaUsersList ListBoxItem">
+        <Style Selector="^:pointerover > controls|RoomUserListEntry">
+            <Setter Property="Background" Value="#B456AB"/>
+        </Style>
+        <Style Selector="^:pressed > controls|RoomUserListEntry">
+            <Setter Property="Background" Value="#85437D"/>
+        </Style>
+        
+        <Style Selector="^ > controls|RoomUserListEntry Svg">
+            <Setter Property="Path" Value="avares://Trivia/Assets/Icons/person.svg"/>
+            <Setter Property="Css" Value="* { fill: #813e7a; }"/>
+        </Style>
+        
+        
+        <Style Selector="^ > controls|RoomUserListEntry[IsAdmin=True]">
+            <Setter Property="Background" Value="#C55AA2"/>
+            
+            <Style Selector="^ TextBlock">
+                <Setter Property="Foreground" Value="#FDD4E2"/>
+            </Style>
+            
+            <Style Selector="^ Border#PART_PfpWrapper">
+                <Setter Property="Background" Value="#FFA0A2"/>
+                
+                <Style Selector="^ > Svg">
+                    <Setter Property="Path" Value="avares://Trivia/Assets/Icons/crown.svg"/>
+                    <Setter Property="Css" Value="* { fill: #ec6200; }"/>
+                </Style>
+            </Style>
+        </Style>
+        
+        <Style Selector="^:pointerover > controls|RoomUserListEntry[IsAdmin=True]">
+            <Setter Property="Background" Value="#DC5DB8"/>
+        </Style>
+        <Style Selector="^:pressed > controls|RoomUserListEntry[IsAdmin=True]">
+            <Setter Property="Background" Value="#BA5699"/>
+        </Style>
+        
+        
+        <Style Selector="^ > controls|RoomUserListEntry[IsCurrentUser=True]">
+            <Setter Property="Background" Value="#98398e"/>
+        </Style>
+        <Style Selector="^:pointerover > controls|RoomUserListEntry[IsCurrentUser=True]">
+            <Setter Property="Background" Value="#AB40A0"/>
+        </Style>
+        <Style Selector="^:pressed > controls|RoomUserListEntry[IsCurrentUser=True]">
+            <Setter Property="Background" Value="#8A3481"/>
+        </Style>
+        
+        
+        <Style Selector="^ > controls|RoomUserListEntry[IsAdmin=True][IsCurrentUser=True]">
+            <Setter Property="Background" Value="#DF66B8"/>
+            
+            <Style Selector="^ Border#PART_PfpWrapper">
+                <Setter Property="Background" Value="#FFB8BC"/>
+            </Style>
+        </Style>
+        <Style Selector="^:pointerover > controls|RoomUserListEntry[IsAdmin=True][IsCurrentUser=True]">
+            <Setter Property="Background" Value="#ED6CC4"/>
+        </Style>
+        <Style Selector="^:pressed > controls|RoomUserListEntry[IsAdmin=True][IsCurrentUser=True]">
+            <Setter Property="Background" Value="#C85FA4"/>
+        </Style>
+        
+        
+        <Style Selector="^ > controls|RoomUserListEntry[IsEmptySlot=True]">
+            <Setter Property="Background" Value="#582c54"/>
+            
+            <Style Selector="^ Border#PART_PfpWrapper">
+                <Setter Property="Background" Value="#b580b0"/>
+                
+                <Style Selector="^ > Svg">
+                    <Setter Property="Path" Value="avares://Trivia/Assets/Icons/three-squares.svg"/>
+                    <Setter Property="Css" Value="* { fill: #d8bcd5; }"/>
+                    <Setter Property="Margin" Value="6"/>
+                </Style>
+            </Style>
+        </Style>
+        
+        <Style Selector="^:pointerover > controls|RoomUserListEntry[IsEmptySlot=True]">
+            <Setter Property="Background" Value="#52294E"/>
+        </Style>
+        
+        
+        <!--
+        We do the roundings here and not at the parent Trivia list because
+        of a current Avalonia glitch where it won't update under some conditions.
+        -->
+        <Style Selector="^:nth-child(1) > controls|RoomUserListEntry">
+            <Setter Property="CornerRadius" Value="25 25 0 0"/>
+        </Style>
+        <Style Selector="^:nth-last-child(1) > controls|RoomUserListEntry">
+            <Setter Property="CornerRadius" Value="0 0 25 25"/>
+        </Style>
+        <Style Selector="^:nth-child(1):nth-last-child(1) > controls|RoomUserListEntry">
+            <Setter Property="CornerRadius" Value="25 25 25 25"/>
+        </Style>
+    </Style>
+</Styles>

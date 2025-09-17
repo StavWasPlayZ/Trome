@@ -1,0 +1,83 @@
+using System;
+using System.Net;
+using System.Reactive.Disposables;
+using System.Reactive.Threading.Tasks;
+using Avalonia.Threading;
+using ReactiveUI;
+using Trivia.ViewModels.Auth;
+
+namespace Trivia.ViewModels;
+
+public class ConnectingViewModel : PageViewModel
+{
+    public ConnectingViewModel(IScreen hostScreen, IPEndPoint endpoint) : base(hostScreen)
+    {
+        this.WhenActivated(disposables =>
+        {
+            InitMusicService();
+            
+            Communicator.Instance.Connect(endpoint)
+                .ToObservable()
+                .Subscribe(
+                    _ => OnConnectionEstablished(),
+                    OnConnectionFailed
+                )
+                .DisposeWith(disposables);
+        });
+    }
+
+    private void InitMusicService()
+    {
+        bool succeed;
+        
+        try
+        {
+            succeed = App.MusicService!.Initialize();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            succeed = false;
+            
+        }
+
+        if (!succeed)
+        {
+            Console.Error.WriteLine("Music service not initialized");
+            App.SetMusicServiceUnavailable();
+        }
+    }
+
+    public ConnectingViewModel() { }
+    
+    private bool _connectionFailed;
+
+    public bool ConnectionFailed
+    {
+        get => _connectionFailed;
+        set => this.RaiseAndSetIfChanged(ref _connectionFailed, value);
+    }
+
+    private void OnConnectionEstablished()
+    {
+        App.MusicService?.Play();
+        App.MusicService?.PlayBackgroundTrack(false);
+        
+        Dispatcher.UIThread.Post(() => NavigateAndReset(new LoginViewModel(HostScreen)));
+    }
+
+    private void OnConnectionFailed(Exception e)
+    {
+        if(e.Message.Contains("target machine actively refused it"))
+        {
+            Console.WriteLine($"{Communicator.AnsiColor.DarkYellow}Connection failed:{Communicator.AnsiColor.Reset}");
+            Console.WriteLine($"{Communicator.AnsiColor.DarkYellow}Server is not open :({Communicator.AnsiColor.Reset}");
+            Console.WriteLine($"{Communicator.AnsiColor.DarkYellow}Try again later{Communicator.AnsiColor.Reset}");
+        }
+        else
+        {
+            Console.Error.WriteLine(e);
+        }
+        Dispatcher.UIThread.Post(() => ConnectionFailed = true);
+    }
+}

@@ -1,0 +1,98 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:menu="clr-namespace:Trivia.Views.Menu"
+        xmlns:menu1="clr-namespace:Trivia.ViewModels.Menu">
+    <Design.PreviewWith>
+        <Panel Width="1000" Height="600">
+            <menu:JoinRoomMenuView>
+                <menu:JoinRoomMenuView.DataContext>
+                    <menu1:JoinRoomMenuViewModel />
+                </menu:JoinRoomMenuView.DataContext>
+            </menu:JoinRoomMenuView>
+        </Panel>
+    </Design.PreviewWith>
+
+    <Style Selector="ListBox.t-list">
+        
+        <Setter Property="ClipToBounds" Value="False"/>
+        <Setter Property="Margin" Value="0 0 10 0" />
+
+        <Style Selector="^ /template/ ScrollViewer">
+            <Setter Property="ClipToBounds" Value="False"/>
+            
+            <Style Selector="^ /template/ ScrollBar:vertical">
+                <!-- Bring the scrollbar a bit right -->
+                <Setter Property="RenderTransform" Value="translateX(23px)"/>
+                
+                <Setter Property="AllowAutoHide" Value="False"/>
+                
+                
+                <Setter Property="Margin" Value="0 15"/>
+                
+                <Style Selector="^ Track">
+                    <Setter Property="Margin" Value="0 3"/>
+                    
+                    <Style Selector="^ Thumb">
+                        <Setter Property="Background" Value="#f9be82"/>
+                        <Setter Property="CornerRadius" Value="5"/>
+                        
+                        <Style Selector="^:pointerover > Border">
+                            <Setter Property="Background" Value="#E4AE76"/>
+                        </Style>
+                        <Style Selector="^:pressed > Border">
+                            <Setter Property="Background" Value="#FFC792"/>
+                        </Style>
+                    </Style>
+                </Style>
+                
+                <Style Selector="^ Rectangle#TrackRect">
+                    <Setter Property="Fill" Value="Transparent"/>
+                </Style>
+                
+                
+                <!-- Arrows -->
+                
+                <Style Selector="^ RepeatButton">
+                    
+                    <Style Selector="^#PART_LineUpButton, ^#PART_LineDownButton">
+                        <Style Selector="^ TextBlock">
+                            <Setter Property="Foreground" Value="#E1D1B3"/>
+                            <Setter Property="FontSize" Value="18"/>
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                        </Style>
+                    </Style>
+                    
+                    <Style Selector="^:pointerover#PART_LineUpButton, ^:pointerover#PART_LineDownButton">
+                        <Style Selector="^ TextBlock">
+                            <Setter Property="Foreground" Value="#CEBFA3"/>
+                        </Style>
+                    </Style>
+                    
+                    <Style Selector="^:pressed#PART_LineUpButton, ^:pressed#PART_LineDownButton">
+                        <Style Selector="^ TextBlock">
+                            <Setter Property="Foreground" Value="#B2A58E"/>
+                        </Style>
+                    </Style>
+                    
+                    <Style Selector="^#PART_LineUpButton">
+                        <Setter Property="Template">
+                            <ControlTemplate>
+                                <TextBlock>⮝</TextBlock>
+                            </ControlTemplate>
+                        </Setter>
+                    </Style>
+                    <Style Selector="^#PART_LineDownButton">
+                        <Setter Property="Template">
+                            <ControlTemplate>
+                                <TextBlock>⮟</TextBlock>
+                            </ControlTemplate>
+                        </Setter>
+                    </Style>
+                </Style>
+            </Style>
+            
+        </Style>
+        
+    </Style>
+    
+</Styles>

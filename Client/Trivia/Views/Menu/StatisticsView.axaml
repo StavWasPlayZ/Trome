@@ -1,0 +1,366 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:Trivia.Controls"
+             xmlns:vmmenu="clr-namespace:Trivia.ViewModels.Menu"
+             xmlns:listEntries="clr-namespace:Trivia.Controls.ListEntries"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
+             x:CompileBindings="True"
+             x:Class="Trivia.Views.Menu.StatisticsView"
+             x:DataType="vmmenu:StatisticsViewModel">
+    
+    <Design.DataContext>
+        <vmmenu:StatisticsViewModel/>
+    </Design.DataContext>
+    
+    <Panel>
+        <Panel.Background>
+            <ImageBrush Source="avares://Trivia/Assets/blobs-l-b49caff1a7941d98b60902da64956ad85dfbe4f9.png"
+                        Stretch="UniformToFill" />
+        </Panel.Background>
+
+        <controls:TriviaMenuPanel Title="STATISTICS"
+                                  BackButtonCommand="{Binding NavigateBackCommand}">
+            <Panel>
+                
+                <Grid RowDefinitions="Auto, *"
+                      RowSpacing="15"
+                      Margin="50 50 50 0">
+                    
+                    <Border Grid.Row="0"
+                            Background="#4DFFA6A6"
+                            CornerRadius="30">
+                        <Grid ColumnDefinitions="*, *"
+                              ColumnSpacing="5"
+                              Margin="7"
+                              Height="184">
+                            
+                            <controls:TriviaUsersList Grid.Column="0"
+                                                      Background="#ffddbe">
+                                <ListBox PointerReleased="SelectingItemsControl_OnPointerReleased"
+                                         ItemsSource="{Binding ScoreLists[0]}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <listEntries:ScoredUserListEntry Scores="{Binding}"/>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                                
+                                <controls:TriviaUsersList.Styles>
+                                    
+                                    <Style Selector="ListBoxItem">
+                                        <Setter Property="Padding" Value="0 3"/>
+                                    </Style>
+                                    <Style Selector="listEntries|ScoredUserListEntry">
+                                        <Setter Property="Padding" Value="10 10"/>
+                                    </Style>
+                                    
+                                    <Style Selector="listEntries|ScoredUserListEntry Border#PART_Pfp">
+                                        <Setter Property="Width" Value="56"/>
+                                        <Setter Property="Height" Value="56"/>
+                                    </Style>
+                                
+                                    <Style Selector="ListBoxItem:nth-child(1)">
+                                        <Style Selector="^ > listEntries|ScoredUserListEntry[IsEmptySlot=False]">
+                                            <Setter Property="Background" Value="#fdb33a"/>
+                                            
+                                            <Style Selector="^ Border#PART_Pfp">
+                                                <Setter Property="Background" Value="#ffdbb8"/>
+                                            
+                                                <Style Selector="^ > Svg">
+                                                    <Setter Property="Css" Value="* { fill: #c9731e; }"/>
+                                                </Style>
+                                            </Style>
+                                            
+                                            <Style Selector="^ TextBlock.primary-text">
+                                                <Setter Property="Foreground" Value="#ac631b"/>
+                                            </Style>
+                                            <Style Selector="^ TextBlock.secondary-text">
+                                                <Setter Property="Foreground" Value="#b7722d"/>
+                                            </Style>
+                                        </Style>
+                                        
+                                        <Style Selector="^:pointerover > listEntries|ScoredUserListEntry[IsEmptySlot=False]">
+                                            <Setter Property="Background" Value="#FFC258"/>
+                                        </Style>
+                                        <Style Selector="^:pressed listEntries|ScoredUserListEntry[IsEmptySlot=False]">
+                                            <Setter Property="Background" Value="#EDA73C"/>
+                                        </Style>
+                                        
+                                        
+                                        <Style Selector="^ > listEntries|ScoredUserListEntry[IsEmptySlot=True]">
+                                            <Setter Property="Background" Value="#D08240"/>
+                                            
+                                            <Style Selector="^ Border#PART_Pfp">
+                                                <Setter Property="Background" Value="#ffdbb8"/>
+                                            
+                                                <Style Selector="^ > Svg">
+                                                    <Setter Property="Css" Value="* { fill: #c9731e; }"/>
+                                                </Style>
+                                            </Style>
+                                            
+                                            <Style Selector="^ TextBlock.primary-text">
+                                                <Setter Property="Foreground" Value="#ffdbb8"/>
+                                            </Style>
+                                            <Style Selector="^ TextBlock.secondary-text">
+                                                <Setter Property="Foreground" Value="#ffdbb8"/>
+                                            </Style>
+                                        </Style>
+                                        
+                                        <Style Selector="^:pointerover > listEntries|ScoredUserListEntry[IsEmptySlot=True]">
+                                            <Setter Property="Background" Value="#C57C3D"/>
+                                        </Style>
+                                    </Style>
+                                    
+                                    <Style Selector="ListBoxItem:nth-child(2)">
+                                        <Style Selector="^ > listEntries|ScoredUserListEntry[IsEmptySlot=False]">
+                                            <Setter Property="Background" Value="#b4483a"/>
+                                            
+                                            <Style Selector="^ Border#PART_Pfp">
+                                                <Setter Property="Background" Value="#ffa69a"/>
+                                            
+                                                <Style Selector="^ > Svg">
+                                                    <Setter Property="Css" Value="* { fill: #9d4236; }"/>
+                                                </Style>
+                                            </Style>
+                                            
+                                            <Style Selector="^ TextBlock.primary-text">
+                                                <Setter Property="Foreground" Value="#ffa69a"/>
+                                            </Style>
+                                            <Style Selector="^ TextBlock.secondary-text">
+                                                <Setter Property="Foreground" Value="#712e25"/>
+                                            </Style>
+                                        </Style>
+                                        
+                                        <Style Selector="^:pointerover > listEntries|ScoredUserListEntry[IsEmptySlot=False]">
+                                            <Setter Property="Background" Value="#B45C46"/>
+                                        </Style>
+                                        <Style Selector="^:pressed listEntries|ScoredUserListEntry[IsEmptySlot=False]">
+                                            <Setter Property="Background" Value="#A74336"/>
+                                        </Style>
+                                        
+                                        
+                                        <Style Selector="^ > listEntries|ScoredUserListEntry[IsEmptySlot=True]">
+                                            <Setter Property="Background" Value="#72372E"/>
+                                            
+                                            <Style Selector="^ Border#PART_Pfp">
+                                                <Setter Property="Background" Value="#be6c62"/>
+                                            
+                                                <Style Selector="^ > Svg">
+                                                    <Setter Property="Css" Value="* { fill: #ffa69a; }"/>
+                                                </Style>
+                                            </Style>
+                                            
+                                            <Style Selector="^ TextBlock.primary-text">
+                                                <Setter Property="Foreground" Value="#ffa69a"/>
+                                            </Style>
+                                            <Style Selector="^ TextBlock.secondary-text">
+                                                <Setter Property="Foreground" Value="#ffa69a"/>
+                                            </Style>
+                                        </Style>
+                                        
+                                        <Style Selector="^:pointerover > listEntries|ScoredUserListEntry[IsEmptySlot=True]">
+                                            <Setter Property="Background" Value="#683229"/>
+                                        </Style>
+                                    </Style>
+                                    
+                                </controls:TriviaUsersList.Styles>
+                                
+                            </controls:TriviaUsersList>
+                            
+                            <controls:TriviaUsersList Grid.Column="1"
+                                                      Background="#9d665f">
+                                <ListBox PointerReleased="SelectingItemsControl_OnPointerReleased"
+                                         ItemsSource="{Binding ScoreLists[1]}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <listEntries:ScoredUserListEntry Scores="{Binding}"/>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                                
+                                <controls:TriviaUsersList.Styles>
+                                    
+                                    <Style Selector="listEntries|ScoredUserListEntry">
+                                        <Setter Property="Padding" Value="7 7"/>
+                                    </Style>
+                                    
+                                    <Style Selector="listEntries|ScoredUserListEntry Border#PART_Pfp">
+                                        <Setter Property="Width" Value="36"/>
+                                        <Setter Property="Height" Value="36"/>
+                                        <Setter Property="Padding" Value="3"/>
+                                    </Style>
+                                    
+                                    <Style Selector="ListBoxItem:nth-child(1)">
+                                        <Style Selector="^ > listEntries|ScoredUserListEntry[IsEmptySlot=False]">
+                                            <Setter Property="Background" Value="#d29188"/>
+                                            
+                                            <Style Selector="^ Border#PART_Pfp">
+                                                <Setter Property="Background" Value="#ffcdc7"/>
+                                            
+                                                <Style Selector="^ > Svg">
+                                                    <Setter Property="Css" Value="* { fill: #ae6e65; }"/>
+                                                </Style>
+                                            </Style>
+                                            
+                                            <Style Selector="^ TextBlock.primary-text">
+                                                <Setter Property="Foreground" Value="White"/>
+                                            </Style>
+                                            <Style Selector="^ TextBlock.secondary-text">
+                                                <Setter Property="Foreground" Value="#975f58"/>
+                                            </Style>
+                                        </Style>
+                                        
+                                        <Style Selector="^:pointerover > listEntries|ScoredUserListEntry">
+                                            <Setter Property="Background" Value="#D29C97"/>
+                                        </Style>
+                                        <Style Selector="^:pressed listEntries|ScoredUserListEntry">
+                                            <Setter Property="Background" Value="#C3867E"/>
+                                        </Style>
+                                    </Style>
+                                    
+                                    <Style Selector="ListBoxItem:nth-child(1)">
+                                        <Style Selector="^ > listEntries|ScoredUserListEntry[IsEmptySlot=True]">
+                                            <Setter Property="Background" Value="#8A5951"/>
+                                            
+                                            <Style Selector="^ Border#PART_Pfp">
+                                                <Setter Property="Background" Value="#f3c1bc"/>
+                                            
+                                                <Style Selector="^ > Svg">
+                                                    <Setter Property="Css" Value="* { fill: #ae6e65; }"/>
+                                                </Style>
+                                            </Style>
+                                            
+                                            <Style Selector="^ TextBlock.primary-text">
+                                                <Setter Property="Foreground" Value="White"/>
+                                            </Style>
+                                            <Style Selector="^ TextBlock.secondary-text">
+                                                <Setter Property="Foreground" Value="#ffcdc7"/>
+                                            </Style>
+                                        </Style>
+                                        
+                                        <Style Selector="^:pointerover > listEntries|ScoredUserListEntry">
+                                            <Setter Property="Background" Value="#82544C"/>
+                                        </Style>
+                                    </Style>
+                                    
+                                    <Style Selector="ListBoxItem:not(:nth-child(1))">
+                                        <Style Selector="^ > listEntries|ScoredUserListEntry[IsEmptySlot=False]">
+                                            <Setter Property="Background" Value="#fac8c2"/>
+                                            
+                                            <Style Selector="^ Border#PART_Pfp">
+                                                <Setter Property="Background" Value="#fff1ef"/>
+                                            
+                                                <Style Selector="^ > Svg">
+                                                    <Setter Property="Css" Value="* { fill: #c98f87; }"/>
+                                                </Style>
+                                            </Style>
+                                            
+                                            <Style Selector="^ TextBlock.primary-text">
+                                                <Setter Property="Foreground" Value="#af8079"/>
+                                            </Style>
+                                            <Style Selector="^ TextBlock.secondary-text">
+                                                <Setter Property="Foreground" Value="#b57d76"/>
+                                            </Style>
+                                        </Style>
+                                        
+                                        <Style Selector="^:pointerover > listEntries|ScoredUserListEntry">
+                                            <Setter Property="Background" Value="#FAD4D2"/>
+                                        </Style>
+                                        <Style Selector="^:pressed listEntries|ScoredUserListEntry">
+                                            <Setter Property="Background" Value="#ECBEB9"/>
+                                        </Style>
+                                    </Style>
+                                    
+                                    <Style Selector="ListBoxItem:not(:nth-child(1))">
+                                        <Style Selector="^ > listEntries|ScoredUserListEntry[IsEmptySlot=True]">
+                                            <Setter Property="Background" Value="#E1AFA8"/>
+                                            
+                                            <Style Selector="^ Border#PART_Pfp">
+                                                <Setter Property="Background" Value="#fff1ef"/>
+                                            
+                                                <Style Selector="^ > Svg">
+                                                    <Setter Property="Css" Value="* { fill: #c98f87; }"/>
+                                                </Style>
+                                            </Style>
+                                            
+                                            <Style Selector="^ TextBlock.primary-text">
+                                                <Setter Property="Foreground" Value="#fff1ef"/>
+                                            </Style>
+                                            <Style Selector="^ TextBlock.secondary-text">
+                                                <Setter Property="Foreground" Value="#fff1ef"/>
+                                            </Style>
+                                        </Style>
+                                        
+                                        <Style Selector="^:pointerover > listEntries|ScoredUserListEntry">
+                                            <Setter Property="Background" Value="#D9A8A3"/>
+                                        </Style>
+                                    </Style>
+                                    
+                                </controls:TriviaUsersList.Styles>
+                                
+                            </controls:TriviaUsersList>
+                            
+                        </Grid>
+                    </Border>
+                    
+                    <controls:TriviaUsersList Grid.Row="1"
+                                              Margin="160 0"
+                                              CornerRadius="30 30 0 0"
+                                              IsVisible="{Binding Show2ndList}">
+                        <ListBox PointerReleased="SelectingItemsControl_OnPointerReleased"
+                                 ItemsSource="{Binding ScoreLists[2]}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <listEntries:ScoredUserListEntry Scores="{Binding}"/>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        
+                        <controls:TriviaUsersList.Styles>
+                            <Style Selector="TextBlock.primary-text, TextBlock.secondary-text">
+                                <Setter Property="FontSize" Value="25"/>
+                            </Style>
+                            
+                            <Style Selector="Border#PART_Pfp">
+                                <Setter Property="Width" Value="30"/>
+                                <Setter Property="Height" Value="30"/>
+                                <Setter Property="Padding" Value="3"/>
+                            </Style>
+                            
+                            <Style Selector="ListBoxItem:nth-last-child(1) > listEntries|ScoredUserListEntry">
+                                <Setter Property="CornerRadius" Value="0 0 5 5"/>
+                            </Style>
+                        </controls:TriviaUsersList.Styles>
+                        
+                    </controls:TriviaUsersList>
+                    
+                </Grid>
+                
+                <Button Classes="action-button"
+                        Command="{Binding ShowUserStatsPopupCommand}"
+                        CommandParameter="{Binding AppService.SessionUser}">
+                    
+                    <StackPanel Orientation="Horizontal"
+                                Spacing="7">
+                        
+                        <Svg Path="avares://Trivia/Assets/Icons/person.svg"
+                             Css="* { fill: #4d264a }"
+                             Height="40"/>
+                        
+                        <TextBlock
+                            Foreground="#4d264a"
+                            VerticalAlignment="Center">
+                            MY STATS
+                        </TextBlock>
+                    </StackPanel>
+                    
+                </Button>
+                
+            </Panel>
+        </controls:TriviaMenuPanel>
+
+    </Panel>
+    
+</UserControl>

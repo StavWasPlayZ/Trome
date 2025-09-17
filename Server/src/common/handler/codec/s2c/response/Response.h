@@ -1,0 +1,212 @@
+#pragma once
+
+#include "infrastructure/Game.h"
+#include "infrastructure/PlayerResult.h"
+#include "infrastructure/UserStatistics.h"
+
+#include <infrastructure/RoomData.h>
+#include <optional>
+#include <vector>
+
+#ifdef ERROR
+#undef ERROR
+#endif
+
+class Room;
+class LoggedUser;
+
+enum class ResponseCode : unsigned char
+{
+	ERROR = 0,
+	LOGIN,
+	SIGNUP,
+	LOGOUT,
+	JOIN_ROOM,
+	CREATE_ROOM,
+	GET_ROOMS,
+	GET_PLAYERS_IN_ROOM,
+	GET_HIGH_SCORES,
+	GET_USER_STATISTICS,
+	CLOSE_ROOM,
+	START_GAME,
+	GET_ROOM_STATE,
+	LEAVE_ROOM,
+	UPDATE_ROOM_DATA,
+    LEAVE_GAME,
+    GET_QUESTION,
+    SUBMIT_ANSWER,
+    GET_GAME_RESULT,
+    ADD_QUESTION,
+    KICK_PLAYER
+};
+
+
+struct ProtocolResponse
+{
+    explicit ProtocolResponse(ResponseCode id);
+    virtual ~ProtocolResponse();
+
+    const ResponseCode id;
+};
+
+
+struct RegistrationResponse : ProtocolResponse
+{
+	RegistrationResponse(ResponseCode id, long userId);
+
+	const long userId;
+};
+
+struct LoginResponse : RegistrationResponse
+{
+    explicit LoginResponse(long userId);
+};
+
+
+struct SignupResponse : RegistrationResponse
+{
+    explicit SignupResponse(long userId);
+};
+
+
+struct LogoutResponse : ProtocolResponse
+{
+    LogoutResponse();
+};
+
+
+struct JoinRoomResponse : ProtocolResponse
+{
+    explicit JoinRoomResponse(const Room& room, const std::vector<LoggedUser*>& players);
+
+	const Room& room;
+    const std::vector<LoggedUser*> players;
+};
+
+struct CreateRoomResponse : ProtocolResponse
+{
+    CreateRoomResponse(long roomId, const RoomData& data);
+
+    const long roomId;
+    RoomData data;
+};
+
+struct GetRoomsResponse : ProtocolResponse
+{
+    explicit GetRoomsResponse(const std::vector<Room*> &rooms);
+
+	const std::vector<Room*> rooms;
+};
+
+struct GetPlayersInRoomResponse : ProtocolResponse
+{
+    explicit GetPlayersInRoomResponse(const std::vector<LoggedUser*> &players);
+
+	const std::vector<LoggedUser*> players;
+};
+
+struct GetHighScoresResponse : ProtocolResponse
+{
+    explicit GetHighScoresResponse(const std::vector<std::pair<UserModel, int>> &stats);
+
+    const std::vector<std::pair<UserModel, int>> stats;
+};
+
+struct GetUserStatisticsResponse : ProtocolResponse
+{
+    explicit GetUserStatisticsResponse(const UserStatistics &stats);
+
+    const UserStatistics stats;
+};
+
+struct CloseRoomResponse : ProtocolResponse
+{
+    CloseRoomResponse();
+};
+
+struct StartGameResponse : ProtocolResponse
+{
+    StartGameResponse();
+};
+
+struct LeaveRoomResponse : ProtocolResponse
+{
+    LeaveRoomResponse();
+};
+
+struct [[deprecated(
+    "The Notifications system has been set in place to allow for automatic, non-polling updates of any "
+    "room state changes."
+    " This request/response is therefore useless and should not be used."
+)]] GetRoomStateResponse : ProtocolResponse
+{
+    explicit GetRoomStateResponse(const Room& room);
+
+	const Room& room;
+};
+
+struct UpdateRoomDataResponse : ProtocolResponse
+{
+    UpdateRoomDataResponse();
+};
+
+struct LeaveGameResponse : ProtocolResponse
+{
+    LeaveGameResponse();
+};
+
+
+struct QuestionResponse : ProtocolResponse
+{
+    explicit QuestionResponse(ResponseCode id, const std::optional<UserQuestion> &question, int points,
+                              const std::optional<std::vector<PlayerResult>> &results);
+
+    /**
+     * Empty for if there are no more questions.
+     */
+    const std::optional<UserQuestion> question;
+
+    const int points;
+
+    /**
+     * If the game has ended during the response period, then the results will be provided here.
+     */
+    const std::optional<std::vector<PlayerResult>> results;
+};
+
+struct GetQuestionResponse : QuestionResponse
+{
+    GetQuestionResponse(const std::optional<UserQuestion> &question, int points,
+                        const std::optional<std::vector<PlayerResult>> &results = std::nullopt);
+};
+
+/**
+ * Contains the new, next question, if one exists.
+ */
+struct SubmitAnswerResponse : QuestionResponse
+{
+    SubmitAnswerResponse(const std::optional<UserQuestion> &question, int points,
+                        const std::optional<std::vector<PlayerResult>> &results = std::nullopt);
+};
+
+
+struct [[deprecated(
+    "The Notifications system has been set in place to allow for automatic, non-polling updates of any "
+    "room state changes."
+    " This method is therefore useless and should not be used."
+)]] GetGameResultResponse : ProtocolResponse
+{
+    explicit GetGameResultResponse(const std::vector<PlayerResult>& results);
+
+    const std::vector<PlayerResult> results;
+};
+
+struct AddQuestionResponse : ProtocolResponse
+{
+    AddQuestionResponse();
+};
+
+struct KickPlayerResponse : ProtocolResponse
+{
+    KickPlayerResponse();
+};

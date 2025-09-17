@@ -1,0 +1,75 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:game="clr-namespace:Trivia.ViewModels.Game"
+             xmlns:controls="clr-namespace:Trivia.Controls"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
+             x:Class="Trivia.Views.Game.FinishedEarlyView"
+             x:DataType="game:FinishedEarlyViewModel">
+    
+    <Design.DataContext>
+        <game:FinishedEarlyViewModel/>
+    </Design.DataContext>
+    
+    <Panel>
+        <Panel.Background>
+            <ImageBrush Source="avares://Trivia/Assets/drool-d-b1608556d649b5b943136ecc0df0fe1bc7ff644f.png"
+                        Stretch="UniformToFill"/>
+        </Panel.Background>
+        
+        <Panel Background="rgba(0, 0, 0, .3)">
+            <controls:TriviaBackButton Command="{Binding LeaveGameCommand}"/>
+
+            <controls:LeadUserDock Username="Username"/>
+            
+            <Border
+                Background="rgba(0, 0, 0, .3)"
+                Margin="20 70 20 25"
+                CornerRadius="25"
+                BoxShadow="0 5 0 0 #1f000000">
+                
+                <Panel>
+                    <StackPanel VerticalAlignment="Center"
+                                Margin="60 0">
+                        <StackPanel.Styles>
+                            <Style Selector="TextBlock">
+                                <Setter Property="FontSize" Value="40"/>
+                            </Style>
+                        </StackPanel.Styles>
+                        
+                        <TextBlock VerticalAlignment="Bottom"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,0,0,5"
+                                   FontSize="60">
+                            FINISHED EARLY.
+                        </TextBlock>
+                        <TextBlock VerticalAlignment="Top"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,10,0,0"
+                                   FontSize="35"
+                                   Opacity="0.7"
+                                   TextWrapping="Wrap"
+                                   TextAlignment="Center"
+                                   Text="{Binding EndingLine}"/>
+                    </StackPanel>
+                    
+                    <TextBlock VerticalAlignment="Bottom"
+                               HorizontalAlignment="Center"
+                               Margin="0, 10"
+                               FontSize="30"
+                               Opacity=".25">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0}/{1} FINISHED">
+                                    <Binding Path="PlayersFinished"/>
+                                    <Binding Path="RoomModel.PlayersCount"/>
+                                </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                </Panel>
+                
+            </Border>
+        </Panel>
+        
+    </Panel>
+</UserControl>

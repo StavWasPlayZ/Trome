@@ -1,0 +1,44 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:Trivia.Controls">
+    <Design.PreviewWith>
+        <StackPanel Background="Red"
+                    Spacing="5">
+            <controls:LeadUserDock Username="Username"/>
+            <controls:LeadUserDock />
+        </StackPanel>
+    </Design.PreviewWith>
+
+    <Style Selector="controls|LeadUserDock">
+        <Setter Property="Template">
+            <ControlTemplate>
+            
+                <Border
+                    Padding="15,5,10,5"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    CornerRadius="0,0,0,10"
+                    Background="rgba(0, 0, 0, .3)">
+                
+                    <Grid ColumnDefinitions="*, Auto">
+                    
+                        <TextBlock Grid.Column="0"
+                                   Text="{Binding Username,
+                                       RelativeSource={RelativeSource TemplatedParent},
+                                       TargetNullValue=---------
+                                   }"/>
+                        
+                        <Svg Grid.Column="1"
+                             Path="avares://Trivia/Assets/Icons/crown.svg"
+                             Css="* { fill: #FFB43B; }"
+                             Height="40"
+                             Margin="10,0,0,0"/>
+                    
+                    </Grid>
+                
+                </Border>
+                
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

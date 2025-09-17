@@ -1,0 +1,52 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:Trivia.Controls">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <!-- Add Controls for Previewer Here -->
+        </Border>
+    </Design.PreviewWith>
+
+    
+    <Style Selector=":is(Panel).t-input-fields-container">
+        
+        <Style Selector="^ StackPanel[(Grid.Column)=0]">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        
+        <Style Selector="^ controls|TriviaTextBox[(Grid.Column)=1], ^ controls|TriviaTextBox.input-field">
+            <Setter Property="Width" Value="250"/>
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="Background" Value="#33EF657C"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            
+            <Setter Property="UnderlineBrush" Value="#C0FFFFFF"/>
+                            
+            <Style Selector="^ TextBox">
+                <Setter Property="TextAlignment" Value="Start"/>
+                <Setter Property="Margin" Value="10 5"/>
+                <Setter Property="CaretBrush" Value="White"/>
+            </Style>
+        </Style>
+        
+        <Style Selector="^ > StackPanel.required-field">
+            <Setter Property="Orientation" Value="Horizontal"/>
+                            
+            <Style Selector="^ TextBlock:nth-child(2)">
+                <Setter Property="Text" Value="*" />
+                <Setter Property="Foreground" Value="Red" />
+                <Setter Property="FontSize" Value="20" />
+                <Setter Property="Margin" Value="2 0" />
+            </Style>
+        </Style>
+        
+    </Style>
+    
+    <Style Selector="TextBlock.warning-display">
+        <Setter Property="Foreground" Value="Red"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="30"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+    
+</Styles>

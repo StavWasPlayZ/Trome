@@ -1,0 +1,43 @@
+#include "RoomMemberRequestHandler.h"
+#include "RequestHandlerFactory.h"
+#include "codec/c2s/request/Request.h"
+
+RoomMemberRequestHandler::RoomMemberRequestHandler(const RequestHandlerFactory &handlerFactory, Room &room)
+    : RoomRequestHandler(handlerFactory, room)
+{
+}
+
+std::optional<ErrorStatus> RoomMemberRequestHandler::isRequestRelevant(const RequestInfo &info) const
+{
+    switch (info.id)
+    {
+    case RequestCode::LEAVE_ROOM:
+        return std::nullopt;
+
+    default:
+        return RoomRequestHandler::isRequestRelevant(info);
+    }
+}
+
+RequestResult RoomMemberRequestHandler::handleRequest(const RequestInfo &info, const ProtocolRequest &request) const
+{
+    switch (info.id)
+    {
+    case RequestCode::LEAVE_ROOM:
+        return leaveRoom(info, static_cast<const LeaveRoomRequest &>(request));
+
+    default:
+        return RoomRequestHandler::handleRequest(info, request);
+    }
+}
+
+RequestResult RoomMemberRequestHandler::leaveRoom(const RequestInfo &info, const LeaveRoomRequest &) const
+{
+    LoggedUser& user = getUserByInfo(info);
+    m_room.removeUser(user);
+
+    return RequestResult(
+        new LeaveRoomResponse(),
+        new MenuRequestHandler(this->m_handlerFactory)
+    );
+}

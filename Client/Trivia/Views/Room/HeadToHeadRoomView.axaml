@@ -1,0 +1,164 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:room="clr-namespace:Trivia.ViewModels.Room"
+             xmlns:controls="clr-namespace:Trivia.Controls"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
+             x:CompileBindings="True"
+             x:Class="Trivia.Views.Room.HeadToHeadRoomView"
+             x:DataType="room:HeadToHeadRoomViewModel">
+    
+    <Design.DataContext>
+        <room:HeadToHeadRoomViewModel/>
+    </Design.DataContext>
+    
+    <Panel>
+        <Panel.Background>
+            <ImageBrush Source="avares://Trivia/Assets/drool-l-95f4c6657e51f40d193e1c5ba6629216d8e38d5b.png"
+                        Stretch="UniformToFill" />
+        </Panel.Background>
+        
+        <controls:TriviaBackButton Command="{Binding LeaveRoomCommand}"/>
+        
+        <TextBox VerticalAlignment="Top"
+                 HorizontalAlignment="Center"
+                 Width="600"
+                 FontSize="80"
+                 FontFamily="{StaticResource Born2bSportyFS}"
+                 Padding="0 -10 0 10"
+                 TextAlignment="Center"
+                 BorderBrush="rgba(0, 0, 0, .1)"
+                 BorderThickness="4, 0, 4, 4"
+                 CornerRadius="0 0 10 10"
+                 Background="rgba(0, 0, 0, .5)"
+                 Foreground="White"
+                 IsEnabled="{Binding IsAdmin}"
+                 Text="{Binding RoomName}">
+            
+            <TextBox.Styles>
+                <Style Selector="TextBox[IsEnabled=False], TextBox:pointerover, TextBox:focus-within">
+                    <Setter Property="Foreground" Value="{DynamicResource TriviaTextBoxForeground}"/>
+                                
+                    <Style Selector="^ /template/ Border">    
+                        <Setter Property="Background" Value="rgba(0, 0, 0, .3)"/>
+                        <Setter Property="BorderBrush" Value="rgba(0, 0, 0, .3)"/>
+                        <Setter Property="CornerRadius" Value="0 0 10 10"/>
+                    </Style>
+                </Style>
+                
+                <Style Selector="TextBox:focus-within">
+                    <Style Selector="^ /template/ Border">    
+                        <Setter Property="CornerRadius" Value="0 0 10 10"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                    </Style>
+                </Style>
+            </TextBox.Styles>
+        </TextBox>
+
+
+        <Grid ColumnDefinitions="*, *">
+                    
+            <Grid.Styles>
+                <Style Selector="Border.user-container">
+                    <Setter Property="Width" Value="325"/>
+                            
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Setter Property="BorderThickness" Value="5"/>
+                    <Setter Property="CornerRadius" Value="10"/>
+                    <Setter Property="Padding" Value="5"/>
+                        
+                    <Style Selector="^ > Grid">
+                        <Style Selector="^ > Border">
+                            <Setter Property="Padding" Value="5"/>
+                            <Setter Property="Margin" Value="5"/>
+                            <Setter Property="Background" Value="#6C4669"/>
+                            <Setter Property="CornerRadius" Value="5"/>
+                            <Setter Property="BoxShadow" Value="0 5 0 0 #1f000000"/>
+                        </Style>
+                            
+                        <Style Selector="^ > StackPanel">
+                            <Setter Property="Margin" Value="10"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                                
+                            <Style Selector="^ > TextBlock:nth-child(2)">
+                                <Setter Property="FontSize" Value="20"/>
+                            </Style>
+                        </Style>
+                    </Style>
+                </Style>
+            </Grid.Styles>
+                        
+            <Border Grid.Column="0"
+                    Classes="user-container"
+                    Background="#362034"
+                    BorderBrush="#cd3b0a">
+                <Grid ColumnDefinitions="Auto, *">
+                                
+                    <Border Grid.Column="0">
+                        <Svg Path="avares://Trivia/Assets/Icons/person.svg"
+                             Css="* { fill: #ffffff }"
+                             Height="50"/>
+                    </Border>
+                                
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="{Binding Creator.Username}"/>
+                            
+                        <!--TODO: Re-add points display -->
+                        <!-- <TextBlock>69 POINTS</TextBlock> -->
+                    </StackPanel>
+                                
+                </Grid>
+            </Border>
+                        
+            <Border Grid.Column="1"
+                    Classes="user-container"
+                    Background="#362034"
+                    BorderBrush="#414990">
+                <Grid ColumnDefinitions="Auto, *">
+                                
+                    <Border Grid.Column="0">
+                        <Svg Path="avares://Trivia/Assets/Icons/person.svg"
+                             Css="* { fill: #ffffff }"
+                             Height="50"/>
+                    </Border>
+                                
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="{
+                                Binding Opponent.Username,
+                                FallbackValue='WAITING...'
+                            }"/>
+                        <!-- <TextBlock>69 POINTS</TextBlock> -->
+                    </StackPanel>
+                                
+                </Grid>
+            </Border>
+                
+        </Grid>
+
+        <Grid RowDefinitions="*, *">
+            <controls:TriviaButton Grid.Row="1"
+                                   Command="{Binding StartGameCommand}"
+                                   IsVisible="{Binding IsAdmin}"
+                                   Text="START GAME"
+                                   Width="300"
+                                   Background="#362034"
+                                   BorderBrush="#B97292"
+                                   IconColor="#ffbbbb"
+                                   BorderThickness="5"
+                                   BorderThicknessSelected="7"
+                                   IconSvgPath="avares://Trivia/Assets/Icons/flag.svg"
+                                   IconMargin="-7 7 -10 7">
+                
+                <controls:TriviaButton.Styles>
+                    <Style Selector="Button /template/ ContentPresenter:disabled">
+                        <Setter Property="Background" Value="rgba(0, 0, 0, .5)" />
+                    </Style>
+                </controls:TriviaButton.Styles>
+                
+            </controls:TriviaButton>
+        </Grid>
+
+    </Panel>
+</UserControl>

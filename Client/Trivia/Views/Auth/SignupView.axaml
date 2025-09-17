@@ -1,0 +1,183 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:Trivia.Controls"
+             xmlns:auth="clr-namespace:Trivia.ViewModels.Auth"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
+             x:CompileBindings="True"
+             x:Class="Trivia.Views.Auth.SignupView"
+             x:DataType="auth:SignupViewModel">
+    
+    <Design.DataContext>
+        <auth:SignupViewModel/>
+    </Design.DataContext>
+    
+    <Panel>
+        <Panel.Background>
+            <ImageBrush Source="avares://Trivia/Assets/blobs-l-b49caff1a7941d98b60902da64956ad85dfbe4f9.png"
+                   Stretch="UniformToFill" />            
+        </Panel.Background>
+        
+        <controls:TriviaMenuPanel Title="SIGNUP"
+                                  DisplayBackButton="False"
+                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="Center"
+                                  Width="700">
+            
+            <StackPanel Margin="50,40,50,10"
+                        Spacing="20">
+                
+                <Grid RowDefinitions="55, 55, 55, 55, 55"
+                      ColumnDefinitions="Auto, *"
+                      Margin="10"
+                      Classes="t-input-fields-container">
+                    
+                    <Grid.Resources>
+                        <!-- ReSharper disable once Xaml.RedundantResource -->
+                        <SolidColorBrush x:Key="TriviaTextBoxForeground">White</SolidColorBrush>
+                    </Grid.Resources>
+                    
+                    <Grid.Styles>
+                        <Style Selector="TextBlock.passwords-mismatch">
+                            <Setter Property="Foreground" Value="OrangeRed" />
+                        </Style>
+                    </Grid.Styles>
+                    
+                    
+                    <StackPanel Grid.Row="0"
+                                Grid.Column="0"
+                                Classes="required-field">
+                        <TextBlock>
+                            USERNAME
+                        </TextBlock>
+                    </StackPanel>
+                    
+                    <controls:TriviaTextBox Grid.Row="0"
+                                            Grid.Column="1">
+                        <TextBox Text="{Binding Username}"/>
+                    </controls:TriviaTextBox>
+                    
+                    <StackPanel Grid.Row="1"
+                                Grid.Column="0"
+                                Classes="required-field">
+                        <TextBlock>
+                            EMAIL
+                        </TextBlock>
+                    </StackPanel>
+                    
+                    <controls:TriviaTextBox Grid.Row="1"
+                               Grid.Column="1">
+                        <TextBox Text="{Binding Email}"/>
+                    </controls:TriviaTextBox>
+                    
+                    <StackPanel Grid.Row="2"
+                                Grid.Column="0"
+                                Classes="required-field">
+                        <TextBlock Classes.passwords-mismatch="{Binding !DoPasswordsMatch}">
+                            PASSWORD
+                        </TextBlock>
+                    </StackPanel>
+                    
+                    <controls:TriviaTextBox Grid.Row="2"
+                                            Grid.Column="1">
+                        <TextBox PasswordChar="*"
+                                 Text="{Binding Password}"/>
+                    </controls:TriviaTextBox>
+                    
+                    <StackPanel Grid.Row="3"
+                                Grid.Column="0"
+                                Classes="required-field">
+                        <TextBlock Classes.passwords-mismatch="{Binding !DoPasswordsMatch}">
+                            REPEAT PASSWORD
+                        </TextBlock>
+                    </StackPanel>
+                    
+                    <controls:TriviaTextBox Grid.Row="3"
+                               Grid.Column="1">
+                        <TextBox PasswordChar="*"
+                                 Text="{Binding RepPassword}"/>
+                    </controls:TriviaTextBox>
+                    
+                    <StackPanel Grid.Row="4"
+                                Grid.Column="0"
+                                Classes="required-field">
+                        <TextBlock>
+                            PHONE
+                        </TextBlock>
+                    </StackPanel>
+                    
+                    <controls:TriviaTextBox Grid.Row="4"
+                                            Grid.Column="1"
+                                            UnderlineBrush="Transparent">
+                        
+                        <MaskedTextBox Mask="000 000 0000"
+                                       AsciiOnly="True"
+                                       Margin="0 0 0 -7"
+                                       Text="{Binding Phone}"/>
+                        
+                    </controls:TriviaTextBox>
+                   
+                    <!--NOTE: Address field is causing unnecessary overflow. -->
+                    <!-- Too lazy to make it a scrollable. -->
+                    
+                    <!-- <TextBlock Grid.Row="5" -->
+                    <!--            Grid.Column="0"> -->
+                    <!--     ADDRESS -->
+                    <!-- </TextBlock> -->
+                    <!-- <controls:TriviaTextBox Grid.Row="5" -->
+                    <!--            Grid.Column="1"> -->
+                    <!--     <TextBox Text="{Binding Address}"/> -->
+                    <!-- </controls:TriviaTextBox> -->
+                    
+                </Grid>
+                
+                <TextBlock Classes="warning-display"
+                           IsVisible="{Binding !!ErrorMessage}"
+                           Text="{Binding ErrorMessage}"/>
+
+                <StackPanel Spacing="5">
+                    <controls:TriviaButton Command="{Binding SignupCommand}"
+                                           HorizontalAlignment="Center"
+                                           Text="SIGNUP"
+                                           Background="#362034"
+                                           BorderBrush="#b92e2b"
+                                           IconColor="#ffbbbb"
+                                           BorderBrushSelected="#D93040"
+                                           BorderBrushPressed="#AA2C2F"
+                                           BorderThickness="3"
+                                           Padding="100,0"/>
+                    
+                    <StackPanel HorizontalAlignment="Center"
+                                Orientation="Horizontal">
+                        
+                        <StackPanel.Styles>
+                            <Style Selector="TextBlock">
+                                <Setter Property="FontSize" Value="20"/>
+                            </Style>
+                        </StackPanel.Styles>
+                        
+                        <TextBlock Margin="5,0">
+                            OR
+                        </TextBlock>
+                        
+                        <Button Theme="{StaticResource EmptyButton}"
+                                Command="{Binding ToLoginCommand}">
+                            
+                            <controls:Underlined Margin="5,0"
+                                                 Foreground="#FF627C">
+                                <TextBlock Foreground="#FF627C">
+                                    LOG IN
+                                </TextBlock>
+                            </controls:Underlined>
+                            
+                        </Button>
+                        
+                    </StackPanel>
+                </StackPanel>
+
+            </StackPanel>
+            
+        </controls:TriviaMenuPanel>
+    </Panel>
+</UserControl>

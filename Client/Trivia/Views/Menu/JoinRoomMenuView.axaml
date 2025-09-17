@@ -1,0 +1,362 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vmmenu="clr-namespace:Trivia.ViewModels.Menu"
+             xmlns:controls="clr-namespace:Trivia.Controls"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
+             x:CompileBindings="True"
+             x:Class="Trivia.Views.Menu.JoinRoomMenuView"
+             x:DataType="vmmenu:JoinRoomMenuViewModel"
+             x:Name="JoinMenuViewControl"
+             
+             AttachedToVisualTree="OnAttachedToVisualTree">
+    
+    <Design.DataContext>
+        <vmmenu:JoinRoomMenuViewModel/>
+    </Design.DataContext>
+
+    <Panel>
+        <Panel.Background>
+            <ImageBrush Source="avares://Trivia/Assets/blobs-l-b49caff1a7941d98b60902da64956ad85dfbe4f9.png"
+                        Stretch="UniformToFill" />
+        </Panel.Background>
+
+        <controls:TriviaMenuPanel Title="JOIN"
+                                    BackButtonCommand="{Binding NavigateBackCommand}">
+            
+            <Panel>
+                
+                <Grid ColumnDefinitions="*, Auto"
+                      Margin="20 0">
+                    <ListBox PointerReleased="RoomListBox_OnPointerReleased"
+                             Grid.Column="0"
+                             SelectionMode="Single, Toggle"
+                             Background="Transparent"
+                             Classes="t-list"
+                             Padding="0 20 0 275"
+                             ItemsSource="{Binding Rooms}">
+                        
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ColumnDefinitions="Auto, Auto, *">
+                                    <Border Grid.Column="0"
+                                            Background="{
+                                                Binding RoomType,
+                                                Converter={StaticResource RoomTypeToBackgroundConverter}
+                                            }"
+                                            Height="55"
+                                            Width="55"
+                                            Padding="12"
+                                            CornerRadius="15"
+                                            Margin="15 0">
+                                        
+                                        <Svg Path="{
+                                                 Binding RoomType,
+                                                 Converter={StaticResource RoomTypeToIconPathConverter}
+                                             }"
+                                             Css="* { fill: #2f223b; }"/>
+                                    </Border>
+                                    
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock FontSize="30"
+                                                       Text="{Binding Data.Name}"/>
+                                            
+                                            <TextBlock FontSize="22"
+                                                       VerticalAlignment="Center"
+                                                       Opacity=".7"
+                                                       Text="{Binding Admin.Username,
+                                                           StringFormat=' • {0}'
+                                                       }"/>
+                                        </StackPanel>
+                                        
+                                        <TextBlock FontSize="15"
+                                                   Opacity=".4">
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0}/{1} PLAYERS • {2} QUESTIONS">
+                                                    <Binding Path="PlayersCount"/>
+                                                    <Binding Path="Data.MaxPlayers"/>
+                                                    <Binding Path="Data.QuestionsCount"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </StackPanel>
+                                    
+                                    <Button Grid.Column="2"
+                                            Command="{
+                                                Binding DataContext.JoinRoomButtonCommand,
+                                                ElementName=JoinMenuViewControl
+                                            }"
+                                            CommandParameter="{Binding Id}"
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Stretch"
+                                            Background="#f9be82"
+                                            CornerRadius="5"
+                                            Width="80"
+                                            Height="40"
+                                            ClipToBounds="False">
+                                        
+                                        <Button.Styles>
+                                            <Style Selector="Button /template/ ContentPresenter">
+                                                <Setter Property="BoxShadow" Value="0 3 3 #4f000000"/>
+                                            </Style>
+                                            
+                                            <Style Selector="Button:pointerover /template/ ContentPresenter">
+                                                <Setter Property="Background" Value="#F1B67C"/>
+                                            </Style>
+                        
+                                            <Style Selector="Button:pressed /template/ ContentPresenter">
+                                                <Setter Property="Background" Value="#DFA871"/>
+                                            </Style>
+                                        </Button.Styles>
+                                        
+                                        <Svg Path="avares://Trivia/Assets/Icons/login.svg"
+                                             Stretch="Uniform"
+                                             Css="* { fill: #2f223b; } " />
+                                    </Button>
+                                    
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        
+                        <ListBox.Styles>
+                            
+                            <Style Selector="ListBox > ListBoxItem">
+                                <Setter Property="Background" Value="#A52151"/>
+                                <Setter Property="Margin" Value="0 2"/>
+                                <Setter Property="Padding" Value="10 9"/>
+                                
+                                <Style Selector="^:nth-child(1)">
+                                    <Setter Property="CornerRadius" Value="15 15 0 0"/>
+                                </Style>
+                                <Style Selector="^:nth-last-child(1)">
+                                    <Setter Property="CornerRadius" Value="0 0 5 5"/>
+                                </Style>
+                                <Style Selector="^:nth-child(1):nth-last-child(1)">
+                                    <Setter Property="CornerRadius" Value="15 15 5 5"/>
+                                </Style>
+
+                                <Style Selector="^:pointerover /template/ ContentPresenter">
+                                    <Setter Property="Background" Value="#921E48"/>
+                                </Style>
+                                <Style Selector="^:selected /template/ ContentPresenter">
+                                    <Setter Property="Background" Value="#8A2464"/>
+                                </Style>
+                                <Style Selector="^:selected:pointerover /template/ ContentPresenter">
+                                    <Setter Property="Background" Value="#93256C"/>
+                                </Style>
+                                <Style Selector="^:pressed /template/ ContentPresenter">
+                                    <Setter Property="Background" Value="#9B2772"/>
+                                </Style>
+                            </Style>
+                            
+                        </ListBox.Styles>
+                    </ListBox>
+                    
+                    
+                    <!-- Right Panel -->
+                    
+                    <Grid Grid.Column="1"
+                          x:Name="RoomInfoPanel"
+                          ColumnDefinitions="20, *"
+                          Width="350">
+                        
+                        <Grid.Transitions>
+                            <Transitions>
+                                <DoubleTransition Property="Width"
+                                                  Duration="{Binding #JoinMenuViewControl.RoomInfoPanelAnimationTime}"
+                                                  Easing="CubicEaseOut"/>
+                            </Transitions>
+                        </Grid.Transitions>
+                        
+                        <Border Grid.Column="1"
+                                Background="#8a2464"
+                                Margin="0 20"
+                                CornerRadius="30"
+                                ClipToBounds="True">
+                            
+                            <Grid RowDefinitions="Auto, *, Auto"
+                                  x:Name="FixedWidthGrid">
+
+                                <Grid Grid.Row="0"
+                                      Grid.Column="0"
+                                      ColumnDefinitions="Auto, *"
+                                      HorizontalAlignment="Center"
+                                      Margin="10 30 10 0">
+                                    <Border Grid.Column="0"
+                                            Background="{
+                                                Binding SelectedRoom.RoomType,
+                                                Converter={StaticResource RoomTypeToBackgroundConverter}
+                                            }"
+                                            Width="90"
+                                            Height="90"
+                                            Padding="20"
+                                            CornerRadius="15"
+                                            Margin="15 0">
+                                            
+                                        <Svg Path="{
+                                                 Binding SelectedRoom.RoomType,
+                                                 Converter={StaticResource RoomTypeToIconPathConverter}
+                                             }"
+                                             Css="* { fill: #2f223b; }"/>
+                                    </Border>
+                                        
+                                    <StackPanel Grid.Column="1"
+                                                Spacing="5"
+                                                VerticalAlignment="Center"
+                                                Margin="0 0 0 10">
+                                            
+                                        <TextBlock FontSize="50"
+                                                   Text="{Binding SelectedRoom.Data.Name}"
+                                                   LineHeight="40"
+                                                   TextWrapping="Wrap"/>
+                                            
+                                        <TextBlock FontSize="20"
+                                                   Opacity=".6">
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0}/{1} PLAYERS">
+                                                    <Binding Path="SelectedRoom.PlayersCount"/>
+                                                    <Binding Path="SelectedRoom.Data.MaxPlayers"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                            
+                                    </StackPanel>
+                                        
+                                </Grid>
+
+                                <StackPanel Grid.Row="1"
+                                            Margin="30 10">
+                                    <Grid ColumnDefinitions="Auto, *"
+                                          Margin="10"
+                                          Opacity=".9"
+                                          HorizontalAlignment="Center">
+                                        
+                                        <TextBlock Grid.Column="0"
+                                                   FontSize="37"
+                                                   Text="ADMIN: "
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="1"
+                                                   FontSize="37"
+                                                   Foreground="#EAACC4"
+                                                   Text="{Binding SelectedRoom.Admin.Username}"
+                                                   TextWrapping="Wrap"/>
+                                    </Grid>
+                                    
+                                    <Grid RowDefinitions="Auto, Auto"
+                                          ColumnDefinitions="Auto, *"
+                                          Margin="0 10">
+                                        
+                                        <Grid.Styles>
+                                            <Style Selector="TextBlock">
+                                                <Setter Property="FontSize" Value="25" />
+                                                <Setter Property="Margin" Value="0 0 0 2" />
+                                            </Style>
+                                            
+                                            <Style Selector="TextBlock[(Grid.Column)=0]">
+                                                <Setter Property="Foreground" Value="#f9be82" />
+                                                <Setter Property="Margin" Value="0 0 7 2" />
+                                            </Style>
+                                        </Grid.Styles>
+                                        
+                                        <TextBlock Grid.Row="0"
+                                                   Grid.Column="0"
+                                                   Text="{Binding SelectedRoom.Data.QuestionsCount,
+                                                       StringFormat='• {0}'
+                                                   }"/>
+                                        
+                                        <TextBlock Grid.Row="0"
+                                                   Grid.Column="1">
+                                            QUESTIONS
+                                        </TextBlock>
+                                        
+                                        <TextBlock Grid.Row="1"
+                                                   Grid.Column="0"
+                                                   Text="{Binding SelectedRoom.Data.TimePerQuestionSecs,
+                                                       StringFormat='• {0}'
+                                                   }"/>
+                                        
+                                        <TextBlock Grid.Row="1"
+                                                   Grid.Column="1">
+                                            SEC/Q
+                                        </TextBlock>
+                                        
+                                    </Grid>
+                                    
+                                </StackPanel>
+                                
+                                <Button Grid.Row="2"
+                                        Command="{Binding JoinRoomButtonCommand}"
+                                        CommandParameter="{Binding SelectedRoom.Id}"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Stretch"
+                                        Background="#f9be82"
+                                        CornerRadius="5"
+                                        Width="240"
+                                        Height="55"
+                                        ClipToBounds="False"
+                                        Margin="0 0 0 30">
+                                        
+                                    <Button.Styles>
+                                        <Style Selector="Button /template/ ContentPresenter">
+                                            <Setter Property="BoxShadow" Value="0 3 3 #3f000000"/>
+                                        </Style>
+                                            
+                                        <Style Selector="Button:pointerover /template/ ContentPresenter">
+                                            <Setter Property="Background" Value="#F1B67C"/>
+                                        </Style>
+                        
+                                        <Style Selector="Button:pressed /template/ ContentPresenter">
+                                            <Setter Property="Background" Value="#DFA871"/>
+                                        </Style>
+                                    </Button.Styles>
+                                        
+                                    <Grid ColumnDefinitions="Auto, *">
+                                        <Svg Grid.Column="0" Path="avares://Trivia/Assets/Icons/login.svg"
+                                             Stretch="Uniform"
+                                             Css="* { fill: #2f223b; } " />
+                                        
+                                        <TextBlock Grid.Column="1" Foreground="#2f223b"
+                                                   HorizontalAlignment="Center"
+                                                   FontSize="40">
+                                            JOIN
+                                        </TextBlock>
+                                    </Grid>
+                                </Button>
+                                
+                            </Grid>
+                            
+                        </Border>
+                        
+                    </Grid>
+                </Grid>
+                
+                
+                <!-- New Room button -->
+                
+                <Button Classes="action-button"
+                        Command="{Binding NewRoomButtonCommand}">
+                    
+                    <StackPanel Orientation="Horizontal"
+                                Spacing="7">
+                        
+                        <TextBlock
+                            Foreground="#4d264a"
+                            Padding="3 0">
+                            +
+                        </TextBlock>
+                        
+                        <TextBlock
+                            Foreground="#4d264a">
+                            NEW ROOM
+                        </TextBlock>
+                    </StackPanel>
+                    
+                </Button>
+            </Panel>
+            
+        </controls:TriviaMenuPanel>
+    </Panel>
+
+</UserControl>
