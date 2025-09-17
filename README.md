@@ -104,11 +104,17 @@ git clone https://github.com/microsoft/vcpkg.git
 cd vcpkg; .\bootstrap-vcpkg.bat
 ```
 
-When done, install the following dependencies:
+When done, install run the following command to install all required dependencies:
 
 ```powershell
-.\vcpkg install openssl mongo-cxx-driver cryptopp
+.\vcpkg install openssl cryptopp
 ```
+
+> [!NOTE]
+> If you're using **MongoDB**, also run:
+> ```powershell
+> .\vcpkg install mongo-cxx-driver
+> ```
 
 
 #### 🐧 Unix
@@ -116,8 +122,8 @@ When done, install the following dependencies:
 Install the following development packages:
 
 - OpenSSL
-- MongoDB C++ Driver
 - Crypto++
+- **If using MongoDB:** MongoDB C++ Driver
 
 > [!NOTE]
 > Package names may vary depending on your package manager and distribution.
