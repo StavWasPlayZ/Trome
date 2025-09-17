@@ -104,7 +104,7 @@ git clone https://github.com/microsoft/vcpkg.git
 cd vcpkg; .\bootstrap-vcpkg.bat
 ```
 
-When done, install run the following command to install all required dependencies:
+When done, run the following command to install all required dependencies:
 
 ```powershell
 .\vcpkg install openssl cryptopp
