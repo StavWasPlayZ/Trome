@@ -20,8 +20,8 @@ endif()
 project ("Server")
 
 
-# If you want to use MongoDB instead of Sqlite, uncomment this:
-# set (USE_MONGO_DB ON)
+# If you want to use MongoDB instead of Sqlite, make this ON:
+set (USE_MONGO_DB OFF)
 
 # NOTE: The file ./resources/mongodb_connection_string.txt *must* be present in that case.
 
@@ -86,8 +86,6 @@ add_executable (Server
   "src/common/infrastructure/request/RequestResult.cpp"
 
   "src/common/infrastructure/db/IDatabase.cpp"
-  "src/common/infrastructure/db/SqliteDatabase.cpp"
-  "src/common/infrastructure/db/SqliteDatabase.tpp"
 
   "src/common/manager/LoginManager.h"
   "src/common/manager/LoginManager.cpp"
@@ -170,6 +168,11 @@ if (USE_MONGO_DB)
     "src/common/infrastructure/db/MongoDatabase.h"
     "src/common/infrastructure/db/MongoDatabase.cpp"
   )
+else ()
+  target_sources(Server PRIVATE
+    "src/common/infrastructure/db/SqliteDatabase.cpp"
+    "src/common/infrastructure/db/SqliteDatabase.tpp"
+  )
 endif ()
 
 
@@ -231,10 +234,12 @@ else ()
 endif ()
 
 # sqlite3
-add_library(sqlite3 STATIC lib/sqlite3/sqlite3.c)
-target_include_directories(sqlite3 PUBLIC lib/sqlite3)
+if (NOT USE_MONGO_DB)
+  add_library(sqlite3 STATIC lib/sqlite3/sqlite3.c)
+  target_include_directories(sqlite3 PUBLIC lib/sqlite3)
 
-target_link_libraries(Server PRIVATE sqlite3)
+  target_link_libraries(Server PRIVATE sqlite3)
+endif ()
 
 
 # ctre (Compile Time Regular Expressions v3)
