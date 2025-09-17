@@ -20,6 +20,16 @@ endif()
 project ("Server")
 
 
+# If you want to use MongoDB instead of Sqlite, uncomment this:
+# set (USE_MONGO_DB ON)
+
+# NOTE: The file ./resources/mongodb_connection_string.txt *must* be present in that case.
+
+if(USE_MONGO_DB)
+  add_compile_definitions(USE_MONGO_DB)
+endif()
+
+
 # Common sources
 add_executable (Server
   "src/common/Main.cpp"
@@ -78,9 +88,6 @@ add_executable (Server
   "src/common/infrastructure/db/IDatabase.cpp"
   "src/common/infrastructure/db/SqliteDatabase.cpp"
   "src/common/infrastructure/db/SqliteDatabase.tpp"
-
-  "src/common/infrastructure/db/MongoDatabase.h"
-  "src/common/infrastructure/db/MongoDatabase.cpp"
 
   "src/common/manager/LoginManager.h"
   "src/common/manager/LoginManager.cpp"
@@ -156,6 +163,15 @@ add_executable (Server
   "src/common/infrastructure/cryptoAlgorithm/RSA.h"
   "src/common/infrastructure/cryptoAlgorithm/RSA.cpp"
 )
+
+# MongoDB sources
+if (USE_MONGO_DB)
+  target_sources(Server PRIVATE
+    "src/common/infrastructure/db/MongoDatabase.h"
+    "src/common/infrastructure/db/MongoDatabase.cpp"
+  )
+endif ()
+
 
 # Platform-specific sources
 if (WIN32)
@@ -233,10 +249,12 @@ target_link_libraries(Server PRIVATE ctre)
 # MongoDB
 # In Windows: vcpkg install mongo-cxx-driver
 # In Linux: https://www.mongodb.com/docs/languages/cpp/cpp-driver/current/get-started/
-find_package(mongocxx REQUIRED)
-find_package(bsoncxx REQUIRED)
+if (USE_MONGO_DB)
+  find_package(mongocxx REQUIRED)
+  find_package(bsoncxx REQUIRED)
 
-target_link_libraries(Server PRIVATE mongo::bsoncxx_shared mongo::mongocxx_shared)
+  target_link_libraries(Server PRIVATE mongo::bsoncxx_shared mongo::mongocxx_shared)
+endif ()
 
 
 

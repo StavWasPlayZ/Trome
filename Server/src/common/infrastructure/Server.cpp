@@ -1,14 +1,23 @@
 ﻿#include "Server.h"
 
-#include "db/SqliteDatabase.h"
-
 #include <httplib.h>
 #include <nlohmann/json.hpp>
 
 #include "infrastructure/Question.h"
 
+// Depending on the CMake constant,
+// pick Mongo or SQLite as the database of choice.
+#ifdef USE_MONGO_DB
+#include "db/MongoDatabase.h"
+using ChosenDatabase = MongoDatabase;
+#else
+#include "db/SqliteDatabase.h"
+using ChosenDatabase = SqliteDatabase;
+#endif
+
+
 Server::Server() :
-    m_database(SqliteDatabase::getInstance()),
+    m_database(ChosenDatabase::getInstance()),
     m_loginManager(m_database),
     m_roomManager(m_database),
     m_statisticsManager(m_database),
