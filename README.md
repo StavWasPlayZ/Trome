@@ -280,7 +280,7 @@ Most the encryption/decryption operations are powered by the [Crypto++](https://
   - Public/private keys are stored in `.pem` files.
   - Keys are loaded **at startup** from the files.
 
-### 🛠 Other Encryption Method
+### 🛠 Other Encryption Methods
 
 #### 🟡 AES (Advanced Encryption Standard)
 
