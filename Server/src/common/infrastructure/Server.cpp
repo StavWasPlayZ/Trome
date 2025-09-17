@@ -1,6 +1,6 @@
 ﻿#include "Server.h"
 
-#include "db/MongoDatabase.h"
+#include "db/SqliteDatabase.h"
 
 #include <httplib.h>
 #include <nlohmann/json.hpp>
@@ -8,7 +8,7 @@
 #include "infrastructure/Question.h"
 
 Server::Server() :
-    m_database(MongoDatabase::getInstance()),
+    m_database(SqliteDatabase::getInstance()),
     m_loginManager(m_database),
     m_roomManager(m_database),
     m_statisticsManager(m_database),
