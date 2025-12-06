@@ -70,7 +70,9 @@ Features explicitly deemed as a bonus by Magshimim, as well as additional, custo
 - CMake-aligned project
 - Cross-platform support for Windows/Unix
 - Notifications system
-- Avalonia
+- Avalonia UI
+  - MVVM
+  - ReactiveUI
 - Harmonically syncing BGM w/ [NAudio](https://github.com/naudio/NAudio)
 - Viewing player statistics in-game
 - Player kicking
